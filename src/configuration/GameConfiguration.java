@@ -3,7 +3,7 @@ package configuration;
 public class GameConfiguration 
 {
 	public final static int GAME_SPEED = 1000/30;
-	
+	//commentaire de test d'actualisation
 	public final static int WINDOW_WIDTH = 1920;
 	
 	public final static int WINDOW_HEIGHT = 1080;
