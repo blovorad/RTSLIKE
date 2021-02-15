@@ -2,7 +2,6 @@ package configuration;
 
 public class GameConfiguration 
 {
-	//aller dit moi que ça fonctionne
 	public final static int GAME_SPEED = 1000/30;
 	
 	public final static int WINDOW_WIDTH = 1920;
