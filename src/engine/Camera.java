@@ -18,10 +18,6 @@ public class Camera
 	{
 		this.x = 0;
 		this.y = 0;
-		/*this.rectX =100;
-		this.rectY = 100;
-		this.rectW = 1800;
-		this.rectH = 900;*/
 		this.speed = new Speed();
 	}
 	
@@ -68,46 +64,6 @@ public class Camera
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);
 	}
-
-	/*public int getRectX() 
-	{
-		return rectX;
-	}
-
-	public void setRectX(int rectX) 
-	{
-		this.rectX = rectX;
-	}
-
-	public int getRectY() 
-	{
-		return rectY;
-	}
-
-	public void setRectY(int rectY) 
-	{
-		this.rectY = rectY;
-	}
-
-	public int getRectW() 
-	{
-		return rectW;
-	}
-
-	public void setRectW(int rectW) 
-	{
-		this.rectW = rectW;
-	}
-
-	public int getRectH() 
-	{
-		return rectH;
-	}
-
-	public void setRectH(int rectH) 
-	{
-		this.rectH = rectH;
-	}*/
 
 	public Speed getSpeed() 
 	{
