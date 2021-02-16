@@ -14,6 +14,7 @@ public class Unit extends Entity
 	private int damage;
 	private int range;
 	private int armor;
+	private int id;
 	
 	private Speed speed;
 	
@@ -71,6 +72,16 @@ public class Unit extends Entity
 	{
 		this.currentAction = currentAction;
 	}
+	
+	public int getId() 
+	{
+		return id;
+	}
+
+	public void setId(int id) 
+	{
+		this.id = id;
+	}
 
 	public Speed getSpeed() 
 	{
@@ -81,6 +92,5 @@ public class Unit extends Entity
 	{
 		this.speed = speed;
 	}
-
 	
 }
