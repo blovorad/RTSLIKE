@@ -900,9 +900,7 @@ public class GameDisplay extends JPanel
 				}
 				else if(oldState == PAUSE)
 				{
-					gamePanel.setVisible(false);
 					pauseMenuPanel.setVisible(false);
-					getMainPanel().remove(gamePanel);
 					getMainPanel().remove(pauseMenuPanel);
 					manager.cleanFactionManager();
 					camera.reset();

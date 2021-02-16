@@ -8,7 +8,7 @@ public class Barbare extends Race
 		initInfantry();
 		initArcher();
 		initForge();
-		initHg();
+		initHq();
 		initCastle();
 		initTower();
 		initRessourceStockage();
@@ -36,7 +36,7 @@ public class Barbare extends Race
 		
 	}
 	
-	public void initHg()
+	public void initHq()
 	{
 		
 	}
