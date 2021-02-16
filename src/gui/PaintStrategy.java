@@ -76,11 +76,13 @@ public class PaintStrategy
 		graphics.setColor(new Color(168,104,38));
 		graphics.fillRect(0, 0, 400, 50);
 		
+		
+		//camera broken
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.black);
 		graphics.drawRect((int)(((1650 * GameConfiguration.SCALE_X) + (camera.getX() * GameConfiguration.SCALE_X) / GameConfiguration.TILE_SIZE)), 
 							(int)(((800 * GameConfiguration.SCALE_Y) + (camera.getY() * GameConfiguration.SCALE_Y) / GameConfiguration.TILE_SIZE)), 
-							(int)(60 * GameConfiguration.SCALE_X), 
-							(int)(33 * GameConfiguration.SCALE_Y));	
+							(int)(((float)GameConfiguration.WINDOW_WIDTH / (float)GameConfiguration.TILE_SIZE) / GameConfiguration.SCALE_X), 
+							(int)(((float)GameConfiguration.WINDOW_HEIGHT / (float)GameConfiguration.TILE_SIZE) / GameConfiguration.SCALE_Y));	
 	}
 }

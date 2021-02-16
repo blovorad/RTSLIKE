@@ -1,6 +1,9 @@
 package engine;
 
-public class Unit 
+public class Unit extends Entity
 {
-
+	void update()
+	{
+		
+	}
 }

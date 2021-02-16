@@ -35,14 +35,14 @@ public class Faction
 			race = new Gaia();
 		}
 		
-		entities = new EntitiesManager();
+		entities = new EntitiesManager(this);
 	}
 	
 	public void update() 
 	{
-		printRace();
+		/*printRace();
 		System.out.println("statistique infantry armor : " + race.getInfantry().getArmor());
-		System.out.println("statistique cavlry armor : " + race.getCavalry().getArmor());
+		System.out.println("statistique cavlry armor : " + race.getCavalry().getArmor());*/
 		entities.update();
 	}
 	

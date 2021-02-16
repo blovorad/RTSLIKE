@@ -7,11 +7,6 @@ public class Camera
 	private int x;
 	private int y;
 	
-	/*private int rectX;
-	private int rectY;
-	private int rectW;
-	private int rectH;*/
-	
 	private Speed speed;
 	
 	public Camera()
