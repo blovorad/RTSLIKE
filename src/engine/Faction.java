@@ -40,8 +40,9 @@ public class Faction
 	
 	public void update() 
 	{
-		//printRace();
-		//System.out.println("statistique : " + race.getCavalry().getArmor());
+		printRace();
+		System.out.println("statistique infantry armor : " + race.getInfantry().getArmor());
+		System.out.println("statistique cavlry armor : " + race.getCavalry().getArmor());
 		entities.update();
 	}
 	

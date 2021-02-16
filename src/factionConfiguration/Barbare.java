@@ -23,7 +23,7 @@ public class Barbare extends Race
 	
 	public void initInfantry()
 	{
-		setInfantry(new ForUnit(5, 15, 3, 1, 25, 15, 1, 25));
+		setInfantry(new ForUnit(5, 15, 3, 0, 25, 15, 1, 25));
 	}
 	
 	public void initArcher()
