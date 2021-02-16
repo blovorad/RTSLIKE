@@ -71,7 +71,7 @@ public class GameDisplay extends JPanel
 	
 	/**
 	 * 
-	 * Constant for the management of Layaout of optionPanel.
+	 * Constant for the management of Layout of optionPanel.
 	 * 
 	 */
 	private final int OPTIONSMENUMAXINDEX = 11;
@@ -84,7 +84,7 @@ public class GameDisplay extends JPanel
 	//for pauseMenuPanel
 	/**
 	 * 
-	 * constant for the management of Layaout of pauseMenuPanel.
+	 * constant for the management of Layout of pauseMenuPanel.
 	 */
 	private final int PAUSEMENUMAXINDEX = 11;
 	private final int BACKTOGAMEINDEX = 3;
