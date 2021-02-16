@@ -27,16 +27,28 @@ public class EntitiesManager
 		for(Fighter fighter : fighters) 
 		{
 			fighter.update();
+			if(fighter.getHp() < 1)
+			{
+				fighters.remove(fighter);
+			}
 		}
 		
 		for(Gatherer gatherer : gatherers) 
 		{
 			gatherer.update();
+			if(gatherer.getHp() < 1)
+			{
+				gatherers.remove(gatherer);
+			}
 		}
 		
 		for(Building building : buildings) 
 		{
 			building.update();
+			if(building.getHp() < 1)
+			{
+				buildings.remove(building);
+			}
 		}
 		
 		for(Ressource ressource : ressources) 
@@ -44,7 +56,7 @@ public class EntitiesManager
 			ressource.update();
 			if(ressource.getHp() < 1)
 			{
-				
+				ressources.remove(ressource);
 			}
 		}
 	}

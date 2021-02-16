@@ -29,7 +29,7 @@ public class PaintStrategy
 				
 				if(tile.getId() == 0)
 				{
-					graphics.setColor(Color.gray);
+					graphics.setColor(Color.black);
 				}
 				else if(tile.getId() == 1)
 				{
@@ -60,7 +60,7 @@ public class PaintStrategy
 				
 				if(tile.getId() == 0)
 				{
-					graphics.setColor(Color.gray);
+					graphics.setColor(Color.black);
 				}
 				else if(tile.getId() == 1)
 				{

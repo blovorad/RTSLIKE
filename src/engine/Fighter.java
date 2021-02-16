@@ -1,6 +1,6 @@
 package engine;
 
-public class Fighter 
+public class Fighter extends Unit
 {
 	public void update()
 	{
