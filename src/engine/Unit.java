@@ -19,7 +19,7 @@ public class Unit extends Entity
 	
 	public Unit()
 	{
-		
+		super();
 	}
 	
 	public int getDamage() 
