@@ -8,7 +8,7 @@ public class EntitiesManager
 	private Faction faction;
 	private List<Fighter> fighters;
 	
-	private List<Gatherer> gatherers;
+	private List<Worker> gatherers;
 	
 	private List<Building> buildings;
 	private List<Building> removeBuilding = new ArrayList<Building>();
@@ -21,7 +21,7 @@ public class EntitiesManager
 	{
 		this.setFaction(faction);
 		this.fighters = new ArrayList<Fighter>();
-		this.gatherers = new ArrayList<Gatherer>();
+		this.gatherers = new ArrayList<Worker>();
 		this.buildings = new ArrayList<Building>();
 		this.ressources = new ArrayList<Ressource>();
 		this.setSelectedUnits(new ArrayList<Unit>());
@@ -38,7 +38,7 @@ public class EntitiesManager
 			}
 		}
 		
-		for(Gatherer gatherer : gatherers) 
+		for(Worker gatherer : gatherers) 
 		{
 			gatherer.update();
 			if(gatherer.getHp() < 1)
@@ -59,7 +59,7 @@ public class EntitiesManager
 			}
 			if(building.getHp() < 1)
 			{
-				System.out.println("We removing a building cause : " + building.getHp());
+				//System.out.println("We removing a building cause : " + building.getHp());
 				removeBuilding.add(building);
 			}
 		}
@@ -91,11 +91,11 @@ public class EntitiesManager
 		this.fighters = fighters;
 	}
 
-	public List<Gatherer> getGatherers() {
+	public List<Worker> getGatherers() {
 		return gatherers;
 	}
 
-	public void setGatherers(List<Gatherer> gatherers) {
+	public void setGatherers(List<Worker> gatherers) {
 		this.gatherers = gatherers;
 	}
 

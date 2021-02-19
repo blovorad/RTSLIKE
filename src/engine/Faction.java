@@ -11,12 +11,16 @@ public class Faction
 	private Race race;
 	private int age;
 	private int nbBuilding;
+	private int population;
+	private int money;
 	private EntitiesManager entities;
 
 	public Faction(int id) 
 	{
 		age = 1;
 		nbBuilding = 0;
+		population = 0;
+		money = 0;
 		
 		if(id == 1)
 		{
@@ -96,5 +100,21 @@ public class Faction
 	public void printRace() 
 	{
 		System.out.println(race);
+	}
+
+	public int getPopulation() {
+		return population;
+	}
+
+	public void setPopulation(int population) {
+		this.population = population;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
 	}
 }

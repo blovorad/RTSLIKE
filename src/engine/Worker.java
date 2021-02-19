@@ -1,6 +1,6 @@
 package engine;
 
-public class Gatherer extends Unit
+public class Worker extends Unit
 {
 	public void update()
 	{

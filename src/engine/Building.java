@@ -23,7 +23,7 @@ public abstract class Building extends Entity{
 		Random rand = new Random();
 		int lessHp = rand.nextInt(5);
 		this.setHp(this.getHp() - lessHp);
-		System.out.println("we remove : " + lessHp);
+		//System.out.println("we remove : " + lessHp);
 		if(canAttak == true) {
 			if(this.getTarget() != null) {
 				if(isInRange(attakRange, this.getTarget())) {

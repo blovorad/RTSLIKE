@@ -26,7 +26,7 @@ import engine.EntitiesManager;
 import engine.Faction;
 import engine.FactionManager;
 import engine.Fighter;
-import engine.Gatherer;
+import engine.Worker;
 import engine.Map;
 import engine.Ressource;
 
@@ -39,6 +39,7 @@ public class GameDisplay extends JPanel
 	private Map map;
 	
 	private Camera camera;
+
 	
 	//use to give the current selected faction when you launch game
 	private FactionManager manager;
@@ -97,11 +98,16 @@ public class GameDisplay extends JPanel
 	private final int OPTIONSINDEX = 6;
 	private final int LEAVEINDEX = 9;
 	
+	//button
+	private JButton constructionButton = new JButton(new PrintConstruction("construction"));
+
 	//panel of game
 	private JPanel mainMenuPanel;
 	private JPanel gamePanel;
 	private JPanel optionPanel;
 	private JPanel pauseMenuPanel;
+	
+	private JPanel descriptionPanel;
 
 	public GameDisplay(Camera camera, FactionManager manager)
 	{
@@ -111,8 +117,8 @@ public class GameDisplay extends JPanel
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
 		
-		gamePanel = createGamePanel();
-		gamePanel.setVisible(false);
+		/*gamePanel = createGamePanel();
+		gamePanel.setVisible(false);*/
 		
 		optionPanel = createOptionPanel();
 		optionPanel.setVisible(false);
@@ -317,34 +323,71 @@ public class GameDisplay extends JPanel
 	
 	private JPanel createDescriptionPanel()
 	{
-		JPanel panel = new JPanel(new GridLayout(2, 2));
+		descriptionPanel = new JPanel(new GridLayout(2, 2));
 		
-		panel.add(new JButton(new PrintConstruction("construction")));
-		panel.add(new JLabel("NOM DE L'UNITER"));
-		panel.add(new JLabel("SON COMPORTEMENT"));
-		panel.add(new JLabel("LES STATS"));
+		setDescriptionPanelStandard();
 		
-		return panel;
+		return descriptionPanel;
+	}
+	
+	private void setDescriptionPanelForWorker()
+	{
+		
+	}
+	
+	private void setDescriptionPanelForConstruction()
+	{
+		descriptionPanel.removeAll();
+		descriptionPanel.setLayout(new GridLayout(1, 1));
+		
+		descriptionPanel.add(new JLabel("ON VEUT CONSTRUIRE"));
+		descriptionPanel.validate();
+	}
+	
+	private void setDescriptionPanelForUnit()
+	{
+		descriptionPanel.setLayout(new GridLayout(1, 3));
+		
+		descriptionPanel.add(new JLabel("ETATS"));
+		descriptionPanel.add(new JLabel("DESCRIPTION ET NOM UNITER"));
+		descriptionPanel.add(new JLabel("LES STATS"));
+	}
+	
+	private void setDescriptionPanelForBuilding()
+	{
+		
+	}
+	
+	private void setDescriptionPanelStandard()
+	{
+		descriptionPanel.setLayout(new GridLayout(2, 2));
+		
+		descriptionPanel.add(constructionButton);
+		descriptionPanel.add(new JLabel("NOM DE L'UNITER"));
+		descriptionPanel.add(new JLabel("SON COMPORTEMENT"));
+		descriptionPanel.add(new JLabel("LES STATS"));
 	}
 	
 	private JPanel createRessourceInfo()
 	{	
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 0));
 		
-		JLabel  gold =  new JLabel("ARGENT:");
+		JLabel  gold =  new JLabel("ARGENT:" + manager.getFactions().get(0).getMoney());
 		gold.setForeground(Color.WHITE);
 		JLabel  time =  new JLabel("TEMPS:");
 		time.setForeground(Color.WHITE);
-		JLabel  population =  new JLabel("POPULATION:");
+		JLabel  population =  new JLabel("POPULATION:" + manager.getFactions().get(0).getPopulation());
 		population.setForeground(Color.WHITE);
-		JLabel  age =  new JLabel("AGE:");
+		JLabel  age =  new JLabel("AGE:" + manager.getFactions().get(0).getAge());
 		age.setForeground(Color.WHITE);
-	
+		JLabel race = new JLabel(" " + manager.getFactions().get(0).getRace().getName());
+		race.setForeground(Color.WHITE);
 		
 		panel.add(gold);
 		panel.add(time);
 		panel.add(population);
 		panel.add(age);
+		panel.add(race);
 		
 		panel.setOpaque(false);
 		return panel;
@@ -447,7 +490,7 @@ public class GameDisplay extends JPanel
 			{
 				EntitiesManager entitiesManager = faction.getEntities();
 				List<Building> buildings = entitiesManager.getBuildings();
-				List<Gatherer> gatherers = entitiesManager.getGatherers();
+				List<Worker> gatherers = entitiesManager.getGatherers();
 				List<Fighter> fighters = entitiesManager.getFighters();
 				List<Ressource> ressources = entitiesManager.getRessources();
 				
@@ -456,7 +499,7 @@ public class GameDisplay extends JPanel
 					this.paintStrategy.paint(building, g, camera);
 				}
 				
-				for(Gatherer gatherer: gatherers)
+				for(Worker gatherer: gatherers)
 				{
 					this.paintStrategy.paint(gatherer, g, camera);
 				}
@@ -517,7 +560,8 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
-			
+			System.out.println("ici");
+			setDescriptionPanelForConstruction();
 		}
 	}
 	
@@ -648,6 +692,10 @@ public class GameDisplay extends JPanel
 			}
 			oldState = state;
 			state = INGAME;
+			
+			gamePanel = createGamePanel();
+			gamePanel.setVisible(false);
+			
 			manageState();
 		}
 	}

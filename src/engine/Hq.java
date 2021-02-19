@@ -2,11 +2,11 @@ package engine;
 
 import factionConfiguration.ForUnit;
 
-public class Qg extends Building{
+public class Hq extends Building{
 
 	private ForUnit worker;
 	
-	public Qg() {
+	public Hq() {
 		
 	}
 	

@@ -7,7 +7,7 @@ import configuration.GameConfiguration;
 import engine.Building;
 import engine.Camera;
 import engine.Fighter;
-import engine.Gatherer;
+import engine.Worker;
 import engine.Map;
 import engine.Ressource;
 import engine.Tile;
@@ -22,7 +22,7 @@ public class PaintStrategy
 		graphics.fillRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY(), tileSize, tileSize);
 	}
 	
-	public void paint(Gatherer gatherer, Graphics graphics, Camera camera)
+	public void paint(Worker gatherer, Graphics graphics, Camera camera)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
