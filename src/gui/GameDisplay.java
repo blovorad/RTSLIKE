@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
@@ -19,10 +20,15 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 
 import configuration.GameConfiguration;
+import engine.Building;
 import engine.Camera;
+import engine.EntitiesManager;
 import engine.Faction;
 import engine.FactionManager;
+import engine.Fighter;
+import engine.Gatherer;
 import engine.Map;
+import engine.Ressource;
 
 public class GameDisplay extends JPanel 
 {
@@ -432,13 +438,52 @@ public class GameDisplay extends JPanel
 	{
 		super.paintComponent(g);
 		
-		if(state == 0)
-		{
-			this.paintStrategy.paint(g);
-		}
-		else if(state == 1)
+		if(state == INGAME)
 		{
 			this.paintStrategy.paint(this.map, g, this.camera);
+			
+			List<Faction> factions = manager.getFactions();
+			for(Faction faction: factions)
+			{
+				EntitiesManager entitiesManager = faction.getEntities();
+				List<Building> buildings = entitiesManager.getBuildings();
+				List<Gatherer> gatherers = entitiesManager.getGatherers();
+				List<Fighter> fighters = entitiesManager.getFighters();
+				List<Ressource> ressources = entitiesManager.getRessources();
+				
+				for(Building building: buildings)
+				{
+					this.paintStrategy.paint(building, g, camera);
+				}
+				
+				for(Gatherer gatherer: gatherers)
+				{
+					this.paintStrategy.paint(gatherer, g, camera);
+				}
+				
+				for(Fighter fighter: fighters)
+				{
+					this.paintStrategy.paint(fighter, g, camera);
+				}
+				
+				for(Ressource ressource: ressources)
+				{
+					this.paintStrategy.paint(ressource, g, camera);
+				}
+				
+			}
+		}
+		else if(state == MAINMENU)
+		{
+			//this.paintStrategy.paint(g);
+		}
+		else if(state == OPTION)
+		{
+			
+		}
+		else if(state == PAUSE)
+		{
+			
 		}
 	}
 	

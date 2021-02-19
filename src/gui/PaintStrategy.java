@@ -4,15 +4,46 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import configuration.GameConfiguration;
+import engine.Building;
 import engine.Camera;
+import engine.Fighter;
+import engine.Gatherer;
 import engine.Map;
+import engine.Ressource;
 import engine.Tile;
 
 public class PaintStrategy 
 {
-	public void paint(Graphics graphics)
+	public void paint(Building building, Graphics graphics, Camera camera)
 	{
+		int tileSize = GameConfiguration.TILE_SIZE;
 		
+		graphics.setColor(Color.blue);
+		graphics.fillRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY(), tileSize, tileSize);
+	}
+	
+	public void paint(Gatherer gatherer, Graphics graphics, Camera camera)
+	{
+		int tileSize = GameConfiguration.TILE_SIZE;
+		
+		graphics.setColor(Color.green);
+		graphics.fillRect(gatherer.getPosition().getX() - camera.getX(), gatherer.getPosition().getY(), tileSize, tileSize);
+	}
+	
+	public void paint(Fighter fighter, Graphics graphics, Camera camera)
+	{
+		int tileSize = GameConfiguration.TILE_SIZE;
+		
+		graphics.setColor(Color.white);
+		graphics.fillRect(fighter.getPosition().getX() - camera.getX(), fighter.getPosition().getY(), tileSize, tileSize);
+	}
+	
+	public void paint(Ressource ressource, Graphics graphics, Camera camera)
+	{
+		int tileSize = GameConfiguration.TILE_SIZE;
+		
+		graphics.setColor(Color.gray);
+		graphics.fillRect(ressource.getPosition().getX() - camera.getX(), ressource.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	
 	public void paint(Map map, Graphics graphics, Camera camera)
@@ -79,7 +110,7 @@ public class PaintStrategy
 		
 		//camera broken
 		//draw rect of the camera on the minimap
-		graphics.setColor(Color.black);
+		graphics.setColor(Color.white);
 		graphics.drawRect((int)(((1650 * GameConfiguration.SCALE_X) + (camera.getX() * GameConfiguration.SCALE_X) / GameConfiguration.TILE_SIZE)), 
 							(int)(((800 * GameConfiguration.SCALE_Y) + (camera.getY() * GameConfiguration.SCALE_Y) / GameConfiguration.TILE_SIZE)), 
 							(int)(((float)GameConfiguration.WINDOW_WIDTH / (float)GameConfiguration.TILE_SIZE) / GameConfiguration.SCALE_X), 

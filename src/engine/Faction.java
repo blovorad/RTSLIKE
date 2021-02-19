@@ -46,8 +46,9 @@ public class Faction
 		entities.update();
 	}
 	
-	public void createBuilding() 
+	public void createBuilding(Building building) 
 	{
+		this.entities.addBuilding(building);
 		nbBuilding++;
 	}
 

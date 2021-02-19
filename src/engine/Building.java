@@ -1,14 +1,15 @@
 package engine;
 
 import java.util.List;
+import java.util.Random;
 
-public class Building extends Entity{
+public abstract class Building extends Entity{
 
 	private int elementCount;
 	private int timer;
-	private int isProducing;
+	private boolean isProducing;
 	private int productionId;
-	private int canAttak;
+	private boolean canAttak;
 	private List<Upgrades> upgrades;
 	private int sightRange;
 	private int attakRange;
@@ -19,7 +20,11 @@ public class Building extends Entity{
 	}
 	
 	public void update() {
-		if(canAttak == 1) {
+		Random rand = new Random();
+		int lessHp = rand.nextInt(5);
+		this.setHp(this.getHp() - lessHp);
+		System.out.println("we remove : " + lessHp);
+		if(canAttak == true) {
 			if(this.getTarget() != null) {
 				if(isInRange(attakRange, this.getTarget())) {
 					attak();
@@ -28,19 +33,19 @@ public class Building extends Entity{
 				lookForTarget(this.getPosition(), attakRange);
 			}
 		}
+		if(timer > 0)
+		{
+			timer--;
+		}
 	}
 	
+	public abstract void produce();
+	public abstract void attak(); 
+	public abstract void lookForTarget(Position position, int range);
+
 	public boolean isInRange(int attakRange, Entity target) { // methode qui calcule si la target est dans la range
 		
 		return false;
-	}
-	
-	public void attak() { // methode pour attaquer une target
-		
-	}
-	
-	public void lookForTarget(Position position, int range) {
-		
 	}
 	
 	//getter setter
@@ -59,11 +64,11 @@ public class Building extends Entity{
 		this.timer = timer;
 	}
 
-	public int getIsProducing() {
+	public boolean getIsProducing() {
 		return isProducing;
 	}
 
-	public void setIsProducing(int isProducing) {
+	public void setIsProducing(boolean isProducing) {
 		this.isProducing = isProducing;
 	}
 
