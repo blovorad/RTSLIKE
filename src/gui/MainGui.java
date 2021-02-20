@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -39,7 +40,9 @@ public class MainGui extends JFrame implements Runnable
 		dashboard = new GameDisplay(camera, manager);
 		
 		MouseControls mouseControls = new MouseControls();
+		MouseMotion mouseMotion = new MouseMotion();
 		dashboard.addMouseListener(mouseControls);
+		dashboard.addMouseMotionListener(mouseMotion);
 		
 		KeyControls keyboardListener = new KeyControls();
 		JTextField textField = new JTextField();
@@ -175,6 +178,36 @@ public class MainGui extends JFrame implements Runnable
 		@Override
 		public void mouseExited(MouseEvent e) 
 		{
+			
+		}
+	}
+	
+	private class MouseMotion implements MouseMotionListener
+	{
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			int x = e.getX();
+			int y = e.getY();
+			System.out.println("mouse : " + x + "," + y);
+			if(x < camera.getRectX() || x > camera.getRectX() + camera.getRectW())
+			{
+				
+			}
+			if(y < camera.getRectY() || y > camera.getRectY() + camera.getRectH())
+			{
+				double angle = Math.atan2(y - GameConfiguration.WINDOW_HEIGHT / 2, x - GameConfiguration.WINDOW_WIDTH / 2);
+				camera.move((int)(5 * Math.cos(angle)), (int)(5 * Math.sin(angle)));
+			}
+			else
+			{
+				camera.move(0, 0);
+			}
 			
 		}
 	}

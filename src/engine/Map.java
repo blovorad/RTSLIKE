@@ -19,7 +19,7 @@ public class Map
 			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) 
 			{
 				tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 0);
-				/*
+				
 				if(id == 1)
 				{
 					if(columnIndex > 90)
@@ -47,7 +47,7 @@ public class Map
 				else if(id == 3)
 				{
 					tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 2);
-				}*/
+				}
 			}
 		}
 	}

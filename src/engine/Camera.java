@@ -1,11 +1,17 @@
 package engine;
 
+
 import configuration.GameConfiguration;
 
 public class Camera 
 {
 	private int x;
 	private int y;
+	
+	private int rectX = 50;
+	private int rectY = 25;
+	private int rectW = 1700;
+	private int rectH = 800;
 	
 	private Speed speed;
 	
@@ -58,6 +64,7 @@ public class Camera
 	{
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);
+		//System.out.println("on move" + vx + " et " + vy);
 	}
 
 	public Speed getSpeed() 
@@ -75,5 +82,37 @@ public class Camera
 		x = 0;
 		y = 0;
 		speed.reset();
+	}
+
+	public int getRectX() {
+		return rectX;
+	}
+
+	public void setRectX(int rectX) {
+		this.rectX = rectX;
+	}
+
+	public int getRectY() {
+		return rectY;
+	}
+
+	public void setRectY(int rectY) {
+		this.rectY = rectY;
+	}
+
+	public int getRectW() {
+		return rectW;
+	}
+
+	public void setRectW(int rectW) {
+		this.rectW = rectW;
+	}
+
+	public int getRectH() {
+		return rectH;
+	}
+
+	public void setRectH(int rectH) {
+		this.rectH = rectH;
 	}
 }
