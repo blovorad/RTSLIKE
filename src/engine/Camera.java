@@ -8,10 +8,10 @@ public class Camera
 	private int x;
 	private int y;
 	
-	private int rectX = 50;
-	private int rectY = 25;
-	private int rectW = 1700;
-	private int rectH = 800;
+	private int rectX = (int)(10 * GameConfiguration.SCALE_X);
+	private int rectY = (int)(10 * GameConfiguration.SCALE_Y);
+	private int rectW = (int)(750 * GameConfiguration.SCALE_X);
+	private int rectH = (int)(550 * GameConfiguration.SCALE_Y);
 	
 	private Speed speed;
 	

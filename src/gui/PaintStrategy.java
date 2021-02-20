@@ -77,8 +77,8 @@ public class PaintStrategy
 		
 		//draw the rect of the minimap
 		graphics.setColor(new Color(168,104,38));
-		graphics.fillRect((int)(1625 * GameConfiguration.SCALE_X), 
-							(int)(775 * GameConfiguration.SCALE_Y), 
+		graphics.fillRect((int)(700 * GameConfiguration.SCALE_X), 
+							(int)(500 * GameConfiguration.SCALE_Y), 
 							GameConfiguration.COLUMN_COUNT + (int)(50 * GameConfiguration.SCALE_X), 
 							(GameConfiguration.LINE_COUNT + (int)(50 * GameConfiguration.SCALE_Y)));
 		
@@ -101,7 +101,7 @@ public class PaintStrategy
 				{
 					graphics.setColor(Color.blue);
 				}
-				graphics.fillRect(tile.getColumn() + (int)(1650 * GameConfiguration.SCALE_X), tile.getLine() + (int)(800 * GameConfiguration.SCALE_Y), 1, 1);
+				graphics.fillRect(tile.getColumn() + (int)(690 * GameConfiguration.SCALE_X), tile.getLine() + (int)(475 * GameConfiguration.SCALE_Y), 1, 1);
 			}
 		}
 		graphics.setColor(new Color(168,104,38));
@@ -111,9 +111,9 @@ public class PaintStrategy
 		//camera broken
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.white);
-		graphics.drawRect((int)(((1650 * GameConfiguration.SCALE_X) + (camera.getX() * GameConfiguration.SCALE_X) / GameConfiguration.TILE_SIZE)), 
-							(int)(((800 * GameConfiguration.SCALE_Y) + (camera.getY() * GameConfiguration.SCALE_Y) / GameConfiguration.TILE_SIZE)), 
-							(int)(((float)GameConfiguration.WINDOW_WIDTH / (float)GameConfiguration.TILE_SIZE) / GameConfiguration.SCALE_X), 
-							(int)(((float)GameConfiguration.WINDOW_HEIGHT / (float)GameConfiguration.TILE_SIZE) / GameConfiguration.SCALE_Y));	
+		graphics.drawRect((int)(((690 * GameConfiguration.SCALE_X) + (camera.getX() * GameConfiguration.SCALE_X) / GameConfiguration.TILE_SIZE)), 
+							(int)(((475 * GameConfiguration.SCALE_Y) + (camera.getY() * GameConfiguration.SCALE_Y) / GameConfiguration.TILE_SIZE)), 
+							(int)(((float)GameConfiguration.WINDOW_WIDTH / (float)GameConfiguration.TILE_SIZE) * GameConfiguration.SCALE_X), 
+							(int)(((float)GameConfiguration.WINDOW_HEIGHT / (float)GameConfiguration.TILE_SIZE) * GameConfiguration.SCALE_Y));	
 	}
 }

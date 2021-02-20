@@ -194,15 +194,10 @@ public class MainGui extends JFrame implements Runnable
 		public void mouseMoved(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
-			System.out.println("mouse : " + x + "," + y);
-			if(x < camera.getRectX() || x > camera.getRectX() + camera.getRectW())
-			{
-				
-			}
-			if(y < camera.getRectY() || y > camera.getRectY() + camera.getRectH())
+			if(x < camera.getRectX() || x > camera.getRectX() + camera.getRectW() || y < camera.getRectY() || y > camera.getRectY() + camera.getRectH())
 			{
 				double angle = Math.atan2(y - GameConfiguration.WINDOW_HEIGHT / 2, x - GameConfiguration.WINDOW_WIDTH / 2);
-				camera.move((int)(5 * Math.cos(angle)), (int)(5 * Math.sin(angle)));
+				camera.move((int)(20 * Math.cos(angle)), (int)(20 * Math.sin(angle)));
 			}
 			else
 			{
