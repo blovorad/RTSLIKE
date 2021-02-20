@@ -490,7 +490,7 @@ public class GameDisplay extends JPanel
 			{
 				EntitiesManager entitiesManager = faction.getEntities();
 				List<Building> buildings = entitiesManager.getBuildings();
-				List<Worker> gatherers = entitiesManager.getGatherers();
+				List<Worker> workers = entitiesManager.getWorkers();
 				List<Fighter> fighters = entitiesManager.getFighters();
 				List<Ressource> ressources = entitiesManager.getRessources();
 				
@@ -499,9 +499,9 @@ public class GameDisplay extends JPanel
 					this.paintStrategy.paint(building, g, camera);
 				}
 				
-				for(Worker gatherer: gatherers)
+				for(Worker worker: workers)
 				{
-					this.paintStrategy.paint(gatherer, g, camera);
+					this.paintStrategy.paint(worker, g, camera);
 				}
 				
 				for(Fighter fighter: fighters)

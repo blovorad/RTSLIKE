@@ -22,12 +22,12 @@ public class PaintStrategy
 		graphics.fillRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY(), tileSize, tileSize);
 	}
 	
-	public void paint(Worker gatherer, Graphics graphics, Camera camera)
+	public void paint(Worker worker, Graphics graphics, Camera camera)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
 		graphics.setColor(Color.green);
-		graphics.fillRect(gatherer.getPosition().getX() - camera.getX(), gatherer.getPosition().getY(), tileSize, tileSize);
+		graphics.fillRect(worker.getPosition().getX() - camera.getX(), worker.getPosition().getY(), tileSize, tileSize);
 	}
 	
 	public void paint(Fighter fighter, Graphics graphics, Camera camera)

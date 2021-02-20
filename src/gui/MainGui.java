@@ -156,7 +156,14 @@ public class MainGui extends JFrame implements Runnable
 		@Override
 		public void mouseReleased(MouseEvent e) 
 		{
-			
+			if(e.getButton() == 1)
+			{
+				System.out.println("REALISED BUTTON 1");
+			}
+			else if(e.getButton() == 3)
+			{
+				System.out.println("REALISED BUTTON 2");
+			}
 		}
 
 		@Override

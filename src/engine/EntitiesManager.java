@@ -7,13 +7,16 @@ public class EntitiesManager
 {
 	private Faction faction;
 	private List<Fighter> fighters;
+	private List<Fighter> removeFighters = new ArrayList<Fighter>();
 	
-	private List<Worker> gatherers;
+	private List<Worker> workers;
+	private List<Worker> removeWorkers = new ArrayList<Worker>();
 	
 	private List<Building> buildings;
-	private List<Building> removeBuilding = new ArrayList<Building>();
+	private List<Building> removeBuildings = new ArrayList<Building>();
 	
 	private List<Ressource> ressources;
+	private List<Ressource> removeRessources = new ArrayList<Ressource>();
 	
 	private List<Unit> selectedUnits;
 	
@@ -21,7 +24,7 @@ public class EntitiesManager
 	{
 		this.setFaction(faction);
 		this.fighters = new ArrayList<Fighter>();
-		this.gatherers = new ArrayList<Worker>();
+		this.workers = new ArrayList<Worker>();
 		this.buildings = new ArrayList<Building>();
 		this.ressources = new ArrayList<Ressource>();
 		this.setSelectedUnits(new ArrayList<Unit>());
@@ -34,18 +37,26 @@ public class EntitiesManager
 			fighter.update();
 			if(fighter.getHp() < 1)
 			{
-				fighters.remove(fighter);
+				removeFighters.add(fighter);
 			}
 		}
 		
-		for(Worker gatherer : gatherers) 
+		//removing fighter
+		fighters.removeAll(removeFighters);
+		removeFighters.clear();
+		
+		for(Worker worker : workers) 
 		{
-			gatherer.update();
-			if(gatherer.getHp() < 1)
+			worker.update();
+			if(worker.getHp() < 1)
 			{
-				gatherers.remove(gatherer);
+				removeWorkers.add(worker);
 			}
 		}
+		
+		//removing worker
+		workers.removeAll(removeWorkers);
+		removeWorkers.clear();
 		
 		for(Building building : buildings) 
 		{
@@ -60,22 +71,32 @@ public class EntitiesManager
 			if(building.getHp() < 1)
 			{
 				//System.out.println("We removing a building cause : " + building.getHp());
-				removeBuilding.add(building);
+				removeBuildings.add(building);
 			}
 		}
 		
 		//removing building
-		buildings.removeAll(removeBuilding);
-		removeBuilding.clear();
+		buildings.removeAll(removeBuildings);
+		removeBuildings.clear();
 		
 		for(Ressource ressource : ressources) 
 		{
 			ressource.update();
 			if(ressource.getHp() < 1)
 			{
-				ressources.remove(ressource);
+				removeRessources.add(ressource);
 			}
 		}
+		
+		//removing ressource
+		ressources.removeAll(removeRessources);
+		removeRessources.clear();
+		
+	}
+	
+	public void clearSelectedUnits()
+	{
+		selectedUnits.clear();
 	}
 	
 	public void addBuilding(Building building)
@@ -91,12 +112,12 @@ public class EntitiesManager
 		this.fighters = fighters;
 	}
 
-	public List<Worker> getGatherers() {
-		return gatherers;
+	public List<Worker> getWorkers() {
+		return workers;
 	}
 
-	public void setGatherers(List<Worker> gatherers) {
-		this.gatherers = gatherers;
+	public void setWorkers(List<Worker> gatherers) {
+		this.workers = gatherers;
 	}
 
 	public List<Building> getBuildings() {
