@@ -34,7 +34,7 @@ public class GameDisplay extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private PaintStrategy paintStrategy = new PaintStrategy();
+	private PaintStrategy paintStrategy = new PaintStrategy(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
 	
 	private Map map;
 	
