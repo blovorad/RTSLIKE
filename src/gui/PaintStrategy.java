@@ -34,24 +34,62 @@ public class PaintStrategy
 	{
 		if(width == 1920 && height == 1080)
 		{
-			System.out.println("on construit dans : " + width + "x" + height);
-			rectXOfMinimap = (int)(1625 * GameConfiguration.SCALE_X);
-			rectYOfMinimap = (int)(775 * GameConfiguration.SCALE_Y);
-			rectWOfMinimap = 1920 - 1625;
-			rectHOfMinimap = 1080 - 775;
+			rectXOfMinimap = 1625;
+			rectYOfMinimap = 775;
+			rectWOfMinimap = width - 1625;
+			rectHOfMinimap = height - 775;
 			
-			System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
-			
-			firstGridXOfMap = (int)(1650 * GameConfiguration.SCALE_X);
-			firstGridYOfMap = (int)(800 * GameConfiguration.SCALE_Y);
+			firstGridXOfMap = 1650;
+			firstGridYOfMap = 800;
 			gridMapWidth = 2;
 			gridMapHeight = 2;
 			
-			camX = (int)(1650 * GameConfiguration.SCALE_X);
-			camY = (int)(800 * GameConfiguration.SCALE_Y);
-			camW = (int)(((float)width / (float)GameConfiguration.TILE_SIZE) * GameConfiguration.SCALE_Y * gridMapWidth);
-			camH = (int)(((float)height / (float)GameConfiguration.TILE_SIZE) * GameConfiguration.SCALE_Y * gridMapHeight);
+			camX = 1650;
+			camY = 800;
+			camW = (width / GameConfiguration.TILE_SIZE) * gridMapWidth + 39;
+			camH = (height / GameConfiguration.TILE_SIZE) * gridMapHeight + 68;
 		}
+		else if(width == 1366 && height == 768)
+		{
+			rectXOfMinimap = 1100;
+			rectYOfMinimap = 525;
+			rectWOfMinimap = width - 1100;
+			rectHOfMinimap = height - 525;
+			
+			System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
+			
+			firstGridXOfMap = 1125;
+			firstGridYOfMap = 550;
+			gridMapWidth = 2;
+			gridMapHeight = 2;
+			
+			camX = 1125;
+			camY = 550;
+			camW = (width / GameConfiguration.TILE_SIZE) * gridMapWidth + 58;
+			camH = (height / GameConfiguration.TILE_SIZE) * gridMapHeight + 76;
+		}
+		else if(width == 1280 && height == 720)
+		{
+			rectXOfMinimap = 1000;
+			rectYOfMinimap = 500;
+			rectWOfMinimap = width - 1000;
+			rectHOfMinimap = height - 500;
+			
+			System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
+			
+			firstGridXOfMap = 1025;
+			firstGridYOfMap = 515;
+			gridMapWidth = 2;
+			gridMapHeight = 2;
+			
+			camX = 1025;
+			camY = 515;
+			camW = (width / GameConfiguration.TILE_SIZE) * gridMapWidth + 58;
+			camH = (height / GameConfiguration.TILE_SIZE) * gridMapHeight + 78;
+		}
+		System.out.println("on construit dans : " + width + "x" + height);
+		System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
+		System.out.println("camera dimension : " + camW + "," + camH);
 	}
 	
 	public void paint(Building building, Graphics graphics, Camera camera)
@@ -146,10 +184,8 @@ public class PaintStrategy
 		//camera broken
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.white);
-		graphics.drawRect((int)((camX + (camera.getX() * GameConfiguration.SCALE_X) / GameConfiguration.TILE_SIZE)), 
-							(int)((camY + (camera.getY() * GameConfiguration.SCALE_Y) / GameConfiguration.TILE_SIZE)), 
-							camW, camH);	
+		graphics.drawRect(camX + camera.getX() / GameConfiguration.TILE_SIZE, camY + camera.getY() / GameConfiguration.TILE_SIZE, camW, camH);	
 		
-		//graphics.drawOval(camera.getCircleX(), camera.getCircleY(), camera.getCircleRayon(), camera.getCircleRayon());
+		graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
 	}
 }

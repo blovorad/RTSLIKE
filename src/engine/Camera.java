@@ -8,10 +8,10 @@ public class Camera
 	private int x;
 	private int y;
 	
-	/*private int circleX;
-
-	private int circleY;
-	private int circleRayon;*/
+	private int rectX;
+	private int rectY;
+	private int rectW;
+	private int rectH;
 	
 	private Speed speed;
 	
@@ -21,16 +21,28 @@ public class Camera
 		this.y = 0;
 		this.speed = new Speed();
 		
-		/*if(width == 800 && height == 600)
+		if(width == 1920 && height == 1080)
 		{
-			circleRayon = 400;
+			rectX = 10;
+			rectY = 10;
+			rectW = 1890;
+			rectH = 1000;
 		}
-		else if(width == 1920 && height == 1080)
+		else if(width == 1366 && height == 768)
 		{
-			circleX = 30;
-			circleY = 30;
-			circleRayon = 1500;
-		}*/
+			rectX = 10;
+			rectY = 10;
+			rectW = 1336;
+			rectH = 740;
+		}
+		else if(width == 1280 && height == 720)
+		{
+			rectX = 10;
+			rectY = 10;
+			rectW = 1250;
+			rectH = 700;
+		}
+
 	}
 	
 	public int getX()
@@ -94,28 +106,36 @@ public class Camera
 		y = 0;
 		speed.reset();
 	}
-	
-	/*public int getCircleX() {
-		return circleX;
+
+	public int getRectX() {
+		return rectX;
 	}
 
-	public void setCircleX(int circleX) {
-		this.circleX = circleX;
+	public void setRectX(int rectX) {
+		this.rectX = rectX;
 	}
 
-	public int getCircleY() {
-		return circleY;
+	public int getRectY() {
+		return rectY;
 	}
 
-	public void setCircleY(int circleY) {
-		this.circleY = circleY;
+	public void setRectY(int rectY) {
+		this.rectY = rectY;
 	}
 
-	public int getCircleRayon() {
-		return circleRayon;
+	public int getRectW() {
+		return rectW;
 	}
 
-	public void setCircleRayon(int circleRayon) {
-		this.circleRayon = circleRayon;
-	}*/
+	public void setRectW(int rectW) {
+		this.rectW = rectW;
+	}
+
+	public int getRectH() {
+		return rectH;
+	}
+
+	public void setRectH(int rectH) {
+		this.rectH = rectH;
+	}
 }
