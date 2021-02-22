@@ -7,7 +7,7 @@ package engine;
  *
  */
 
-public class Fighter 
+public class Fighter extends Unit
 {
 	private int state;
 	
