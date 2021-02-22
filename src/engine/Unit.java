@@ -24,20 +24,7 @@ public class Unit extends Entity
 	
 	public void move()
 	{
-		while()
-		{
-			if()
-			{
-				
-			}
-			else if()
-			{
-				
-			}
-			else if()
-			{
-			}
-		}
+		
 		
 	}
 	
