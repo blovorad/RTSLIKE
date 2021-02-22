@@ -19,6 +19,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 
+import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Building;
 import engine.Camera;
@@ -26,9 +27,13 @@ import engine.EntitiesManager;
 import engine.Faction;
 import engine.FactionManager;
 import engine.Fighter;
+import engine.Forge;
 import engine.Worker;
 import engine.Map;
+import engine.Mouse;
+import engine.Position;
 import engine.Ressource;
+import engine.Stable;
 
 public class GameDisplay extends JPanel 
 {
@@ -39,6 +44,8 @@ public class GameDisplay extends JPanel
 	private Map map;
 	
 	private Camera camera;
+	
+	private Mouse mouse;
 
 	
 	//use to give the current selected faction when you launch game
@@ -109,10 +116,11 @@ public class GameDisplay extends JPanel
 	
 	private JPanel descriptionPanel;
 
-	public GameDisplay(Camera camera, FactionManager manager)
+	public GameDisplay(Camera camera, FactionManager manager, Mouse mouse)
 	{
 		this.camera = camera;
 		this.manager = manager;
+		this.mouse = mouse;
 		this.state = MAINMENU;
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
@@ -338,9 +346,19 @@ public class GameDisplay extends JPanel
 	private void setDescriptionPanelForConstruction()
 	{
 		descriptionPanel.removeAll();
-		descriptionPanel.setLayout(new GridLayout(1, 1));
+		descriptionPanel.setLayout(new GridLayout(4, 2));
 		
-		descriptionPanel.add(new JLabel("ON VEUT CONSTRUIRE"));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Forge", EntityConfiguration.FORGE)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACKS)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Ecurie", EntityConfiguration.STABLE)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STOCKAGE)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Archerie", EntityConfiguration.ARCHERY)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER)));
+		
+		
+		//descriptionPanel.add(new JLabel("ON VEUT CONSTRUIRE"));
 		descriptionPanel.validate();
 	}
 	
@@ -494,6 +512,11 @@ public class GameDisplay extends JPanel
 				List<Fighter> fighters = entitiesManager.getFighters();
 				List<Ressource> ressources = entitiesManager.getRessources();
 				
+				if(mouse.getId() > -1)
+				{
+					this.paintStrategy.paint(mouse.getBuilding(), g, camera);
+				}
+				
 				for(Building building: buildings)
 				{
 					this.paintStrategy.paint(building, g, camera);
@@ -548,6 +571,31 @@ public class GameDisplay extends JPanel
 		}
 	}
 	
+	private class ConstructBuilding extends AbstractAction
+	{
+		private static final long serialVersionUID = 1L;
+		
+		private int id;
+		
+		public ConstructBuilding(String name, int id)
+		{
+			super(name);
+			this.setId(id);
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			mouse.setId(this.getId());
+			mouse.setBuilding(new Stable(new Position(mouse.getX(), mouse.getY())));
+			
+		}
+		public int getId() {
+			return id;
+		}
+		public void setId(int id) {
+			this.id = id;
+		}
+	}
+	
 	private class PrintConstruction extends AbstractAction
 	{
 		private static final long serialVersionUID = 1L;
@@ -560,7 +608,6 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
-			System.out.println("ici");
 			setDescriptionPanelForConstruction();
 		}
 	}
@@ -978,6 +1025,7 @@ public class GameDisplay extends JPanel
 			oldState = state;
 			state = MAINMENU;
 			manageState();
+			mouse.reset();
 		}
 	}
 	

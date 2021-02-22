@@ -50,8 +50,9 @@ public class Faction
 		entities.update();
 	}
 	
-	public void createBuilding(Building building) 
+	public void createBuilding(ForBuilding building) 
 	{
+		Building b = new Stable();
 		this.entities.addBuilding(building);
 		nbBuilding++;
 	}

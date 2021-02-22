@@ -9,6 +9,7 @@ import engine.Camera;
 import engine.Fighter;
 import engine.Worker;
 import engine.Map;
+import engine.Mouse;
 import engine.Ressource;
 import engine.Tile;
 
@@ -95,8 +96,8 @@ public class PaintStrategy
 	public void paint(Building building, Graphics graphics, Camera camera)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
-		
-		graphics.setColor(Color.blue);
+		//System.out.println("on paint sur : " + (building.getPosition().getX() - camera.getX()) + "," + (building.getPosition().getY() - camera.getX()));
+		graphics.setColor(Color.green);
 		graphics.fillRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	

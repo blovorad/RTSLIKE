@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import configuration.GameConfiguration;
 import engine.Camera;
 import engine.FactionManager;
+import engine.Mouse;
+import engine.Position;
 
 public class MainGui extends JFrame implements Runnable
 {
@@ -27,6 +29,8 @@ public class MainGui extends JFrame implements Runnable
 	private Camera camera;
 	
 	private FactionManager manager;
+	
+	private Mouse mouse;
 
 	public MainGui()
 	{
@@ -35,9 +39,10 @@ public class MainGui extends JFrame implements Runnable
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		
+		mouse = new Mouse();
 		manager = new FactionManager();
 		camera = new Camera(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
-		dashboard = new GameDisplay(camera, manager);
+		dashboard = new GameDisplay(camera, manager, mouse);
 		
 		MouseControls mouseControls = new MouseControls();
 		MouseMotion mouseMotion = new MouseMotion();
@@ -146,13 +151,24 @@ public class MainGui extends JFrame implements Runnable
 		@Override
 		public void mouseClicked(MouseEvent e) 
 		{
-			
+		
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) 
 		{
-			
+			if(e.getButton() == 1)
+			{
+				if(mouse.getId() > -1)
+				{
+					mouse.getBuilding().setPosition(new Position(mouse.getX(), mouse.getY()));
+					System.out.println("mouse " + mouse.getX() + "," + mouse.getY());
+					manager.getFactions().get(0).createBuilding(mouse.getBuilding());
+					System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
+					mouse.setId(-1);
+					mouse.setBuilding(null);
+				}
+			}
 		}
 
 		@Override
@@ -160,7 +176,13 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				System.out.println("REALISED BUTTON 1");
+				/*if(mouse.getId() > -1)
+				{
+					manager.getFactions().get(0).createBuilding(mouse.getBuilding());
+					System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
+					mouse.setId(-1);
+					mouse.setBuilding(null);
+				}*/
 			}
 			else if(e.getButton() == 3)
 			{
@@ -193,6 +215,8 @@ public class MainGui extends JFrame implements Runnable
 		public void mouseMoved(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
+			mouse.setX(x - camera.getX());
+			mouse.setY(y - camera.getY());
 			if(x < camera.getRectX() || x > camera.getRectX() + camera.getRectW() || y < camera.getRectY() || y > camera.getRectY() + camera.getRectH())
 			{
 				double angle = Math.atan2(y - GameConfiguration.WINDOW_HEIGHT / 2, x - GameConfiguration.WINDOW_WIDTH / 2);
