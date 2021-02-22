@@ -14,13 +14,16 @@ public class Unit extends Entity
 	private int damage;
 	private int range;
 	private int armor;
-	private int id;
 	
 	private Speed speed;
 	
 	public Unit()
 	{
 		super();
+	}
+	
+	public void déplacer()
+	{
 	}
 	
 	public int getDamage() 
@@ -71,16 +74,6 @@ public class Unit extends Entity
 	public void setCurrentAction(int currentAction) 
 	{
 		this.currentAction = currentAction;
-	}
-	
-	public int getId() 
-	{
-		return id;
-	}
-
-	public void setId(int id) 
-	{
-		this.id = id;
 	}
 
 	public Speed getSpeed() 
