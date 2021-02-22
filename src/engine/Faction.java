@@ -2,6 +2,7 @@ package engine;
 
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
+import factionConfiguration.ForBuilding;
 import factionConfiguration.Gaia;
 import factionConfiguration.Race;
 import factionConfiguration.Royaume;
