@@ -2,6 +2,7 @@ package engine;
 
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
+import factionConfiguration.ForBuilding;
 import factionConfiguration.Gaia;
 import factionConfiguration.Race;
 import factionConfiguration.Royaume;
@@ -50,8 +51,9 @@ public class Faction
 		entities.update();
 	}
 	
-	public void createBuilding(Building building) 
+	public void createBuilding(ForBuilding building) 
 	{
+		Building b = new Stable();
 		this.entities.addBuilding(building);
 		nbBuilding++;
 	}
