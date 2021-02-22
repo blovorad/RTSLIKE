@@ -18,9 +18,15 @@ public class Map
 		{
 			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) 
 			{
+				tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 0);
+				
 				if(id == 1)
 				{
-					if(lineIndex % 2 == 0)
+					if(columnIndex > 90)
+					{
+						tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 1);
+					}
+					else if(lineIndex % 2 == 0)
 					{
 						tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 1);
 					}

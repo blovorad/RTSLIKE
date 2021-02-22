@@ -2,6 +2,7 @@ package engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class FactionManager 
 {
@@ -24,6 +25,9 @@ public class FactionManager
 	
 	public void addFaction(Faction faction)
 	{
+		Random rand = new Random();
+		Building b = new Stable(new Position(rand.nextInt(400), rand.nextInt(400)));
+		faction.createBuilding(b);
 		factions.add(faction);
 	}
 	

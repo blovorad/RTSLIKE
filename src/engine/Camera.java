@@ -1,5 +1,6 @@
 package engine;
 
+
 import configuration.GameConfiguration;
 
 public class Camera 
@@ -7,22 +8,29 @@ public class Camera
 	private int x;
 	private int y;
 	
-	/*private int rectX;
-	private int rectY;
-	private int rectW;
-	private int rectH;*/
+	/*private int circleX;
+
+	private int circleY;
+	private int circleRayon;*/
 	
 	private Speed speed;
 	
-	public Camera()
+	public Camera(int width, int height)
 	{
 		this.x = 0;
 		this.y = 0;
-		/*this.rectX =100;
-		this.rectY = 100;
-		this.rectW = 1800;
-		this.rectH = 900;*/
 		this.speed = new Speed();
+		
+		/*if(width == 800 && height == 600)
+		{
+			circleRayon = 400;
+		}
+		else if(width == 1920 && height == 1080)
+		{
+			circleX = 30;
+			circleY = 30;
+			circleRayon = 1500;
+		}*/
 	}
 	
 	public int getX()
@@ -67,47 +75,8 @@ public class Camera
 	{
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);
+		//System.out.println("on move" + vx + " et " + vy);
 	}
-
-	/*public int getRectX() 
-	{
-		return rectX;
-	}
-
-	public void setRectX(int rectX) 
-	{
-		this.rectX = rectX;
-	}
-
-	public int getRectY() 
-	{
-		return rectY;
-	}
-
-	public void setRectY(int rectY) 
-	{
-		this.rectY = rectY;
-	}
-
-	public int getRectW() 
-	{
-		return rectW;
-	}
-
-	public void setRectW(int rectW) 
-	{
-		this.rectW = rectW;
-	}
-
-	public int getRectH() 
-	{
-		return rectH;
-	}
-
-	public void setRectH(int rectH) 
-	{
-		this.rectH = rectH;
-	}*/
 
 	public Speed getSpeed() 
 	{
@@ -125,4 +94,28 @@ public class Camera
 		y = 0;
 		speed.reset();
 	}
+	
+	/*public int getCircleX() {
+		return circleX;
+	}
+
+	public void setCircleX(int circleX) {
+		this.circleX = circleX;
+	}
+
+	public int getCircleY() {
+		return circleY;
+	}
+
+	public void setCircleY(int circleY) {
+		this.circleY = circleY;
+	}
+
+	public int getCircleRayon() {
+		return circleRayon;
+	}
+
+	public void setCircleRayon(int circleRayon) {
+		this.circleRayon = circleRayon;
+	}*/
 }

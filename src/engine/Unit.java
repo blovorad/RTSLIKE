@@ -88,4 +88,9 @@ public class Unit extends Entity
 		this.speed = speed;
 	}
 	
+
+	void update()
+	{
+		
+	}
 }

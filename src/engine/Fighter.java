@@ -25,4 +25,9 @@ public class Fighter extends Unit
 	{
 		this.state = state;
 	}
+	
+	public void update()
+	{
+		
+	}
 }

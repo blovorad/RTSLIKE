@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
@@ -19,20 +20,26 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 
 import configuration.GameConfiguration;
+import engine.Building;
 import engine.Camera;
+import engine.EntitiesManager;
 import engine.Faction;
 import engine.FactionManager;
+import engine.Fighter;
+import engine.Worker;
 import engine.Map;
+import engine.Ressource;
 
 public class GameDisplay extends JPanel 
 {
 	private static final long serialVersionUID = 1L;
 	
-	private PaintStrategy paintStrategy = new PaintStrategy();
+	private PaintStrategy paintStrategy = new PaintStrategy(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
 	
 	private Map map;
 	
 	private Camera camera;
+
 	
 	//use to give the current selected faction when you launch game
 	private FactionManager manager;
@@ -71,7 +78,7 @@ public class GameDisplay extends JPanel
 	
 	/**
 	 * 
-	 * Constant for the management of Layaout of optionPanel.
+	 * Constant for the management of Layout of optionPanel.
 	 * 
 	 */
 	private final int OPTIONSMENUMAXINDEX = 11;
@@ -84,18 +91,23 @@ public class GameDisplay extends JPanel
 	//for pauseMenuPanel
 	/**
 	 * 
-	 * constant for the management of Layaout of pauseMenuPanel.
+	 * constant for the management of Layout of pauseMenuPanel.
 	 */
 	private final int PAUSEMENUMAXINDEX = 11;
 	private final int BACKTOGAMEINDEX = 3;
 	private final int OPTIONSINDEX = 6;
 	private final int LEAVEINDEX = 9;
 	
+	//button
+	private JButton constructionButton = new JButton(new PrintConstruction("construction"));
+
 	//panel of game
 	private JPanel mainMenuPanel;
 	private JPanel gamePanel;
 	private JPanel optionPanel;
 	private JPanel pauseMenuPanel;
+	
+	private JPanel descriptionPanel;
 
 	public GameDisplay(Camera camera, FactionManager manager)
 	{
@@ -105,8 +117,8 @@ public class GameDisplay extends JPanel
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
 		
-		gamePanel = createGamePanel();
-		gamePanel.setVisible(false);
+		/*gamePanel = createGamePanel();
+		gamePanel.setVisible(false);*/
 		
 		optionPanel = createOptionPanel();
 		optionPanel.setVisible(false);
@@ -311,34 +323,71 @@ public class GameDisplay extends JPanel
 	
 	private JPanel createDescriptionPanel()
 	{
-		JPanel panel = new JPanel(new GridLayout(2, 2));
+		descriptionPanel = new JPanel(new GridLayout(2, 2));
 		
-		panel.add(new JButton(new PrintConstruction("construction")));
-		panel.add(new JLabel("NOM DE L'UNITER"));
-		panel.add(new JLabel("SON COMPORTEMENT"));
-		panel.add(new JLabel("LES STATS"));
+		setDescriptionPanelStandard();
 		
-		return panel;
+		return descriptionPanel;
+	}
+	
+	private void setDescriptionPanelForWorker()
+	{
+		
+	}
+	
+	private void setDescriptionPanelForConstruction()
+	{
+		descriptionPanel.removeAll();
+		descriptionPanel.setLayout(new GridLayout(1, 1));
+		
+		descriptionPanel.add(new JLabel("ON VEUT CONSTRUIRE"));
+		descriptionPanel.validate();
+	}
+	
+	private void setDescriptionPanelForUnit()
+	{
+		descriptionPanel.setLayout(new GridLayout(1, 3));
+		
+		descriptionPanel.add(new JLabel("ETATS"));
+		descriptionPanel.add(new JLabel("DESCRIPTION ET NOM UNITER"));
+		descriptionPanel.add(new JLabel("LES STATS"));
+	}
+	
+	private void setDescriptionPanelForBuilding()
+	{
+		
+	}
+	
+	private void setDescriptionPanelStandard()
+	{
+		descriptionPanel.setLayout(new GridLayout(2, 2));
+		
+		descriptionPanel.add(constructionButton);
+		descriptionPanel.add(new JLabel("NOM DE L'UNITER"));
+		descriptionPanel.add(new JLabel("SON COMPORTEMENT"));
+		descriptionPanel.add(new JLabel("LES STATS"));
 	}
 	
 	private JPanel createRessourceInfo()
 	{	
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 0));
 		
-		JLabel  gold =  new JLabel("ARGENT:");
+		JLabel  gold =  new JLabel("ARGENT:" + manager.getFactions().get(0).getMoney());
 		gold.setForeground(Color.WHITE);
 		JLabel  time =  new JLabel("TEMPS:");
 		time.setForeground(Color.WHITE);
-		JLabel  population =  new JLabel("POPULATION:");
+		JLabel  population =  new JLabel("POPULATION:" + manager.getFactions().get(0).getPopulation());
 		population.setForeground(Color.WHITE);
-		JLabel  age =  new JLabel("AGE:");
+		JLabel  age =  new JLabel("AGE:" + manager.getFactions().get(0).getAge());
 		age.setForeground(Color.WHITE);
-	
+		JLabel race = new JLabel(" " + manager.getFactions().get(0).getRace().getName());
+		race.setForeground(Color.WHITE);
 		
 		panel.add(gold);
 		panel.add(time);
 		panel.add(population);
 		panel.add(age);
+		panel.add(race);
 		
 		panel.setOpaque(false);
 		return panel;
@@ -432,13 +481,52 @@ public class GameDisplay extends JPanel
 	{
 		super.paintComponent(g);
 		
-		if(state == 0)
-		{
-			this.paintStrategy.paint(g);
-		}
-		else if(state == 1)
+		if(state == INGAME)
 		{
 			this.paintStrategy.paint(this.map, g, this.camera);
+			
+			List<Faction> factions = manager.getFactions();
+			for(Faction faction: factions)
+			{
+				EntitiesManager entitiesManager = faction.getEntities();
+				List<Building> buildings = entitiesManager.getBuildings();
+				List<Worker> workers = entitiesManager.getWorkers();
+				List<Fighter> fighters = entitiesManager.getFighters();
+				List<Ressource> ressources = entitiesManager.getRessources();
+				
+				for(Building building: buildings)
+				{
+					this.paintStrategy.paint(building, g, camera);
+				}
+				
+				for(Worker worker: workers)
+				{
+					this.paintStrategy.paint(worker, g, camera);
+				}
+				
+				for(Fighter fighter: fighters)
+				{
+					this.paintStrategy.paint(fighter, g, camera);
+				}
+				
+				for(Ressource ressource: ressources)
+				{
+					this.paintStrategy.paint(ressource, g, camera);
+				}
+				
+			}
+		}
+		else if(state == MAINMENU)
+		{
+			//this.paintStrategy.paint(g);
+		}
+		else if(state == OPTION)
+		{
+			
+		}
+		else if(state == PAUSE)
+		{
+			
 		}
 	}
 	
@@ -472,7 +560,8 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
-			
+			System.out.println("ici");
+			setDescriptionPanelForConstruction();
 		}
 	}
 	
@@ -603,6 +692,10 @@ public class GameDisplay extends JPanel
 			}
 			oldState = state;
 			state = INGAME;
+			
+			gamePanel = createGamePanel();
+			gamePanel.setVisible(false);
+			
 			manageState();
 		}
 	}
@@ -900,9 +993,7 @@ public class GameDisplay extends JPanel
 				}
 				else if(oldState == PAUSE)
 				{
-					gamePanel.setVisible(false);
 					pauseMenuPanel.setVisible(false);
-					getMainPanel().remove(gamePanel);
 					getMainPanel().remove(pauseMenuPanel);
 					manager.cleanFactionManager();
 					camera.reset();
