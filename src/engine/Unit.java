@@ -22,8 +22,23 @@ public class Unit extends Entity
 		super();
 	}
 	
-	public void déplacer()
+	public void move()
 	{
+		while()
+		{
+			if()
+			{
+				
+			}
+			else if()
+			{
+				
+			}
+			else if()
+			{
+			}
+		}
+		
 	}
 	
 	public int getDamage() 
