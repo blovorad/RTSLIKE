@@ -8,7 +8,7 @@ public class ForUnit extends Patron
 	private int armor;
 	private int maxSpeed;
 	
-	public ForUnit(int attackRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild)
+	public ForUnit(int attackRange, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild)
 	{
 		this.setAttackRange(range);
 		this.range = range;
@@ -18,6 +18,7 @@ public class ForUnit extends Patron
 		this.setHp(hp);
 		this.setAge(age);
 		this.setTimeToBuild(timeToBuild);
+		this.setSightRange(sightRange);
 	}
 
 	public int getRange() 
