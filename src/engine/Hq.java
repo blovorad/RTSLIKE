@@ -6,8 +6,8 @@ public class Hq extends Building{
 
 	private ForUnit worker;
 	
-	public Hq() {
-		
+	public Hq(Position position) {
+		super(position);
 	}
 	
 	public void update()

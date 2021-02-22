@@ -2,8 +2,8 @@ package engine;
 
 public class RessourcesStorage extends Building{
 
-	public RessourcesStorage() {
-		
+	public RessourcesStorage(Position position) {
+		super(position);
 	}
 
 	@Override

@@ -161,12 +161,10 @@ public class MainGui extends JFrame implements Runnable
 			{
 				if(mouse.getId() > -1)
 				{
-					mouse.getBuilding().setPosition(new Position(mouse.getX(), mouse.getY()));
-					System.out.println("mouse " + mouse.getX() + "," + mouse.getY());
-					manager.getFactions().get(0).createBuilding(mouse.getBuilding());
-					System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
+					//System.out.println("mouse " + mouse.getX() + "," + mouse.getY());
+					manager.getFactions().get(0).createBuilding(mouse.getId(), new Position(e.getX() - camera.getX(), e.getY() - camera.getY()));
+					//System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
 					mouse.setId(-1);
-					mouse.setBuilding(null);
 				}
 			}
 		}
@@ -215,8 +213,7 @@ public class MainGui extends JFrame implements Runnable
 		public void mouseMoved(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
-			mouse.setX(x - camera.getX());
-			mouse.setY(y - camera.getY());
+
 			if(x < camera.getRectX() || x > camera.getRectX() + camera.getRectW() || y < camera.getRectY() || y > camera.getRectY() + camera.getRectH())
 			{
 				double angle = Math.atan2(y - GameConfiguration.WINDOW_HEIGHT / 2, x - GameConfiguration.WINDOW_WIDTH / 2);

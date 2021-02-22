@@ -6,8 +6,8 @@ public class Castle extends Building{
 
 	private ForUnit special;
 	
-	public Castle() {
-		
+	public Castle(Position position) {
+		super(position);
 	}
 
 	@Override

@@ -15,15 +15,16 @@ public abstract class Building extends Entity{
 	private int attakRange;
 	private int damage;
 	
-	public Building() {
-		
+	public Building(Position position) {
+		this.setPosition(position);
+		this.setHp(100);
 	}
 	
 	public void update() {
-		Random rand = new Random();
+		/*Random rand = new Random();
 		int lessHp = rand.nextInt(5);
 		this.setHp(this.getHp() - lessHp);
-		//System.out.println("we remove : " + lessHp);
+		System.out.println("we remove : " + lessHp);*/
 		if(canAttak == true) {
 			if(this.getTarget() != null) {
 				if(isInRange(attakRange, this.getTarget())) {

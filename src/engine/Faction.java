@@ -1,5 +1,6 @@
 package engine;
 
+import configuration.EntityConfiguration;
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
 import factionConfiguration.ForBuilding;
@@ -51,11 +52,50 @@ public class Faction
 		entities.update();
 	}
 	
-	public void createBuilding(ForBuilding building) 
+	public void createBuilding(int id, Position position) 
 	{
-		Building b = new Stable();
-		this.entities.addBuilding(building);
+		Building b = null;
+		
+		if(id == EntityConfiguration.FORGE)
+		{
+			b = new Forge(position);
+		}
+		else if(id == EntityConfiguration.STABLE)
+		{
+			b = new Stable(position);
+		}
+		else if(id == EntityConfiguration.BARRACK)
+		{
+			b = new Barrack(position);
+		}
+		else if(id == EntityConfiguration.ARCHERY)
+		{
+			b = new Archery(position);
+		}
+		else if(id == EntityConfiguration.HQ)
+		{
+			b = new Hq(position);
+		}
+		else if(id == EntityConfiguration.CASTLE)
+		{
+			b = new Castle(position);
+		}
+		else if(id == EntityConfiguration.STORAGE)
+		{
+			b = new RessourcesStorage(position);
+		}
+		else if(id == EntityConfiguration.TOWER)
+		{
+			b = new Tower(position);
+		}
+		else
+		{
+			System.out.println("invalide ID");
+		}
+		
+		this.entities.addBuilding(b);
 		nbBuilding++;
+		System.out.println("ajoutation building");
 	}
 
 	public int getAge() 

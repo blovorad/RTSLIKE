@@ -2,8 +2,8 @@ package engine;
 
 public class Tower extends Building{
 
-	public Tower() {
-		
+	public Tower(Position position) {
+		super(position);
 	}
 
 	@Override

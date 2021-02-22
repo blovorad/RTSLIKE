@@ -6,8 +6,8 @@ public class Archery extends Building{
 
 	private ForUnit archer;
 	
-	public Archery() {
-		
+	public Archery(Position position) {
+		super(position);
 	}
 	
 	public void addUnit() {

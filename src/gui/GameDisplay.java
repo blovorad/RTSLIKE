@@ -349,10 +349,10 @@ public class GameDisplay extends JPanel
 		descriptionPanel.setLayout(new GridLayout(4, 2));
 		
 		descriptionPanel.add(new JButton(new ConstructBuilding("Forge", EntityConfiguration.FORGE)));
-		descriptionPanel.add(new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACKS)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACK)));
 		descriptionPanel.add(new JButton(new ConstructBuilding("Ecurie", EntityConfiguration.STABLE)));
 		descriptionPanel.add(new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ)));
-		descriptionPanel.add(new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STOCKAGE)));
+		descriptionPanel.add(new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE)));
 		descriptionPanel.add(new JButton(new ConstructBuilding("Archerie", EntityConfiguration.ARCHERY)));
 		descriptionPanel.add(new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE)));
 		descriptionPanel.add(new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER)));
@@ -512,11 +512,6 @@ public class GameDisplay extends JPanel
 				List<Fighter> fighters = entitiesManager.getFighters();
 				List<Ressource> ressources = entitiesManager.getRessources();
 				
-				if(mouse.getId() > -1)
-				{
-					this.paintStrategy.paint(mouse.getBuilding(), g, camera);
-				}
-				
 				for(Building building: buildings)
 				{
 					this.paintStrategy.paint(building, g, camera);
@@ -585,9 +580,8 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			mouse.setId(this.getId());
-			mouse.setBuilding(new Stable(new Position(mouse.getX(), mouse.getY())));
-			
 		}
+		
 		public int getId() {
 			return id;
 		}

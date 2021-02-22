@@ -2,8 +2,8 @@ package engine;
 
 public class Forge extends Building{
 
-	public Forge() {
-		
+	public Forge(Position position) {
+		super(position);
 	}
 
 	@Override

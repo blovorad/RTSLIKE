@@ -2,12 +2,12 @@ package engine;
 
 import factionConfiguration.ForUnit;
 
-public class Barraks extends Building{
+public class Barrack extends Building{
 
 	private ForUnit infantry;
 	
-	public Barraks() {
-		
+	public Barrack(Position position) {
+		super(position);
 	}
 	
 	public void addUnit() {

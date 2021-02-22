@@ -7,8 +7,7 @@ public class Stable extends Building{
 	private ForUnit horse;
 	
 	public Stable(Position position) {
-		this.setPosition(position);
-		this.setHp(100);
+		super(position);
 	}
 	
 	public void addUnit() {
