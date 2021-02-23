@@ -54,6 +54,7 @@ public class Faction
 	
 	public void createBuilding(int id, Position position) 
 	{
+		ForBuilding building = race.getBuildings().get(id);
 		Building b = null;
 		
 		if(id == EntityConfiguration.FORGE)

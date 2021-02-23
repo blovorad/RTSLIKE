@@ -8,7 +8,7 @@ public abstract class Race
 	private ForUnit infantry;
 	private ForUnit archer;
 	private String name;
-	private AbstractMap<String, ForBuilding>buildings;
+	private AbstractMap<Integer, ForBuilding>buildings;
 	
 	
 	public ForUnit getCavalry() 
@@ -41,12 +41,12 @@ public abstract class Race
 		this.archer = archer;
 	}
 	
-	public AbstractMap<String, ForBuilding> getBuildings() 
+	public AbstractMap<Integer, ForBuilding> getBuildings() 
 	{
 		return buildings;
 	}
 	
-	public void setBuildings(AbstractMap<String, ForBuilding> buildings) 
+	public void setBuildings(AbstractMap<Integer, ForBuilding> buildings) 
 	{
 		this.buildings = buildings;
 	}
