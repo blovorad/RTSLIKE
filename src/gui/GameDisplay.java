@@ -348,11 +348,26 @@ public class GameDisplay extends JPanel
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(4, 2));
 		
-		descriptionPanel.add(new JButton(new ConstructBuilding("Forge", EntityConfiguration.FORGE)));
-		descriptionPanel.add(new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACK)));
-		descriptionPanel.add(new JButton(new ConstructBuilding("Ecurie", EntityConfiguration.STABLE)));
-		descriptionPanel.add(new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ)));
-		descriptionPanel.add(new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE)));
+		JButton buttonForge = new JButton(new ConstructBuilding("Forge", EntityConfiguration.FORGE));
+		buttonForge.setFocusable(false);
+		
+		JButton buttonBarrack = new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACK));
+		buttonBarrack.setFocusable(false);
+		
+		JButton buttonStable = new JButton(new ConstructBuilding("Ecurie", EntityConfiguration.STABLE));
+		buttonStable.setFocusable(false);
+		
+		JButton buttonHq = new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ));
+		buttonHq.setFocusable(false);
+		
+		JButton buttonStockage = new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE));
+		buttonStockage.setFocusable(false);
+		
+		descriptionPanel.add(buttonForge);
+		descriptionPanel.add(buttonBarrack);
+		descriptionPanel.add(buttonStable);
+		descriptionPanel.add(buttonHq);
+		descriptionPanel.add(buttonStockage);
 		descriptionPanel.add(new JButton(new ConstructBuilding("Archerie", EntityConfiguration.ARCHERY)));
 		descriptionPanel.add(new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE)));
 		descriptionPanel.add(new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER)));
@@ -364,6 +379,7 @@ public class GameDisplay extends JPanel
 	
 	private void setDescriptionPanelForUnit()
 	{
+		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(1, 3));
 		
 		descriptionPanel.add(new JLabel("ETATS"));
@@ -548,6 +564,26 @@ public class GameDisplay extends JPanel
 		}
 	}
 	
+	private class CreateUnit extends AbstractAction
+	{
+		private int id;
+		private Building building;
+		
+		public CreateUnit(String name, int id, Building building)
+		{
+			super(name);
+			this.id = id;
+			this.building = building;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+
+		}
+		
+	}
+	
 	private class PauseGameMenu extends AbstractAction
 	{
 		private static final long serialVersionUID = 1L;
@@ -575,7 +611,7 @@ public class GameDisplay extends JPanel
 		public ConstructBuilding(String name, int id)
 		{
 			super(name);
-			this.setId(id);
+			this.id = id;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -584,9 +620,6 @@ public class GameDisplay extends JPanel
 		
 		public int getId() {
 			return id;
-		}
-		public void setId(int id) {
-			this.id = id;
 		}
 	}
 	

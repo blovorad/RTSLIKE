@@ -4,10 +4,11 @@ import factionConfiguration.ForUnit;
 
 public class Stable extends Building{
 	
-	private ForUnit horse;
+	private ForUnit cavalry;
 	
-	public Stable(Position position) {
+	public Stable(Position position, ForUnit cavalry) {
 		super(position);
+		this.cavalry = cavalry;
 	}
 	
 	public void addUnit() {

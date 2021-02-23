@@ -13,6 +13,7 @@ public class Empire extends Race
 		initCastle();
 		initTower();
 		initRessourceStockage();
+		initUpgrades();
 		
 		setName("Empire");
 	}
@@ -58,6 +59,11 @@ public class Empire extends Race
 	}
 	
 	public void initRessourceStockage()
+	{
+		
+	}
+	
+	public void initUpgrades()
 	{
 		
 	}

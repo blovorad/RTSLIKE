@@ -9,6 +9,8 @@ public class ForUpgrade
 	private String name;
 	private Map<Integer, Integer> effects; // je pense utiliser une hashmap en mode (defense,10) pour par exemple augmenter de 10% la def
 	private int timeToProduce;
+	private int idBuilding;
+	private boolean done;
 	
 	public ForUpgrade(int age, String name, Map<Integer, Integer> effects, int timeToProduce) {
 		this.setAge(age);

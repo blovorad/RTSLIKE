@@ -13,6 +13,7 @@ public class Gaia extends Race
 		initCastle();
 		initTower();
 		initRessourceStockage();
+		initUpgrades();
 		
 		setName("Gaia");
 	}
@@ -58,6 +59,11 @@ public class Gaia extends Race
 	}
 	
 	public void initRessourceStockage()
+	{
+		
+	}
+	
+	public void initUpgrades()
 	{
 		
 	}

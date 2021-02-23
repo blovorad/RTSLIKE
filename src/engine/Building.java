@@ -5,7 +5,7 @@ import java.util.Random;
 
 public abstract class Building extends Entity{
 
-	private int elementCount;
+	private List<Unit> elementCount;
 	private int timer;
 	private boolean isProducing;
 	private int productionId;
@@ -13,12 +13,16 @@ public abstract class Building extends Entity{
 	private List<Upgrades> upgrades;
 	private int sightRange;
 	private int attakRange;
+	private int attackSpeed;
 	private int damage;
 	
 	public Building(Position position) {
 		this.setPosition(position);
 		this.setHp(100);
 	}
+	
+	//coder un produce et un launchProduction
+	//produce return l'élément produit
 	
 	public void update() {
 		/*Random rand = new Random();
@@ -50,10 +54,10 @@ public abstract class Building extends Entity{
 	}
 	
 	//getter setter
-	public int getElementCount() {
+	public List<Unit> getElementCount() {
 		return elementCount;
 	}
-	public void setElementCount(int elementCount) {
+	public void setElementCount(List<Unit> elementCount) {
 		this.elementCount = elementCount;
 	}
 
@@ -111,6 +115,14 @@ public abstract class Building extends Entity{
 
 	public void setDamage(int damage) {
 		this.damage = damage;
+	}
+
+	public int getAttackSpeed() {
+		return attackSpeed;
+	}
+
+	public void setAttackSpeed(int attackSpeed) {
+		this.attackSpeed = attackSpeed;
 	}
 	
 }

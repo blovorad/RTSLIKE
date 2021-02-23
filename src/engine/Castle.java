@@ -8,6 +8,7 @@ public class Castle extends Building{
 	
 	public Castle(Position position) {
 		super(position);
+		
 	}
 
 	@Override

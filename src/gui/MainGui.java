@@ -146,6 +146,11 @@ public class MainGui extends JFrame implements Runnable
 		}
 	}
 	
+	public Container getContent() {
+		// TODO Auto-generated method stub
+		return this.getContentPane();
+	}
+	
 	private class MouseControls implements MouseListener 
 	{
 		@Override
@@ -161,10 +166,12 @@ public class MainGui extends JFrame implements Runnable
 			{
 				if(mouse.getId() > -1)
 				{
+					int x = (e.getX() / GameConfiguration.TILE_SIZE);
+					int y = (e.getY() / GameConfiguration.TILE_SIZE);
 					//System.out.println("mouse " + mouse.getX() + "," + mouse.getY());
-					Position p = new Position(e.getX() + camera.getX(), e.getY() + camera.getY());
-					System.out.println("souris: " + e.getX() + "," + e.getY());
-					System.out.println("position: " + p.getX() + "," + p.getY());
+					Position p = new Position(x + camera.getX(), y + camera.getY());
+					/*System.out.println("souris: " + e.getX() + "," + e.getY());
+					System.out.println("position: " + p.getX() + "," + p.getY());*/
 					manager.getFactions().get(0).createBuilding(mouse.getId(), p);
 					//System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
 					mouse.setId(-1);

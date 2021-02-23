@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.List;
+
 import configuration.EntityConfiguration;
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
@@ -16,6 +18,7 @@ public class Faction
 	private int population;
 	private int money;
 	private EntitiesManager entities;
+	private List<Upgrades> upgradesDone;
 
 	public Faction(int id) 
 	{
@@ -59,11 +62,19 @@ public class Faction
 		
 		if(id == EntityConfiguration.FORGE)
 		{
+			//List<Upgrades> list = faction.getListUpgrade();
+			//tu dois créer les upgrades a la main ici
+			//exemple Upgrades epe = new Upgrades();
+			for(int i =0; i < 1; i++)
+			{
+				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
+			}
 			b = new Forge(position);
 		}
+		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
 		{
-			b = new Stable(position);
+			b = new Stable(position, race.getCavalry());
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
@@ -81,6 +92,7 @@ public class Faction
 		{
 			b = new Castle(position);
 		}
+		//coder pas prio storage et tower
 		else if(id == EntityConfiguration.STORAGE)
 		{
 			b = new RessourcesStorage(position);

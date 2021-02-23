@@ -13,6 +13,7 @@ public class Royaume extends Race
 		initCastle();
 		initTower();
 		initRessourceStockage();
+		initUpgrades();
 		
 		setName("Royaume");
 	}
@@ -58,6 +59,11 @@ public class Royaume extends Race
 	}
 	
 	public void initRessourceStockage()
+	{
+		
+	}
+	
+	public void initUpgrades()
 	{
 		
 	}

@@ -13,6 +13,7 @@ public class Barbare extends Race
 		initCastle();
 		initTower();
 		initRessourceStockage();
+		initUpgrades();
 		
 		setName("Barbare");
 	}
@@ -58,6 +59,11 @@ public class Barbare extends Race
 	}
 	
 	public void initRessourceStockage()
+	{
+		
+	}
+	
+	public void initUpgrades()
 	{
 		
 	}

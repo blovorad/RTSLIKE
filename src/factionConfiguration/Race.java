@@ -1,6 +1,7 @@
 package factionConfiguration;
 
 import java.util.AbstractMap;
+import java.util.List;
 
 public abstract class Race 
 {
@@ -10,6 +11,7 @@ public abstract class Race
 	private ForUnit special;
 	private String name;
 	private AbstractMap<Integer, ForBuilding>buildings;
+	private List<ForUpgrade> upgrades;
 	
 	
 	public ForUnit getCavalry() 
@@ -73,5 +75,13 @@ public abstract class Race
 
 	public void setSpecial(ForUnit special) {
 		this.special = special;
+	}
+
+	public List<ForUpgrade> getUpgrades() {
+		return upgrades;
+	}
+
+	public void setUpgrades(List<ForUpgrade> upgrades) {
+		this.upgrades = upgrades;
 	}
 }
