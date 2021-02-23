@@ -1,5 +1,6 @@
 package engine;
 
+import configuration.EntityConfiguration;
 import factionConfiguration.ForUnit;
 
 public class Stable extends Building{
@@ -8,7 +9,8 @@ public class Stable extends Building{
 	
 	public Stable(Position position, ForUnit cavalry) {
 		super(position);
-		this.cavalry = cavalry;
+		this.setCavalry(cavalry);
+		this.setProductionId(EntityConfiguration.CAVALRY);
 	}
 	
 	public void addUnit() {
@@ -31,6 +33,14 @@ public class Stable extends Building{
 	public void lookForTarget(Position position, int range) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public ForUnit getCavalry() {
+		return cavalry;
+	}
+
+	public void setCavalry(ForUnit cavalry) {
+		this.cavalry = cavalry;
 	}
 
 }

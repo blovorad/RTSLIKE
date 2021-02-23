@@ -8,6 +8,7 @@ public class Gaia extends Race
 		initInfantry();
 		initArcher();
 		initSpecial();
+		initWorker();
 		initForge();
 		initHq();
 		initCastle();
@@ -16,6 +17,11 @@ public class Gaia extends Race
 		initUpgrades();
 		
 		setName("Gaia");
+	}
+	
+	public void initWorker()
+	{
+		setWorker(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25));
 	}
 	
 	public void initCavalry()

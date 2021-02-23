@@ -4,6 +4,7 @@ public class Tower extends Building{
 
 	public Tower(Position position) {
 		super(position);
+		this.setProductionId(-1);
 	}
 
 	@Override

@@ -1,14 +1,16 @@
 package engine;
 
+import configuration.EntityConfiguration;
 import factionConfiguration.ForUnit;
 
 public class Castle extends Building{
 
 	private ForUnit special;
 	
-	public Castle(Position position) {
+	public Castle(Position position, ForUnit special) {
 		super(position);
-		
+		this.special = special;
+		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
 	}
 
 	@Override

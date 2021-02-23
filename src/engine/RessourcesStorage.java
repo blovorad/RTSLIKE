@@ -4,6 +4,7 @@ public class RessourcesStorage extends Building{
 
 	public RessourcesStorage(Position position) {
 		super(position);
+		this.setProductionId(-1);
 	}
 
 	@Override

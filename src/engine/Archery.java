@@ -1,13 +1,16 @@
 package engine;
 
+import configuration.EntityConfiguration;
 import factionConfiguration.ForUnit;
 
 public class Archery extends Building{
 
 	private ForUnit archer;
 	
-	public Archery(Position position) {
+	public Archery(Position position, ForUnit archer) {
 		super(position);
+		this.archer = archer;
+		this.setProductionId(EntityConfiguration.ARCHER);
 	}
 	
 	public void addUnit() {

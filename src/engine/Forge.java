@@ -4,6 +4,7 @@ public class Forge extends Building{
 
 	public Forge(Position position) {
 		super(position);
+		this.setProductionId(-1);
 	}
 
 	@Override

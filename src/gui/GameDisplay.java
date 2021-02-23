@@ -32,8 +32,10 @@ import engine.Worker;
 import engine.Map;
 import engine.Mouse;
 import engine.Position;
+import engine.RectangleMy;
 import engine.Ressource;
 import engine.Stable;
+import engine.Unit;
 
 public class GameDisplay extends JPanel 
 {
@@ -46,6 +48,8 @@ public class GameDisplay extends JPanel
 	private Camera camera;
 	
 	private Mouse mouse;
+	
+	private RectangleMy selectionRectangle;
 
 	
 	//use to give the current selected faction when you launch game
@@ -116,11 +120,12 @@ public class GameDisplay extends JPanel
 	
 	private JPanel descriptionPanel;
 
-	public GameDisplay(Camera camera, FactionManager manager, Mouse mouse)
+	public GameDisplay(Camera camera, FactionManager manager, Mouse mouse, RectangleMy selectionRectangle)
 	{
 		this.camera = camera;
 		this.manager = manager;
 		this.mouse = mouse;
+		this.selectionRectangle = selectionRectangle;
 		this.state = MAINMENU;
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
@@ -340,7 +345,11 @@ public class GameDisplay extends JPanel
 	
 	private void setDescriptionPanelForWorker()
 	{
+		descriptionPanel.removeAll();
 		
+		//code entre les deux
+		
+		descriptionPanel.validate();
 	}
 	
 	private void setDescriptionPanelForConstruction()
@@ -385,21 +394,43 @@ public class GameDisplay extends JPanel
 		descriptionPanel.add(new JLabel("ETATS"));
 		descriptionPanel.add(new JLabel("DESCRIPTION ET NOM UNITER"));
 		descriptionPanel.add(new JLabel("LES STATS"));
+		
+		descriptionPanel.validate();
 	}
 	
 	public void setDescriptionPanelForBuilding(Building building)
 	{
+		descriptionPanel.removeAll();
 		
+		descriptionPanel.setLayout(new GridLayout(2, 5));
+		
+		if(building.getProductionId() > -1)
+		{
+			JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
+			button.setFocusable(false);
+				
+			descriptionPanel.add(button);
+		}
+		else
+		{
+			descriptionPanel.add(new JLabel("ne prodruit rien"));
+		}
+		
+		descriptionPanel.validate();
 	}
 	
-	private void setDescriptionPanelStandard()
+	public void setDescriptionPanelStandard()
 	{
+		descriptionPanel.removeAll();
+		
 		descriptionPanel.setLayout(new GridLayout(2, 2));
 		
 		descriptionPanel.add(constructionButton);
 		descriptionPanel.add(new JLabel("NOM DE L'UNITER"));
 		descriptionPanel.add(new JLabel("SON COMPORTEMENT"));
 		descriptionPanel.add(new JLabel("LES STATS"));
+		
+		descriptionPanel.validate();
 	}
 	
 	private JPanel createRessourceInfo()
@@ -549,6 +580,11 @@ public class GameDisplay extends JPanel
 				}
 				
 			}
+			
+			if(selectionRectangle.isActive())
+			{
+				this.paintStrategy.paint(selectionRectangle, g, camera);
+			}
 		}
 		else if(state == MAINMENU)
 		{
@@ -566,6 +602,8 @@ public class GameDisplay extends JPanel
 	
 	private class CreateUnit extends AbstractAction
 	{
+		private static final long serialVersionUID = 1L;
+		
 		private int id;
 		private Building building;
 		
@@ -578,7 +616,7 @@ public class GameDisplay extends JPanel
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			System.out.println("creation lancer");
 
 		}
 		

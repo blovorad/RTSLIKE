@@ -10,6 +10,7 @@ import engine.Fighter;
 import engine.Worker;
 import engine.Map;
 import engine.Mouse;
+import engine.RectangleMy;
 import engine.Ressource;
 import engine.Tile;
 
@@ -91,6 +92,15 @@ public class PaintStrategy
 		System.out.println("on construit dans : " + width + "x" + height);
 		System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
 		System.out.println("camera dimension : " + camW + "," + camH);
+	}
+	
+	public void paint(RectangleMy rectangle, Graphics graphics, Camera camera)
+	{
+		if(rectangle.isActive())
+		{
+			graphics.setColor(Color.green);
+			graphics.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getW(), rectangle.getH());
+		}
 	}
 	
 	public void paint(Building building, Graphics graphics, Camera camera)

@@ -20,6 +20,7 @@ import engine.FactionManager;
 import engine.Fighter;
 import engine.Mouse;
 import engine.Position;
+import engine.RectangleMy;
 import engine.Worker;
 
 public class MainGui extends JFrame implements Runnable
@@ -35,6 +36,8 @@ public class MainGui extends JFrame implements Runnable
 	private FactionManager manager;
 	
 	private Mouse mouse;
+	
+	private RectangleMy selectionRectangle;
 
 	public MainGui()
 	{
@@ -43,10 +46,12 @@ public class MainGui extends JFrame implements Runnable
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		
+		selectionRectangle = new RectangleMy();
+		
 		mouse = new Mouse();
 		manager = new FactionManager();
 		camera = new Camera(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
-		dashboard = new GameDisplay(camera, manager, mouse);
+		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle);
 		
 		MouseControls mouseControls = new MouseControls();
 		MouseMotion mouseMotion = new MouseMotion();
@@ -168,6 +173,15 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
+				if(selectionRectangle.isActive() == false)
+				{
+					selectionRectangle.setActive(true);
+					selectionRectangle.setX(e.getX() - camera.getX());
+					selectionRectangle.setY(e.getY() - camera.getY());
+					System.out.println("coordonner : " + selectionRectangle.getX() + "," + selectionRectangle.getY());
+					System.out.println("on active le rectangle");
+				}
+				
 				if(mouse.getId() > -1)
 				{
 					int x = (e.getX() / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
@@ -183,6 +197,7 @@ public class MainGui extends JFrame implements Runnable
 				{
 					manager.getFactions().get(0).getEntities().clearSelectedUnits();
 					manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+					dashboard.setDescriptionPanelStandard();
 					
 					List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
 					for(Fighter fighter : listFighters)
@@ -219,6 +234,7 @@ public class MainGui extends JFrame implements Runnable
 			{
 				manager.getFactions().get(0).getEntities().clearSelectedUnits();
 				manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+				dashboard.setDescriptionPanelStandard();
 			}
 		}
 
@@ -227,7 +243,8 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				System.out.println("REALISED BUTTON 1");
+				selectionRectangle.setActive(false);
+				System.out.println("on relache");
 			}
 			else if(e.getButton() == 3)
 			{
@@ -252,8 +269,11 @@ public class MainGui extends JFrame implements Runnable
 	{
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			// TODO Auto-generated method stub
+			int x = e.getX();
+			int y = e.getY();
 			
+			selectionRectangle.setW(x - selectionRectangle.getX());
+			selectionRectangle.setH(y - selectionRectangle.getY());
 		}
 
 		@Override

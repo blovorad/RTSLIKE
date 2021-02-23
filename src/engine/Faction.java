@@ -78,19 +78,19 @@ public class Faction
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
-			b = new Barrack(position);
+			b = new Barrack(position, race.getInfantry());
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
-			b = new Archery(position);
+			b = new Archery(position, race.getArcher());
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
-			b = new Hq(position);
+			b = new Hq(position, race.getWorker());
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
-			b = new Castle(position);
+			b = new Castle(position, race.getSpecial());
 		}
 		//coder pas prio storage et tower
 		else if(id == EntityConfiguration.STORAGE)

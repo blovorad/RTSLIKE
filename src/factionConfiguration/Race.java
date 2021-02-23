@@ -9,6 +9,7 @@ public abstract class Race
 	private ForUnit infantry;
 	private ForUnit archer;
 	private ForUnit special;
+	private ForUnit worker;
 	private String name;
 	private AbstractMap<Integer, ForBuilding>buildings;
 	private List<ForUpgrade> upgrades;
@@ -83,5 +84,13 @@ public abstract class Race
 
 	public void setUpgrades(List<ForUpgrade> upgrades) {
 		this.upgrades = upgrades;
+	}
+
+	public ForUnit getWorker() {
+		return worker;
+	}
+
+	public void setWorker(ForUnit worker) {
+		this.worker = worker;
 	}
 }
