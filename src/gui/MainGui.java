@@ -171,70 +171,73 @@ public class MainGui extends JFrame implements Runnable
 		@Override
 		public void mousePressed(MouseEvent e) 
 		{
-			if(e.getButton() == 1)
+			if(dashboard.getState() == 1)
 			{
-				if(selectionRectangle.isActive() == false)
+				if(e.getButton() == 1)
 				{
-					selectionRectangle.setActive(true);
-					selectionRectangle.setX(e.getX() - camera.getX());
-					selectionRectangle.setY(e.getY() - camera.getY());
-					System.out.println("coordonner : " + selectionRectangle.getX() + "," + selectionRectangle.getY());
-					System.out.println("on active le rectangle");
-				}
-				
-				if(mouse.getId() > -1)
-				{
-					int x = (e.getX() / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
-					int y = (e.getY() / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
-					System.out.println("CASE : " + x + "," + y);
-					Position p = new Position(x + camera.getX(), y + camera.getY());
-					/*System.out.println("souris: " + e.getX() + "," + e.getY());
-					System.out.println("position: " + p.getX() + "," + p.getY());*/
-					manager.getFactions().get(0).createBuilding(mouse.getId(), p);
-					mouse.setId(-1);
-				}
-				else
-				{
-					manager.getFactions().get(0).getEntities().clearSelectedUnits();
-					manager.getFactions().get(0).getEntities().clearSelectedBuildings();
-					dashboard.setDescriptionPanelStandard();
+					if(selectionRectangle.isActive() == false)
+					{
+						selectionRectangle.setActive(true);
+						selectionRectangle.setX(e.getX() - camera.getX());
+						selectionRectangle.setY(e.getY() - camera.getY());
+						System.out.println("coordonner : " + selectionRectangle.getX() + "," + selectionRectangle.getY());
+						System.out.println("on active le rectangle");
+					}
 					
-					List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
-					for(Fighter fighter : listFighters)
+					if(mouse.getId() > -1)
 					{
-						
+						int x = (e.getX() / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
+						int y = (e.getY() / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
+						System.out.println("CASE : " + x + "," + y);
+						Position p = new Position(x + camera.getX(), y + camera.getY());
+						/*System.out.println("souris: " + e.getX() + "," + e.getY());
+						System.out.println("position: " + p.getX() + "," + p.getY());*/
+						manager.getFactions().get(0).createBuilding(mouse.getId(), p);
+						mouse.setId(-1);
 					}
-					List<Worker> listWorkers = manager.getFactions().get(0).getEntities().getWorkers();
-					for(Worker worker : listWorkers)
+					else
 					{
+						manager.getFactions().get(0).getEntities().clearSelectedUnits();
+						manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+						dashboard.setDescriptionPanelStandard();
 						
-					}
-					if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
-					{
-						List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
-						Boolean foundBuilding = false;
-						int x = e.getX();
-						int y = e.getY();
-						
-						for(Building building : listBuildings)
+						List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
+						for(Fighter fighter : listFighters)
 						{
-							if(foundBuilding == false && (x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
-													&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
+							
+						}
+						List<Worker> listWorkers = manager.getFactions().get(0).getEntities().getWorkers();
+						for(Worker worker : listWorkers)
+						{
+							
+						}
+						if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
+						{
+							List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
+							Boolean foundBuilding = false;
+							int x = e.getX();
+							int y = e.getY();
+							
+							for(Building building : listBuildings)
 							{
-								manager.getFactions().get(0).getEntities().selectBuilding(building);
-								dashboard.setDescriptionPanelForBuilding(building);
-								foundBuilding = true;
-								System.out.println("AYA SELECTED BUILDING");
+								if(foundBuilding == false && (x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
+														&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
+								{
+									manager.getFactions().get(0).getEntities().selectBuilding(building);
+									dashboard.setDescriptionPanelForBuilding(building);
+									foundBuilding = true;
+									System.out.println("AYA SELECTED BUILDING");
+								}
 							}
 						}
 					}
 				}
-			}
-			else if(e.getButton() == 3)
-			{
-				manager.getFactions().get(0).getEntities().clearSelectedUnits();
-				manager.getFactions().get(0).getEntities().clearSelectedBuildings();
-				dashboard.setDescriptionPanelStandard();
+				else if(e.getButton() == 3)
+				{
+					manager.getFactions().get(0).getEntities().clearSelectedUnits();
+					manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+					dashboard.setDescriptionPanelStandard();
+				}
 			}
 		}
 
@@ -269,11 +272,14 @@ public class MainGui extends JFrame implements Runnable
 	{
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			int x = e.getX();
-			int y = e.getY();
-			
-			selectionRectangle.setW(x - selectionRectangle.getX());
-			selectionRectangle.setH(y - selectionRectangle.getY());
+			if(dashboard.getState() == 1)
+			{
+				int x = e.getX();
+				int y = e.getY();
+				
+				selectionRectangle.setW(x - selectionRectangle.getX());
+				selectionRectangle.setH(y - selectionRectangle.getY());
+			}
 		}
 
 		@Override
