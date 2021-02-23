@@ -2,7 +2,7 @@ package engine;
 
 public class Collision 
 {
-	public static boolean collide(Position p, RectangleMy r)
+	public static boolean collide(Position p, SelectionRect r)
 	{
 		int x = p.getX();
 		int y = p.getY();

@@ -1,6 +1,6 @@
 package engine;
 
-public class RectangleMy 
+public class SelectionRect 
 {
 	private int x;
 	private int y;
@@ -8,7 +8,7 @@ public class RectangleMy
 	private int h;
 	private boolean active;
 
-	public RectangleMy()
+	public SelectionRect()
 	{
 		this.x = 0;
 		this.y = 0;

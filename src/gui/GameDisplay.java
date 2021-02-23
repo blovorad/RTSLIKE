@@ -32,7 +32,7 @@ import engine.Worker;
 import engine.Map;
 import engine.Mouse;
 import engine.Position;
-import engine.RectangleMy;
+import engine.SelectionRect;
 import engine.Ressource;
 import engine.Stable;
 import engine.Unit;
@@ -49,7 +49,7 @@ public class GameDisplay extends JPanel
 	
 	private Mouse mouse;
 	
-	private RectangleMy selectionRectangle;
+	private SelectionRect selectionRectangle;
 
 	
 	//use to give the current selected faction when you launch game
@@ -120,7 +120,7 @@ public class GameDisplay extends JPanel
 	
 	private JPanel descriptionPanel;
 
-	public GameDisplay(Camera camera, FactionManager manager, Mouse mouse, RectangleMy selectionRectangle)
+	public GameDisplay(Camera camera, FactionManager manager, Mouse mouse, SelectionRect selectionRectangle)
 	{
 		this.camera = camera;
 		this.manager = manager;

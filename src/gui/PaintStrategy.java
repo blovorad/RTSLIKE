@@ -10,7 +10,7 @@ import engine.Fighter;
 import engine.Worker;
 import engine.Map;
 import engine.Mouse;
-import engine.RectangleMy;
+import engine.SelectionRect;
 import engine.Ressource;
 import engine.Tile;
 
@@ -94,7 +94,7 @@ public class PaintStrategy
 		System.out.println("camera dimension : " + camW + "," + camH);
 	}
 	
-	public void paint(RectangleMy rectangle, Graphics graphics, Camera camera)
+	public void paint(SelectionRect rectangle, Graphics graphics, Camera camera)
 	{
 		if(rectangle.isActive())
 		{

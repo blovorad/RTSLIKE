@@ -21,7 +21,7 @@ import engine.FactionManager;
 import engine.Fighter;
 import engine.Mouse;
 import engine.Position;
-import engine.RectangleMy;
+import engine.SelectionRect;
 import engine.Worker;
 
 public class MainGui extends JFrame implements Runnable
@@ -38,7 +38,7 @@ public class MainGui extends JFrame implements Runnable
 	
 	private Mouse mouse;
 	
-	private RectangleMy selectionRectangle;
+	private SelectionRect selectionRectangle;
 
 	public MainGui()
 	{
@@ -47,7 +47,7 @@ public class MainGui extends JFrame implements Runnable
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		
-		selectionRectangle = new RectangleMy();
+		selectionRectangle = new SelectionRect();
 		
 		mouse = new Mouse();
 		manager = new FactionManager();
