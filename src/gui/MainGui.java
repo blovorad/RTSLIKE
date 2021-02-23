@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 import configuration.GameConfiguration;
 import engine.Building;
+import engine.Collision;
 import engine.Camera;
 import engine.FactionManager;
 import engine.Fighter;
@@ -101,19 +102,31 @@ public class MainGui extends JFrame implements Runnable
 			switch (keyChar) 
 			{
 				case 'q':
-					camera.move(-15, camera.getSpeed().getVy());
+					if(selectionRectangle.isActive() == false)
+					{
+						camera.move(-15, camera.getSpeed().getVy());
+					}
 					break;
 					
 				case 'd':
-					camera.move(15, camera.getSpeed().getVy());
+					if(selectionRectangle.isActive() == false)
+					{
+						camera.move(15, camera.getSpeed().getVy());
+					}
 					break;
 					
 				case 'z':
-					camera.move(camera.getSpeed().getVx(), -15);
+					if(selectionRectangle.isActive() == false)
+					{
+						camera.move(camera.getSpeed().getVx(), -15);
+					}
 					break;
 					
 				case 's':
-					camera.move(camera.getSpeed().getVx(), 15);
+					if(selectionRectangle.isActive() == false)
+					{
+						camera.move(camera.getSpeed().getVx(), 15);
+					}
 					break;
 					
 				default:
@@ -162,6 +175,83 @@ public class MainGui extends JFrame implements Runnable
 	
 	private class MouseControls implements MouseListener 
 	{
+		
+		public void checkWhatIsSelected(int x, int y)
+		{
+			manager.getFactions().get(0).getEntities().clearSelectedUnits();
+			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+			dashboard.setDescriptionPanelStandard();
+			
+			List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
+			for(Fighter fighter : listFighters)
+			{
+				
+			}
+			List<Worker> listWorkers = manager.getFactions().get(0).getEntities().getWorkers();
+			for(Worker worker : listWorkers)
+			{
+				
+			}
+			if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
+			{
+				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
+				Boolean foundBuilding = false;
+				
+				for(Building building : listBuildings)
+				{
+					if(foundBuilding == false && (x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
+											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
+					{
+						manager.getFactions().get(0).getEntities().selectBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building);
+						foundBuilding = true;
+						System.out.println("AYA SELECTED BUILDING");
+					}
+				}
+			}
+		}
+		
+		public void checkWhatIsSelected(int x, int y, int w, int h)
+		{
+			manager.getFactions().get(0).getEntities().clearSelectedUnits();
+			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+			dashboard.setDescriptionPanelStandard();
+			
+			List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
+			for(Fighter fighter : listFighters)
+			{
+				
+			}
+			List<Worker> listWorkers = manager.getFactions().get(0).getEntities().getWorkers();
+			for(Worker worker : listWorkers)
+			{
+				
+			}
+			if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
+			{
+				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
+				Boolean foundBuilding = false;
+				int i = 0;
+				
+				for(Building building : listBuildings)
+				{
+					if(foundBuilding == false && Collision.collide(building.getPosition(), selectionRectangle))
+					{
+						manager.getFactions().get(0).getEntities().selectBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building);
+						foundBuilding = true;
+						//System.out.println("AYA SELECTED BUILDING");
+					}
+					if(Collision.collide(building.getPosition(), selectionRectangle))
+					{
+						i++;
+					}
+				}
+				System.out.println("on a detecter " + i + " batiment");
+			}
+		}
+		
+		
 		@Override
 		public void mouseClicked(MouseEvent e) 
 		{
@@ -178,8 +268,10 @@ public class MainGui extends JFrame implements Runnable
 					if(selectionRectangle.isActive() == false)
 					{
 						selectionRectangle.setActive(true);
-						selectionRectangle.setX(e.getX() - camera.getX());
-						selectionRectangle.setY(e.getY() - camera.getY());
+						selectionRectangle.setX(e.getX());
+						selectionRectangle.setY(e.getY());
+						selectionRectangle.setW(0);
+						selectionRectangle.setH(0);
 						System.out.println("coordonner : " + selectionRectangle.getX() + "," + selectionRectangle.getY());
 						System.out.println("on active le rectangle");
 					}
@@ -197,39 +289,7 @@ public class MainGui extends JFrame implements Runnable
 					}
 					else
 					{
-						manager.getFactions().get(0).getEntities().clearSelectedUnits();
-						manager.getFactions().get(0).getEntities().clearSelectedBuildings();
-						dashboard.setDescriptionPanelStandard();
-						
-						List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
-						for(Fighter fighter : listFighters)
-						{
-							
-						}
-						List<Worker> listWorkers = manager.getFactions().get(0).getEntities().getWorkers();
-						for(Worker worker : listWorkers)
-						{
-							
-						}
-						if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
-						{
-							List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
-							Boolean foundBuilding = false;
-							int x = e.getX();
-							int y = e.getY();
-							
-							for(Building building : listBuildings)
-							{
-								if(foundBuilding == false && (x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
-														&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
-								{
-									manager.getFactions().get(0).getEntities().selectBuilding(building);
-									dashboard.setDescriptionPanelForBuilding(building);
-									foundBuilding = true;
-									System.out.println("AYA SELECTED BUILDING");
-								}
-							}
-						}
+						checkWhatIsSelected(e.getX(), e.getY());
 					}
 				}
 				else if(e.getButton() == 3)
@@ -246,7 +306,14 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				selectionRectangle.setActive(false);
+				if(selectionRectangle.isActive() == true)
+				{
+					if(selectionRectangle.getW() != 0 || selectionRectangle.getH() != 0)
+					{
+						checkWhatIsSelected(e.getX() - selectionRectangle.getW(), e.getY() - selectionRectangle.getH(), selectionRectangle.getW(), selectionRectangle.getH());
+					}
+					selectionRectangle.setActive(false);
+				}
 				System.out.println("on relache");
 			}
 			else if(e.getButton() == 3)
