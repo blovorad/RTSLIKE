@@ -7,6 +7,7 @@ public abstract class Race
 	private ForUnit cavalry;
 	private ForUnit infantry;
 	private ForUnit archer;
+	private ForUnit special;
 	private String name;
 	private AbstractMap<Integer, ForBuilding>buildings;
 	
@@ -64,5 +65,13 @@ public abstract class Race
 	public String toString()
 	{
 		return "" + name;
+	}
+
+	public ForUnit getSpecial() {
+		return special;
+	}
+
+	public void setSpecial(ForUnit special) {
+		this.special = special;
 	}
 }

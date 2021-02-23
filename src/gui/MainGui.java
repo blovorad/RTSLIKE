@@ -177,13 +177,7 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				/*if(mouse.getId() > -1)
-				{
-					manager.getFactions().get(0).createBuilding(mouse.getBuilding());
-					System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
-					mouse.setId(-1);
-					mouse.setBuilding(null);
-				}*/
+				System.out.println("REALISED BUTTON 1");
 			}
 			else if(e.getButton() == 3)
 			{

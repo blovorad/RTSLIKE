@@ -7,6 +7,7 @@ public class Barbare extends Race
 		initCavalry();
 		initInfantry();
 		initArcher();
+		initSpecial();
 		initForge();
 		initHq();
 		initCastle();
@@ -29,6 +30,11 @@ public class Barbare extends Race
 	public void initArcher()
 	{
 		setArcher(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25));
+	}
+	
+	public void initSpecial()
+	{
+		setSpecial(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25));
 	}
 	
 	public void initForge()
