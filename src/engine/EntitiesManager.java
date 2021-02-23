@@ -19,6 +19,7 @@ public class EntitiesManager
 	private List<Ressource> removeRessources = new ArrayList<Ressource>();
 	
 	private List<Unit> selectedUnits;
+	private List<Building> selectedBuildings;
 	
 	public EntitiesManager(Faction faction) 
 	{
@@ -27,7 +28,8 @@ public class EntitiesManager
 		this.workers = new ArrayList<Worker>();
 		this.buildings = new ArrayList<Building>();
 		this.ressources = new ArrayList<Ressource>();
-		this.setSelectedUnits(new ArrayList<Unit>());
+		this.selectedUnits = new ArrayList<Unit>();
+		this.selectedBuildings = new ArrayList<Building>();
 	}
 	
 	public void update() 
@@ -94,9 +96,19 @@ public class EntitiesManager
 		
 	}
 	
+	public void selectBuilding(Building building)
+	{
+		selectedBuildings.add(building);
+	}
+	
 	public void clearSelectedUnits()
 	{
 		selectedUnits.clear();
+	}
+	
+	public void clearSelectedBuildings()
+	{
+		selectedBuildings.clear();
 	}
 	
 	public void addBuilding(Building building)
@@ -150,5 +162,13 @@ public class EntitiesManager
 
 	public void setSelectedUnits(List<Unit> selectedUnits) {
 		this.selectedUnits = selectedUnits;
+	}
+
+	public List<Building> getSelectedBuildings() {
+		return selectedBuildings;
+	}
+
+	public void setSelectedBuildings(List<Building> selectedBuildings) {
+		this.selectedBuildings = selectedBuildings;
 	}
 }

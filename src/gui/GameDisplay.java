@@ -387,7 +387,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.add(new JLabel("LES STATS"));
 	}
 	
-	private void setDescriptionPanelForBuilding()
+	public void setDescriptionPanelForBuilding(Building building)
 	{
 		
 	}
