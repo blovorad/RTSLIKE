@@ -44,7 +44,8 @@ public abstract class Building extends Entity{
 		}
 	}
 	
-	public abstract void produce();
+	public abstract Unit produce();
+	public abstract void StartProd(int id);
 	public abstract void attak(); 
 	public abstract void lookForTarget(Position position, int range);
 
