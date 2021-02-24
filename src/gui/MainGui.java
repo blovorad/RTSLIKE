@@ -22,6 +22,7 @@ import engine.Fighter;
 import engine.Mouse;
 import engine.Position;
 import engine.SelectionRect;
+import engine.Unit;
 import engine.Worker;
 
 public class MainGui extends JFrame implements Runnable
@@ -182,8 +183,8 @@ public class MainGui extends JFrame implements Runnable
 			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
 			
-			List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
-			for(Fighter fighter : listFighters)
+			/*List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
+			for(Unit fighter : listFighters)
 			{
 				
 			}
@@ -191,7 +192,14 @@ public class MainGui extends JFrame implements Runnable
 			for(Worker worker : listWorkers)
 			{
 				
+			}*/
+			
+			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
+			for(Unit unit : listUnits)
+			{
+				
 			}
+			
 			if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
 			{
 				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
@@ -220,8 +228,8 @@ public class MainGui extends JFrame implements Runnable
 			int cameraX = camera.getX();
 			int cameraY = camera.getY();
 			
-			List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
-			for(Fighter fighter : listFighters)
+			/*List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
+			for(Unit fighter : listFighters)
 			{
 				
 			}
@@ -229,7 +237,14 @@ public class MainGui extends JFrame implements Runnable
 			for(Worker worker : listWorkers)
 			{
 				
+			}*/
+			
+			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
+			for(Unit unit : listUnits)
+			{
+				
 			}
+			
 			if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
 			{
 				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
@@ -272,8 +287,8 @@ public class MainGui extends JFrame implements Runnable
 						selectionRectangle.setActive(true);
 						selectionRectangle.setX(e.getX());
 						selectionRectangle.setY(e.getY());
-						selectionRectangle.setW(0);
-						selectionRectangle.setH(0);
+						selectionRectangle.setW(1);
+						selectionRectangle.setH(1);
 					}
 					
 					if(mouse.getId() > -1)
@@ -307,10 +322,7 @@ public class MainGui extends JFrame implements Runnable
 			{
 				if(selectionRectangle.isActive() == true)
 				{
-					if(selectionRectangle.getW() != 0 || selectionRectangle.getH() != 0)
-					{
-						checkWhatIsSelected(e.getX() - selectionRectangle.getW(), e.getY() - selectionRectangle.getH(), selectionRectangle.getW(), selectionRectangle.getH());
-					}
+					checkWhatIsSelected(e.getX() - selectionRectangle.getW(), e.getY() - selectionRectangle.getH(), selectionRectangle.getW(), selectionRectangle.getH());
 					selectionRectangle.setActive(false);
 				}
 			}

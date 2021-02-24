@@ -13,6 +13,7 @@ import engine.Mouse;
 import engine.SelectionRect;
 import engine.Ressource;
 import engine.Tile;
+import engine.Unit;
 
 public class PaintStrategy 
 {
@@ -111,7 +112,15 @@ public class PaintStrategy
 		graphics.fillRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	
-	public void paint(Worker worker, Graphics graphics, Camera camera)
+	public void paint(Unit unit, Graphics graphics, Camera camera)
+	{
+		int tileSize = GameConfiguration.TILE_SIZE;
+		
+		graphics.setColor(Color.white);
+		graphics.fillRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
+	}
+	
+	/*public void paint(Worker worker, Graphics graphics, Camera camera)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
@@ -125,7 +134,7 @@ public class PaintStrategy
 		
 		graphics.setColor(Color.white);
 		graphics.fillRect(fighter.getPosition().getX() - camera.getX(), fighter.getPosition().getY() - camera.getY(), tileSize, tileSize);
-	}
+	}*/
 	
 	public void paint(Ressource ressource, Graphics graphics, Camera camera)
 	{
@@ -162,18 +171,23 @@ public class PaintStrategy
 				graphics.fillRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
 			}
 		}
+	}
+	
+	public void paintGui(Map map, Graphics graphics, Camera camera)
+	{	
+		Tile[][] tiles = map.getTiles();
 		
 		//draw the rect of the minimap
 		graphics.setColor(new Color(168,104,38));
 		graphics.fillRect(rectXOfMinimap, rectYOfMinimap, rectWOfMinimap, rectHOfMinimap);
-		
+				
 		//draw the minimap
 		for (int lineIndex = 0; lineIndex < map.getLineCount(); lineIndex++) 
 		{
 			for (int columnIndex = 0; columnIndex < map.getColumnCount(); columnIndex++) 
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
-				
+						
 				if(tile.getId() == 0)
 				{
 					graphics.setColor(Color.black);
@@ -191,12 +205,11 @@ public class PaintStrategy
 		}
 		graphics.setColor(new Color(168,104,38));
 		graphics.fillRect(0, 0, 500, 50);
-		
-		//camera broken
+				
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.white);
 		graphics.drawRect(camX + camera.getX() / GameConfiguration.TILE_SIZE, camY + camera.getY() / GameConfiguration.TILE_SIZE, camW, camH);	
-		
-		graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
+				
+		//graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
 	}
 }

@@ -561,16 +561,17 @@ public class GameDisplay extends JPanel
 			{
 				EntitiesManager entitiesManager = faction.getEntities();
 				List<Building> buildings = entitiesManager.getBuildings();
-				List<Worker> workers = entitiesManager.getWorkers();
-				List<Fighter> fighters = entitiesManager.getFighters();
+				/*List<Worker> workers = entitiesManager.getWorkers();
+				List<Fighter> fighters = entitiesManager.getFighters();*/
 				List<Ressource> ressources = entitiesManager.getRessources();
+				List<Unit> units = entitiesManager.getUnits();
 				
 				for(Building building: buildings)
 				{
 					this.paintStrategy.paint(building, g, camera);
 				}
 				
-				for(Worker worker: workers)
+				/*for(Worker worker: workers)
 				{
 					this.paintStrategy.paint(worker, g, camera);
 				}
@@ -578,6 +579,11 @@ public class GameDisplay extends JPanel
 				for(Fighter fighter: fighters)
 				{
 					this.paintStrategy.paint(fighter, g, camera);
+				}*/
+				
+				for(Unit unit : units)
+				{
+					this.paintStrategy.paint(unit, g, camera);
 				}
 				
 				for(Ressource ressource: ressources)
@@ -591,6 +597,8 @@ public class GameDisplay extends JPanel
 			{
 				this.paintStrategy.paint(selectionRectangle, g, camera);
 			}
+			
+			this.paintStrategy.paintGui(map, g, camera);
 		}
 		else if(state == MAINMENU)
 		{
@@ -622,7 +630,7 @@ public class GameDisplay extends JPanel
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("creation lancer");
+			building.startProd(id);
 
 		}
 		

@@ -6,11 +6,14 @@ import java.util.List;
 public class EntitiesManager 
 {
 	private Faction faction;
-	private List<Fighter> fighters;
+	/*private List<Fighter> fighters;
 	private List<Fighter> removeFighters = new ArrayList<Fighter>();
 	
 	private List<Worker> workers;
-	private List<Worker> removeWorkers = new ArrayList<Worker>();
+	private List<Worker> removeWorkers = new ArrayList<Worker>();*/
+	
+	private List<Unit> units;
+	private List<Unit> removeUnits = new ArrayList<Unit>();
 	
 	private List<Building> buildings;
 	private List<Building> removeBuildings = new ArrayList<Building>();
@@ -24,8 +27,9 @@ public class EntitiesManager
 	public EntitiesManager(Faction faction) 
 	{
 		this.setFaction(faction);
-		this.fighters = new ArrayList<Fighter>();
-		this.workers = new ArrayList<Worker>();
+		/*this.fighters = new ArrayList<Fighter>();
+		this.workers = new ArrayList<Worker>();*/
+		this.units = new ArrayList<Unit>();
 		this.buildings = new ArrayList<Building>();
 		this.ressources = new ArrayList<Ressource>();
 		this.selectedUnits = new ArrayList<Unit>();
@@ -34,7 +38,7 @@ public class EntitiesManager
 	
 	public void update() 
 	{
-		for(Fighter fighter : fighters) 
+		/*for(Fighter fighter : fighters) 
 		{
 			fighter.update();
 			if(fighter.getHp() < 1)
@@ -58,7 +62,21 @@ public class EntitiesManager
 		
 		//removing worker
 		workers.removeAll(removeWorkers);
-		removeWorkers.clear();
+		removeWorkers.clear();*/
+		
+		for(Unit unit : units)
+		{
+			unit.update();
+			
+			if(unit.getHp() < 1)
+			{
+				removeUnits.add(unit);
+			}
+		}
+		
+		//removing units
+		units.removeAll(removeUnits);
+		removeUnits.clear();
 		
 		for(Building building : buildings) 
 		{
@@ -67,7 +85,8 @@ public class EntitiesManager
 			{
 				if(building.getTimer() <= 0)
 				{
-					building.produce();
+					units.add(building.produce());
+					System.out.println("producing unit");
 				}
 			}
 			if(building.getHp() < 1)
@@ -116,7 +135,7 @@ public class EntitiesManager
 		this.buildings.add(building); 
 	}
 	
-	public List<Fighter> getFighters() {
+	/*public List<Fighter> getFighters() {
 		return fighters;
 	}
 
@@ -130,7 +149,7 @@ public class EntitiesManager
 
 	public void setWorkers(List<Worker> gatherers) {
 		this.workers = gatherers;
-	}
+	}*/
 
 	public List<Building> getBuildings() {
 		return buildings;
@@ -170,5 +189,13 @@ public class EntitiesManager
 
 	public void setSelectedBuildings(List<Building> selectedBuildings) {
 		this.selectedBuildings = selectedBuildings;
+	}
+
+	public List<Unit> getUnits() {
+		return units;
+	}
+
+	public void setUnits(List<Unit> units) {
+		this.units = units;
 	}
 }

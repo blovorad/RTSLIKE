@@ -14,9 +14,10 @@ public class Castle extends Building{
 	}
 
 	@Override
-	public void produce() {
+	public Unit produce() {
 		// TODO Auto-generated method stub
-		
+		Unit u = null;
+		return u;
 	}
 
 	@Override
@@ -27,6 +28,12 @@ public class Castle extends Building{
 
 	@Override
 	public void lookForTarget(Position position, int range) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void startProd(int id) {
 		// TODO Auto-generated method stub
 		
 	}

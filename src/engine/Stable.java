@@ -18,9 +18,10 @@ public class Stable extends Building{
 	}
 
 	@Override
-	public void produce() {
+	public Unit produce() {
 		// TODO Auto-generated method stub
-		
+		Unit u = null;
+		return u;
 	}
 
 	@Override
@@ -41,6 +42,11 @@ public class Stable extends Building{
 
 	public void setCavalry(ForUnit cavalry) {
 		this.cavalry = cavalry;
+	}
+
+	@Override
+	public void startProd(int id) {
+
 	}
 
 }

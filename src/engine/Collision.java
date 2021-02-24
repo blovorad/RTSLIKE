@@ -16,20 +16,18 @@ public class Collision
 		int w2 = r.getW();
 		int h2 = r.getH();
 		
-		if(w < 0)
+		if(w2 < 0)
 		{
-			int bis = w;
-			x2 = x2 + w;
-			w = x2 - bis;
+			x2 = x2 + w2;
+			w2 = w2 * -1;
 		}
-		if(h < 0)
+		if(h2 < 0)
 		{
-			int bis = h;
-			y2 = y2 + h;
-			h = y2 - bis;
+			y2 = y2 + h2;
+			h2 = h2 * -1;
 		}
 		
-		System.out.println("objet : " + x + "," + y + " rapport : 32,32");
+		System.out.println("objet : " + x + "," + y + " rapport : " + w + "," + h);
 		System.out.println("rectangle : " + x2 + "," + y2 + " rapport : " + w2 + "," + h2);
 		
 		if(x > x2 && x < x2 + w2 && y > y2 && y < y2 + h2)
@@ -41,6 +39,14 @@ public class Collision
 			return true;
 		}
 		else if(x + w > x2 && x + w < x2 + w2 && y + h > y2 && y < y2 + h2)
+		{
+			return true;
+		}
+		else if(x > x2 && x < x2 + w2 && y + h > y2 && y + h < y2 + h2)
+		{
+			return true;
+		}
+		else if(x > x2 && x < x2 + w2 && y > y2 && y < y2 + h2)
 		{
 			return true;
 		}

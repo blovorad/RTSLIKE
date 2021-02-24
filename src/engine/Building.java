@@ -1,7 +1,7 @@
 package engine;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public abstract class Building extends Entity{
 
@@ -19,6 +19,7 @@ public abstract class Building extends Entity{
 	public Building(Position position) {
 		this.setPosition(position);
 		this.setHp(100);
+		elementCount = new ArrayList<Unit>();
 	}
 	
 	//coder un produce et un launchProduction
@@ -41,10 +42,12 @@ public abstract class Building extends Entity{
 		if(timer > 0)
 		{
 			timer--;
+			System.out.println("updating infantry production time remaning : " + timer);
 		}
 	}
 	
-	public abstract void produce();
+	public abstract Unit produce();
+	public abstract void startProd(int id);
 	public abstract void attak(); 
 	public abstract void lookForTarget(Position position, int range);
 
