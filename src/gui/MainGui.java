@@ -205,7 +205,7 @@ public class MainGui extends JFrame implements Runnable
 						manager.getFactions().get(0).getEntities().selectBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
 						foundBuilding = true;
-						System.out.println("AYA SELECTED BUILDING");
+						//System.out.println("AYA SELECTED BUILDING");
 					}
 				}
 			}
@@ -216,6 +216,9 @@ public class MainGui extends JFrame implements Runnable
 			manager.getFactions().get(0).getEntities().clearSelectedUnits();
 			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
+			
+			int cameraX = camera.getX();
+			int cameraY = camera.getY();
 			
 			List<Fighter> listFighters = manager.getFactions().get(0).getEntities().getFighters();
 			for(Fighter fighter : listFighters)
@@ -235,14 +238,13 @@ public class MainGui extends JFrame implements Runnable
 				
 				for(Building building : listBuildings)
 				{
-					if(foundBuilding == false && Collision.collide(building.getPosition(), selectionRectangle))
+					if(foundBuilding == false && Collision.collide(building.getPosition(), selectionRectangle, camera))
 					{
 						manager.getFactions().get(0).getEntities().selectBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
 						foundBuilding = true;
-						//System.out.println("AYA SELECTED BUILDING");
 					}
-					if(Collision.collide(building.getPosition(), selectionRectangle))
+					if(Collision.collide(building.getPosition(), selectionRectangle, camera))
 					{
 						i++;
 					}
@@ -272,18 +274,15 @@ public class MainGui extends JFrame implements Runnable
 						selectionRectangle.setY(e.getY());
 						selectionRectangle.setW(0);
 						selectionRectangle.setH(0);
-						System.out.println("coordonner : " + selectionRectangle.getX() + "," + selectionRectangle.getY());
-						System.out.println("on active le rectangle");
 					}
 					
 					if(mouse.getId() > -1)
 					{
-						int x = (e.getX() / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
-						int y = (e.getY() / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
-						System.out.println("CASE : " + x + "," + y);
-						Position p = new Position(x + camera.getX(), y + camera.getY());
-						/*System.out.println("souris: " + e.getX() + "," + e.getY());
-						System.out.println("position: " + p.getX() + "," + p.getY());*/
+						int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
+						int y = ((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
+						
+						Position p = new Position(x, y);
+						
 						manager.getFactions().get(0).createBuilding(mouse.getId(), p);
 						mouse.setId(-1);
 					}
@@ -314,11 +313,10 @@ public class MainGui extends JFrame implements Runnable
 					}
 					selectionRectangle.setActive(false);
 				}
-				System.out.println("on relache");
 			}
 			else if(e.getButton() == 3)
 			{
-				System.out.println("REALISED BUTTON 2");
+				
 			}
 		}
 

@@ -355,7 +355,7 @@ public class GameDisplay extends JPanel
 	private void setDescriptionPanelForConstruction()
 	{
 		descriptionPanel.removeAll();
-		descriptionPanel.setLayout(new GridLayout(4, 2));
+		descriptionPanel.setLayout(new GridLayout(5, 2));
 		
 		JButton buttonForge = new JButton(new ConstructBuilding("Forge", EntityConfiguration.FORGE));
 		buttonForge.setFocusable(false);
@@ -372,17 +372,26 @@ public class GameDisplay extends JPanel
 		JButton buttonStockage = new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE));
 		buttonStockage.setFocusable(false);
 		
-		descriptionPanel.add(buttonForge);
-		descriptionPanel.add(buttonBarrack);
-		descriptionPanel.add(buttonStable);
+		JButton buttonCastle = new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE));
+		buttonCastle.setFocusable(false);
+		
+		JButton buttonArchery = new JButton(new ConstructBuilding("Acherie", EntityConfiguration.ARCHERY));
+		buttonArchery.setFocusable(false);
+		
+		JButton buttonTower = new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER));
+		buttonTower.setFocusable(false);
+		
+		descriptionPanel.add(new JLabel("Liste des constructions"));
+		descriptionPanel.add(new JLabel());
 		descriptionPanel.add(buttonHq);
 		descriptionPanel.add(buttonStockage);
-		descriptionPanel.add(new JButton(new ConstructBuilding("Archerie", EntityConfiguration.ARCHERY)));
-		descriptionPanel.add(new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE)));
-		descriptionPanel.add(new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER)));
+		descriptionPanel.add(buttonBarrack);
+		descriptionPanel.add(buttonArchery);
+		descriptionPanel.add(buttonStable);
+		descriptionPanel.add(buttonCastle);
+		descriptionPanel.add(buttonForge);
+		descriptionPanel.add(buttonTower);
 		
-		
-		//descriptionPanel.add(new JLabel("ON VEUT CONSTRUIRE"));
 		descriptionPanel.validate();
 	}
 	
@@ -402,18 +411,18 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 5));
+		descriptionPanel.setLayout(new GridLayout(2, 1));
 		
 		if(building.getProductionId() > -1)
 		{
 			JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
 			button.setFocusable(false);
-				
 			descriptionPanel.add(button);
+			descriptionPanel.add(new JLabel(building.getDescription()));
 		}
 		else
 		{
-			descriptionPanel.add(new JLabel("ne prodruit rien"));
+			descriptionPanel.add(new JLabel(building.getDescription()));
 		}
 		
 		descriptionPanel.validate();
@@ -426,9 +435,6 @@ public class GameDisplay extends JPanel
 		descriptionPanel.setLayout(new GridLayout(2, 2));
 		
 		descriptionPanel.add(constructionButton);
-		descriptionPanel.add(new JLabel("NOM DE L'UNITER"));
-		descriptionPanel.add(new JLabel("SON COMPORTEMENT"));
-		descriptionPanel.add(new JLabel("LES STATS"));
 		
 		descriptionPanel.validate();
 	}
