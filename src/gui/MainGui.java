@@ -220,6 +220,17 @@ public class MainGui extends JFrame implements Runnable
 			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
 			
+			if(w < 0)
+			{
+				x = x + w;
+				w = w * -1;
+			}
+			if(h < 0)
+			{
+				y = y + h;
+				h = h * -1;
+			}
+			
 			SelectionRect rect = new SelectionRect();
 			
 			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();

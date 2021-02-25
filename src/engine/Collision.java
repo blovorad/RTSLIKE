@@ -16,17 +16,6 @@ public class Collision
 		int w2 = r.getW();
 		int h2 = r.getH();
 		
-		if(w2 < 0)
-		{
-			x2 = x2 + w2;
-			w2 = w2 * -1;
-		}
-		if(h2 < 0)
-		{
-			y2 = y2 + h2;
-			h2 = h2 * -1;
-		}
-		
 		System.out.println("objet : " + x + "," + y + " rapport : " + w + "," + h);
 		System.out.println("rectangle : " + x2 + "," + y2 + " rapport : " + w2 + "," + h2);
 		
