@@ -6,15 +6,15 @@ public class Collision
 {
 	public static boolean collide(Position p, SelectionRect r, Camera camera)
 	{
-		int x = p.getX();
-		int y = p.getY();
-		int w = GameConfiguration.TILE_SIZE;
-		int h = GameConfiguration.TILE_SIZE;
+		int x = (p.getX()) / GameConfiguration.TILE_SIZE;
+		int y = (p.getY()) / GameConfiguration.TILE_SIZE;
+		int w = 1;
+		int h = 1;
 		
-		int x2 = r.getX();
-		int y2 = r.getY();
-		int w2 = r.getW();
-		int h2 = r.getH();
+		int x2 = (r.getX() + camera.getX()) / GameConfiguration.TILE_SIZE;
+		int y2 = (r.getY() + camera.getY()) / GameConfiguration.TILE_SIZE;
+		int w2 = r.getW() / GameConfiguration.TILE_SIZE;
+		int h2 = r.getH() / GameConfiguration.TILE_SIZE;
 		
 		System.out.println("objet : " + x + "," + y + " rapport : " + w + "," + h);
 		System.out.println("rectangle : " + x2 + "," + y2 + " rapport : " + w2 + "," + h2);

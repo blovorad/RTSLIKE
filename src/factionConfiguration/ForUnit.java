@@ -8,9 +8,9 @@ public class ForUnit extends Patron
 	private int maxSpeed;
 	private int timeToBuild;
 	
-	public ForUnit(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild)
+	public ForUnit(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description)
 	{
-		super(hp, age, sightRange, attackSpeed, attackRange);
+		super(hp, age, sightRange, attackSpeed, attackRange, description);
 		
 		this.range = range;
 		this.damage = damage;

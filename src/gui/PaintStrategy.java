@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.List;
 
 import configuration.GameConfiguration;
 import engine.Building;
@@ -90,9 +91,9 @@ public class PaintStrategy
 			camW = (width / GameConfiguration.TILE_SIZE) * gridMapWidth + 58;
 			camH = (height / GameConfiguration.TILE_SIZE) * gridMapHeight + 78;
 		}
-		System.out.println("on construit dans : " + width + "x" + height);
+		/*System.out.println("on construit dans : " + width + "x" + height);
 		System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
-		System.out.println("camera dimension : " + camW + "," + camH);
+		System.out.println("camera dimension : " + camW + "," + camH);*/
 	}
 	
 	public void paint(SelectionRect rectangle, Graphics graphics, Camera camera)
@@ -107,6 +108,7 @@ public class PaintStrategy
 	public void paint(Building building, Graphics graphics, Camera camera)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
+		
 		//System.out.println("on paint sur : " + (building.getPosition().getX() - camera.getX()) + "," + (building.getPosition().getY() - camera.getX()));
 		graphics.setColor(Color.green);
 		graphics.fillRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
@@ -173,7 +175,7 @@ public class PaintStrategy
 		}
 	}
 	
-	public void paintGui(Map map, Graphics graphics, Camera camera)
+	public void paintGui(Map map, List<Unit> units, List<Building> buildings, List<Ressource> ressources, Graphics graphics, Camera camera)
 	{	
 		Tile[][] tiles = map.getTiles();
 		
@@ -203,6 +205,22 @@ public class PaintStrategy
 				graphics.fillRect(tile.getColumn() * gridMapWidth + firstGridXOfMap, tile.getLine() * gridMapHeight + firstGridYOfMap, gridMapWidth, gridMapHeight);
 			}
 		}
+		
+		for(Unit unit : units)
+		{
+			this.paintUnitGui(unit, graphics, camera);
+		}
+		
+		for(Building building : buildings)
+		{
+			this.paintBuildingGui(building, graphics, camera);
+		}
+		
+		for(Ressource ressource : ressources)
+		{
+			this.paintRessourceGui(ressource, graphics, camera);
+		}
+		
 		graphics.setColor(new Color(168,104,38));
 		graphics.fillRect(0, 0, 500, 50);
 				
@@ -211,5 +229,30 @@ public class PaintStrategy
 		graphics.drawRect(camX + camera.getX() / GameConfiguration.TILE_SIZE, camY + camera.getY() / GameConfiguration.TILE_SIZE, camW, camH);	
 				
 		//graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
+	}
+	
+	public void paintUnitGui(Unit unit, Graphics graphics, Camera camera)
+	{
+		graphics.setColor(Color.green);
+		graphics.fillRect(unit.getPosition().getX() / GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
+				unit.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
+				gridMapWidth, gridMapHeight);
+	}
+	
+	public void paintBuildingGui(Building building, Graphics graphics, Camera camera)
+	{
+		graphics.setColor(Color.green);
+		graphics.fillRect(building.getPosition().getX() / GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
+				building.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
+				gridMapWidth, gridMapHeight);
+	}
+	
+	public void paintRessourceGui(Ressource ressource, Graphics graphics, Camera camera)
+	{
+		graphics.setColor(Color.green);
+		graphics.fillRect(ressource.getPosition().getX() / 
+				GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
+				ressource.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
+				gridMapWidth, gridMapHeight);
 	}
 }

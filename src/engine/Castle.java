@@ -49,7 +49,7 @@ public class Castle extends Building{
 		
 		if(id == EntityConfiguration.SPECIAL_UNIT) {
 			System.out.println("starting special unit production");
-			u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id);
+			u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, special.getDescription());
 		}
 		else {
 			System.out.println("Invalid id");

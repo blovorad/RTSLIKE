@@ -61,7 +61,7 @@ public class Stable extends Building{
 		
 		if(id == EntityConfiguration.CAVALRY) {
 			System.out.println("starting cavalry production");
-			u = new Unit(cavalry.getHp(), 0, cavalry.getAttackRange(), cavalry.getMaxSpeed(), cavalry.getDamage(), cavalry.getRange(), cavalry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id);
+			u = new Unit(cavalry.getHp(), 0, cavalry.getAttackRange(), cavalry.getMaxSpeed(), cavalry.getDamage(), cavalry.getRange(), cavalry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, cavalry.getDescription());
 		}
 		else {
 			System.out.println("Invalid id");

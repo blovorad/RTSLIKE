@@ -353,9 +353,7 @@ public class GameDisplay extends JPanel
 	}
 	
 	private void setDescriptionPanelForConstruction()
-	{
-		System.out.println("on met le panel pour construire");
-		
+	{		
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(5, 2));
 		
@@ -397,14 +395,13 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
-	public void setDescriptionPanelForUnit()
+	public void setDescriptionPanelForUnit(Unit unit)
 	{
-		System.out.println("on met le panel unit");
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(1, 3));
 		
-		descriptionPanel.add(new JLabel("ETATS"));
-		descriptionPanel.add(new JLabel("DESCRIPTION ET NOM UNITER"));
+		descriptionPanel.add(new JLabel("etat"));
+		descriptionPanel.add(new JLabel(unit.getDescription()));
 		descriptionPanel.add(new JLabel("LES STATS"));
 		
 		descriptionPanel.validate();
@@ -412,7 +409,6 @@ public class GameDisplay extends JPanel
 	
 	public void setDescriptionPanelForBuilding(Building building)
 	{
-		System.out.println("on met le panel building");
 		descriptionPanel.removeAll();
 		
 		descriptionPanel.setLayout(new GridLayout(2, 1));
@@ -434,8 +430,6 @@ public class GameDisplay extends JPanel
 	
 	public void setDescriptionPanelStandard()
 	{
-		System.out.println("on met le panel standard");
-		
 		descriptionPanel.removeAll();
 		
 		descriptionPanel.setLayout(new GridLayout(2, 2));
@@ -577,16 +571,6 @@ public class GameDisplay extends JPanel
 					this.paintStrategy.paint(building, g, camera);
 				}
 				
-				/*for(Worker worker: workers)
-				{
-					this.paintStrategy.paint(worker, g, camera);
-				}
-				
-				for(Fighter fighter: fighters)
-				{
-					this.paintStrategy.paint(fighter, g, camera);
-				}*/
-				
 				for(Unit unit : units)
 				{
 					this.paintStrategy.paint(unit, g, camera);
@@ -604,7 +588,11 @@ public class GameDisplay extends JPanel
 				this.paintStrategy.paint(selectionRectangle, g, camera);
 			}
 			
-			this.paintStrategy.paintGui(map, g, camera);
+			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
+			List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
+			List<Ressource> listRessources = manager.getFactions().get(0).getEntities().getRessources();
+			
+			this.paintStrategy.paintGui(map, listUnits, listBuildings, listRessources, g, camera);
 		}
 		else if(state == MAINMENU)
 		{

@@ -21,9 +21,9 @@ public class Unit extends Entity
 	
 	private Speed speed;
 	
-	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id)
+	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description)
 	{
-		super(hp, "unite type", position, id);
+		super(hp, description, position, id);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;

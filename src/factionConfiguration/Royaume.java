@@ -21,27 +21,27 @@ public class Royaume extends Race
 	
 	public void initWorker()
 	{
-		setWorker(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25));
+		setWorker(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "worker royaume"));
 	}
 	
 	public void initCavalry()
 	{
-		setCavalry(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25));
+		setCavalry(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "cavalry royaume"));
 	}
 	
 	public void initInfantry()
 	{
-		setInfantry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25));
+		setInfantry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "infantry royaume"));
 	}
 	
 	public void initArcher()
 	{
-		setArcher(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25));
+		setArcher(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "archer royaume"));
 	}
 	
 	public void initSpecial()
 	{
-		setSpecial(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25));
+		setSpecial(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "special royaume"));
 	}
 	
 	public void initForge()

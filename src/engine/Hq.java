@@ -57,7 +57,7 @@ public class Hq extends Building{
 
 		if(id == EntityConfiguration.WORKER) {
 			System.out.println("starting worker production");
-			u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id);
+			u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription());
 		}
 		else {
 			System.out.println("Invalid id");

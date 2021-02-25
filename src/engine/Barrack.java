@@ -53,7 +53,7 @@ public class Barrack extends Building{
 		
 		if(id == EntityConfiguration.INFANTRY) {
 			System.out.println("starting infatry production");
-			u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id);
+			u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, infantry.getDescription());
 		}
 		else {
 			System.out.println("Invalid id");
