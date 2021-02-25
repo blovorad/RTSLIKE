@@ -10,6 +10,11 @@ public class Entity
 	private Position destination;
 	private int id;
 	
+	public void damage(int damage)
+	{
+		this.setHp(this.getHp() -damage);
+	}
+	
 	//getter & setter
 	public int getHp() {
 		return hp;
