@@ -69,37 +69,37 @@ public class Faction
 			{
 				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
 			}
-			b = new Forge(position);
+			b = new Forge(position, EntityConfiguration.STABLE);
 		}
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
 		{
-			b = new Stable(position, race.getCavalry());
+			b = new Stable(position, race.getCavalry(), EntityConfiguration.STABLE);
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
-			b = new Barrack(position, race.getInfantry());
+			b = new Barrack(position, race.getInfantry(), EntityConfiguration.STABLE);
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
-			b = new Archery(position, race.getArcher());
+			b = new Archery(position, race.getArcher(), EntityConfiguration.STABLE);
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
-			b = new Hq(position, race.getWorker());
+			b = new Hq(position, race.getWorker(), EntityConfiguration.STABLE);
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
-			b = new Castle(position, race.getSpecial());
+			b = new Castle(position, race.getSpecial(), EntityConfiguration.STABLE);
 		}
 		//coder pas prio storage et tower
 		else if(id == EntityConfiguration.STORAGE)
 		{
-			b = new RessourcesStorage(position);
+			b = new RessourcesStorage(position, EntityConfiguration.STABLE);
 		}
 		else if(id == EntityConfiguration.TOWER)
 		{
-			b = new Tower(position);
+			b = new Tower(position, EntityConfiguration.STABLE);
 		}
 		else
 		{

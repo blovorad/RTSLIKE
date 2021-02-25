@@ -343,7 +343,7 @@ public class GameDisplay extends JPanel
 		return descriptionPanel;
 	}
 	
-	private void setDescriptionPanelForWorker()
+	public void setDescriptionPanelForWorker()
 	{
 		descriptionPanel.removeAll();
 		
@@ -354,6 +354,8 @@ public class GameDisplay extends JPanel
 	
 	private void setDescriptionPanelForConstruction()
 	{
+		System.out.println("on met le panel pour construire");
+		
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(5, 2));
 		
@@ -395,8 +397,9 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
-	private void setDescriptionPanelForUnit()
+	public void setDescriptionPanelForUnit()
 	{
+		System.out.println("on met le panel unit");
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(1, 3));
 		
@@ -409,6 +412,7 @@ public class GameDisplay extends JPanel
 	
 	public void setDescriptionPanelForBuilding(Building building)
 	{
+		System.out.println("on met le panel building");
 		descriptionPanel.removeAll();
 		
 		descriptionPanel.setLayout(new GridLayout(2, 1));
@@ -430,6 +434,8 @@ public class GameDisplay extends JPanel
 	
 	public void setDescriptionPanelStandard()
 	{
+		System.out.println("on met le panel standard");
+		
 		descriptionPanel.removeAll();
 		
 		descriptionPanel.setLayout(new GridLayout(2, 2));

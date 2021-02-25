@@ -7,8 +7,8 @@ public class Stable extends Building{
 	
 	private ForUnit cavalry;
 	
-	public Stable(Position position, ForUnit cavalry) {
-		super(position);
+	public Stable(Position position, ForUnit cavalry, int id) {
+		super(position, id);
 		this.setCavalry(cavalry);
 		this.setProductionId(EntityConfiguration.CAVALRY);
 	}
@@ -58,25 +58,10 @@ public class Stable extends Building{
 	@Override
 	public void startProd(int id) {
 		Unit u = null;
-		if(id == EntityConfiguration.INFANTRY) {
-			System.out.println("starting infatry production");
-			u = new Unit(); //constructeur de unit pas definie mais sinon on ajoute les attribut depuis forUnit infantry en mode infantry.getArmor ...
-		}
-		else if(id == EntityConfiguration.ARCHER) {
-			System.out.println("starting archer production");
-			u = new Unit();
-		}
-		else if(id == EntityConfiguration.CAVALRY) {
+		
+		if(id == EntityConfiguration.CAVALRY) {
 			System.out.println("starting cavalry production");
-			u = new Unit();
-		}
-		else if(id == EntityConfiguration.SPECIAL_UNIT) {
-			System.out.println("starting special production");
-			u = new Unit();
-		}
-		else if(id == EntityConfiguration.WORKER) {
-			System.out.println("starting worker production");
-			u = new Unit();
+			u = new Unit(cavalry.getHp(), 0, cavalry.getAttackRange(), cavalry.getMaxSpeed(), cavalry.getDamage(), cavalry.getRange(), cavalry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id);
 		}
 		else {
 			System.out.println("Invalid id");

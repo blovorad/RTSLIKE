@@ -2,8 +2,8 @@ package engine;
 
 public class RessourcesStorage extends Building{
 
-	public RessourcesStorage(Position position) {
-		super(position);
+	public RessourcesStorage(Position position, int id) {
+		super(position, id);
 		this.setProductionId(-1);
 	}
 

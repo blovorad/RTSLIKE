@@ -18,9 +18,16 @@ public abstract class Building extends Entity{
 	private int attackSpeed;
 	private int damage;
 	
-	public Building(Position position) {
-		this.setPosition(position);
-		this.setHp(100);
+	/*
+	 * private int hp;
+	private String description;
+	private Position position;
+	private Entity target;
+	private Position destination;
+	private int id;
+	 */
+	public Building(Position position, int id) {
+		super(100, "batiment type", position, id);
 		elementCount = new ArrayList<Unit>();
 	}
 	

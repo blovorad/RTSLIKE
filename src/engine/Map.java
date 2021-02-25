@@ -52,6 +52,19 @@ public class Map
 		}
 	}
 	
+	public boolean existTiles(Position position)
+	{
+		if( position.getX() < 0  && position.getX() >= this.columnCount )
+		{
+			return false;
+		}
+		else if(position.getY() < 0 && position.getY() >= this.lineCount )
+		{
+			return false;
+		}
+	return true;
+	}
+	
 	public Tile[][] getTiles()
 	{
 		return tiles;

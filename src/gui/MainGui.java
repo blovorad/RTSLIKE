@@ -192,6 +192,14 @@ public class MainGui extends JFrame implements Runnable
 			for(Unit unit : listUnits)
 			{
 				System.out.println("on check si collide avec unit" + unit);
+				Position unitPosition = unit.getPosition();
+				
+				if(mouseX > unitPosition.getX() && mouseX < unitPosition.getX() + GameConfiguration.TILE_SIZE && mouseY > unitPosition.getY() && mouseY < unitPosition.getY() + GameConfiguration.TILE_SIZE)
+				{
+					System.out.println("ajout unite selectionner");
+					manager.getFactions().get(0).getEntities().addSelectedUnit(unit);
+					dashboard.setDescriptionPanelForUnit();
+				}
 			}
 			
 			if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
@@ -216,7 +224,6 @@ public class MainGui extends JFrame implements Runnable
 		public void checkWhatIsSelected(int x, int y, int w, int h)
 		{
 			System.out.println("carrée de selection");
-			manager.getFactions().get(0).getEntities().clearSelectedUnits();
 			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
 			
@@ -233,16 +240,22 @@ public class MainGui extends JFrame implements Runnable
 			
 			SelectionRect rect = new SelectionRect();
 			
+			boolean noneSelected = true;
 			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
 			for(Unit unit : listUnits)
 			{
 				System.out.println("on check si collide avec unit" + unit);
 			}
 			
+			if(noneSelected == true)
+			{
+				manager.getFactions().get(0).getEntities().clearSelectedUnits();
+			}
+			
 			if(manager.getFactions().get(0).getEntities().getSelectedUnits().size() <= 0)
 			{
 				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
-				Boolean foundBuilding = false;
+				boolean foundBuilding = false;
 				int i = 0;
 				
 				for(Building building : listBuildings)
@@ -252,6 +265,7 @@ public class MainGui extends JFrame implements Runnable
 						manager.getFactions().get(0).getEntities().selectBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
 						foundBuilding = true;
+						System.out.println("on met le panneau");
 					}
 					if(Collision.collide(building.getPosition(), selectionRectangle, camera))
 					{
@@ -274,6 +288,9 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(dashboard.getState() == 1)
 			{
+				int mouseX = e.getX() + camera.getX();
+				int mouseY = e.getY() + camera.getY();
+				
 				if(e.getButton() == 1)
 				{
 					if(selectionRectangle.isActive() == false)
@@ -299,9 +316,13 @@ public class MainGui extends JFrame implements Runnable
 				}
 				else if(e.getButton() == 3)
 				{
-					manager.getFactions().get(0).getEntities().clearSelectedUnits();
-					manager.getFactions().get(0).getEntities().clearSelectedBuildings();
-					dashboard.setDescriptionPanelStandard();
+					List<Unit> listSelectedUnit = manager.getFactions().get(0).getEntities().getSelectedUnits();
+					
+					for(Unit unit : listSelectedUnit)
+					{
+						System.out.println("on a une cible");
+						unit.calculateSpeed(new Position(mouseX, mouseY));
+					}
 				}
 			}
 		}

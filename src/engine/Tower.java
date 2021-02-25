@@ -2,8 +2,8 @@ package engine;
 
 public class Tower extends Building{
 
-	public Tower(Position position) {
-		super(position);
+	public Tower(Position position, int id) {
+		super(position, id);
 		this.setProductionId(-1);
 	}
 

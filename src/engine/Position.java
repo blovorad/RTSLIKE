@@ -10,6 +10,12 @@ public class Position
 		this.setX(x);
 		this.setY(y);
 	}
+	
+	public void setPosition(Position position)
+	{
+		this.x = position.getX();
+		this.y = position.getY();
+	}
 
 	public int getX() {
 		return x;
@@ -25,6 +31,34 @@ public class Position
 
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public boolean equalsX(Position position)
+	{
+		if( this.x == position.x )
+		{
+			return true;
+		}
+	return false;
+	}
+	
+	public boolean equalsY(Position position)
+	{
+		if(this.y == position.y)
+		{
+			return true;
+		}
+	return false;
+	}
+	
+	public boolean equals(Position position)
+	{
+		if(this.x == position.x && this.y == position.y)
+		{
+			return true;
+		}
+		
+	return false;
 	}
 	
 	

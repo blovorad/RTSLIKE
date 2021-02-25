@@ -7,8 +7,8 @@ public class Hq extends Building{
 
 	private ForUnit worker;
 	
-	public Hq(Position position, ForUnit worker) {
-		super(position);
+	public Hq(Position position, ForUnit worker, int id) {
+		super(position, id);
 		this.worker = worker;
 		this.setProductionId(EntityConfiguration.WORKER);
 	}
@@ -54,25 +54,10 @@ public class Hq extends Building{
 	@Override
 	public void startProd(int id) {
 		Unit u = null;
-		if(id == EntityConfiguration.INFANTRY) {
-			System.out.println("starting infatry production");
-			u = new Unit(); //constructeur de unit pas definie mais sinon on ajoute les attribut depuis forUnit infantry en mode infantry.getArmor ...
-		}
-		else if(id == EntityConfiguration.ARCHER) {
-			System.out.println("starting archer production");
-			u = new Unit();
-		}
-		else if(id == EntityConfiguration.CAVALRY) {
-			System.out.println("starting cavalry production");
-			u = new Unit();
-		}
-		else if(id == EntityConfiguration.SPECIAL_UNIT) {
-			System.out.println("starting special production");
-			u = new Unit();
-		}
-		else if(id == EntityConfiguration.WORKER) {
+
+		if(id == EntityConfiguration.WORKER) {
 			System.out.println("starting worker production");
-			u = new Unit();
+			u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id);
 		}
 		else {
 			System.out.println("Invalid id");

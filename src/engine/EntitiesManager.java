@@ -135,21 +135,10 @@ public class EntitiesManager
 		this.buildings.add(building); 
 	}
 	
-	/*public List<Fighter> getFighters() {
-		return fighters;
+	public void addSelectedUnit(Unit unit)
+	{
+		this.selectedUnits.add(unit);
 	}
-
-	public void setFighters(List<Fighter> fighters) {
-		this.fighters = fighters;
-	}
-
-	public List<Worker> getWorkers() {
-		return workers;
-	}
-
-	public void setWorkers(List<Worker> gatherers) {
-		this.workers = gatherers;
-	}*/
 
 	public List<Building> getBuildings() {
 		return buildings;
