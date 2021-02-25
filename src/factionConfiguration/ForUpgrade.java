@@ -7,7 +7,7 @@ public class ForUpgrade
 
 	private int age; // age ou l'upgrade est dispo
 	private String name;
-	private Map<Integer, Integer> effects; // je pense utiliser une hashmap en mode (defense,10) pour par exemple augmenter de 10% la def
+	private Map<Integer, Integer> effects; // hashmap en mode (id def,10) pour par exemple augmenter de 10% la def
 	private int timeToProduce;
 	private int idBuilding;
 	private boolean done;
@@ -49,6 +49,22 @@ public class ForUpgrade
 
 	public void setTimeToProduce(int timeToProduce) {
 		this.timeToProduce = timeToProduce;
+	}
+
+	public int getIdBuilding() {
+		return idBuilding;
+	}
+
+	public void setIdBuilding(int idBuilding) {
+		this.idBuilding = idBuilding;
+	}
+
+	public boolean isDone() {
+		return done;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
 	}
 	
 }

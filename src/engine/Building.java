@@ -3,6 +3,8 @@ package engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import configuration.EntityConfiguration;
+
 public abstract class Building extends Entity{
 
 	private List<Unit> elementCount;
@@ -42,7 +44,24 @@ public abstract class Building extends Entity{
 		if(timer > 0)
 		{
 			timer--;
-			System.out.println("updating infantry production time remaning : " + timer);
+			if(this.getProductionId() == EntityConfiguration.INFANTRY) {
+				System.out.println("updating infantry production time remaning : " + timer);
+			}
+			else if(this.getProductionId() == EntityConfiguration.ARCHER) {
+				System.out.println("updating archer production time remaning : " + timer);
+			}
+			else if(this.getProductionId() == EntityConfiguration.CAVALRY) {
+				System.out.println("updating cavalry production time remaning : " + timer);
+			}
+			else if(this.getProductionId() == EntityConfiguration.SPECIAL_UNIT) {
+				System.out.println("updating special production time remaning : " + timer);
+			}
+			else if(this.getProductionId() == EntityConfiguration.WORKER) {
+				System.out.println("updating worker production time remaning : " + timer);
+			}
+			else {
+				System.out.println("Invalid id");
+			}
 		}
 	}
 	
