@@ -16,6 +16,15 @@ public class SelectionRect
 		this.h = 0;
 		this.active = false;
 	}
+	
+	public SelectionRect(int x, int y, int w, int h)
+	{
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		this.active = true;
+	}
 
 	public int getX() {
 		return x;
