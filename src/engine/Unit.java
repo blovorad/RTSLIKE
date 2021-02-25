@@ -21,9 +21,6 @@ public class Unit extends Entity
 	private int range;
 	private int armor;
 	
-	private int xSible;
-	private int ySible;
-	
 	private Speed speed;
 	
 	public Unit(int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor)
