@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
@@ -19,6 +20,7 @@ public class Faction
 	private int money;
 	private EntitiesManager entities;
 	private List<Upgrades> upgradesDone;
+	private AbstractMap<Integer, ForBuilding> buildings;
 
 	public Faction(int id) 
 	{
@@ -44,6 +46,7 @@ public class Faction
 			race = new Gaia();
 		}
 		
+		buildings = race.getBuildings();
 		entities = new EntitiesManager(this);
 	}
 	
@@ -59,6 +62,7 @@ public class Faction
 	{
 		//ForBuilding building = race.getBuildings().get(id);
 		Building b = null;
+		ForBuilding patronBuilding = this.buildings.get(id);
 		
 		if(id == EntityConfiguration.FORGE)
 		{
@@ -69,37 +73,37 @@ public class Faction
 			{
 				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
 			}
-			b = new Forge(position, EntityConfiguration.STABLE);
+			b = new Forge(position, id, patronBuilding.getDescription());
 		}
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
 		{
-			b = new Stable(position, race.getCavalry(), EntityConfiguration.STABLE);
+			b = new Stable(position, race.getCavalry(), id, patronBuilding.getDescription());
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
-			b = new Barrack(position, race.getInfantry(), EntityConfiguration.STABLE);
+			b = new Barrack(position, race.getInfantry(), id, patronBuilding.getDescription());
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
-			b = new Archery(position, race.getArcher(), EntityConfiguration.STABLE);
+			b = new Archery(position, race.getArcher(), id, patronBuilding.getDescription());
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
-			b = new Hq(position, race.getWorker(), EntityConfiguration.STABLE);
+			b = new Hq(position, race.getWorker(), id, patronBuilding.getDescription());
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
-			b = new Castle(position, race.getSpecial(), EntityConfiguration.STABLE);
+			b = new Castle(position, race.getSpecial(), id, patronBuilding.getDescription());
 		}
 		//coder pas prio storage et tower
 		else if(id == EntityConfiguration.STORAGE)
 		{
-			b = new RessourcesStorage(position, EntityConfiguration.STABLE);
+			b = new RessourcesStorage(position, id, patronBuilding.getDescription());
 		}
 		else if(id == EntityConfiguration.TOWER)
 		{
-			b = new Tower(position, EntityConfiguration.STABLE);
+			b = new Tower(position, id, patronBuilding.getDescription());
 		}
 		else
 		{
@@ -171,5 +175,21 @@ public class Faction
 
 	public void setMoney(int money) {
 		this.money = money;
+	}
+
+	public AbstractMap<Integer, ForBuilding> getBuildings() {
+		return buildings;
+	}
+
+	public void setBuildings(AbstractMap<Integer, ForBuilding> buildings) {
+		this.buildings = buildings;
+	}
+
+	public List<Upgrades> getUpgradesDone() {
+		return upgradesDone;
+	}
+
+	public void setUpgradesDone(List<Upgrades> upgradesDone) {
+		this.upgradesDone = upgradesDone;
 	}
 }

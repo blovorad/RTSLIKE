@@ -233,7 +233,7 @@ public class PaintStrategy
 	
 	public void paintUnitGui(Unit unit, Graphics graphics, Camera camera)
 	{
-		graphics.setColor(Color.green);
+		graphics.setColor(Color.white);
 		graphics.fillRect(unit.getPosition().getX() / GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
 				unit.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
 				gridMapWidth, gridMapHeight);
@@ -241,7 +241,7 @@ public class PaintStrategy
 	
 	public void paintBuildingGui(Building building, Graphics graphics, Camera camera)
 	{
-		graphics.setColor(Color.green);
+		graphics.setColor(Color.white);
 		graphics.fillRect(building.getPosition().getX() / GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
 				building.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
 				gridMapWidth, gridMapHeight);
@@ -249,7 +249,7 @@ public class PaintStrategy
 	
 	public void paintRessourceGui(Ressource ressource, Graphics graphics, Camera camera)
 	{
-		graphics.setColor(Color.green);
+		graphics.setColor(Color.ORANGE);
 		graphics.fillRect(ressource.getPosition().getX() / 
 				GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
 				ressource.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 

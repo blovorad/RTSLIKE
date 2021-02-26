@@ -1,6 +1,8 @@
 package factionConfiguration;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Race 
@@ -14,6 +16,11 @@ public abstract class Race
 	private AbstractMap<Integer, ForBuilding>buildings;
 	private List<ForUpgrade> upgrades;
 	
+	public Race()
+	{
+		this.buildings = new HashMap<Integer, ForBuilding>();
+		this.upgrades = new ArrayList<ForUpgrade>();
+	}
 	
 	public ForUnit getCavalry() 
 	{

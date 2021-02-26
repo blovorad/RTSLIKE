@@ -181,7 +181,7 @@ public class MainGui extends JFrame implements Runnable
 		{
 			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
-			
+			System.out.println("ici");
 			int x = mouseX + camera.getX();
 			int y = mouseY + camera.getY();
 			
@@ -189,10 +189,9 @@ public class MainGui extends JFrame implements Runnable
 			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
 			for(Unit unit : listUnits)
 			{
-				Position unitPosition = new Position(unit.getPosition().getX() + camera.getX(), unit.getPosition().getY() + camera.getY());
+				Position unitPosition = new Position(unit.getPosition().getX(),  unit.getPosition().getY());
 				
-				
-				if(mouseX > unitPosition.getX() && mouseX < unitPosition.getX() + GameConfiguration.TILE_SIZE && mouseY > unitPosition.getY() && mouseY < unitPosition.getY() + GameConfiguration.TILE_SIZE)
+				if(x > unitPosition.getX() && x < unitPosition.getX() + GameConfiguration.TILE_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + GameConfiguration.TILE_SIZE)
 				{
 					manager.getFactions().get(0).getEntities().addSelectedUnit(unit);
 					dashboard.setDescriptionPanelForUnit(unit);
@@ -200,7 +199,7 @@ public class MainGui extends JFrame implements Runnable
 				}
 			}
 			
-			if(noUnitSelected == false)
+			if(noUnitSelected == true)
 			{
 				manager.getFactions().get(0).getEntities().clearSelectedUnits();
 				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();

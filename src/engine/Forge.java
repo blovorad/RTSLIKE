@@ -2,8 +2,8 @@ package engine;
 
 public class Forge extends Building{
 
-	public Forge(Position position, int id) {
-		super(position, id);
+	public Forge(Position position, int id, String description) {
+		super(position, id, description);
 		this.setProductionId(-1);
 	}
 

@@ -7,8 +7,8 @@ public class Hq extends Building{
 
 	private ForUnit worker;
 	
-	public Hq(Position position, ForUnit worker, int id) {
-		super(position, id);
+	public Hq(Position position, ForUnit worker, int id, String description) {
+		super(position, id, description);
 		this.worker = worker;
 		this.setProductionId(EntityConfiguration.WORKER);
 	}

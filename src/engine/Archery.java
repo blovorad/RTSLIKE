@@ -7,8 +7,8 @@ public class Archery extends Building{
 
 	private ForUnit archer;
 	
-	public Archery(Position position, ForUnit archer, int id) {
-		super(position, id);
+	public Archery(Position position, ForUnit archer, int id, String description) {
+		super(position, id, description);
 		this.archer = archer;
 		this.setProductionId(EntityConfiguration.ARCHER);
 	}

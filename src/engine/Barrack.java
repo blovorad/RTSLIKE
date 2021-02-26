@@ -7,8 +7,8 @@ public class Barrack extends Building{
 
 	private ForUnit infantry;
 	
-	public Barrack(Position position, ForUnit infantry, int id) {
-		super(position, id);
+	public Barrack(Position position, ForUnit infantry, int id, String description) {
+		super(position, id, description);
 		this.infantry = infantry;
 		this.setProductionId(EntityConfiguration.INFANTRY);
 	}

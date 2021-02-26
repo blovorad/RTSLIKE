@@ -7,8 +7,8 @@ public class Stable extends Building{
 	
 	private ForUnit cavalry;
 	
-	public Stable(Position position, ForUnit cavalry, int id) {
-		super(position, id);
+	public Stable(Position position, ForUnit cavalry, int id, String description) {
+		super(position, id, description);
 		this.setCavalry(cavalry);
 		this.setProductionId(EntityConfiguration.CAVALRY);
 	}

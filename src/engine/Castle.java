@@ -7,8 +7,8 @@ public class Castle extends Building{
 
 	private ForUnit special;
 	
-	public Castle(Position position, ForUnit special, int id) {
-		super(position, id);
+	public Castle(Position position, ForUnit special, int id, String description) {
+		super(position, id, description);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
 	}
