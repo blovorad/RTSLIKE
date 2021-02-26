@@ -269,6 +269,7 @@ public class MainGui extends JFrame implements Runnable
 			
 			if(noUnitSelected == true)
 			{
+				boolean noBuildingSelected = true;
 				manager.getFactions().get(0).getEntities().clearSelectedUnits();
 				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
 				
@@ -278,7 +279,21 @@ public class MainGui extends JFrame implements Runnable
 					{
 						manager.getFactions().get(0).getEntities().selectBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
+						noBuildingSelected = false;
 						break;
+					}
+				}
+				
+				if(noBuildingSelected == true)
+				{
+					List<Ressource> listRessources = manager.getFactions().get(2).getEntities().getRessources();
+					for(Ressource ressource : listRessources)
+					{
+						if(Collision.collide(ressource.getPosition(), rect, camera))
+						{
+							dashboard.setDescriptionPanelForRessource(ressource);
+							break;
+						}
 					}
 				}
 			}
