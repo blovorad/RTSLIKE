@@ -7,9 +7,10 @@ public abstract class Patron
 	private int sightRange;
 	private int attackSpeed;
 	private int attackRange;
+	private int hpMax;
 	private String description;
 	
-	public Patron(int hp, int age, int sightRange, int attackSpeed, int attackRange, String description)
+	public Patron(int hp, int age, int sightRange, int attackSpeed, int attackRange, String description, int hpMax)
 	{
 		this.hp = hp;
 		this.age = age;
@@ -17,6 +18,7 @@ public abstract class Patron
 		this.attackSpeed = attackSpeed;
 		this.attackRange = attackRange;
 		this.description = description;
+		this.setHpMax(hpMax);
 	}
 	
 	public int getHp() 
@@ -69,5 +71,13 @@ public abstract class Patron
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getHpMax() {
+		return hpMax;
+	}
+
+	public void setHpMax(int hpMax) {
+		this.hpMax = hpMax;
 	}
 }

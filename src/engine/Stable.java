@@ -35,18 +35,6 @@ public class Stable extends Building{
 		return u;
 	}
 
-	@Override
-	public void attak() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void lookForTarget(Position position, int range) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public ForUnit getCavalry() {
 		return cavalry;
 	}

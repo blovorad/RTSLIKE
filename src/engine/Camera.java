@@ -80,14 +80,12 @@ public class Camera
 			y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - GameConfiguration.WINDOW_HEIGHT;
 			speed.setVy(0);
 		}
-		//System.out.println("X: " + x + ", Y: " + y + ", VX : " + this.getSpeed().getVx() + ", VY: " + this.getSpeed().getVy());
 	}
 	
 	public void move(int vx, int vy)
 	{
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);
-		//System.out.println("on move" + vx + " et " + vy);
 	}
 
 	public Speed getSpeed() 

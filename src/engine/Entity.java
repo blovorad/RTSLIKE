@@ -31,7 +31,7 @@ public class Entity
 	
 	public void damage(int damage)
 	{
-		this.setHp(this.getHp() -damage);
+		this.setHp(this.getHp() - damage);
 	}
 	
 	//getter & setter

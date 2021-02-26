@@ -66,8 +66,16 @@ public abstract class Building extends Entity{
 	
 	public abstract Unit produce();
 	public abstract void startProd(int id);
-	public abstract void attak(); 
-	public abstract void lookForTarget(Position position, int range);
+	
+	public  void attak()
+	{
+		
+	}
+	
+	public void lookForTarget(Position position, int range)
+	{
+		
+	}
 
 	public boolean isInRange(int attakRange, Entity target) { // methode qui calcule si la target est dans la range
 		

@@ -13,10 +13,6 @@ public class Hq extends Building{
 		this.setProductionId(EntityConfiguration.WORKER);
 	}
 	
-	public void addUnit() {
-		
-	}
-	
 	public void upgradeTier() {
 		
 	}
@@ -37,18 +33,6 @@ public class Hq extends Building{
 		System.out.println("producing worker final");
 		
 		return u;
-	}
-
-	@Override
-	public void attak() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void lookForTarget(Position position, int range) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

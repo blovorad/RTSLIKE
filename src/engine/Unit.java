@@ -135,23 +135,28 @@ public class Unit extends Entity
 			calculateSpeed(this.getTarget().getPosition());
 		}
 		else
-		{
-
-			this.getPosition().setX(this.getPosition().getX() + this.getSpeed().getVx());
-			this.getPosition().setY(this.getPosition().getY() + this.getSpeed().getVy());
-			
-			
-			/*if(this.getPosition().getX() < this.getDestination().getX() || this.getPosition().getX() > this.getDestination().getX())
+		{			
+			if(this.getDestination() != null)
 			{
-				this.getPosition().setX(this.getDestination().getX());
-				speed.setVx(0);
+				if(this.getPosition().getX() < this.getDestination().getX() || this.getPosition().getX() > this.getDestination().getX())
+				{
+					this.getPosition().setX(this.getDestination().getX());
+					speed.setVx(0);
+					this.setDestination(null);
+				}
+				else if(this.getPosition().getY() < this.getDestination().getY() || this.getPosition().getY() > this.getDestination().getY())
+				{
+					this.getPosition().setY(this.getDestination().getY());
+					speed.setVy(0);
+					this.setDestination(null);
+				}
 			}
-			else if(this.getPosition().getY() < this.getDestination().getY() || this.getPosition().getY() > this.getDestination().getY())
-			{
-				this.getPosition().setY(this.getDestination().getY());
-				speed.setVy(0);
-			}*/
 		}
-
+		
+		this.getPosition().setX(this.getPosition().getX() + this.getSpeed().getVx());
+		this.getPosition().setY(this.getPosition().getY() + this.getSpeed().getVy());
+		
+		
+		//ici collision
 	}
 }

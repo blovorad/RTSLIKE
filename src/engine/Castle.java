@@ -32,18 +32,6 @@ public class Castle extends Building{
 	}
 
 	@Override
-	public void attak() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void lookForTarget(Position position, int range) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void startProd(int id) {
 		Unit u = null;
 		

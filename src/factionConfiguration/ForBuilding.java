@@ -6,9 +6,9 @@ public class ForBuilding extends Patron
 {
 	private List<ForUpgrade>upgrades;
 	
-	public ForBuilding(int hp, int attackRange, int sightRange, int age, int attackSpeed, List<ForUpgrade>upgrades, String description)
+	public ForBuilding(int hp, int attackRange, int sightRange, int age, int attackSpeed, List<ForUpgrade>upgrades, String description, int hpMax)
 	{
-		super(hp, age, sightRange, attackSpeed, attackRange, description);
+		super(hp, age, sightRange, attackSpeed, attackRange, description, hpMax);
 		this.upgrades = upgrades;
 	}
 

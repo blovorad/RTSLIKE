@@ -28,67 +28,67 @@ public class Empire extends Race
 	
 	public void initWorker()
 	{
-		setWorker(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "Travailleur empire"));
+		setWorker(new ForUnit(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Travailleur empire", 5));
 	}
 	
 	public void initCavalry()
 	{
-		setCavalry(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "Cavalier empire"));
+		setCavalry(new ForUnit(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Cavalier empire", 5));
 	}
 	
 	public void initInfantry()
 	{
-		setInfantry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin empire"));
+		setInfantry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin empire", 5));
 	}
 	
 	public void initArcher()
 	{
-		setArcher(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer empire"));
+		setArcher(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer empire", 5));
 	}
 	
 	public void initSpecial()
 	{
-		setSpecial(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special empire"));
+		setSpecial(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special empire", 5));
 	}
 	
 	public void initForge()
 	{
-		this.getBuildings().put(EntityConfiguration.FORGE, new ForBuilding(100, 10, 10, 1, 10, null, "Forge Empire"));
+		this.getBuildings().put(EntityConfiguration.FORGE, new ForBuilding(100, 10, 10, 1, 10, null, "Forge Empire", 100));
 	}
 	
 	public void initHq()
 	{
-		this.getBuildings().put(EntityConfiguration.HQ, new ForBuilding(100, 10, 10, 1, 10, null, "Quartier general Empire"));
+		this.getBuildings().put(EntityConfiguration.HQ, new ForBuilding(100, 10, 10, 1, 10, null, "Quartier general Empire", 100));
 	}
 	
 	public void initCastle()
 	{
-		this.getBuildings().put(EntityConfiguration.CASTLE, new ForBuilding(100, 10, 10, 1, 10, null, "Chateau Empire"));
+		this.getBuildings().put(EntityConfiguration.CASTLE, new ForBuilding(100, 10, 10, 1, 10, null, "Chateau Empire", 100));
 	}
 	
 	public void initTower()
 	{
-		this.getBuildings().put(EntityConfiguration.TOWER, new ForBuilding(100, 10, 10, 1, 10, null, "Tour Empire"));
+		this.getBuildings().put(EntityConfiguration.TOWER, new ForBuilding(100, 10, 10, 1, 10, null, "Tour Empire", 100));
 	}
 	
 	public void initRessourceStockage()
 	{
-		this.getBuildings().put(EntityConfiguration.STORAGE, new ForBuilding(100, 10, 10, 1, 10, null, "Stockage Empire"));
+		this.getBuildings().put(EntityConfiguration.STORAGE, new ForBuilding(100, 10, 10, 1, 10, null, "Stockage Empire", 100));
 	}
 	
 	public void initBarrack()
 	{
-		this.getBuildings().put(EntityConfiguration.BARRACK, new ForBuilding(100, 10, 10, 1, 10, null, "Caserne Empire"));
+		this.getBuildings().put(EntityConfiguration.BARRACK, new ForBuilding(100, 10, 10, 1, 10, null, "Caserne Empire", 100));
 	}
 	
 	public void initArchery()
 	{
-		this.getBuildings().put(EntityConfiguration.ARCHERY, new ForBuilding(100, 10, 10, 1, 10, null, "Archerie Empire"));
+		this.getBuildings().put(EntityConfiguration.ARCHERY, new ForBuilding(100, 10, 10, 1, 10, null, "Archerie Empire", 100));
 	}
 	
 	public void initStable()
 	{
-		this.getBuildings().put(EntityConfiguration.STABLE, new ForBuilding(100, 10, 10, 1, 10, null, "Ecurie Empire"));
+		this.getBuildings().put(EntityConfiguration.STABLE, new ForBuilding(100, 10, 10, 1, 10, null, "Ecurie Empire", 100));
 	}
 	
 	public void initUpgrades()

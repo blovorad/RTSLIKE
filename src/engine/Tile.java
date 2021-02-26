@@ -31,6 +31,11 @@ public class Tile
 	//not implemented
 	public boolean isSolid()
 	{
+		/*if(id == SOLID)
+		{
+			return true;
+		}*/
+		
 		return false;
 	}
 }

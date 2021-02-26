@@ -240,7 +240,6 @@ public class MainGui extends JFrame implements Runnable
 			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
 			for(Unit unit : listUnits)
 			{
-				
 				if(Collision.collide(unit.getPosition(), rect, camera) == true)
 				{
 					manager.getFactions().get(0).getEntities().addSelectedUnit(unit);
