@@ -4,6 +4,7 @@ import java.util.AbstractMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
+import configuration.GameConfiguration;
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
 import factionConfiguration.ForBuilding;
@@ -113,6 +114,14 @@ public class Faction
 		this.entities.addBuilding(b);
 		nbBuilding++;
 		System.out.println("ajoutation building");
+	}
+	
+	public void addRessource(List<Tile> listPositionRessources)
+	{
+		for(Tile t : listPositionRessources)
+		{
+			this.getEntities().getRessources().add(new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t));
+		}
 	}
 
 	public int getAge() 

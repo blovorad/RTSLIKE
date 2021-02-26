@@ -19,9 +19,12 @@ import engine.Collision;
 import engine.Camera;
 import engine.FactionManager;
 import engine.Fighter;
+import engine.Map;
 import engine.Mouse;
 import engine.Position;
+import engine.Ressource;
 import engine.SelectionRect;
+import engine.Tile;
 import engine.Unit;
 import engine.Worker;
 
@@ -181,7 +184,7 @@ public class MainGui extends JFrame implements Runnable
 		{
 			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
-			System.out.println("ici");
+
 			int x = mouseX + camera.getX();
 			int y = mouseY + camera.getY();
 			
@@ -201,6 +204,7 @@ public class MainGui extends JFrame implements Runnable
 			
 			if(noUnitSelected == true)
 			{
+				boolean noBuildingSelected = true;
 				manager.getFactions().get(0).getEntities().clearSelectedUnits();
 				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
 				
@@ -212,7 +216,22 @@ public class MainGui extends JFrame implements Runnable
 					{
 						manager.getFactions().get(0).getEntities().selectBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
+						noBuildingSelected = false;
 						break;
+					}
+				}
+				
+				if(noBuildingSelected == true)
+				{
+					List<Ressource> listRessources = manager.getFactions().get(2).getEntities().getRessources();
+					for(Ressource ressource : listRessources)
+					{
+						if((x > ressource.getPosition().getX() && x < ressource.getPosition().getX() + GameConfiguration.TILE_SIZE)
+								&& (y > ressource.getPosition().getY() && y < ressource.getPosition().getY() + GameConfiguration.TILE_SIZE))
+						{
+							dashboard.setDescriptionPanelForRessource(ressource);
+							break;
+						}
 					}
 				}
 			}
@@ -293,13 +312,18 @@ public class MainGui extends JFrame implements Runnable
 					
 					if(mouse.getId() > -1)
 					{
-						int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
-						int y = ((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
-						
-						Position p = new Position(x, y);
-						
-						manager.getFactions().get(0).createBuilding(mouse.getId(), p);
-						mouse.setId(-1);
+						Tile tile = dashboard.getMap().getTile((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE, (e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE);
+						System.out.println("tuile solide : " + tile.isSolid());
+						if(tile.isSolid() == false)
+						{
+							int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
+							int y = ((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
+							
+							Position p = new Position(x, y);
+							
+							manager.getFactions().get(0).createBuilding(mouse.getId(), p);
+							mouse.setId(-1);
+						}
 						selectionRectangle.setActive(false);
 					}
 				}

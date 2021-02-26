@@ -428,6 +428,17 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	public void setDescriptionPanelForRessource(Ressource ressource)
+	{
+		descriptionPanel.removeAll();
+		
+		descriptionPanel.setLayout(new FlowLayout());
+		
+		descriptionPanel.add(new JLabel("Ressource restante : " + ressource.getHp()));
+		
+		descriptionPanel.validate();
+	}
+	
 	public void setDescriptionPanelStandard()
 	{
 		descriptionPanel.removeAll();
@@ -800,16 +811,18 @@ public class GameDisplay extends JPanel
 			
 			if(radioButton1.isSelected())
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 1);
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 1, "src/file/map1.txt");
 			}
 			else if(radioButton2.isSelected())
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 2);
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 2, "src/file/map2.txt");
 			}
 			else
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3);
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3, "src/file/map3.txt");
 			}
+			manager.getFactions().get(2).addRessource(map.getGoldTiles());
+			
 			oldState = state;
 			state = INGAME;
 			
@@ -1174,6 +1187,11 @@ public class GameDisplay extends JPanel
 			default:
 				break;
 		}
+	}
+	
+	public Map getMap()
+	{
+		return this.map;
 	}
 
 	public int getState() {

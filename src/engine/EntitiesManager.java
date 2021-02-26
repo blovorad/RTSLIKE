@@ -3,6 +3,8 @@ package engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import configuration.MapConfiguration;
+
 public class EntitiesManager 
 {
 	private Faction faction;
@@ -102,9 +104,10 @@ public class EntitiesManager
 		
 		for(Ressource ressource : ressources) 
 		{
-			ressource.update();
+			//ressource.update();
 			if(ressource.getHp() < 1)
 			{
+				ressource.getTileAttach().setSolid(false);
 				removeRessources.add(ressource);
 			}
 		}

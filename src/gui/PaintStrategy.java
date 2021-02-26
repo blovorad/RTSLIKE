@@ -142,7 +142,7 @@ public class PaintStrategy
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
-		graphics.setColor(Color.gray);
+		graphics.setColor(Color.yellow);
 		graphics.fillRect(ressource.getPosition().getX() - camera.getX(), ressource.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	
@@ -158,18 +158,7 @@ public class PaintStrategy
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
 				
-				if(tile.getId() == 0)
-				{
-					graphics.setColor(Color.black);
-				}
-				else if(tile.getId() == 1)
-				{
-					graphics.setColor(Color.orange);
-				}
-				else if(tile.getId() == 2)
-				{
-					graphics.setColor(Color.blue);
-				}
+				graphics.setColor(tile.getColor());
 				graphics.fillRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
 			}
 		}
@@ -190,18 +179,8 @@ public class PaintStrategy
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
 						
-				if(tile.getId() == 0)
-				{
-					graphics.setColor(Color.black);
-				}
-				else if(tile.getId() == 1)
-				{
-					graphics.setColor(Color.orange);
-				}
-				else
-				{
-					graphics.setColor(Color.blue);
-				}
+				graphics.setColor(tile.getColor());
+		
 				graphics.fillRect(tile.getColumn() * gridMapWidth + firstGridXOfMap, tile.getLine() * gridMapHeight + firstGridYOfMap, gridMapWidth, gridMapHeight);
 			}
 		}

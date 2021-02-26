@@ -130,13 +130,15 @@ public class Unit extends Entity
 
 	public void update()
 	{
+		Position p = this.getPosition();
+		
 		if(this.getTarget() != null && (!this.getTarget().getPosition().equals(this.getPosition())))
 		{
 			calculateSpeed(this.getTarget().getPosition());
 		}
 		else
 		{			
-			if(this.getDestination() != null)
+			/*if(this.getDestination() != null)
 			{
 				if(this.getPosition().getX() < this.getDestination().getX() || this.getPosition().getX() > this.getDestination().getX())
 				{
@@ -150,13 +152,33 @@ public class Unit extends Entity
 					speed.setVy(0);
 					this.setDestination(null);
 				}
-			}
+			}*/
 		}
 		
 		this.getPosition().setX(this.getPosition().getX() + this.getSpeed().getVx());
 		this.getPosition().setY(this.getPosition().getY() + this.getSpeed().getVy());
 		
+		if(p.getX() < 0)
+		{
+			p.setX(0);
+			this.getSpeed().setVx(0);
+		}
+		else if(p.getX() + GameConfiguration.TILE_SIZE > GameConfiguration.COLUMN_COUNT * GameConfiguration.TILE_SIZE)
+		{
+			p.setX(GameConfiguration.COLUMN_COUNT * GameConfiguration.TILE_SIZE - GameConfiguration.TILE_SIZE);
+			this.getSpeed().setVx(0);
+		}
 		
+		if(p.getY() < 0)
+		{
+			p.setY(0);
+			this.getSpeed().setVy(0);
+		}
+		else if(p.getY() + GameConfiguration.TILE_SIZE > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT)
+		{
+			p.setY(GameConfiguration.LINE_COUNT * GameConfiguration.TILE_SIZE - GameConfiguration.TILE_SIZE);
+			this.getSpeed().setVy(0);
+		}
 		//ici collision
 	}
 }
