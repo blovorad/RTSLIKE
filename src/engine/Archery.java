@@ -41,7 +41,13 @@ public class Archery extends Building{
 
 		if(id == EntityConfiguration.ARCHER) {
 			System.out.println("starting archer production");
-			u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription());
+			if(this.getDestination() == null) {
+				u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription());
+			}
+			else {
+				u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription(), this.getDestination());
+				u.calculateSpeed(getDestination());
+			}
 		}
 		else {
 			System.out.println("Invalid id");

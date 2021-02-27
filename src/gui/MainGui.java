@@ -346,9 +346,22 @@ public class MainGui extends JFrame implements Runnable
 				{
 					List<Unit> listSelectedUnit = manager.getFactions().get(0).getEntities().getSelectedUnits();
 					
-					for(Unit unit : listSelectedUnit)
-					{
-						unit.calculateSpeed(new Position(mouseX, mouseY));
+					
+					if(!listSelectedUnit.isEmpty()) {
+						for(Unit unit : listSelectedUnit)
+						{
+							unit.calculateSpeed(new Position(mouseX, mouseY));
+						}
+					}
+					else {
+						List<Building> listSelectedBuilding = manager.getFactions().get(0).getEntities().getSelectedBuildings();
+						if(!listSelectedBuilding.isEmpty()) {
+							for(Building building : listSelectedBuilding) {
+								building.setDestination(new Position(mouseX, mouseY));
+								System.out.println(building.getDestination().getX());
+								System.out.println(building.getDestination().getY());
+							}
+						}
 					}
 				}
 			}
