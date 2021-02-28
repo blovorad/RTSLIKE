@@ -1,7 +1,5 @@
 package factionConfiguration;
 
-import java.util.List;
-
 import configuration.EntityConfiguration;
 
 public class Royaume extends Race 

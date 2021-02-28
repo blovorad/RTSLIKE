@@ -3,8 +3,6 @@ package engine;
 import java.util.ArrayList;
 import java.util.List;
 
-import configuration.MapConfiguration;
-
 public class EntitiesManager 
 {
 	private Faction faction;
@@ -82,7 +80,7 @@ public class EntitiesManager
 		
 		for(Building building : buildings) 
 		{
-			building.update();
+			building.update(units);
 			if(building.getIsProducing())
 			{
 				if(building.getTimer() <= 0)
