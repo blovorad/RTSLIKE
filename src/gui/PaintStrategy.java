@@ -45,13 +45,13 @@ public class PaintStrategy
 			
 			firstGridXOfMap = 1650;
 			firstGridYOfMap = 800;
-			gridMapWidth = 2;
-			gridMapHeight = 2;
+			gridMapWidth = 1;
+			gridMapHeight = 1;
 			
 			camX = 1650;
 			camY = 800;
-			camW = (width / GameConfiguration.TILE_SIZE) * gridMapWidth + 39;
-			camH = (height / GameConfiguration.TILE_SIZE) * gridMapHeight + 68;
+			camW = (width / GameConfiguration.TILE_SIZE);
+			camH = (height / GameConfiguration.TILE_SIZE);
 		}
 		else if(width == 1366 && height == 768)
 		{
@@ -64,13 +64,13 @@ public class PaintStrategy
 			
 			firstGridXOfMap = 1125;
 			firstGridYOfMap = 550;
-			gridMapWidth = 2;
-			gridMapHeight = 2;
+			gridMapWidth = 1;
+			gridMapHeight = 1;
 			
 			camX = 1125;
 			camY = 550;
-			camW = (width / GameConfiguration.TILE_SIZE) * gridMapWidth + 58;
-			camH = (height / GameConfiguration.TILE_SIZE) * gridMapHeight + 76;
+			camW = (width / GameConfiguration.TILE_SIZE);
+			camH = (height / GameConfiguration.TILE_SIZE);
 		}
 		else if(width == 1280 && height == 720)
 		{
@@ -83,13 +83,13 @@ public class PaintStrategy
 			
 			firstGridXOfMap = 1025;
 			firstGridYOfMap = 515;
-			gridMapWidth = 2;
-			gridMapHeight = 2;
+			gridMapWidth = 1;
+			gridMapHeight = 1;
 			
 			camX = 1025;
 			camY = 515;
-			camW = (width / GameConfiguration.TILE_SIZE) * gridMapWidth + 58;
-			camH = (height / GameConfiguration.TILE_SIZE) * gridMapHeight + 78;
+			camW = (width / GameConfiguration.TILE_SIZE);
+			camH = (height / GameConfiguration.TILE_SIZE);
 		}
 		/*System.out.println("on construit dans : " + width + "x" + height);
 		System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);

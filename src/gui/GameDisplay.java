@@ -601,7 +601,7 @@ public class GameDisplay extends JPanel
 			
 			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
 			List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
-			List<Ressource> listRessources = manager.getFactions().get(0).getEntities().getRessources();
+			List<Ressource> listRessources = manager.getFactions().get(2).getEntities().getRessources();
 			
 			this.paintStrategy.paintGui(map, listUnits, listBuildings, listRessources, g, camera);
 		}

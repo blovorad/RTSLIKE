@@ -118,6 +118,8 @@ public class Faction
 	
 	public void addRessource(List<Tile> listPositionRessources)
 	{
+		System.out.println("race: " + this.race.getName());
+		System.out.println("nb ressource : " + listPositionRessources.size());
 		for(Tile t : listPositionRessources)
 		{
 			this.getEntities().getRessources().add(new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t));
