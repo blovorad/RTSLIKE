@@ -3,7 +3,7 @@ package engine.entity.building;
 import engine.Position;
 import engine.Unit;
 
-public class Forge extends Building{
+public class Forge extends ProductionBuilding{
 
 	public Forge(Position position, int id, String description, int hpMax) {
 		super(position, id, description, hpMax);

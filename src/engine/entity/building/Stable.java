@@ -2,17 +2,16 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.ProductionBuilding;
 import engine.Unit;
-import factionConfiguration.ForUnit;
+import factionConfiguration.ForFighter;
 
 public class Stable extends ProductionBuilding{
 	
-	private ForUnit cavalry;
+	private ForFighter cavalry;
 	
-	public Stable(Position position, ForUnit cavalry, int id, String description, int hpMax) {
+	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax) {
 		super(position, id, description, hpMax);
-		this.setCavalry(cavalry);
+		this.cavalry = cavalry;
 		this.setProductionId(EntityConfiguration.CAVALRY);
 	}
 	
@@ -36,14 +35,6 @@ public class Stable extends ProductionBuilding{
 		System.out.println("producing cavalry final");
 		
 		return u;
-	}
-
-	public ForUnit getCavalry() {
-		return cavalry;
-	}
-
-	public void setCavalry(ForUnit cavalry) {
-		this.cavalry = cavalry;
 	}
 
 	@Override

@@ -1,9 +1,12 @@
-package engine;
+package engine.entity.building;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import configuration.EntityConfiguration;
+import engine.Entity;
+import engine.Position;
+import engine.Unit;
 
 public abstract class ProductionBuilding extends Entity{
 

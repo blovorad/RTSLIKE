@@ -17,20 +17,15 @@ import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Collision;
 import engine.EntitiesManager;
-import engine.Building;
 import engine.Camera;
-import engine.FactionManager;
-import engine.Fighter;
-import engine.Map;
 import engine.Mouse;
 import engine.Position;
-import engine.ProductionBuilding;
 import engine.Ressource;
 import engine.SelectionRect;
 import engine.Tile;
 import engine.Unit;
-import engine.Worker;
 import engine.entity.building.Building;
+import engine.entity.building.ProductionBuilding;
 
 public class MainGui extends JFrame implements Runnable
 {

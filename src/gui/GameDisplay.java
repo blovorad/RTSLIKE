@@ -25,32 +25,13 @@ import engine.Camera;
 import engine.EntitiesManager;
 import engine.Entity;
 import engine.Faction;
-import engine.FactionManager;
-import engine.Fighter;
-<<<<<<< HEAD
-import engine.Forge;
-=======
-import engine.Worker;
 import engine.entity.building.Building;
-import engine.entity.building.Forge;
-import engine.entity.building.Stable;
->>>>>>> branch 'malinx' of https://github.com/blovorad/RTSLIKE.git
+import engine.entity.building.ProductionBuilding;
 import engine.Map;
 import engine.Mouse;
-import engine.Position;
-<<<<<<< HEAD
-=======
-import engine.ProductionBuilding;
 import engine.SelectionRect;
->>>>>>> branch 'malinx' of https://github.com/blovorad/RTSLIKE.git
 import engine.Ressource;
-<<<<<<< HEAD
-import engine.SelectionRect;
-import engine.Stable;
-=======
->>>>>>> branch 'malinx' of https://github.com/blovorad/RTSLIKE.git
 import engine.Unit;
-import engine.Worker;
 
 public class GameDisplay extends JPanel 
 {

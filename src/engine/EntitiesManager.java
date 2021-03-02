@@ -12,7 +12,9 @@ import engine.entity.building.Building;
 import engine.entity.building.Castle;
 import engine.entity.building.Forge;
 import engine.entity.building.Hq;
+import engine.entity.building.ProductionBuilding;
 import engine.entity.building.Stable;
+import engine.entity.building.StorageBuilding;
 import engine.entity.building.Tower;
 import factionConfiguration.ForBuilding;
 
@@ -203,10 +205,10 @@ public class EntitiesManager
 	
 	public void createBuilding(int id, int faction, Position position) 
 	{
-		//ForBuilding building = race.getBuildings().get(id);
-		Building b = null;
 		ProductionBuilding bprod = null;
 		AttackBuilding battack = null;
+		StorageBuilding bstorage = null;
+		
 		faction = faction - EntityConfiguration.PLAYER_FACTION;
 		ForBuilding patronBuilding = this.factionManager.getFactions().get(faction).getBuildings().get(id);
 		
@@ -219,7 +221,7 @@ public class EntitiesManager
 			{
 				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
 			}
-			b = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
+			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
@@ -245,7 +247,7 @@ public class EntitiesManager
 		//coder pas prio storage et tower
 		else if(id == EntityConfiguration.STORAGE)
 		{
-			b = new RessourcesStorage(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
+			bstorage = new StorageBuilding(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.TOWER)
 		{
@@ -255,19 +257,19 @@ public class EntitiesManager
 		{
 			System.out.println("invalide ID");
 		}
-		if(bprod!=null) {
+		if(bprod != null) {
 			this.drawingList.add(bprod);
 			this.prodBuildings.add(bprod);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajoutation ProdBuilding");
 		}
-		if(b!=null) {
-			this.drawingList.add(b);
-			this.buildings.add(b);
+		if(battack != null) {
+			this.drawingList.add(battack);
+			this.attackBuildings.add(battack);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajoutation building");
 		}
-		if(battack!=null) {
+		if(bstorage != null){
 			this.drawingList.add(battack);
 			this.attackBuildings.add(battack);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);

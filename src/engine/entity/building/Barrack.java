@@ -2,22 +2,17 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.ProductionBuilding;
 import engine.Unit;
-import factionConfiguration.ForUnit;
+import factionConfiguration.ForFighter;
 
 public class Barrack extends ProductionBuilding{
 
-	private ForUnit infantry;
+	private ForFighter infantry;
 	
-	public Barrack(Position position, ForUnit infantry, int id, String description, int hpMax) {
+	public Barrack(Position position, ForFighter infantry, int id, String description, int hpMax) {
 		super(position, id, description, hpMax);
 		this.infantry = infantry;
 		this.setProductionId(EntityConfiguration.INFANTRY);
-	}
-	
-	public void addUnit() {
-		
 	}
 
 	@Override
