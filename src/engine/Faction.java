@@ -53,8 +53,8 @@ public class Faction
 	
 	public void createBuilding(ForBuilding building) 
 	{
-		Building b = new Stable();
-		this.entities.addBuilding(building);
+		//Building b = new Stable();
+		//this.entities.addBuilding(building);
 		nbBuilding++;
 	}
 

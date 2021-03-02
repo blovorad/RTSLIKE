@@ -163,7 +163,7 @@ public class MainGui extends JFrame implements Runnable
 				{
 					mouse.getBuilding().setPosition(new Position(mouse.getX(), mouse.getY()));
 					System.out.println("mouse " + mouse.getX() + "," + mouse.getY());
-					manager.getFactions().get(0).createBuilding(mouse.getBuilding());
+					//manager.getFactions().get(0).createBuilding(mouse.getBuilding());
 					System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
 					mouse.setId(-1);
 					mouse.setBuilding(null);
