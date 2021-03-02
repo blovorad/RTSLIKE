@@ -1,5 +1,7 @@
 package engine;
 
+import engine.entity.building.Building;
+
 public class RessourcesStorage extends Building{
 
 	public RessourcesStorage(Position position, int id, String description, int hpMax) {

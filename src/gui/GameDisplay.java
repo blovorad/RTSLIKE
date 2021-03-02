@@ -21,20 +21,34 @@ import javax.swing.event.ChangeListener;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
-import engine.Building;
 import engine.Camera;
 import engine.EntitiesManager;
 import engine.Entity;
 import engine.Faction;
 import engine.FactionManager;
 import engine.Fighter;
+<<<<<<< HEAD
 import engine.Forge;
+=======
+import engine.Worker;
+import engine.entity.building.Building;
+import engine.entity.building.Forge;
+import engine.entity.building.Stable;
+>>>>>>> branch 'malinx' of https://github.com/blovorad/RTSLIKE.git
 import engine.Map;
 import engine.Mouse;
 import engine.Position;
+<<<<<<< HEAD
+=======
+import engine.ProductionBuilding;
+import engine.SelectionRect;
+>>>>>>> branch 'malinx' of https://github.com/blovorad/RTSLIKE.git
 import engine.Ressource;
+<<<<<<< HEAD
 import engine.SelectionRect;
 import engine.Stable;
+=======
+>>>>>>> branch 'malinx' of https://github.com/blovorad/RTSLIKE.git
 import engine.Unit;
 import engine.Worker;
 
@@ -416,6 +430,27 @@ public class GameDisplay extends JPanel
 		
 		if(building.getProductionId() > -1)
 		{
+			/*JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
+			button.setFocusable(false);
+			descriptionPanel.add(button);*/
+			descriptionPanel.add(new JLabel(building.getDescription()));
+		}
+		else
+		{
+			descriptionPanel.add(new JLabel(building.getDescription()));
+		}
+		
+		descriptionPanel.validate();
+	}
+	
+	public void setDescriptionPanelForBuilding(ProductionBuilding building)
+	{
+		descriptionPanel.removeAll();
+		
+		descriptionPanel.setLayout(new GridLayout(2, 1));
+		
+		if(building.getProductionId() > -1)
+		{
 			JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
 			button.setFocusable(false);
 			descriptionPanel.add(button);
@@ -600,18 +635,18 @@ public class GameDisplay extends JPanel
 		private static final long serialVersionUID = 1L;
 		
 		private int id;
-		private Building building;
+		private ProductionBuilding prodBuilding;
 		
-		public CreateUnit(String name, int id, Building building)
+		public CreateUnit(String name, int id, ProductionBuilding building)
 		{
 			super(name);
 			this.id = id;
-			this.building = building;
+			this.prodBuilding = building;
 		}
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			building.startProd(id);
+			prodBuilding.startProd(id);
 
 		}
 		

@@ -5,10 +5,14 @@ import java.awt.Graphics;
 import java.util.List;
 
 import configuration.GameConfiguration;
-import engine.Building;
 import engine.Camera;
 import engine.Entity;
 import engine.Fighter;
+<<<<<<< HEAD
+=======
+import engine.Worker;
+import engine.entity.building.Building;
+>>>>>>> branch 'malinx' of https://github.com/blovorad/RTSLIKE.git
 import engine.Map;
 import engine.Mouse;
 import engine.Ressource;
