@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
-import engine.Building;
 import engine.Collision;
 import engine.EntitiesManager;
 import engine.Camera;
@@ -24,11 +23,13 @@ import engine.Fighter;
 import engine.Map;
 import engine.Mouse;
 import engine.Position;
+import engine.ProductionBuilding;
 import engine.Ressource;
 import engine.SelectionRect;
 import engine.Tile;
 import engine.Unit;
 import engine.Worker;
+import engine.entity.building.Building;
 
 public class MainGui extends JFrame implements Runnable
 {
@@ -209,8 +210,22 @@ public class MainGui extends JFrame implements Runnable
 				boolean noBuildingSelected = true;
 				manager.clearSelectedUnits();
 				List<Building> listBuildings = manager.getBuildings();
+				List<ProductionBuilding> listProdBuildings = manager.getProdBuildings();
 				
 				for(Building building : listBuildings)
+				{
+
+					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
+											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
+					{
+						manager.selectBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building);
+						noBuildingSelected = false;
+						break;
+					}
+				}
+				
+				for(ProductionBuilding building : listProdBuildings)
 				{
 
 					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)

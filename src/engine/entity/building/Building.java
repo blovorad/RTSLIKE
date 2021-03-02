@@ -1,4 +1,4 @@
-package engine;
+package engine.entity.building;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
+import engine.Entity;
+import engine.Position;
+import engine.Unit;
+import engine.Upgrades;
 
 public abstract class Building extends Entity{
 
@@ -28,10 +32,6 @@ public abstract class Building extends Entity{
 	}
 	
 	public void update(List<Unit> units) {
-		/*Random rand = new Random();
-		int lessHp = rand.nextInt(5);
-		this.setHp(this.getHp() - lessHp);
-		System.out.println("we remove : " + lessHp);*/
 		if(canAttak == true) {
 			if(this.getAttackCooldown() > 0) {
 				this.setAttackCooldown(this.getAttackCooldown()-1);

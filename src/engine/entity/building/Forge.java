@@ -1,4 +1,7 @@
-package engine;
+package engine.entity.building;
+
+import engine.Position;
+import engine.Unit;
 
 public class Forge extends Building{
 

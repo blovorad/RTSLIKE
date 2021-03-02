@@ -1,9 +1,12 @@
-package engine;
+package engine.entity.building;
 
 import configuration.EntityConfiguration;
+import engine.Position;
+import engine.ProductionBuilding;
+import engine.Unit;
 import factionConfiguration.ForUnit;
 
-public class Archery extends Building{
+public class Archery extends ProductionBuilding{
 
 	private ForUnit archer;
 	
@@ -11,10 +14,6 @@ public class Archery extends Building{
 		super(position, id, description, hpMax);
 		this.archer = archer;
 		this.setProductionId(EntityConfiguration.ARCHER);
-	}
-	
-	public void addUnit() {
-		
 	}
 
 	@Override

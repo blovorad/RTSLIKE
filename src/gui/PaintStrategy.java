@@ -5,11 +5,11 @@ import java.awt.Graphics;
 import java.util.List;
 
 import configuration.GameConfiguration;
-import engine.Building;
 import engine.Camera;
 import engine.Entity;
 import engine.Fighter;
 import engine.Worker;
+import engine.entity.building.Building;
 import engine.Map;
 import engine.Mouse;
 import engine.SelectionRect;

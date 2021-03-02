@@ -1,9 +1,12 @@
-package engine;
+package engine.entity.building;
 
 import configuration.EntityConfiguration;
+import engine.Position;
+import engine.ProductionBuilding;
+import engine.Unit;
 import factionConfiguration.ForUnit;
 
-public class Barrack extends Building{
+public class Barrack extends ProductionBuilding{
 
 	private ForUnit infantry;
 	

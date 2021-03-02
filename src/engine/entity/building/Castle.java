@@ -1,9 +1,12 @@
-package engine;
+package engine.entity.building;
 
 import configuration.EntityConfiguration;
+import engine.Position;
+import engine.ProductionBuilding;
+import engine.Unit;
 import factionConfiguration.ForUnit;
 
-public class Castle extends Building{
+public class Castle extends ProductionBuilding{
 
 	private ForUnit special;
 	
@@ -11,12 +14,12 @@ public class Castle extends Building{
 		super(position, id, description, hpMax);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
-		this.setCanAttak(false);
+		/*this.setCanAttak(false);
 		this.setCanHeal(true);
 		this.setDamage(10);
 		this.setAttakRange(80);
 		this.setAttackSpeed(10);
-		this.setAttackCooldown(this.getAttackSpeed());
+		this.setAttackCooldown(this.getAttackSpeed());*/
 	}
 
 	@Override

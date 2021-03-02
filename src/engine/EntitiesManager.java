@@ -5,6 +5,15 @@ import java.util.List;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
+import engine.entity.building.Archery;
+import engine.entity.building.AttackBuilding;
+import engine.entity.building.Barrack;
+import engine.entity.building.Building;
+import engine.entity.building.Castle;
+import engine.entity.building.Forge;
+import engine.entity.building.Hq;
+import engine.entity.building.Stable;
+import engine.entity.building.Tower;
 import factionConfiguration.ForBuilding;
 
 public class EntitiesManager 
@@ -16,6 +25,8 @@ public class EntitiesManager
 	
 	private List<Unit> selectedUnits = new ArrayList<Unit>();
 	private List<Building> selectedBuildings = new ArrayList<Building>();
+	
+	private List<ProductionBuilding> selectedProdBuildings = new ArrayList<ProductionBuilding>();
 	
 	private List<Fighter> fighters;
 	private List<Fighter> removeFighters = new ArrayList<Fighter>();
@@ -29,8 +40,16 @@ public class EntitiesManager
 	private List<Building> buildings;
 	private List<Building> removeBuildings = new ArrayList<Building>();
 	
+	private List<AttackBuilding> attackBuildings;
+	private List<AttackBuilding> removeAttackBuildings = new ArrayList<AttackBuilding>();
+
+	private List<ProductionBuilding> prodBuildings;
+	private List<ProductionBuilding> removeProdBuildings = new ArrayList<ProductionBuilding>();
+	
+	
 	private List<Ressource> ressources;
 	private List<Ressource> removeRessources = new ArrayList<Ressource>();
+
 	
 	public EntitiesManager() 
 	{
@@ -42,6 +61,8 @@ public class EntitiesManager
 		this.ressources = new ArrayList<Ressource>();
 		this.setSelectedUnits(new ArrayList<Unit>());
 		this.selectedBuildings = new ArrayList<Building>();
+		this.prodBuildings = new ArrayList<ProductionBuilding>();
+		this.attackBuildings = new ArrayList<AttackBuilding>();
 	}
 	
 	public void update() 
@@ -119,6 +140,49 @@ public class EntitiesManager
 		drawingList.removeAll(removeBuildings);
 		removeBuildings.clear();
 		
+		for(ProductionBuilding building : prodBuildings) 
+		{
+			building.update();
+			if(building.getIsProducing())
+			{
+				if(building.getTimer() <= 0)
+				{
+					Unit unit = building.produce();
+					units.add(unit);
+					collisionList.add(unit);
+					drawingList.add(unit);
+					System.out.println("producing unit");
+				}
+			}
+			if(building.getHp() < 1)
+			{
+				//System.out.println("We removing a building cause : " + building.getHp());
+				removeProdBuildings.add(building);
+			}
+		}
+		
+		//removing building
+		prodBuildings.removeAll(removeProdBuildings);
+		collisionList.removeAll(removeProdBuildings);
+		drawingList.removeAll(removeProdBuildings);
+		removeProdBuildings.clear();
+		
+		for(AttackBuilding building : attackBuildings) 
+		{
+			building.update(units);
+			if(building.getHp() < 1)
+			{
+				//System.out.println("We removing a building cause : " + building.getHp());
+				removeAttackBuildings.add(building);
+			}
+		}
+		
+		//removing building
+		attackBuildings.removeAll(removeAttackBuildings);
+		collisionList.removeAll(removeAttackBuildings);
+		drawingList.removeAll(removeAttackBuildings);
+		removeAttackBuildings.clear();
+		
 		for(Ressource ressource : ressources) 
 		{
 			//ressource.update();
@@ -141,6 +205,8 @@ public class EntitiesManager
 	{
 		//ForBuilding building = race.getBuildings().get(id);
 		Building b = null;
+		ProductionBuilding bprod = null;
+		AttackBuilding battack = null;
 		faction = faction - EntityConfiguration.PLAYER_FACTION;
 		ForBuilding patronBuilding = this.factionManager.getFactions().get(faction).getBuildings().get(id);
 		
@@ -158,23 +224,23 @@ public class EntitiesManager
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
 		{
-			b = new Stable(position, factionManager.getFactions().get(faction).getRace().getCavalry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
+			bprod = new Stable(position, factionManager.getFactions().get(faction).getRace().getCavalry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
-			b = new Barrack(position, factionManager.getFactions().get(faction).getRace().getInfantry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
+			bprod = new Barrack(position, factionManager.getFactions().get(faction).getRace().getInfantry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
-			b = new Archery(position, factionManager.getFactions().get(faction).getRace().getArcher(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
+			bprod = new Archery(position, factionManager.getFactions().get(faction).getRace().getArcher(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
-			b = new Hq(position, factionManager.getFactions().get(faction).getRace().getWorker(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
+			bprod = new Hq(position, factionManager.getFactions().get(faction).getRace().getWorker(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
-			b = new Castle(position, factionManager.getFactions().get(faction).getRace().getSpecial(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
+			bprod = new Castle(position, factionManager.getFactions().get(faction).getRace().getSpecial(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		//coder pas prio storage et tower
 		else if(id == EntityConfiguration.STORAGE)
@@ -183,22 +249,41 @@ public class EntitiesManager
 		}
 		else if(id == EntityConfiguration.TOWER)
 		{
-			b = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
+			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else
 		{
 			System.out.println("invalide ID");
 		}
+		if(bprod!=null) {
+			this.drawingList.add(bprod);
+			this.prodBuildings.add(bprod);
+			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
+			System.out.println("ajoutation ProdBuilding");
+		}
+		if(b!=null) {
+			this.drawingList.add(b);
+			this.buildings.add(b);
+			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
+			System.out.println("ajoutation building");
+		}
+		if(battack!=null) {
+			this.drawingList.add(battack);
+			this.attackBuildings.add(battack);
+			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
+			System.out.println("ajoutation building");
+		}
 		
-		this.drawingList.add(b);
-		this.buildings.add(b);
-		this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
-		System.out.println("ajoutation building");
 	}
 
 	public void selectBuilding(Building building)
 	{
 		selectedBuildings.add(building);
+	}
+	
+	public void selectBuilding(ProductionBuilding building)
+	{
+		selectedProdBuildings.add(building);
 	}
 	
 	public void addBuilding(Building building)
@@ -314,5 +399,21 @@ public class EntitiesManager
 
 	public void setFactionManager(FactionManager factionManager) {
 		this.factionManager = factionManager;
+	}
+
+	public List<ProductionBuilding> getRemoveProdBuildings() {
+		return removeProdBuildings;
+	}
+
+	public void setRemoveProdBuildings(List<ProductionBuilding> removeProdBuildings) {
+		this.removeProdBuildings = removeProdBuildings;
+	}
+
+	public List<ProductionBuilding> getProdBuildings() {
+		return prodBuildings;
+	}
+
+	public void setProdBuildings(List<ProductionBuilding> prodBuildings) {
+		this.prodBuildings = prodBuildings;
 	}
 }
