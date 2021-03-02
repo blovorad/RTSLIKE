@@ -13,14 +13,14 @@ public abstract class Race
 	private ForFighter special;
 	private ForWorker worker;
 	private String name;
-	private AbstractMap<Integer, ForBuilding>buildings;
 	private AbstractMap<Integer, ForProductionBuilding>productionBuildings;
 	private AbstractMap<Integer, ForAttackBuilding>attackBuildings;
+	private AbstractMap<Integer, ForStorageBuilding>storageBuildings;
 	private List<ForUpgrade> upgrades;
 	
 	public Race()
 	{
-		this.buildings = new HashMap<Integer, ForBuilding>();
+		this.storageBuildings = new HashMap<Integer, ForStorageBuilding>();
 		this.attackBuildings = new HashMap<Integer, ForAttackBuilding>();
 		this.productionBuildings = new HashMap<Integer, ForProductionBuilding>();
 		this.upgrades = new ArrayList<ForUpgrade>();
@@ -54,16 +54,6 @@ public abstract class Race
 	public void setArcher(ForFighter archer) 
 	{
 		this.archer = archer;
-	}
-	
-	public AbstractMap<Integer, ForBuilding> getBuildings() 
-	{
-		return buildings;
-	}
-	
-	public void setBuildings(AbstractMap<Integer, ForBuilding> buildings) 
-	{
-		this.buildings = buildings;
 	}
 	
 	public void setName(String name)
@@ -119,5 +109,13 @@ public abstract class Race
 
 	public void setAttackBuildings(AbstractMap<Integer, ForAttackBuilding> attackBuildings) {
 		this.attackBuildings = attackBuildings;
+	}
+
+	public AbstractMap<Integer, ForStorageBuilding> getStorageBuildings() {
+		return storageBuildings;
+	}
+
+	public void setStorageBuildings(AbstractMap<Integer, ForStorageBuilding> storageBuildings) {
+		this.storageBuildings = storageBuildings;
 	}
 }

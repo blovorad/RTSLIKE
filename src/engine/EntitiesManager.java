@@ -8,7 +8,6 @@ import configuration.GameConfiguration;
 import engine.entity.building.Archery;
 import engine.entity.building.AttackBuilding;
 import engine.entity.building.Barrack;
-import engine.entity.building.Building;
 import engine.entity.building.Castle;
 import engine.entity.building.Forge;
 import engine.entity.building.Hq;
@@ -16,7 +15,10 @@ import engine.entity.building.ProductionBuilding;
 import engine.entity.building.Stable;
 import engine.entity.building.StorageBuilding;
 import engine.entity.building.Tower;
+import factionConfiguration.ForAttackBuilding;
 import factionConfiguration.ForBuilding;
+import factionConfiguration.ForProductionBuilding;
+import factionConfiguration.ForStorageBuilding;
 
 public class EntitiesManager 
 {
@@ -26,9 +28,10 @@ public class EntitiesManager
 	private List<Entity> drawingList = new ArrayList<Entity>();
 	
 	private List<Unit> selectedUnits = new ArrayList<Unit>();
-	private List<Building> selectedBuildings = new ArrayList<Building>();
 	
-	private List<ProductionBuilding> selectedProdBuildings = new ArrayList<ProductionBuilding>();
+	private ProductionBuilding selectedProdBuilding;
+	private AttackBuilding selectedAttackBuilding;
+	private StorageBuilding selectedStorageBuilding;
 	
 	private List<Fighter> fighters;
 	private List<Fighter> removeFighters = new ArrayList<Fighter>();
@@ -39,15 +42,14 @@ public class EntitiesManager
 	private List<Unit> units;
 	private List<Unit> removeUnits = new ArrayList<Unit>();
 	
-	private List<Building> buildings;
-	private List<Building> removeBuildings = new ArrayList<Building>();
-	
 	private List<AttackBuilding> attackBuildings;
 	private List<AttackBuilding> removeAttackBuildings = new ArrayList<AttackBuilding>();
 
 	private List<ProductionBuilding> prodBuildings;
 	private List<ProductionBuilding> removeProdBuildings = new ArrayList<ProductionBuilding>();
 	
+	private List<StorageBuilding> storageBuildings;
+	private List<StorageBuilding> removeStorageBuildings = new ArrayList<StorageBuilding>();
 	
 	private List<Ressource> ressources;
 	private List<Ressource> removeRessources = new ArrayList<Ressource>();
@@ -59,12 +61,15 @@ public class EntitiesManager
 		this.fighters = new ArrayList<Fighter>();
 		this.workers = new ArrayList<Worker>();
 		this.units = new ArrayList<Unit>();
-		this.buildings = new ArrayList<Building>();
 		this.ressources = new ArrayList<Ressource>();
 		this.setSelectedUnits(new ArrayList<Unit>());
-		this.selectedBuildings = new ArrayList<Building>();
 		this.prodBuildings = new ArrayList<ProductionBuilding>();
 		this.attackBuildings = new ArrayList<AttackBuilding>();
+		this.storageBuildings = new ArrayList<StorageBuilding>();
+		
+		this.selectedAttackBuilding = null;
+		this.selectedProdBuilding = null;
+		this.selectedStorageBuilding = null;
 	}
 	
 	public void update() 
@@ -115,33 +120,6 @@ public class EntitiesManager
 		drawingList.removeAll(removeUnits);
 		removeUnits.clear();
 		
-		for(Building building : buildings) 
-		{
-			building.update(units);
-			if(building.getIsProducing())
-			{
-				if(building.getTimer() <= 0)
-				{
-					Unit unit = building.produce();
-					units.add(unit);
-					collisionList.add(unit);
-					drawingList.add(unit);
-					System.out.println("producing unit");
-				}
-			}
-			if(building.getHp() < 1)
-			{
-				//System.out.println("We removing a building cause : " + building.getHp());
-				removeBuildings.add(building);
-			}
-		}
-		
-		//removing building
-		buildings.removeAll(removeBuildings);
-		collisionList.removeAll(removeBuildings);
-		drawingList.removeAll(removeBuildings);
-		removeBuildings.clear();
-		
 		for(ProductionBuilding building : prodBuildings) 
 		{
 			building.update();
@@ -185,6 +163,21 @@ public class EntitiesManager
 		drawingList.removeAll(removeAttackBuildings);
 		removeAttackBuildings.clear();
 		
+		for(StorageBuilding building : storageBuildings) 
+		{
+			building.update();
+			if(building.getHp() < 1)
+			{
+				removeStorageBuildings.add(building);
+			}
+		}
+		
+		//removing building
+		storageBuildings.removeAll(removeStorageBuildings);
+		collisionList.removeAll(removeStorageBuildings);
+		drawingList.removeAll(removeStorageBuildings);
+		removeStorageBuildings.clear();
+		
 		for(Ressource ressource : ressources) 
 		{
 			//ressource.update();
@@ -210,7 +203,6 @@ public class EntitiesManager
 		StorageBuilding bstorage = null;
 		
 		faction = faction - EntityConfiguration.PLAYER_FACTION;
-		ForBuilding patronBuilding = this.factionManager.getFactions().get(faction).getBuildings().get(id);
 		
 		if(id == EntityConfiguration.FORGE)
 		{
@@ -221,36 +213,43 @@ public class EntitiesManager
 			{
 				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
 			}
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
 		{
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Stable(position, factionManager.getFactions().get(faction).getRace().getCavalry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Barrack(position, factionManager.getFactions().get(faction).getRace().getInfantry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Archery(position, factionManager.getFactions().get(faction).getRace().getArcher(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Hq(position, factionManager.getFactions().get(faction).getRace().getWorker(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Castle(position, factionManager.getFactions().get(faction).getRace().getSpecial(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
-		//coder pas prio storage et tower
 		else if(id == EntityConfiguration.STORAGE)
 		{
+			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getStorageBuildings().get(id);
 			bstorage = new StorageBuilding(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.TOWER)
 		{
+			ForAttackBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getAttackBuildings().get(id);
 			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else
@@ -277,21 +276,6 @@ public class EntitiesManager
 		}
 		
 	}
-
-	public void selectBuilding(Building building)
-	{
-		selectedBuildings.add(building);
-	}
-	
-	public void selectBuilding(ProductionBuilding building)
-	{
-		selectedProdBuildings.add(building);
-	}
-	
-	public void addBuilding(Building building)
-	{
-		this.buildings.add(building); 
-	}
 	
 	public void addSelectedUnit(Unit unit)
 	{
@@ -308,8 +292,25 @@ public class EntitiesManager
 		}
 	}
 	
+	public void clearSelectedBuildings()
+	{
+		this.selectedAttackBuilding = null;
+		this.selectedProdBuilding = null;
+		this.selectedStorageBuilding = null;
+	}
+	
 	public void clean()
 	{
+		this.collisionList.clear();
+		this.drawingList.clear();
+		this.fighters.clear();
+		this.attackBuildings.clear();
+		this.storageBuildings.clear();
+		this.prodBuildings.clear();
+		this.workers.clear();
+		this.ressources.clear();
+		this.selectedUnits.clear();
+		clearSelectedBuildings();
 		factionManager.clean();
 	}
 
@@ -337,14 +338,6 @@ public class EntitiesManager
 		this.collisionList = collisionList;
 	}
 
-	public List<Building> getSelectedBuildings() {
-		return selectedBuildings;
-	}
-
-	public void setSelectedBuildings(List<Building> selectedBuildings) {
-		this.selectedBuildings = selectedBuildings;
-	}
-
 	public List<Fighter> getFighters() {
 		return fighters;
 	}
@@ -369,14 +362,6 @@ public class EntitiesManager
 		this.units = units;
 	}
 
-	public List<Building> getBuildings() {
-		return buildings;
-	}
-
-	public void setBuildings(List<Building> buildings) {
-		this.buildings = buildings;
-	}
-
 	public List<Ressource> getRessources() {
 		return ressources;
 	}
@@ -388,11 +373,6 @@ public class EntitiesManager
 	public void clearSelectedUnits()
 	{
 		selectedUnits.clear();
-	}
-	
-	public void clearSelectedBuildings()
-	{
-		selectedBuildings.clear();
 	}
 
 	public FactionManager getFactionManager() {
@@ -417,5 +397,45 @@ public class EntitiesManager
 
 	public void setProdBuildings(List<ProductionBuilding> prodBuildings) {
 		this.prodBuildings = prodBuildings;
+	}
+
+	public ProductionBuilding getSelectedProdBuilding() {
+		return selectedProdBuilding;
+	}
+
+	public void setSelectedProdBuilding(ProductionBuilding selectedProdBuilding) {
+		this.selectedProdBuilding = selectedProdBuilding;
+	}
+
+	public AttackBuilding getSelectedAttackBuilding() {
+		return selectedAttackBuilding;
+	}
+
+	public void setSelectedAttackBuilding(AttackBuilding selectedAttackBuilding) {
+		this.selectedAttackBuilding = selectedAttackBuilding;
+	}
+
+	public StorageBuilding getSelectedStorageBuilding() {
+		return selectedStorageBuilding;
+	}
+
+	public void setSelectedStorageBuilding(StorageBuilding selectedStorageBuilding) {
+		this.selectedStorageBuilding = selectedStorageBuilding;
+	}
+
+	public List<AttackBuilding> getAttackBuildings() {
+		return attackBuildings;
+	}
+
+	public void setAttackBuildings(List<AttackBuilding> attackBuildings) {
+		this.attackBuildings = attackBuildings;
+	}
+
+	public List<StorageBuilding> getStorageBuildings() {
+		return storageBuildings;
+	}
+
+	public void setStorageBuildings(List<StorageBuilding> storageBuildings) {
+		this.storageBuildings = storageBuildings;
 	}
 }

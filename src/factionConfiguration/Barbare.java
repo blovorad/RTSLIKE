@@ -73,7 +73,7 @@ public class Barbare extends Race
 	
 	public void initRessourceStockage()
 	{
-		this.getBuildings().put(EntityConfiguration.STORAGE, new ForBuilding(100 , 1, null, "Stockage Barbare", 100));
+		this.getStorageBuildings().put(EntityConfiguration.STORAGE, new ForStorageBuilding(100 , 1, "Stockage Barbare", 100));
 	}
 	
 	public void initBarrack()

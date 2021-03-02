@@ -73,7 +73,7 @@ public class Gaia extends Race
 	
 	public void initRessourceStockage()
 	{
-		this.getBuildings().put(EntityConfiguration.STORAGE, new ForBuilding(100 , 1, null, "Stockage Gaia", 100));
+		this.getStorageBuildings().put(EntityConfiguration.STORAGE, new ForStorageBuilding(100 , 1, "Stockage Gaia", 100));
 	}
 	
 	public void initBarrack()

@@ -19,7 +19,6 @@ public class Faction
 	private int population;
 	private int money;
 	private List<Upgrades> upgradesDone;
-	private AbstractMap<Integer, ForBuilding> buildings;
 
 	public Faction(int id) 
 	{
@@ -45,8 +44,6 @@ public class Faction
 		{
 			race = new Gaia();
 		}
-		
-		buildings = race.getBuildings();
 	}
 	
 	public int getAge() 
@@ -94,14 +91,6 @@ public class Faction
 
 	public void setMoney(int money) {
 		this.money = money;
-	}
-
-	public AbstractMap<Integer, ForBuilding> getBuildings() {
-		return buildings;
-	}
-
-	public void setBuildings(AbstractMap<Integer, ForBuilding> buildings) {
-		this.buildings = buildings;
 	}
 
 	public List<Upgrades> getUpgradesDone() {

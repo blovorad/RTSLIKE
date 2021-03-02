@@ -25,8 +25,9 @@ import engine.Camera;
 import engine.EntitiesManager;
 import engine.Entity;
 import engine.Faction;
-import engine.entity.building.Building;
+import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
+import engine.entity.building.StorageBuilding;
 import engine.Map;
 import engine.Mouse;
 import engine.SelectionRect;
@@ -403,23 +404,24 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
-	public void setDescriptionPanelForBuilding(Building building)
+	public void setDescriptionPanelForBuilding(AttackBuilding building)
 	{
 		descriptionPanel.removeAll();
 		
 		descriptionPanel.setLayout(new GridLayout(2, 1));
+	
+		descriptionPanel.add(new JLabel(building.getDescription()));
 		
-		if(building.getProductionId() > -1)
-		{
-			/*JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
-			button.setFocusable(false);
-			descriptionPanel.add(button);*/
-			descriptionPanel.add(new JLabel(building.getDescription()));
-		}
-		else
-		{
-			descriptionPanel.add(new JLabel(building.getDescription()));
-		}
+		descriptionPanel.validate();
+	}
+	
+	public void setDescriptionPanelForBuilding(StorageBuilding building)
+	{
+		descriptionPanel.removeAll();
+		
+		descriptionPanel.setLayout(new GridLayout(2, 1));
+	
+		descriptionPanel.add(new JLabel(building.getDescription()));
 		
 		descriptionPanel.validate();
 	}
