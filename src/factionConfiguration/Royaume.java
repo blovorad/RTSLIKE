@@ -38,7 +38,7 @@ public class Royaume extends Race
 	
 	public void initInfantry()
 	{
-		setInfantry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin royaume", 5));
+		setInfantry(new ForUnit(15, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin royaume", 15));
 	}
 	
 	public void initArcher()

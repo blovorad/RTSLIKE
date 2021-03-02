@@ -14,7 +14,7 @@ public class Castle extends Building{
 		this.setCanAttak(false);
 		this.setCanHeal(true);
 		this.setDamage(10);
-		this.setAttakRange(20);
+		this.setAttakRange(80);
 		this.setAttackSpeed(10);
 		this.setAttackCooldown(this.getAttackSpeed());
 	}

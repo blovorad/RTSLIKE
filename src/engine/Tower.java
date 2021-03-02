@@ -7,8 +7,8 @@ public class Tower extends Building{
 		this.setProductionId(-1);
 		this.setCanAttak(true);
 		this.setCanHeal(false);
-		this.setDamage(10);
-		this.setAttakRange(20);
+		this.setDamage(5);
+		this.setAttakRange(80);
 		this.setAttackSpeed(10);
 		this.setAttackCooldown(this.getAttackSpeed());
 	}

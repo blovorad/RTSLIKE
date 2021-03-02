@@ -147,22 +147,28 @@ public class Unit extends Entity
 			calculateSpeed(this.getTarget().getPosition());
 		}
 		else
-		{			
-			/*if(this.getDestination() != null)
+		{	
+			
+			if(this.getDestination() != null)
 			{
-				if(this.getPosition().getX() < this.getDestination().getX() || this.getPosition().getX() > this.getDestination().getX())
+				if(!this.getPosition().equals(this.getDestination()))
 				{
-					this.getPosition().setX(this.getDestination().getX());
-					speed.setVx(0);
-					this.setDestination(null);
+					if( (this.getPosition().getX() < this.getDestination().getX() && speed.getVx() < 0) || (this.getPosition().getX() > this.getDestination().getX() && speed.getVx() > 0) )
+					{
+						this.getPosition().setX(this.getDestination().getX());
+						speed.setVx(0);
+					}
+					else if( (this.getPosition().getY() < this.getDestination().getY() && speed.getVy() < 0) || (this.getPosition().getY() > this.getDestination().getY() && speed.getVy() > 0) )
+					{
+						this.getPosition().setY(this.getDestination().getY());
+						speed.setVy(0);
+					}
+					else if( this.getPosition().equals(this.getDestination()))
+					{
+						this.setDestination(null);
+					}
 				}
-				else if(this.getPosition().getY() < this.getDestination().getY() || this.getPosition().getY() > this.getDestination().getY())
-				{
-					this.getPosition().setY(this.getDestination().getY());
-					speed.setVy(0);
-					this.setDestination(null);
-				}
-			}*/
+			}
 		}
 		
 		this.getPosition().setX(this.getPosition().getX() + this.getSpeed().getVx());
@@ -189,6 +195,5 @@ public class Unit extends Entity
 			p.setY(GameConfiguration.LINE_COUNT * GameConfiguration.TILE_SIZE - GameConfiguration.TILE_SIZE);
 			this.getSpeed().setVy(0);
 		}
-		//ici collision
 	}
 }

@@ -35,17 +35,18 @@ public abstract class Building extends Entity{
 		if(canAttak == true) {
 			if(this.getAttackCooldown() > 0) {
 				this.setAttackCooldown(this.getAttackCooldown()-1);
-				System.out.println(this.getDescription() + " attack cooldown is " + this.getAttackCooldown());
+				//System.out.println(this.getDescription() + " attack cooldown is " + this.getAttackCooldown());
 			}
 			if(this.getTarget() != null) {
 				if(isInRange(this.getTarget())) {
 					if(this.getAttackCooldown() <= 0) {
-						attak();
-						this.setAttackCooldown(this.getAttackSpeed());
-						System.out.println(this.getDescription() + " attacked " + this.getTarget().getDescription() + " for " + this.getDamage() + " !");
-						System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
 						if(this.getTarget().getHp() <= 0) {
 							this.setTarget(null);
+						}else{
+							attak();
+							this.setAttackCooldown(this.getAttackSpeed());
+							System.out.println(this.getDescription() + " attacked " + this.getTarget().getDescription() + " for " + this.getDamage() + " !");
+							System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
 						}
 					}
 				}
@@ -56,16 +57,21 @@ public abstract class Building extends Entity{
 		if(canHeal == true) {
 			if(this.getAttackCooldown() > 0) {
 				this.setAttackCooldown(this.getAttackCooldown()-1);
+				//System.out.println(this.getDescription() + " heal cooldown is " + this.getAttackCooldown());
 			}
 			if(this.getTarget() != null) {
 				if(isInRange(this.getTarget())) {
 					if(this.getAttackCooldown() <= 0) {
-						heal();
-						this.setAttackCooldown(this.getAttackSpeed());
-						System.out.println(this.getDescription() + " healed " + this.getTarget().getDescription() + " for " + this.getDamage() + " !");
-						System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
 						if(this.getTarget().getHp() <= 0) {
 							this.setTarget(null);
+						}else {
+							System.out.println("hp target ; " + this.getTarget().getHp() + ", " + this.getTarget().getHpMax());
+							if(this.getTarget().getHp() < this.getTarget().getHpMax()) {
+								heal();
+								this.setAttackCooldown(this.getAttackSpeed());
+								System.out.println(this.getDescription() + " healed " + this.getTarget().getDescription() + " for " + this.getDamage() + " !");
+								System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
+							}
 						}
 					}
 				}

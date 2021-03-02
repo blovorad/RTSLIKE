@@ -48,7 +48,7 @@ public class Faction
 		
 		buildings = race.getBuildings();
 	}
-
+	
 	public int getAge() 
 	{
 		return age;

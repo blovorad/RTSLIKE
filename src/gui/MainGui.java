@@ -318,6 +318,7 @@ public class MainGui extends JFrame implements Runnable
 				
 				if(e.getButton() == 1)
 				{
+
 					if(selectionRectangle.isActive() == false)
 					{
 						selectionRectangle.setActive(true);
@@ -365,6 +366,7 @@ public class MainGui extends JFrame implements Runnable
 							}
 						}
 					}
+
 				}
 			}
 		}

@@ -19,6 +19,4 @@ public class Ressource extends Entity
 	public void setTileAttach(Tile tileAttach) {
 		this.tileAttach = tileAttach;
 	}
-	
-	
 }
