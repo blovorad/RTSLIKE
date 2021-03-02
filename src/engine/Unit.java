@@ -21,9 +21,9 @@ public class Unit extends Entity
 	
 	private Speed speed;
 	
-	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description)
+	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax)
 	{
-		super(hp, description, position, id);
+		super(hp, hpMax, description, position, id);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;
@@ -31,6 +31,21 @@ public class Unit extends Entity
 		this.damage = damage;
 		this.range = range;
 		this.armor = armor;
+		
+		this.speed = new Speed(0, 0);
+	}
+	
+	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax)
+	{
+		super(hp, hpMax, description, position, id);
+		
+		this.currentAction = currentAction;
+		this.attackRange = attackRange;
+		this.maxSpeed = maxSpeed;
+		this.damage = damage;
+		this.range = range;
+		this.armor = armor;
+		this.setDestination(destination);
 		
 		this.speed = new Speed(0, 0);
 	}

@@ -11,9 +11,9 @@ public class Fighter extends Unit
 {
 	private int state;
 	
-	public Fighter (int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, int state, Position position, int id, String description)
+	public Fighter (int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, int state, Position position, int id, String description, int hpMax)
 	{	
-		super(hp, currentAction, attackRange, maxSpeed, damage, range, armor, position, id, description);
+		super(hp, currentAction, attackRange, maxSpeed, damage, range, armor, position, id, description, hpMax);
 		this.state = state;
 	}
 

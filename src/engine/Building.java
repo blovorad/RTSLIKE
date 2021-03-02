@@ -1,6 +1,8 @@
 package engine;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
@@ -17,27 +19,37 @@ public abstract class Building extends Entity{
 	private int attakRange;
 	private int attackSpeed;
 	private int damage;
+	private int attackCooldown;
 	
-	public Building(Position position, int id, String description) {
-		super(100, description , position, id);
+	public Building(Position position, int id, String description, int hpMax) {
+		super(100, hpMax, description , position, id);
 		elementCount = new ArrayList<Unit>();
 	}
 	
-	//coder un produce et un launchProduction
-	//produce return l'élément produit
-	
-	public void update() {
+	public void update(List<Unit> units) {
 		/*Random rand = new Random();
 		int lessHp = rand.nextInt(5);
 		this.setHp(this.getHp() - lessHp);
 		System.out.println("we remove : " + lessHp);*/
 		if(canAttak == true) {
+			if(this.getAttackCooldown() > 0) {
+				this.setAttackCooldown(this.getAttackCooldown()-1);
+				System.out.println(this.getDescription() + " attack cooldown is " + this.getAttackCooldown());
+			}
 			if(this.getTarget() != null) {
-				if(isInRange(attakRange, this.getTarget())) {
-					attak();
+				if(isInRange(this.getTarget())) {
+					if(this.getAttackCooldown() <= 0) {
+						attak();
+						this.setAttackCooldown(this.getAttackSpeed());
+						System.out.println(this.getDescription() + " attacked " + this.getTarget().getDescription() + " for " + this.getDamage() + " !");
+						System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
+						if(this.getTarget().getHp() <= 0) {
+							this.setTarget(null);
+						}
+					}
 				}
 			}else {
-				lookForTarget(this.getPosition(), attakRange);
+				lookForTarget(units);
 			}
 		}
 		if(timer > 0)
@@ -69,17 +81,45 @@ public abstract class Building extends Entity{
 	
 	public  void attak()
 	{
-		
+		this.getTarget().damage(damage);
 	}
 	
-	public void lookForTarget(Position position, int range)
+	public void lookForTarget(List<Unit> units)
 	{
-		
+		AbstractMap<Double,Unit> unitsInRange = new HashMap<Double,Unit>();
+		for(Unit unit : units) {
+			if(this.isInRange(unit)) {
+				unitsInRange.put(calculateDistance(this, unit), unit); // met toutes les units inRange dans une map
+			}
+		}
+		if(!unitsInRange.isEmpty()) {
+			Double minKey = null;
+			for(Double key : unitsInRange.keySet()) { // on recupere la plus petite distance
+				if(minKey == null) {
+					minKey = key;
+				}
+				else if(key<minKey) {
+					minKey = key;
+				}
+			}
+			this.setTarget(unitsInRange.get(minKey)); // on set la target sur l unit la plus proche
+		}
 	}
 
-	public boolean isInRange(int attakRange, Entity target) { // methode qui calcule si la target est dans la range
-		
-		return false;
+	public boolean isInRange(Entity target) { // methode qui calcule si la target est dans la range
+		if(target == null) {
+			return false;
+		}
+		else if(calculateDistance(this, target) <= this.attakRange) { // compare distance a la range
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public double calculateDistance(Entity ent1, Entity ent2) {
+		return Math.sqrt(Math.pow(ent1.getPosition().getX() - ent2.getPosition().getX(), 2) + Math.pow(ent1.getPosition().getY() - ent2.getPosition().getY(), 2)); //calcule distance entre 2 points
 	}
 	
 	//getter setter
@@ -152,6 +192,22 @@ public abstract class Building extends Entity{
 
 	public void setAttackSpeed(int attackSpeed) {
 		this.attackSpeed = attackSpeed;
+	}
+
+	public boolean isCanAttak() {
+		return canAttak;
+	}
+
+	public void setCanAttak(boolean canAttak) {
+		this.canAttak = canAttak;
+	}
+
+	public int getAttackCooldown() {
+		return attackCooldown;
+	}
+
+	public void setAttackCooldown(int attackCooldown) {
+		this.attackCooldown = attackCooldown;
 	}
 	
 }

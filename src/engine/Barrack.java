@@ -7,8 +7,8 @@ public class Barrack extends Building{
 
 	private ForUnit infantry;
 	
-	public Barrack(Position position, ForUnit infantry, int id, String description) {
-		super(position, id, description);
+	public Barrack(Position position, ForUnit infantry, int id, String description, int hpMax) {
+		super(position, id, description, hpMax);
 		this.infantry = infantry;
 		this.setProductionId(EntityConfiguration.INFANTRY);
 	}
@@ -41,7 +41,13 @@ public class Barrack extends Building{
 		
 		if(id == EntityConfiguration.INFANTRY) {
 			System.out.println("starting infatry production");
-			u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, infantry.getDescription());
+			if(this.getDestination() == null) {
+				u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, infantry.getDescription(), infantry.getHpMax());
+			}
+			else {
+				u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, infantry.getDescription(), this.getDestination(), infantry.getHpMax());
+				u.calculateSpeed(getDestination());
+			}
 		}
 		else {
 			System.out.println("Invalid id");

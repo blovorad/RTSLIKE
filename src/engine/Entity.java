@@ -3,15 +3,18 @@ package engine;
 public class Entity 
 {
 	private int hp;
+	private int hpMax;
 	private String description;
 	private Position position;
 	private Entity target;
 	private Position destination;
+	private int faction;
 	private int id;
 	
-	public Entity(int hp, String description, Position position, int id)
+	public Entity(int hp, int hpMax, String description, Position position, int id)
 	{
 		this.hp = hp;
+		this.hpMax = hpMax;
 		this.description = description;
 		this.position = position;
 		this.id = id;
@@ -86,5 +89,13 @@ public class Entity
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getHpMax() {
+		return hpMax;
+	}
+
+	public void setHpMax(int hpMax) {
+		this.hpMax = hpMax;
 	}
 }

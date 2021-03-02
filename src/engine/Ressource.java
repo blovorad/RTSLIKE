@@ -8,7 +8,7 @@ public class Ressource extends Entity
 	
 	public Ressource(int hp, String description, Position position, Tile tile)
 	{
-		super(hp, description, position, EntityConfiguration.RESSOURCE);
+		super(hp, hp, description, position, EntityConfiguration.RESSOURCE);
 		tileAttach = tile;
 	}
 

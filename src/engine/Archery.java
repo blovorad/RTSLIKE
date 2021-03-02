@@ -7,8 +7,8 @@ public class Archery extends Building{
 
 	private ForUnit archer;
 	
-	public Archery(Position position, ForUnit archer, int id, String description) {
-		super(position, id, description);
+	public Archery(Position position, ForUnit archer, int id, String description, int hpMax) {
+		super(position, id, description, hpMax);
 		this.archer = archer;
 		this.setProductionId(EntityConfiguration.ARCHER);
 	}
@@ -41,7 +41,13 @@ public class Archery extends Building{
 
 		if(id == EntityConfiguration.ARCHER) {
 			System.out.println("starting archer production");
-			u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription());
+			if(this.getDestination() == null) {
+				u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription(), archer.getHpMax());
+			}
+			else {
+				u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription(), this.getDestination(), archer.getHpMax());
+				u.calculateSpeed(getDestination());
+			}
 		}
 		else {
 			System.out.println("Invalid id");

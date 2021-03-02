@@ -5,7 +5,6 @@ import java.util.List;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
-import configuration.MapConfiguration;
 import factionConfiguration.ForBuilding;
 
 public class EntitiesManager 
@@ -58,6 +57,8 @@ public class EntitiesManager
 		
 		//removing fighter
 		fighters.removeAll(removeFighters);
+		collisionList.removeAll(removeFighters);
+		drawingList.removeAll(removeFighters);
 		removeFighters.clear();
 		
 		for(Worker worker : workers) 
@@ -71,6 +72,8 @@ public class EntitiesManager
 		
 		//removing worker
 		workers.removeAll(removeWorkers);
+		collisionList.removeAll(removeWorkers);
+		drawingList.removeAll(removeWorkers);
 		removeWorkers.clear();
 		
 		for(Unit unit : units)
@@ -85,11 +88,13 @@ public class EntitiesManager
 		
 		//removing units
 		units.removeAll(removeUnits);
+		collisionList.removeAll(removeUnits);
+		drawingList.removeAll(removeUnits);
 		removeUnits.clear();
 		
 		for(Building building : buildings) 
 		{
-			building.update();
+			building.update(units);
 			if(building.getIsProducing())
 			{
 				if(building.getTimer() <= 0)
@@ -110,6 +115,8 @@ public class EntitiesManager
 		
 		//removing building
 		buildings.removeAll(removeBuildings);
+		collisionList.removeAll(removeBuildings);
+		drawingList.removeAll(removeBuildings);
 		removeBuildings.clear();
 		
 		for(Ressource ressource : ressources) 
@@ -124,6 +131,8 @@ public class EntitiesManager
 		
 		//removing ressource
 		ressources.removeAll(removeRessources);
+		collisionList.removeAll(removeRessources);
+		drawingList.removeAll(removeRessources);
 		removeRessources.clear();
 		
 	}
@@ -144,37 +153,37 @@ public class EntitiesManager
 			{
 				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
 			}
-			b = new Forge(position, id, patronBuilding.getDescription());
+			b = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
 		{
-			b = new Stable(position, factionManager.getFactions().get(faction).getRace().getCavalry(), id, patronBuilding.getDescription());
+			b = new Stable(position, factionManager.getFactions().get(faction).getRace().getCavalry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
-			b = new Barrack(position, factionManager.getFactions().get(faction).getRace().getInfantry(), id, patronBuilding.getDescription());
+			b = new Barrack(position, factionManager.getFactions().get(faction).getRace().getInfantry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
-			b = new Archery(position, factionManager.getFactions().get(faction).getRace().getArcher(), id, patronBuilding.getDescription());
+			b = new Archery(position, factionManager.getFactions().get(faction).getRace().getArcher(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
-			b = new Hq(position, factionManager.getFactions().get(faction).getRace().getWorker(), id, patronBuilding.getDescription());
+			b = new Hq(position, factionManager.getFactions().get(faction).getRace().getWorker(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
-			b = new Castle(position, factionManager.getFactions().get(faction).getRace().getSpecial(), id, patronBuilding.getDescription());
+			b = new Castle(position, factionManager.getFactions().get(faction).getRace().getSpecial(), id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		//coder pas prio storage et tower
 		else if(id == EntityConfiguration.STORAGE)
 		{
-			b = new RessourcesStorage(position, id, patronBuilding.getDescription());
+			b = new RessourcesStorage(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else if(id == EntityConfiguration.TOWER)
 		{
-			b = new Tower(position, id, patronBuilding.getDescription());
+			b = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax());
 		}
 		else
 		{
