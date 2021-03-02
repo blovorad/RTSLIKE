@@ -28,27 +28,27 @@ public class Empire extends Race
 	
 	public void initWorker()
 	{
-		setWorker(new ForUnit(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Travailleur empire", 5));
+		setWorker(new ForWorker(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Travailleur empire", 5, 10, 5));
 	}
 	
 	public void initCavalry()
 	{
-		setCavalry(new ForUnit(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Cavalier empire", 5));
+		setCavalry(new ForFighter(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Cavalier empire", 5));
 	}
 	
 	public void initInfantry()
 	{
-		setInfantry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin empire", 5));
+		setInfantry(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin empire", 5));
 	}
 	
 	public void initArcher()
 	{
-		setArcher(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer empire", 5));
+		setArcher(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer empire", 5));
 	}
 	
 	public void initSpecial()
 	{
-		setSpecial(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special empire", 5));
+		setSpecial(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special empire", 5));
 	}
 	
 	public void initForge()

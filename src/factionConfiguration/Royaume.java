@@ -1,7 +1,5 @@
 package factionConfiguration;
 
-import java.util.List;
-
 import configuration.EntityConfiguration;
 
 public class Royaume extends Race 
@@ -30,27 +28,27 @@ public class Royaume extends Race
 	
 	public void initWorker()
 	{
-		setWorker(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Travailleur royaume", 5));
+		setWorker(new ForWorker(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Travailleur royaume", 5, 10, 5));
 	}
 	
 	public void initCavalry()
 	{
-		setCavalry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Cavalier royaume", 5));
+		setCavalry(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Cavalier royaume", 5));
 	}
 	
 	public void initInfantry()
 	{
-		setInfantry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin royaume", 5));
+		setInfantry(new ForFighter(15, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin royaume", 15));
 	}
 	
 	public void initArcher()
 	{
-		setArcher(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer royaume", 5));
+		setArcher(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer royaume", 5));
 	}
 	
 	public void initSpecial()
 	{
-		setSpecial(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special royaume", 5));
+		setSpecial(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special royaume", 5));
 	}
 	
 	public void initForge()

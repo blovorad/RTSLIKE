@@ -27,22 +27,10 @@ public class FactionManager
 	
 	public void addFaction(Faction faction)
 	{
-		//ForBuilding b = new ForBuilding(faction.getRace().getBuildings().get(key));
-		/*Random rand = new Random();
-		Building b = new Stable(new Position(rand.nextInt(400), rand.nextInt(400)));
-		faction.createBuilding(b);*/
 		factions.add(faction);
 	}
-	
-	public void update() 
-	{
-		for(Faction faction : factions) 
-		{
-			faction.update();
-		}
-	}
 
-	public void cleanFactionManager() 
+	public void clean() 
 	{
 		factions.clear();
 	}

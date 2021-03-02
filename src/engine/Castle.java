@@ -1,16 +1,22 @@
 package engine;
 
 import configuration.EntityConfiguration;
-import factionConfiguration.ForUnit;
+import factionConfiguration.ForFighter;
 
 public class Castle extends Building{
 
-	private ForUnit special;
+	private ForFighter special;
 	
-	public Castle(Position position, ForUnit special, int id, String description) {
-		super(position, id, description);
+	public Castle(Position position, ForFighter special, int id, String description, int hpMax) {
+		super(position, id, description, hpMax);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
+		this.setCanAttak(false);
+		this.setCanHeal(true);
+		this.setDamage(10);
+		this.setAttakRange(80);
+		this.setAttackSpeed(10);
+		this.setAttackCooldown(this.getAttackSpeed());
 	}
 
 	@Override
@@ -37,7 +43,13 @@ public class Castle extends Building{
 		
 		if(id == EntityConfiguration.SPECIAL_UNIT) {
 			System.out.println("starting special unit production");
-			u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, special.getDescription());
+			if(this.getDestination() == null) {
+				u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, special.getDescription(), special.getHpMax());
+			}
+			else {
+				u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, special.getDescription(), this.getDestination(), special.getHpMax());
+				u.calculateSpeed(getDestination());
+			}
 		}
 		else {
 			System.out.println("Invalid id");

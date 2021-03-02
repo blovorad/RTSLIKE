@@ -1,14 +1,15 @@
 package engine;
 
 import configuration.EntityConfiguration;
-import factionConfiguration.ForUnit;
+import factionConfiguration.ForFighter;
+import factionConfiguration.ForWorker;
 
 public class Hq extends Building{
 
-	private ForUnit worker;
+	private ForWorker worker;
 	
-	public Hq(Position position, ForUnit worker, int id, String description) {
-		super(position, id, description);
+	public Hq(Position position, ForWorker worker, int id, String description, int hpMax) {
+		super(position, id, description, hpMax);
 		this.worker = worker;
 		this.setProductionId(EntityConfiguration.WORKER);
 	}
@@ -41,7 +42,13 @@ public class Hq extends Building{
 
 		if(id == EntityConfiguration.WORKER) {
 			System.out.println("starting worker production");
-			u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription());
+			if(this.getDestination() == null) {
+				u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription(), worker.getHpMax());
+			}
+			else {
+				u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription(), this.getDestination(), worker.getHpMax());
+				u.calculateSpeed(getDestination());
+			}
 		}
 		else {
 			System.out.println("Invalid id");

@@ -1,14 +1,14 @@
 package engine;
 
 import configuration.EntityConfiguration;
-import factionConfiguration.ForUnit;
+import factionConfiguration.ForFighter;
 
 public class Stable extends Building{
 	
-	private ForUnit cavalry;
+	private ForFighter cavalry;
 	
-	public Stable(Position position, ForUnit cavalry, int id, String description) {
-		super(position, id, description);
+	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax) {
+		super(position, id, description, hpMax);
 		this.setCavalry(cavalry);
 		this.setProductionId(EntityConfiguration.CAVALRY);
 	}
@@ -35,11 +35,11 @@ public class Stable extends Building{
 		return u;
 	}
 
-	public ForUnit getCavalry() {
+	public ForFighter getCavalry() {
 		return cavalry;
 	}
 
-	public void setCavalry(ForUnit cavalry) {
+	public void setCavalry(ForFighter cavalry) {
 		this.cavalry = cavalry;
 	}
 
@@ -49,7 +49,7 @@ public class Stable extends Building{
 		
 		if(id == EntityConfiguration.CAVALRY) {
 			System.out.println("starting cavalry production");
-			u = new Unit(cavalry.getHp(), 0, cavalry.getAttackRange(), cavalry.getMaxSpeed(), cavalry.getDamage(), cavalry.getRange(), cavalry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, cavalry.getDescription());
+			u = new Unit(cavalry.getHp(), 0, cavalry.getAttackRange(), cavalry.getMaxSpeed(), cavalry.getDamage(), cavalry.getRange(), cavalry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, cavalry.getDescription(), cavalry.getHpMax());
 		}
 		else {
 			System.out.println("Invalid id");

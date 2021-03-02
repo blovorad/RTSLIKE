@@ -1,6 +1,6 @@
 package factionConfiguration;
 
-public class ForUnit extends Patron
+public class ForFighter extends Patron
 {
 	private int range;
 	private int damage;
@@ -8,7 +8,7 @@ public class ForUnit extends Patron
 	private int maxSpeed;
 	private int timeToBuild;
 	
-	public ForUnit(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax)
+	public ForFighter(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax)
 	{
 		super(hp, age, sightRange, attackSpeed, attackRange, description, hpMax);
 		

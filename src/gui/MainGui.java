@@ -13,9 +13,11 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Building;
 import engine.Collision;
+import engine.EntitiesManager;
 import engine.Camera;
 import engine.FactionManager;
 import engine.Fighter;
@@ -38,7 +40,7 @@ public class MainGui extends JFrame implements Runnable
 	
 	private Camera camera;
 	
-	private FactionManager manager;
+	private EntitiesManager manager;
 	
 	private Mouse mouse;
 	
@@ -54,7 +56,7 @@ public class MainGui extends JFrame implements Runnable
 		selectionRectangle = new SelectionRect();
 		
 		mouse = new Mouse();
-		manager = new FactionManager();
+		manager = new EntitiesManager();
 		camera = new Camera(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
 		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle);
 		
@@ -182,21 +184,21 @@ public class MainGui extends JFrame implements Runnable
 		
 		public void checkWhatIsSelected(int mouseX, int mouseY)
 		{
-			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+			manager.clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
 
 			int x = mouseX + camera.getX();
 			int y = mouseY + camera.getY();
 			
 			boolean noUnitSelected = true;
-			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
+			List<Unit> listUnits = manager.getUnits();
 			for(Unit unit : listUnits)
 			{
 				Position unitPosition = new Position(unit.getPosition().getX(),  unit.getPosition().getY());
 				
 				if(x > unitPosition.getX() && x < unitPosition.getX() + GameConfiguration.TILE_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + GameConfiguration.TILE_SIZE)
 				{
-					manager.getFactions().get(0).getEntities().addSelectedUnit(unit);
+					manager.addSelectedUnit(unit);
 					dashboard.setDescriptionPanelForUnit(unit);
 					noUnitSelected = false;
 				}
@@ -205,8 +207,8 @@ public class MainGui extends JFrame implements Runnable
 			if(noUnitSelected == true)
 			{
 				boolean noBuildingSelected = true;
-				manager.getFactions().get(0).getEntities().clearSelectedUnits();
-				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
+				manager.clearSelectedUnits();
+				List<Building> listBuildings = manager.getBuildings();
 				
 				for(Building building : listBuildings)
 				{
@@ -214,7 +216,7 @@ public class MainGui extends JFrame implements Runnable
 					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
 											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
 					{
-						manager.getFactions().get(0).getEntities().selectBuilding(building);
+						manager.selectBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
 						noBuildingSelected = false;
 						break;
@@ -223,7 +225,7 @@ public class MainGui extends JFrame implements Runnable
 				
 				if(noBuildingSelected == true)
 				{
-					List<Ressource> listRessources = manager.getFactions().get(2).getEntities().getRessources();
+					List<Ressource> listRessources = manager.getRessources();
 					for(Ressource ressource : listRessources)
 					{
 						if((x > ressource.getPosition().getX() && x < ressource.getPosition().getX() + GameConfiguration.TILE_SIZE)
@@ -239,7 +241,7 @@ public class MainGui extends JFrame implements Runnable
 		
 		public void checkWhatIsSelected(int x, int y, int w, int h)
 		{
-			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+			manager.clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
 			
 			if(w < 0)
@@ -256,12 +258,12 @@ public class MainGui extends JFrame implements Runnable
 			SelectionRect rect = new SelectionRect(x, y, w, h);
 			
 			boolean noUnitSelected = true;
-			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
+			List<Unit> listUnits = manager.getUnits();
 			for(Unit unit : listUnits)
 			{
 				if(Collision.collide(unit.getPosition(), rect, camera) == true)
 				{
-					manager.getFactions().get(0).getEntities().addSelectedUnit(unit);
+					manager.addSelectedUnit(unit);
 					dashboard.setDescriptionPanelForUnit(unit);
 					noUnitSelected = false;
 				}
@@ -270,14 +272,14 @@ public class MainGui extends JFrame implements Runnable
 			if(noUnitSelected == true)
 			{
 				boolean noBuildingSelected = true;
-				manager.getFactions().get(0).getEntities().clearSelectedUnits();
-				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
+				manager.clearSelectedUnits();
+				List<Building> listBuildings = manager.getBuildings();
 				
 				for(Building building : listBuildings)
 				{
 					if(Collision.collide(building.getPosition(), rect, camera))
 					{
-						manager.getFactions().get(0).getEntities().selectBuilding(building);
+						manager.selectBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
 						noBuildingSelected = false;
 						break;
@@ -286,7 +288,7 @@ public class MainGui extends JFrame implements Runnable
 				
 				if(noBuildingSelected == true)
 				{
-					List<Ressource> listRessources = manager.getFactions().get(2).getEntities().getRessources();
+					List<Ressource> listRessources = manager.getRessources();
 					for(Ressource ressource : listRessources)
 					{
 						if(Collision.collide(ressource.getPosition(), rect, camera))
@@ -337,7 +339,7 @@ public class MainGui extends JFrame implements Runnable
 							
 							Position p = new Position(x, y);
 							
-							manager.getFactions().get(0).createBuilding(mouse.getId(), p);
+							manager.createBuilding(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p);
 							mouse.setId(-1);
 						}
 						selectionRectangle.setActive(false);
@@ -345,11 +347,24 @@ public class MainGui extends JFrame implements Runnable
 				}
 				else if(e.getButton() == 3)
 				{
-					List<Unit> listSelectedUnit = manager.getFactions().get(0).getEntities().getSelectedUnits();
+					List<Unit> listSelectedUnit = manager.getSelectedUnits();
 					
-					for(Unit unit : listSelectedUnit)
-					{
-						unit.calculateSpeed(new Position(mouseX, mouseY));
+					
+					if(!listSelectedUnit.isEmpty()) {
+						for(Unit unit : listSelectedUnit)
+						{
+							unit.calculateSpeed(new Position(mouseX, mouseY));
+						}
+					}
+					else {
+						List<Building> listSelectedBuilding = manager.getSelectedBuildings();
+						if(!listSelectedBuilding.isEmpty()) {
+							for(Building building : listSelectedBuilding) {
+								building.setDestination(new Position(mouseX, mouseY));
+								System.out.println(building.getDestination().getX());
+								System.out.println(building.getDestination().getY());
+							}
+						}
 					}
 
 				}
@@ -437,12 +452,12 @@ public class MainGui extends JFrame implements Runnable
 		gameThread.start();
 	}
 
-	public FactionManager getManager() 
+	public EntitiesManager getManager() 
 	{
 		return manager;
 	}
 
-	public void setManager(FactionManager manager) 
+	public void setManager(EntitiesManager manager) 
 	{
 		this.manager = manager;
 	}
