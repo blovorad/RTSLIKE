@@ -53,37 +53,37 @@ public class Empire extends Race
 	
 	public void initForge()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, null, "Forge Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, null, "Forge Empire", 100));
 	}
 	
 	public void initHq()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, null, "Quartier general Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, null, "Quartier general Empire", 100));
 	}
 	
 	public void initCastle()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 1, null, "Chateau Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 1, null, "Chateau Empire", 100));
 	}
 	
 	public void initTower()
 	{
-		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(100, 10, 10, 10 ,10 ,1, "Tour Gaia", 100));
+		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(100, 10, 10, 10 ,10 ,1, "Tour Empire", 100));
 	}
 	
 	public void initRessourceStockage()
 	{
-		this.getBuildings().put(EntityConfiguration.STORAGE, new ForBuilding(100 , 1, null, "Stockage Gaia", 100));
+		this.getBuildings().put(EntityConfiguration.STORAGE, new ForBuilding(100 , 1, null, "Stockage Empire", 100));
 	}
 	
 	public void initBarrack()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.BARRACK, new ForProductionBuilding(100, 1, null, "Caserne Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.BARRACK, new ForProductionBuilding(100, 1, null, "Caserne Empire", 100));
 	}
 	
 	public void initArchery()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 1, null, "Archerie Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 1, null, "Archerie Empire", 100));
 	}
 	
 	public void initStable()
