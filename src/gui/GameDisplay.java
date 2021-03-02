@@ -24,6 +24,7 @@ import configuration.GameConfiguration;
 import engine.Building;
 import engine.Camera;
 import engine.EntitiesManager;
+import engine.Entity;
 import engine.Faction;
 import engine.FactionManager;
 import engine.Fighter;
@@ -53,7 +54,7 @@ public class GameDisplay extends JPanel
 
 	
 	//use to give the current selected faction when you launch game
-	private FactionManager manager;
+	private EntitiesManager manager;
 	
 	//state of the game
 	private int state;
@@ -120,7 +121,7 @@ public class GameDisplay extends JPanel
 	
 	private JPanel descriptionPanel;
 
-	public GameDisplay(Camera camera, FactionManager manager, Mouse mouse, SelectionRect selectionRectangle)
+	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle)
 	{
 		this.camera = camera;
 		this.manager = manager;
@@ -454,15 +455,15 @@ public class GameDisplay extends JPanel
 	{	
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 0));
 		
-		JLabel  gold =  new JLabel("ARGENT:" + manager.getFactions().get(0).getMoney());
+		JLabel  gold =  new JLabel("ARGENT:" + manager.getFactionManager().getFactions().get(0).getMoney());
 		gold.setForeground(Color.WHITE);
 		JLabel  time =  new JLabel("TEMPS:");
 		time.setForeground(Color.WHITE);
-		JLabel  population =  new JLabel("POPULATION:" + manager.getFactions().get(0).getPopulation());
+		JLabel  population =  new JLabel("POPULATION:" + manager.getFactionManager().getFactions().get(0).getPopulation());
 		population.setForeground(Color.WHITE);
-		JLabel  age =  new JLabel("AGE:" + manager.getFactions().get(0).getAge());
+		JLabel  age =  new JLabel("AGE:" + manager.getFactionManager().getFactions().get(0).getAge());
 		age.setForeground(Color.WHITE);
-		JLabel race = new JLabel(" " + manager.getFactions().get(0).getRace().getName());
+		JLabel race = new JLabel(" " + manager.getFactionManager().getFactions().get(0).getRace().getName());
 		race.setForeground(Color.WHITE);
 		
 		panel.add(gold);
@@ -566,32 +567,11 @@ public class GameDisplay extends JPanel
 		if(state == INGAME)
 		{
 			this.paintStrategy.paint(this.map, g, this.camera);
+			List<Entity> entities = manager.getDrawingList();
 			
-			List<Faction> factions = manager.getFactions();
-			for(Faction faction: factions)
+			for(Entity entity : entities)
 			{
-				EntitiesManager entitiesManager = faction.getEntities();
-				List<Building> buildings = entitiesManager.getBuildings();
-				/*List<Worker> workers = entitiesManager.getWorkers();
-				List<Fighter> fighters = entitiesManager.getFighters();*/
-				List<Ressource> ressources = entitiesManager.getRessources();
-				List<Unit> units = entitiesManager.getUnits();
-				
-				for(Building building: buildings)
-				{
-					this.paintStrategy.paint(building, g, camera);
-				}
-				
-				for(Unit unit : units)
-				{
-					this.paintStrategy.paint(unit, g, camera);
-				}
-				
-				for(Ressource ressource: ressources)
-				{
-					this.paintStrategy.paint(ressource, g, camera);
-				}
-				
+				this.paintStrategy.paint(entity, g, camera);
 			}
 			
 			if(selectionRectangle.isActive())
@@ -599,11 +579,7 @@ public class GameDisplay extends JPanel
 				this.paintStrategy.paint(selectionRectangle, g, camera);
 			}
 			
-			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
-			List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
-			List<Ressource> listRessources = manager.getFactions().get(2).getEntities().getRessources();
-			
-			this.paintStrategy.paintGui(map, listUnits, listBuildings, listRessources, g, camera);
+			this.paintStrategy.paintGui(map, entities, g, camera);
 		}
 		else if(state == MAINMENU)
 		{
@@ -805,9 +781,9 @@ public class GameDisplay extends JPanel
 			Faction faction2 = new Faction(boxPlayer2.getSelectedIndex() + 1);
 			Faction gaia = new Faction(4);
 			
-			manager.addFaction(faction1);
-			manager.addFaction(faction2);
-			manager.addFaction(gaia);
+			manager.getFactionManager().addFaction(faction1);
+			manager.getFactionManager().addFaction(faction2);
+			manager.getFactionManager().addFaction(gaia);
 			
 			if(radioButton1.isSelected())
 			{
@@ -821,7 +797,7 @@ public class GameDisplay extends JPanel
 			{
 				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3, "src/file/map3.txt");
 			}
-			manager.getFactions().get(2).addRessource(map.getGoldTiles());
+			manager.addRessource(map.getGoldTiles());
 			
 			oldState = state;
 			state = INGAME;
@@ -1129,7 +1105,7 @@ public class GameDisplay extends JPanel
 				{
 					pauseMenuPanel.setVisible(false);
 					getMainPanel().remove(pauseMenuPanel);
-					manager.cleanFactionManager();
+					manager.clean();
 					camera.reset();
 				}
 				mainMenuPanel.setVisible(true);
