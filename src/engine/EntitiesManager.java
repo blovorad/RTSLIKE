@@ -3,14 +3,19 @@ package engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import configuration.MapConfiguration;
+
 public class EntitiesManager 
 {
 	private Faction faction;
-	private List<Fighter> fighters;
+	/*private List<Fighter> fighters;
 	private List<Fighter> removeFighters = new ArrayList<Fighter>();
 	
 	private List<Worker> workers;
-	private List<Worker> removeWorkers = new ArrayList<Worker>();
+	private List<Worker> removeWorkers = new ArrayList<Worker>();*/
+	
+	private List<Unit> units;
+	private List<Unit> removeUnits = new ArrayList<Unit>();
 	
 	private List<Building> buildings;
 	private List<Building> removeBuildings = new ArrayList<Building>();
@@ -19,20 +24,23 @@ public class EntitiesManager
 	private List<Ressource> removeRessources = new ArrayList<Ressource>();
 	
 	private List<Unit> selectedUnits;
+	private List<Building> selectedBuildings;
 	
 	public EntitiesManager(Faction faction) 
 	{
 		this.setFaction(faction);
-		this.fighters = new ArrayList<Fighter>();
-		this.workers = new ArrayList<Worker>();
+		/*this.fighters = new ArrayList<Fighter>();
+		this.workers = new ArrayList<Worker>();*/
+		this.units = new ArrayList<Unit>();
 		this.buildings = new ArrayList<Building>();
 		this.ressources = new ArrayList<Ressource>();
-		this.setSelectedUnits(new ArrayList<Unit>());
+		this.selectedUnits = new ArrayList<Unit>();
+		this.selectedBuildings = new ArrayList<Building>();
 	}
 	
 	public void update() 
 	{
-		for(Fighter fighter : fighters) 
+		/*for(Fighter fighter : fighters) 
 		{
 			fighter.update();
 			if(fighter.getHp() < 1)
@@ -56,7 +64,21 @@ public class EntitiesManager
 		
 		//removing worker
 		workers.removeAll(removeWorkers);
-		removeWorkers.clear();
+		removeWorkers.clear();*/
+		
+		for(Unit unit : units)
+		{
+			unit.update();
+			
+			if(unit.getHp() < 1)
+			{
+				removeUnits.add(unit);
+			}
+		}
+		
+		//removing units
+		units.removeAll(removeUnits);
+		removeUnits.clear();
 		
 		for(Building building : buildings) 
 		{
@@ -65,7 +87,8 @@ public class EntitiesManager
 			{
 				if(building.getTimer() <= 0)
 				{
-					building.produce();
+					units.add(building.produce());
+					System.out.println("producing unit");
 				}
 			}
 			if(building.getHp() < 1)
@@ -81,9 +104,10 @@ public class EntitiesManager
 		
 		for(Ressource ressource : ressources) 
 		{
-			ressource.update();
+			//ressource.update();
 			if(ressource.getHp() < 1)
 			{
+				ressource.getTileAttach().setSolid(false);
 				removeRessources.add(ressource);
 			}
 		}
@@ -94,9 +118,19 @@ public class EntitiesManager
 		
 	}
 	
+	public void selectBuilding(Building building)
+	{
+		selectedBuildings.add(building);
+	}
+	
 	public void clearSelectedUnits()
 	{
 		selectedUnits.clear();
+	}
+	
+	public void clearSelectedBuildings()
+	{
+		selectedBuildings.clear();
 	}
 	
 	public void addBuilding(Building building)
@@ -104,20 +138,9 @@ public class EntitiesManager
 		this.buildings.add(building); 
 	}
 	
-	public List<Fighter> getFighters() {
-		return fighters;
-	}
-
-	public void setFighters(List<Fighter> fighters) {
-		this.fighters = fighters;
-	}
-
-	public List<Worker> getWorkers() {
-		return workers;
-	}
-
-	public void setWorkers(List<Worker> gatherers) {
-		this.workers = gatherers;
+	public void addSelectedUnit(Unit unit)
+	{
+		this.selectedUnits.add(unit);
 	}
 
 	public List<Building> getBuildings() {
@@ -150,5 +173,21 @@ public class EntitiesManager
 
 	public void setSelectedUnits(List<Unit> selectedUnits) {
 		this.selectedUnits = selectedUnits;
+	}
+
+	public List<Building> getSelectedBuildings() {
+		return selectedBuildings;
+	}
+
+	public void setSelectedBuildings(List<Building> selectedBuildings) {
+		this.selectedBuildings = selectedBuildings;
+	}
+
+	public List<Unit> getUnits() {
+		return units;
+	}
+
+	public void setUnits(List<Unit> units) {
+		this.units = units;
 	}
 }

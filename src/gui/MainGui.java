@@ -8,15 +8,25 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import configuration.GameConfiguration;
+import engine.Building;
+import engine.Collision;
 import engine.Camera;
 import engine.FactionManager;
+import engine.Fighter;
+import engine.Map;
 import engine.Mouse;
 import engine.Position;
+import engine.Ressource;
+import engine.SelectionRect;
+import engine.Tile;
+import engine.Unit;
+import engine.Worker;
 
 public class MainGui extends JFrame implements Runnable
 {
@@ -31,6 +41,8 @@ public class MainGui extends JFrame implements Runnable
 	private FactionManager manager;
 	
 	private Mouse mouse;
+	
+	private SelectionRect selectionRectangle;
 
 	public MainGui()
 	{
@@ -39,10 +51,12 @@ public class MainGui extends JFrame implements Runnable
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		
+		selectionRectangle = new SelectionRect();
+		
 		mouse = new Mouse();
 		manager = new FactionManager();
 		camera = new Camera(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
-		dashboard = new GameDisplay(camera, manager, mouse);
+		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle);
 		
 		MouseControls mouseControls = new MouseControls();
 		MouseMotion mouseMotion = new MouseMotion();
@@ -92,19 +106,31 @@ public class MainGui extends JFrame implements Runnable
 			switch (keyChar) 
 			{
 				case 'q':
-					camera.move(-15, camera.getSpeed().getVy());
+					if(selectionRectangle.isActive() == false)
+					{
+						camera.move(-15, camera.getSpeed().getVy());
+					}
 					break;
 					
 				case 'd':
-					camera.move(15, camera.getSpeed().getVy());
+					if(selectionRectangle.isActive() == false)
+					{
+						camera.move(15, camera.getSpeed().getVy());
+					}
 					break;
 					
 				case 'z':
-					camera.move(camera.getSpeed().getVx(), -15);
+					if(selectionRectangle.isActive() == false)
+					{
+						camera.move(camera.getSpeed().getVx(), -15);
+					}
 					break;
 					
 				case 's':
-					camera.move(camera.getSpeed().getVx(), 15);
+					if(selectionRectangle.isActive() == false)
+					{
+						camera.move(camera.getSpeed().getVx(), 15);
+					}
 					break;
 					
 				default:
@@ -146,8 +172,134 @@ public class MainGui extends JFrame implements Runnable
 		}
 	}
 	
+	public Container getContent() {
+		// TODO Auto-generated method stub
+		return this.getContentPane();
+	}
+	
 	private class MouseControls implements MouseListener 
 	{
+		
+		public void checkWhatIsSelected(int mouseX, int mouseY)
+		{
+			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+			dashboard.setDescriptionPanelStandard();
+
+			int x = mouseX + camera.getX();
+			int y = mouseY + camera.getY();
+			
+			boolean noUnitSelected = true;
+			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
+			for(Unit unit : listUnits)
+			{
+				Position unitPosition = new Position(unit.getPosition().getX(),  unit.getPosition().getY());
+				
+				if(x > unitPosition.getX() && x < unitPosition.getX() + GameConfiguration.TILE_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + GameConfiguration.TILE_SIZE)
+				{
+					manager.getFactions().get(0).getEntities().addSelectedUnit(unit);
+					dashboard.setDescriptionPanelForUnit(unit);
+					noUnitSelected = false;
+				}
+			}
+			
+			if(noUnitSelected == true)
+			{
+				boolean noBuildingSelected = true;
+				manager.getFactions().get(0).getEntities().clearSelectedUnits();
+				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
+				
+				for(Building building : listBuildings)
+				{
+
+					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
+											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
+					{
+						manager.getFactions().get(0).getEntities().selectBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building);
+						noBuildingSelected = false;
+						break;
+					}
+				}
+				
+				if(noBuildingSelected == true)
+				{
+					List<Ressource> listRessources = manager.getFactions().get(2).getEntities().getRessources();
+					for(Ressource ressource : listRessources)
+					{
+						if((x > ressource.getPosition().getX() && x < ressource.getPosition().getX() + GameConfiguration.TILE_SIZE)
+								&& (y > ressource.getPosition().getY() && y < ressource.getPosition().getY() + GameConfiguration.TILE_SIZE))
+						{
+							dashboard.setDescriptionPanelForRessource(ressource);
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+		public void checkWhatIsSelected(int x, int y, int w, int h)
+		{
+			manager.getFactions().get(0).getEntities().clearSelectedBuildings();
+			dashboard.setDescriptionPanelStandard();
+			
+			if(w < 0)
+			{
+				x = x + w;
+				w = w * -1;
+			}
+			if(h < 0)
+			{
+				y = y + h;
+				h = h * -1;
+			}
+			
+			SelectionRect rect = new SelectionRect(x, y, w, h);
+			
+			boolean noUnitSelected = true;
+			List<Unit> listUnits = manager.getFactions().get(0).getEntities().getUnits();
+			for(Unit unit : listUnits)
+			{
+				if(Collision.collide(unit.getPosition(), rect, camera) == true)
+				{
+					manager.getFactions().get(0).getEntities().addSelectedUnit(unit);
+					dashboard.setDescriptionPanelForUnit(unit);
+					noUnitSelected = false;
+				}
+			}
+			
+			if(noUnitSelected == true)
+			{
+				boolean noBuildingSelected = true;
+				manager.getFactions().get(0).getEntities().clearSelectedUnits();
+				List<Building> listBuildings = manager.getFactions().get(0).getEntities().getBuildings();
+				
+				for(Building building : listBuildings)
+				{
+					if(Collision.collide(building.getPosition(), rect, camera))
+					{
+						manager.getFactions().get(0).getEntities().selectBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building);
+						noBuildingSelected = false;
+						break;
+					}
+				}
+				
+				if(noBuildingSelected == true)
+				{
+					List<Ressource> listRessources = manager.getFactions().get(2).getEntities().getRessources();
+					for(Ressource ressource : listRessources)
+					{
+						if(Collision.collide(ressource.getPosition(), rect, camera))
+						{
+							dashboard.setDescriptionPanelForRessource(ressource);
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+		
 		@Override
 		public void mouseClicked(MouseEvent e) 
 		{
@@ -157,16 +309,49 @@ public class MainGui extends JFrame implements Runnable
 		@Override
 		public void mousePressed(MouseEvent e) 
 		{
-			if(e.getButton() == 1)
+			if(dashboard.getState() == 1)
 			{
-				if(mouse.getId() > -1)
+				int mouseX = e.getX() + camera.getX();
+				int mouseY = e.getY() + camera.getY();
+				
+				if(e.getButton() == 1)
 				{
-					mouse.getBuilding().setPosition(new Position(mouse.getX(), mouse.getY()));
-					System.out.println("mouse " + mouse.getX() + "," + mouse.getY());
-					//manager.getFactions().get(0).createBuilding(mouse.getBuilding());
-					System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
-					mouse.setId(-1);
-					mouse.setBuilding(null);
+
+					if(selectionRectangle.isActive() == false)
+					{
+						selectionRectangle.setActive(true);
+						selectionRectangle.setX(e.getX());
+						selectionRectangle.setY(e.getY());
+						selectionRectangle.setW(0);
+						selectionRectangle.setH(0);
+					}
+					
+					if(mouse.getId() > -1)
+					{
+						Tile tile = dashboard.getMap().getTile((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE, (e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE);
+						System.out.println("tuile solide : " + tile.isSolid());
+						if(tile.isSolid() == false)
+						{
+							int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
+							int y = ((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
+							
+							Position p = new Position(x, y);
+							
+							manager.getFactions().get(0).createBuilding(mouse.getId(), p);
+							mouse.setId(-1);
+						}
+						selectionRectangle.setActive(false);
+					}
+				}
+				else if(e.getButton() == 3)
+				{
+					List<Unit> listSelectedUnit = manager.getFactions().get(0).getEntities().getSelectedUnits();
+					
+					for(Unit unit : listSelectedUnit)
+					{
+						unit.calculateSpeed(new Position(mouseX, mouseY));
+					}
+
 				}
 			}
 		}
@@ -176,17 +361,23 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				/*if(mouse.getId() > -1)
+				System.out.println("released");
+				if(selectionRectangle.isActive() == true)
 				{
-					manager.getFactions().get(0).createBuilding(mouse.getBuilding());
-					System.out.println("construction a " + mouse.getBuilding().getPosition().getX() + "," + mouse.getBuilding().getPosition().getY());
-					mouse.setId(-1);
-					mouse.setBuilding(null);
-				}*/
+					if(selectionRectangle.getW() == 0 && selectionRectangle.getH() == 0)
+					{
+						checkWhatIsSelected(e.getX(), e.getY());
+					}
+					else
+					{
+						checkWhatIsSelected(selectionRectangle.getX(), selectionRectangle.getY(), selectionRectangle.getW(), selectionRectangle.getH());
+					}
+					selectionRectangle.setActive(false);
+				}
 			}
 			else if(e.getButton() == 3)
 			{
-				System.out.println("REALISED BUTTON 2");
+				
 			}
 		}
 
@@ -207,24 +398,32 @@ public class MainGui extends JFrame implements Runnable
 	{
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			if(dashboard.getState() == 1)
+			{
+				int x = e.getX();
+				int y = e.getY();
+				
+				selectionRectangle.setW(x - selectionRectangle.getX());
+				selectionRectangle.setH(y - selectionRectangle.getY());
+			}
 		}
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			int x = e.getX();
-			int y = e.getY();
-			mouse.setX(x - camera.getX());
-			mouse.setY(y - camera.getY());
-			if(x < camera.getRectX() || x > camera.getRectX() + camera.getRectW() || y < camera.getRectY() || y > camera.getRectY() + camera.getRectH())
+			if(dashboard.getState() == 1)
 			{
-				double angle = Math.atan2(y - GameConfiguration.WINDOW_HEIGHT / 2, x - GameConfiguration.WINDOW_WIDTH / 2);
-				camera.move((int)(20 * Math.cos(angle)), (int)(20 * Math.sin(angle)));
-			}
-			else
-			{
-				camera.move(0, 0);
+				int x = e.getX();
+				int y = e.getY();
+				
+				if(x < camera.getRectX() || x > camera.getRectX() + camera.getRectW() || y < camera.getRectY() || y > camera.getRectY() + camera.getRectH())
+				{
+					double angle = Math.atan2(y - GameConfiguration.WINDOW_HEIGHT / 2, x - GameConfiguration.WINDOW_WIDTH / 2);
+					camera.move((int)(20 * Math.cos(angle)), (int)(20 * Math.sin(angle)));
+				}
+				else
+				{
+					camera.move(0, 0);
+				}
 			}
 			
 		}

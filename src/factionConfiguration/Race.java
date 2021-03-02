@@ -1,15 +1,26 @@
 package factionConfiguration;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public abstract class Race 
 {
 	private ForUnit cavalry;
 	private ForUnit infantry;
 	private ForUnit archer;
+	private ForUnit special;
+	private ForUnit worker;
 	private String name;
-	private AbstractMap<String, ForBuilding>buildings;
+	private AbstractMap<Integer, ForBuilding>buildings;
+	private List<ForUpgrade> upgrades;
 	
+	public Race()
+	{
+		this.buildings = new HashMap<Integer, ForBuilding>();
+		this.upgrades = new ArrayList<ForUpgrade>();
+	}
 	
 	public ForUnit getCavalry() 
 	{
@@ -41,12 +52,12 @@ public abstract class Race
 		this.archer = archer;
 	}
 	
-	public AbstractMap<String, ForBuilding> getBuildings() 
+	public AbstractMap<Integer, ForBuilding> getBuildings() 
 	{
 		return buildings;
 	}
 	
-	public void setBuildings(AbstractMap<String, ForBuilding> buildings) 
+	public void setBuildings(AbstractMap<Integer, ForBuilding> buildings) 
 	{
 		this.buildings = buildings;
 	}
@@ -64,5 +75,29 @@ public abstract class Race
 	public String toString()
 	{
 		return "" + name;
+	}
+
+	public ForUnit getSpecial() {
+		return special;
+	}
+
+	public void setSpecial(ForUnit special) {
+		this.special = special;
+	}
+
+	public List<ForUpgrade> getUpgrades() {
+		return upgrades;
+	}
+
+	public void setUpgrades(List<ForUpgrade> upgrades) {
+		this.upgrades = upgrades;
+	}
+
+	public ForUnit getWorker() {
+		return worker;
+	}
+
+	public void setWorker(ForUnit worker) {
+		this.worker = worker;
 	}
 }

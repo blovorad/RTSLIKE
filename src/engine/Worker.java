@@ -11,9 +11,9 @@ public class Worker extends Unit
 {
 	private int repair;
 	
-	public Worker (int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, int repair)
+	public Worker (int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, int repair, Position position, int id, String description)
 	{	
-		super(currentAction, attackRange, maxSpeed, damage, range, armor);
+		super(hp, currentAction, attackRange, maxSpeed, damage, range, armor, position, id, description);
 		this.repair = repair;
 	}
 

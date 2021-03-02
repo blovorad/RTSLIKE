@@ -5,25 +5,11 @@ import java.util.List;
 public class ForBuilding extends Patron
 {
 	private List<ForUpgrade>upgrades;
-	private List<ForUnit>units;
 	
-	public ForBuilding(int hp, int age, int timeToBuild, List<ForUnit> units, List<ForUpgrade>upgrades)
+	public ForBuilding(int hp, int attackRange, int sightRange, int age, int attackSpeed, List<ForUpgrade>upgrades, String description, int hpMax)
 	{
-		this.setHp(hp);
-		this.setAge(age);
-		this.setTimeToBuild(timeToBuild);
-		this.setUnits(units);
-		this.setUpgrades(upgrades);
-	}
-
-	public List<ForUnit> getUnits() 
-	{
-		return units;
-	}
-
-	public void setUnits(List<ForUnit> units) 
-	{
-		this.units = units;
+		super(hp, age, sightRange, attackSpeed, attackRange, description, hpMax);
+		this.upgrades = upgrades;
 	}
 
 	public List<ForUpgrade> getUpgrades() 

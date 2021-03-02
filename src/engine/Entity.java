@@ -5,14 +5,33 @@ public class Entity
 	private int hp;
 	private String description;
 	private Position position;
-	private boolean isSelected;
 	private Entity target;
 	private Position destination;
 	private int id;
 	
+	public Entity(int hp, String description, Position position, int id)
+	{
+		this.hp = hp;
+		this.description = description;
+		this.position = position;
+		this.id = id;
+		this.target = null;
+		this.destination = null;
+	}
+	
+	public Entity(int hp, String description, Position position, Position destination, int id)
+	{
+		this.hp = hp;
+		this.description = description;
+		this.position = position;
+		this.id = id;
+		this.destination = destination;
+		this.target = null;
+	}
+	
 	public void damage(int damage)
 	{
-		this.setHp(this.getHp() -damage);
+		this.setHp(this.getHp() - damage);
 	}
 	
 	//getter & setter
@@ -38,14 +57,6 @@ public class Entity
 
 	public void setPosition(Position position) {
 		this.position = position;
-	}
-
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
 	}
 
 	public Entity getTarget() {

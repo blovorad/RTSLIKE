@@ -2,22 +2,22 @@ package factionConfiguration;
 
 public class ForUnit extends Patron
 {
-	private int attackRange;
 	private int range;
 	private int damage;
 	private int armor;
 	private int maxSpeed;
+	private int timeToBuild;
 	
-	public ForUnit(int attackRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild)
+	public ForUnit(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax)
 	{
-		this.setAttackRange(range);
+		super(hp, age, sightRange, attackSpeed, attackRange, description, hpMax);
+		
 		this.range = range;
 		this.damage = damage;
 		this.armor = armor;
 		this.maxSpeed = maxSpeed;
-		this.setHp(hp);
-		this.setAge(age);
 		this.setTimeToBuild(timeToBuild);
+		this.setSightRange(sightRange);
 	}
 
 	public int getRange() 
@@ -59,14 +59,14 @@ public class ForUnit extends Patron
 	{
 		this.maxSpeed = maxSpeed;
 	}
-
-	public int getAttackRange() 
+	
+	public int getTimeToBuild() 
 	{
-		return attackRange;
+		return timeToBuild;
 	}
-
-	public void setAttackRange(int attackRange) 
+	
+	public void setTimeToBuild(int timeToBuild) 
 	{
-		this.attackRange = attackRange;
+		this.timeToBuild = timeToBuild;
 	}
 }
