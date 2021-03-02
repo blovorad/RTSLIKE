@@ -1,4 +1,6 @@
 package engine;
+
+
 /**
  * 
  * create: 16/02/2021
@@ -10,6 +12,11 @@ package engine;
 public class Worker extends Unit
 {
 	private int repair;
+	
+	private int nbrRessource;
+	
+	private Building building;
+	private Ressource ressource;
 	
 	public Worker (int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, int repair, Position position, int id, String description)
 	{	
