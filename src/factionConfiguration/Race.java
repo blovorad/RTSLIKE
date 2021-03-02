@@ -7,11 +7,11 @@ import java.util.List;
 
 public abstract class Race 
 {
-	private ForUnit cavalry;
-	private ForUnit infantry;
-	private ForUnit archer;
-	private ForUnit special;
-	private ForUnit worker;
+	private ForFighter cavalry;
+	private ForFighter infantry;
+	private ForFighter archer;
+	private ForFighter special;
+	private ForWorker worker;
 	private String name;
 	private AbstractMap<Integer, ForBuilding>buildings;
 	private List<ForUpgrade> upgrades;
@@ -22,32 +22,32 @@ public abstract class Race
 		this.upgrades = new ArrayList<ForUpgrade>();
 	}
 	
-	public ForUnit getCavalry() 
+	public ForFighter getCavalry() 
 	{
 		return cavalry;
 	}
 	
-	public void setCavalry(ForUnit cavalry) 
+	public void setCavalry(ForFighter cavalry) 
 	{
 		this.cavalry = cavalry;
 	}
 	
-	public ForUnit getInfantry() 
+	public ForFighter getInfantry() 
 	{
 		return infantry;
 	}
 	
-	public void setInfantry(ForUnit infantry) 
+	public void setInfantry(ForFighter infantry) 
 	{
 		this.infantry = infantry;
 	}
 	
-	public ForUnit getArcher() 
+	public ForFighter getArcher() 
 	{
 		return archer;
 	}
 	
-	public void setArcher(ForUnit archer) 
+	public void setArcher(ForFighter archer) 
 	{
 		this.archer = archer;
 	}
@@ -77,11 +77,11 @@ public abstract class Race
 		return "" + name;
 	}
 
-	public ForUnit getSpecial() {
+	public ForFighter getSpecial() {
 		return special;
 	}
 
-	public void setSpecial(ForUnit special) {
+	public void setSpecial(ForFighter special) {
 		this.special = special;
 	}
 
@@ -93,11 +93,11 @@ public abstract class Race
 		this.upgrades = upgrades;
 	}
 
-	public ForUnit getWorker() {
+	public ForWorker getWorker() {
 		return worker;
 	}
 
-	public void setWorker(ForUnit worker) {
+	public void setWorker(ForWorker worker) {
 		this.worker = worker;
 	}
 }

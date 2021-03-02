@@ -1,13 +1,13 @@
 package engine;
 
 import configuration.EntityConfiguration;
-import factionConfiguration.ForUnit;
+import factionConfiguration.ForFighter;
 
 public class Stable extends Building{
 	
-	private ForUnit cavalry;
+	private ForFighter cavalry;
 	
-	public Stable(Position position, ForUnit cavalry, int id, String description, int hpMax) {
+	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax) {
 		super(position, id, description, hpMax);
 		this.setCavalry(cavalry);
 		this.setProductionId(EntityConfiguration.CAVALRY);
@@ -35,11 +35,11 @@ public class Stable extends Building{
 		return u;
 	}
 
-	public ForUnit getCavalry() {
+	public ForFighter getCavalry() {
 		return cavalry;
 	}
 
-	public void setCavalry(ForUnit cavalry) {
+	public void setCavalry(ForFighter cavalry) {
 		this.cavalry = cavalry;
 	}
 

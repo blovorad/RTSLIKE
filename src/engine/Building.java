@@ -28,10 +28,6 @@ public abstract class Building extends Entity{
 	}
 	
 	public void update(List<Unit> units) {
-		/*Random rand = new Random();
-		int lessHp = rand.nextInt(5);
-		this.setHp(this.getHp() - lessHp);
-		System.out.println("we remove : " + lessHp);*/
 		if(canAttak == true) {
 			if(this.getAttackCooldown() > 0) {
 				this.setAttackCooldown(this.getAttackCooldown()-1);

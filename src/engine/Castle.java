@@ -1,13 +1,13 @@
 package engine;
 
 import configuration.EntityConfiguration;
-import factionConfiguration.ForUnit;
+import factionConfiguration.ForFighter;
 
 public class Castle extends Building{
 
-	private ForUnit special;
+	private ForFighter special;
 	
-	public Castle(Position position, ForUnit special, int id, String description, int hpMax) {
+	public Castle(Position position, ForFighter special, int id, String description, int hpMax) {
 		super(position, id, description, hpMax);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);

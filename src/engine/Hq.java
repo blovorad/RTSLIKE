@@ -1,13 +1,14 @@
 package engine;
 
 import configuration.EntityConfiguration;
-import factionConfiguration.ForUnit;
+import factionConfiguration.ForFighter;
+import factionConfiguration.ForWorker;
 
 public class Hq extends Building{
 
-	private ForUnit worker;
+	private ForWorker worker;
 	
-	public Hq(Position position, ForUnit worker, int id, String description, int hpMax) {
+	public Hq(Position position, ForWorker worker, int id, String description, int hpMax) {
 		super(position, id, description, hpMax);
 		this.worker = worker;
 		this.setProductionId(EntityConfiguration.WORKER);

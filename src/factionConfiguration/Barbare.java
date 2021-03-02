@@ -28,27 +28,27 @@ public class Barbare extends Race
 	
 	public void initWorker()
 	{
-		setWorker(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "Travailleur barbare", 5));
+		setWorker(new ForWorker(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "Travailleur barbare", 5, 10, 1));
 	}
 	
 	public void initCavalry()
 	{
-		setCavalry(new ForUnit(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "Cavalier barbare", 5));
+		setCavalry(new ForFighter(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "Cavalier barbare", 5));
 	}
 	
 	public void initInfantry()
 	{
-		setInfantry(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin barbare", 5));
+		setInfantry(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin barbare", 5));
 	}
 	
 	public void initArcher()
 	{
-		setArcher(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer barbare", 5));
+		setArcher(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer barbare", 5));
 	}
 	
 	public void initSpecial()
 	{
-		setSpecial(new ForUnit(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special barbare", 5));
+		setSpecial(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special barbare", 5));
 	}
 	
 	public void initForge()
