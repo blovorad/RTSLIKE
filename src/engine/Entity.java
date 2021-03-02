@@ -36,10 +36,14 @@ public class Entity
 	{
 		this.setHp(this.getHp() - damage);
 	}
-	
-	public void restaurHP(int hp)
+
+	public void heal(int hp)
 	{
 		this.setHp(this.getHp() + hp);
+		if(this.getHp() > this.getHpMax())
+		{
+			this.setHp(this.getHpMax());
+		}
 	}
 	
 	//getter & setter
