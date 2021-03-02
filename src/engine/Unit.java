@@ -70,11 +70,6 @@ public class Unit extends Entity
 		}
 	}
 	
-	public void restaurHP(int hp)
-	{
-		this.setHp(this.getHp() + hp);
-	}
-	
 	public int getDamage() 
 	{
 		return damage;

@@ -34,6 +34,11 @@ public class Entity
 		this.setHp(this.getHp() - damage);
 	}
 	
+	public void heal(int hp)
+	{
+		this.setHp(this.getHp() + hp);
+	}
+	
 	//getter & setter
 	public int getHp() {
 		return hp;

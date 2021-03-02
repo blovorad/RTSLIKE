@@ -11,6 +11,12 @@ public class Castle extends Building{
 		super(position, id, description);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
+		this.setCanAttak(false);
+		this.setCanHeal(true);
+		this.setDamage(10);
+		this.setAttakRange(20);
+		this.setAttackSpeed(10);
+		this.setAttackCooldown(this.getAttackSpeed());
 	}
 
 	@Override

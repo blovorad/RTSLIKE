@@ -14,6 +14,7 @@ public abstract class Building extends Entity{
 	private boolean isProducing;
 	private int productionId;
 	private boolean canAttak;
+	private boolean canHeal;
 	private List<Upgrades> upgrades;
 	private int sightRange;
 	private int attakRange;
@@ -52,6 +53,26 @@ public abstract class Building extends Entity{
 				lookForTarget(units);
 			}
 		}
+		if(canHeal == true) {
+			if(this.getAttackCooldown() > 0) {
+				this.setAttackCooldown(this.getAttackCooldown()-1);
+			}
+			if(this.getTarget() != null) {
+				if(isInRange(this.getTarget())) {
+					if(this.getAttackCooldown() <= 0) {
+						heal();
+						this.setAttackCooldown(this.getAttackSpeed());
+						System.out.println(this.getDescription() + " healed " + this.getTarget().getDescription() + " for " + this.getDamage() + " !");
+						System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
+						if(this.getTarget().getHp() <= 0) {
+							this.setTarget(null);
+						}
+					}
+				}
+			}else {
+				lookForTarget(units);
+			}
+		}
 		if(timer > 0)
 		{
 			timer--;
@@ -79,9 +100,12 @@ public abstract class Building extends Entity{
 	public abstract Unit produce();
 	public abstract void startProd(int id);
 	
-	public  void attak()
-	{
+	public  void attak() {
 		this.getTarget().damage(damage);
+	}
+	
+	public void heal() {
+		this.getTarget().heal(this.getDamage());
 	}
 	
 	public void lookForTarget(List<Unit> units)
@@ -208,6 +232,14 @@ public abstract class Building extends Entity{
 
 	public void setAttackCooldown(int attackCooldown) {
 		this.attackCooldown = attackCooldown;
+	}
+
+	public boolean isCanHeal() {
+		return canHeal;
+	}
+
+	public void setCanHeal(boolean canHeal) {
+		this.canHeal = canHeal;
 	}
 	
 }
