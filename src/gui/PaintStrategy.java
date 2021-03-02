@@ -9,13 +9,13 @@ import engine.Building;
 import engine.Camera;
 import engine.Entity;
 import engine.Fighter;
-import engine.Worker;
 import engine.Map;
 import engine.Mouse;
-import engine.SelectionRect;
 import engine.Ressource;
+import engine.SelectionRect;
 import engine.Tile;
 import engine.Unit;
+import engine.Worker;
 
 public class PaintStrategy 
 {

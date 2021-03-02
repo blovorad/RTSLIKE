@@ -14,11 +14,15 @@ public abstract class Race
 	private ForWorker worker;
 	private String name;
 	private AbstractMap<Integer, ForBuilding>buildings;
+	private AbstractMap<Integer, ForProductionBuilding>productionBuildings;
+	private AbstractMap<Integer, ForAttackBuilding>attackBuildings;
 	private List<ForUpgrade> upgrades;
 	
 	public Race()
 	{
 		this.buildings = new HashMap<Integer, ForBuilding>();
+		this.attackBuildings = new HashMap<Integer, ForAttackBuilding>();
+		this.productionBuildings = new HashMap<Integer, ForProductionBuilding>();
 		this.upgrades = new ArrayList<ForUpgrade>();
 	}
 	
@@ -99,5 +103,21 @@ public abstract class Race
 
 	public void setWorker(ForWorker worker) {
 		this.worker = worker;
+	}
+
+	public AbstractMap<Integer, ForProductionBuilding> getProductionBuildings() {
+		return productionBuildings;
+	}
+
+	public void setProductionBuildings(AbstractMap<Integer, ForProductionBuilding> productionBuildings) {
+		this.productionBuildings = productionBuildings;
+	}
+
+	public AbstractMap<Integer, ForAttackBuilding> getAttackBuildings() {
+		return attackBuildings;
+	}
+
+	public void setAttackBuildings(AbstractMap<Integer, ForAttackBuilding> attackBuildings) {
+		this.attackBuildings = attackBuildings;
 	}
 }

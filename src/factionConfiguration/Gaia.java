@@ -53,42 +53,42 @@ public class Gaia extends Race
 	
 	public void initForge()
 	{
-		this.getBuildings().put(EntityConfiguration.FORGE, new ForBuilding(100, 10, 10, 1, 10, null, "Forge Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, null, "Forge Gaia", 100));
 	}
 	
 	public void initHq()
 	{
-		this.getBuildings().put(EntityConfiguration.HQ, new ForBuilding(100, 10, 10, 1, 10, null, "Quartier general Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, null, "Quartier general Gaia", 100));
 	}
 	
 	public void initCastle()
 	{
-		this.getBuildings().put(EntityConfiguration.CASTLE, new ForBuilding(100, 10, 10, 1, 10, null, "Chateau Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 1, null, "Chateau Gaia", 100));
 	}
 	
 	public void initTower()
 	{
-		this.getBuildings().put(EntityConfiguration.TOWER, new ForBuilding(100, 10, 10, 1, 10, null, "Tour Gaia", 100));
+		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(100, 10, 10, 10 ,10 ,1, "Tour Gaia", 100));
 	}
 	
 	public void initRessourceStockage()
 	{
-		this.getBuildings().put(EntityConfiguration.STORAGE, new ForBuilding(100, 10, 10, 1, 10, null, "Stockage Gaia", 100));
+		this.getBuildings().put(EntityConfiguration.STORAGE, new ForBuilding(100 , 1, null, "Stockage Gaia", 100));
 	}
 	
 	public void initBarrack()
 	{
-		this.getBuildings().put(EntityConfiguration.BARRACK, new ForBuilding(100, 10, 10, 1, 10, null, "Caserne Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.BARRACK, new ForProductionBuilding(100, 1, null, "Caserne Gaia", 100));
 	}
 	
 	public void initArchery()
 	{
-		this.getBuildings().put(EntityConfiguration.ARCHERY, new ForBuilding(100, 10, 10, 1, 10, null, "Archerie Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 1, null, "Archerie Gaia", 100));
 	}
 	
 	public void initStable()
 	{
-		this.getBuildings().put(EntityConfiguration.STABLE, new ForBuilding(100, 10, 10, 1, 10, null, "Ecurie Gaia", 100));
+		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 1, null, "Ecurie Gaia", 100));
 	}
 	
 	public void initUpgrades()

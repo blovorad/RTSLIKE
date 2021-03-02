@@ -15,9 +15,9 @@ import javax.swing.JTextField;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
-import engine.Building;
 import engine.Collision;
 import engine.EntitiesManager;
+import engine.Building;
 import engine.Camera;
 import engine.FactionManager;
 import engine.Fighter;

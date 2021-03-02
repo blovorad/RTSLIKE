@@ -7,10 +7,13 @@ public class ForFighter extends Patron
 	private int armor;
 	private int maxSpeed;
 	private int timeToBuild;
+	private int sightRange;
+	private int attackSpeed;
+	private int attackRange;
 	
 	public ForFighter(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax)
 	{
-		super(hp, age, sightRange, attackSpeed, attackRange, description, hpMax);
+		super(hp, age, description, hpMax);
 		
 		this.range = range;
 		this.damage = damage;
@@ -68,5 +71,29 @@ public class ForFighter extends Patron
 	public void setTimeToBuild(int timeToBuild) 
 	{
 		this.timeToBuild = timeToBuild;
+	}
+
+	public int getSightRange() {
+		return sightRange;
+	}
+
+	public void setSightRange(int sightRange) {
+		this.sightRange = sightRange;
+	}
+
+	public int getAttackSpeed() {
+		return attackSpeed;
+	}
+
+	public void setAttackSpeed(int attackSpeed) {
+		this.attackSpeed = attackSpeed;
+	}
+
+	public int getAttackRange() {
+		return attackRange;
+	}
+
+	public void setAttackRange(int attackRange) {
+		this.attackRange = attackRange;
 	}
 }

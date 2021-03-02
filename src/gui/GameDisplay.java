@@ -29,14 +29,14 @@ import engine.Faction;
 import engine.FactionManager;
 import engine.Fighter;
 import engine.Forge;
-import engine.Worker;
 import engine.Map;
 import engine.Mouse;
 import engine.Position;
-import engine.SelectionRect;
 import engine.Ressource;
+import engine.SelectionRect;
 import engine.Stable;
 import engine.Unit;
+import engine.Worker;
 
 public class GameDisplay extends JPanel 
 {
