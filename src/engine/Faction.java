@@ -1,11 +1,9 @@
 package engine;
 
-import java.util.AbstractMap;
 import java.util.List;
 
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
-import factionConfiguration.ForBuilding;
 import factionConfiguration.Gaia;
 import factionConfiguration.Race;
 import factionConfiguration.Royaume;
@@ -25,7 +23,8 @@ public class Faction
 		age = 1;
 		nbBuilding = 0;
 		population = 20;
-		money = 0;
+		money = 200;
+		nbUnit = 0;
 		setNbUnit(0);
 		
 		if(id == 1)

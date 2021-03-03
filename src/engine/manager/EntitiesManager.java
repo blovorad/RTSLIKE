@@ -23,7 +23,6 @@ import engine.entity.unit.Unit;
 import engine.entity.unit.Worker;
 import engine.map.Tile;
 import factionConfiguration.ForAttackBuilding;
-import factionConfiguration.ForBuilding;
 import factionConfiguration.ForProductionBuilding;
 import factionConfiguration.ForStorageBuilding;
 
@@ -87,6 +86,7 @@ public class EntitiesManager
 			if(fighter.getHp() < 1)
 			{
 				removeFighters.add(fighter);
+				factionManager.getFactions().get(fighter.getFaction()).setNbUnit(factionManager.getFactions().get(fighter.getFaction()).getNbUnit() - 1);
 			}
 		}
 		
@@ -102,6 +102,7 @@ public class EntitiesManager
 			if(worker.getHp() < 1)
 			{
 				removeWorkers.add(worker);
+				factionManager.getFactions().get(worker.getFaction()).setNbUnit(factionManager.getFactions().get(worker.getFaction()).getNbUnit() - 1);
 			}
 		}
 		
@@ -118,6 +119,7 @@ public class EntitiesManager
 			if(unit.getHp() < 1)
 			{
 				removeUnits.add(unit);
+				factionManager.getFactions().get(unit.getFaction()).setNbUnit(factionManager.getFactions().get(unit.getFaction()).getNbUnit() - 1);
 			}
 		}
 		
@@ -138,6 +140,7 @@ public class EntitiesManager
 					units.add(unit);
 					collisionList.add(unit);
 					drawingList.add(unit);
+					factionManager.getFactions().get(unit.getFaction()).setNbUnit(factionManager.getFactions().get(unit.getFaction()).getNbUnit() + 1);
 					System.out.println("producing unit");
 				}
 			}
@@ -210,8 +213,6 @@ public class EntitiesManager
 		StorageBuilding bstorage = null;
 		tile.setSolid(true);
 		
-		int factionToAdd = faction - EntityConfiguration.PLAYER_FACTION;
-		
 		if(id == EntityConfiguration.FORGE)
 		{
 			//List<Upgrades> list = faction.getListUpgrade();
@@ -221,43 +222,43 @@ public class EntitiesManager
 			{
 				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
 			}
-			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(factionToAdd).getRace().getProductionBuildings().get(id);
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
 		}
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
 		{
-			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(factionToAdd).getRace().getProductionBuildings().get(id);
-			bprod = new Stable(position, factionManager.getFactions().get(factionToAdd).getRace().getCavalry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			bprod = new Stable(position, factionManager.getFactions().get(faction).getRace().getCavalry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
-			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(factionToAdd).getRace().getProductionBuildings().get(id);
-			bprod = new Barrack(position, factionManager.getFactions().get(factionToAdd).getRace().getInfantry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			bprod = new Barrack(position, factionManager.getFactions().get(faction).getRace().getInfantry(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
-			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(factionToAdd).getRace().getProductionBuildings().get(id);
-			bprod = new Archery(position, factionManager.getFactions().get(factionToAdd).getRace().getArcher(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			bprod = new Archery(position, factionManager.getFactions().get(faction).getRace().getArcher(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
-			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(factionToAdd).getRace().getProductionBuildings().get(id);
-			bprod = new Hq(position, factionManager.getFactions().get(factionToAdd).getRace().getWorker(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			bprod = new Hq(position, factionManager.getFactions().get(faction).getRace().getWorker(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
-			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(factionToAdd).getRace().getProductionBuildings().get(id);
-			bprod = new Castle(position, factionManager.getFactions().get(factionToAdd).getRace().getSpecial(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			bprod = new Castle(position, factionManager.getFactions().get(faction).getRace().getSpecial(), id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
 		}
 		else if(id == EntityConfiguration.STORAGE)
 		{
-			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(factionToAdd).getRace().getStorageBuildings().get(id);
+			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getStorageBuildings().get(id);
 			bstorage = new StorageBuilding(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
 		}
 		else if(id == EntityConfiguration.TOWER)
 		{
-			ForAttackBuilding patronBuilding = this.factionManager.getFactions().get(factionToAdd).getRace().getAttackBuildings().get(id);
+			ForAttackBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getAttackBuildings().get(id);
 			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
 		}
 		else
@@ -268,19 +269,19 @@ public class EntitiesManager
 		if(bprod != null) {
 			this.drawingList.add(bprod);
 			this.prodBuildings.add(bprod);
-			this.factionManager.getFactions().get(factionToAdd).setBuildingCount(this.factionManager.getFactions().get(factionToAdd).getBuildingCount() + 1);
+			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout Building production");
 		}
 		else if(bstorage != null){
 			this.drawingList.add(bstorage);
 			this.storageBuildings.add(bstorage);
-			this.factionManager.getFactions().get(factionToAdd).setBuildingCount(this.factionManager.getFactions().get(factionToAdd).getBuildingCount() + 1);
+			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout building storage");
 		}
 		else if(battack != null) {
 			this.drawingList.add(battack);
 			this.attackBuildings.add(battack);
-			this.factionManager.getFactions().get(factionToAdd).setBuildingCount(this.factionManager.getFactions().get(factionToAdd).getBuildingCount() + 1);
+			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout building attack");
 		}
 		

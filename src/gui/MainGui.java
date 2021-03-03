@@ -93,6 +93,7 @@ public class MainGui extends JFrame implements Runnable
 			}
 			manager.update();
 			camera.update();
+			dashboard.update();
 			dashboard.repaint();
 		}
 	}

@@ -1,34 +1,32 @@
 package engine.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.AbstractMap;
+import java.util.HashMap;
 
 import engine.Faction;
-import factionConfiguration.ForBuilding;
 
 public class FactionManager 
 {
-	private List<Faction> factions;
+	private AbstractMap<Integer, Faction> factions;
 	
 	public FactionManager() 
 	{
-		factions = new ArrayList<Faction>();
+		factions = new HashMap<Integer, Faction>();
 	}
 
-	public List<Faction> getFactions() 
+	public AbstractMap<Integer, Faction> getFactions() 
 	{
 		return factions;
 	}
 
-	public void setFactions(List<Faction> factions) 
+	public void setFactions(AbstractMap<Integer, Faction> factions) 
 	{
 		this.factions = factions;
 	}
 	
-	public void addFaction(Faction faction)
+	public void addFaction(int id, Faction faction)
 	{
-		factions.add(faction);
+		factions.put(id, faction);
 	}
 
 	public void clean() 

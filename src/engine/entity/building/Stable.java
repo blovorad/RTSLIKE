@@ -2,7 +2,6 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.entity.unit.Fighter;
 import engine.entity.unit.Unit;
 import engine.map.Tile;
 import factionConfiguration.ForFighter;

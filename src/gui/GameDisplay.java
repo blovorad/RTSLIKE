@@ -118,6 +118,12 @@ public class GameDisplay extends JPanel
 	private JPanel pauseMenuPanel;
 	
 	private JPanel descriptionPanel;
+	private JLabel populationLabel;
+	private JLabel moneyLabel;
+	private JLabel ageLabel;
+	private JLabel timeLabel;
+	
+	private float time;
 
 	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle)
 	{
@@ -474,22 +480,22 @@ public class GameDisplay extends JPanel
 	private JPanel createRessourceInfo()
 	{	
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 0));
-		
-		JLabel  gold =  new JLabel("ARGENT:" + manager.getFactionManager().getFactions().get(0).getMoney());
-		gold.setForeground(Color.WHITE);
-		JLabel  time =  new JLabel("TEMPS:");
-		time.setForeground(Color.WHITE);
-		JLabel  population =  new JLabel("POPULATION:" + manager.getFactionManager().getFactions().get(0).getPopulation());
-		population.setForeground(Color.WHITE);
-		JLabel  age =  new JLabel("AGE:" + manager.getFactionManager().getFactions().get(0).getAge());
-		age.setForeground(Color.WHITE);
-		JLabel race = new JLabel(" " + manager.getFactionManager().getFactions().get(0).getRace().getName());
+
+		this.moneyLabel =  new JLabel("ARGENT:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoney());
+		this.moneyLabel.setForeground(Color.WHITE);
+		this.timeLabel =  new JLabel("TEMPS:");
+		this.timeLabel.setForeground(Color.WHITE);
+		this.populationLabel =  new JLabel("POPULATION:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getNbUnit());
+		this.populationLabel.setForeground(Color.WHITE);
+		this.ageLabel =  new JLabel("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
+		this.ageLabel.setForeground(Color.WHITE);
+		JLabel race = new JLabel(" " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
 		race.setForeground(Color.WHITE);
 		
-		panel.add(gold);
-		panel.add(time);
-		panel.add(population);
-		panel.add(age);
+		panel.add(moneyLabel);
+		panel.add(timeLabel);
+		panel.add(populationLabel);
+		panel.add(ageLabel);
 		panel.add(race);
 		
 		panel.setOpaque(false);
@@ -577,6 +583,16 @@ public class GameDisplay extends JPanel
 		panel.setOpaque(false);
 		
 		return panel;
+	}
+	
+	public void update() {
+		if(state == INGAME){
+			time += 1.0 / GameConfiguration.GAME_SPEED;
+			this.moneyLabel.setText("ARGENT:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoney());
+			this.timeLabel.setText("TEMPS:" + (int)time);
+			this.populationLabel.setText("POPULATION:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getNbUnit());
+			this.ageLabel.setText("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
+		}
 	}
 	
 	@Override
@@ -797,13 +813,14 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{	
+			time = 0;
 			Faction faction1 = new Faction(boxPlayer1.getSelectedIndex() + 1);
 			Faction faction2 = new Faction(boxPlayer2.getSelectedIndex() + 1);
 			Faction gaia = new Faction(4);
 			
-			manager.getFactionManager().addFaction(faction1);
-			manager.getFactionManager().addFaction(faction2);
-			manager.getFactionManager().addFaction(gaia);
+			manager.getFactionManager().addFaction(EntityConfiguration.PLAYER_FACTION, faction1);
+			manager.getFactionManager().addFaction(EntityConfiguration.BOT_FACTION, faction2);
+			manager.getFactionManager().addFaction(EntityConfiguration.GAIA_FACTION, gaia);
 			
 			if(radioButton1.isSelected())
 			{
@@ -827,7 +844,9 @@ public class GameDisplay extends JPanel
 			
 			//création d'un ennemie pour test
 			Tile tile = map.getTile(15, 15);
+			Tile tile2 = map.getTile(20, 15);
 			manager.createBuilding(EntityConfiguration.ARCHERY, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * 32, tile.getLine() * 32), tile);
+			manager.createBuilding(EntityConfiguration.TOWER, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * 32, tile2.getLine() * 32), tile2);
 			
 			manageState();
 		}
@@ -1200,5 +1219,37 @@ public class GameDisplay extends JPanel
 
 	public void setState(int state) {
 		this.state = state;
+	}
+
+	public JLabel getPopulationLabel() {
+		return populationLabel;
+	}
+
+	public void setPopulationLabel(JLabel populationLabel) {
+		this.populationLabel = populationLabel;
+	}
+
+	public JLabel getMoneyLabel() {
+		return moneyLabel;
+	}
+
+	public void setMoneyLabel(JLabel moneyLabel) {
+		this.moneyLabel = moneyLabel;
+	}
+
+	public JLabel getTimeLabel() {
+		return timeLabel;
+	}
+
+	public JLabel getAgeLabel() {
+		return ageLabel;
+	}
+
+	public void setAgeLabel(JLabel ageLabel) {
+		this.ageLabel = ageLabel;
+	}
+
+	public void setTimeLabel(JLabel timeLabel) {
+		this.timeLabel = timeLabel;
 	}
 }
