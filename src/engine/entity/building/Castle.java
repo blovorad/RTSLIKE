@@ -2,15 +2,16 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.Unit;
+import engine.entity.unit.Unit;
+import engine.map.Tile;
 import factionConfiguration.ForFighter;
 
 public class Castle extends ProductionBuilding{
 
 	private ForFighter special;
 	
-	public Castle(Position position, ForFighter special, int id, String description, int hpMax) {
-		super(position, id, description, hpMax);
+	public Castle(Position position, ForFighter special, int id, String description, int hpMax, int faction, Tile tile) {
+		super(position, id, description, hpMax, faction, tile);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
 		/*this.setCanAttak(false);
@@ -46,10 +47,10 @@ public class Castle extends ProductionBuilding{
 		if(id == EntityConfiguration.SPECIAL_UNIT) {
 			System.out.println("starting special unit production");
 			if(this.getDestination() == null) {
-				u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, special.getDescription(), special.getHpMax());
+				u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, special.getDescription(), special.getHpMax(), this.getFaction());
 			}
 			else {
-				u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, special.getDescription(), this.getDestination(), special.getHpMax());
+				u = new Unit(special.getHp(), 0, special.getAttackRange(), special.getMaxSpeed(), special.getDamage(), special.getRange(), special.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, special.getDescription(), this.getDestination(), special.getHpMax(), this.getFaction());
 				u.calculateSpeed(getDestination());
 			}
 		}

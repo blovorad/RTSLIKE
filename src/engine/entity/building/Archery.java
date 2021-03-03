@@ -2,15 +2,16 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.Unit;
+import engine.entity.unit.Unit;
+import engine.map.Tile;
 import factionConfiguration.ForFighter;
 
 public class Archery extends ProductionBuilding{
 
 	private ForFighter archer;
 	
-	public Archery(Position position, ForFighter archer, int id, String description, int hpMax) {
-		super(position, id, description, hpMax);
+	public Archery(Position position, ForFighter archer, int id, String description, int hpMax, int faction, Tile tile) {
+		super(position, id, description, hpMax, faction, tile);
 		this.archer = archer;
 		this.setProductionId(EntityConfiguration.ARCHER);
 	}
@@ -40,10 +41,10 @@ public class Archery extends ProductionBuilding{
 		if(id == EntityConfiguration.ARCHER) {
 			System.out.println("starting archer production");
 			if(this.getDestination() == null) {
-				u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription(), archer.getHpMax());
+				u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription(), archer.getHpMax(), this.getFaction());
 			}
 			else {
-				u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription(), this.getDestination(), archer.getHpMax());
+				u = new Unit(archer.getHp(), 0, archer.getAttackRange(), archer.getMaxSpeed(), archer.getDamage(), archer.getRange(), archer.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, archer.getDescription(), this.getDestination(), archer.getHpMax(), this.getFaction());
 				u.calculateSpeed(getDestination());
 			}
 		}

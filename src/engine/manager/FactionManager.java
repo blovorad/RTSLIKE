@@ -1,9 +1,10 @@
-package engine;
+package engine.manager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import engine.Faction;
 import factionConfiguration.ForBuilding;
 
 public class FactionManager 

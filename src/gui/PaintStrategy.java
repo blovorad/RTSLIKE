@@ -4,12 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 
+import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Camera;
 import engine.Entity;
-import engine.Map;
-import engine.SelectionRect;
-import engine.Tile;
+import engine.map.Map;
+import engine.map.Tile;
+import engine.math.SelectionRect;
 
 public class PaintStrategy 
 {
@@ -104,62 +105,27 @@ public class PaintStrategy
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
-		if(entity.getId() >= 5 && entity.getId() <= 12)
-		{
-			graphics.setColor(Color.green);
+		if(entity.getId() >= 5 && entity.getId() <= 12){
+			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
+				graphics.setColor(Color.green);
+			}
+			else{
+				graphics.setColor(Color.orange);
+			}
 		}
-		else if(entity.getId() >= 0 && entity.getId() <= 4)
-		{
-			graphics.setColor(Color.white);
+		else if(entity.getId() >= 0 && entity.getId() <= 4){
+			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
+				graphics.setColor(Color.white);
+			}
+			else {
+				graphics.setColor(Color.red);
+			}
 		}
-		else if(entity.getId() == 13)
-		{
+		else if(entity.getId() == 13){
 			graphics.setColor(Color.yellow);
 		}
 		graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
-	
-	/*public void paint(Building building, Graphics graphics, Camera camera)
-	{
-		int tileSize = GameConfiguration.TILE_SIZE;
-		
-		//System.out.println("on paint sur : " + (building.getPosition().getX() - camera.getX()) + "," + (building.getPosition().getY() - camera.getX()));
-		graphics.setColor(Color.green);
-		graphics.fillRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
-	}
-	
-	public void paint(Unit unit, Graphics graphics, Camera camera)
-	{
-		int tileSize = GameConfiguration.TILE_SIZE;
-		
-		graphics.setColor(Color.white);
-		graphics.fillRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
-	}*/
-	
-	/*public void paint(Worker worker, Graphics graphics, Camera camera)
-	{
-		int tileSize = GameConfiguration.TILE_SIZE;
-		
-		graphics.setColor(Color.green);
-		graphics.fillRect(worker.getPosition().getX() - camera.getX(), worker.getPosition().getY() - camera.getY(), tileSize, tileSize);
-	}
-	
-	public void paint(Fighter fighter, Graphics graphics, Camera camera)
-	{
-		int tileSize = GameConfiguration.TILE_SIZE;
-		
-		graphics.setColor(Color.white);
-		graphics.fillRect(fighter.getPosition().getX() - camera.getX(), fighter.getPosition().getY() - camera.getY(), tileSize, tileSize);
-	}
-
-	
-	public void paint(Ressource ressource, Graphics graphics, Camera camera)
-	{
-		int tileSize = GameConfiguration.TILE_SIZE;
-		
-		graphics.setColor(Color.yellow);
-		graphics.fillRect(ressource.getPosition().getX() - camera.getX(), ressource.getPosition().getY() - camera.getY(), tileSize, tileSize);
-	}*/
 	
 	public void paint(Map map, Graphics graphics, Camera camera)
 	{
@@ -200,21 +166,6 @@ public class PaintStrategy
 			}
 		}
 		
-		/*for(Unit unit : units)
-		{
-			this.paintUnitGui(unit, graphics, camera);
-		}
-		
-		for(Building building : buildings)
-		{
-			this.paintBuildingGui(building, graphics, camera);
-		}
-		
-		for(Ressource ressource : ressources)
-		{
-			this.paintRessourceGui(ressource, graphics, camera);
-		}*/
-		
 		for(Entity entity : entities)
 		{
 			paintEntityGui(entity, graphics, camera);
@@ -232,11 +183,11 @@ public class PaintStrategy
 	
 	public void paintEntityGui(Entity entity, Graphics graphics, Camera camera)
 	{	
-		if(entity.getId() >= 5 && entity.getId() <= 12)
+		if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION)
 		{
 			graphics.setColor(Color.green);
 		}
-		else if(entity.getId() >= 0 && entity.getId() <= 4)
+		else if(entity.getFaction() == EntityConfiguration.BOT_FACTION)
 		{
 			graphics.setColor(Color.white);
 		}
@@ -248,29 +199,4 @@ public class PaintStrategy
 				entity.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
 				gridMapWidth, gridMapHeight);
 	}
-	
-	/*public void paintUnitGui(Unit unit, Graphics graphics, Camera camera)
-	{
-		graphics.setColor(Color.white);
-		graphics.fillRect(unit.getPosition().getX() / GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
-				unit.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
-				gridMapWidth, gridMapHeight);
-	}
-	
-	public void paintBuildingGui(Building building, Graphics graphics, Camera camera)
-	{
-		graphics.setColor(Color.white);
-		graphics.fillRect(building.getPosition().getX() / GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
-				building.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
-				gridMapWidth, gridMapHeight);
-	}
-	
-	public void paintRessourceGui(Ressource ressource, Graphics graphics, Camera camera)
-	{
-		graphics.setColor(Color.ORANGE);
-		graphics.fillRect(ressource.getPosition().getX() / 
-				GameConfiguration.TILE_SIZE * gridMapWidth + firstGridXOfMap, 
-				ressource.getPosition().getY() / GameConfiguration.TILE_SIZE * gridMapHeight + firstGridYOfMap, 
-				gridMapWidth, gridMapHeight);
-	}*/
 }

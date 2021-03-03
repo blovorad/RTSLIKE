@@ -1,4 +1,4 @@
-package engine;
+package engine.math;
 
 public class SelectionRect 
 {

@@ -4,9 +4,11 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 
+import configuration.EntityConfiguration;
 import engine.Entity;
 import engine.Position;
-import engine.Unit;
+import engine.entity.unit.Unit;
+import engine.map.Tile;
 
 public abstract class AttackBuilding extends Entity{
 
@@ -15,9 +17,11 @@ public abstract class AttackBuilding extends Entity{
 	private int attackSpeed;
 	private int damage;
 	private int attackCooldown;
+	private Tile tile;
 	
-	public AttackBuilding(Position position, int id, String description, int hpMax) {
-		super(100, hpMax, description , position, id);
+	public AttackBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile) {
+		super(100, hpMax, description , position, id, faction);
+		this.setTile(tile);
 	}
 	
 	public void update(List<Unit> units) {
@@ -51,8 +55,10 @@ public abstract class AttackBuilding extends Entity{
 	{
 		AbstractMap<Double,Unit> unitsInRange = new HashMap<Double,Unit>();
 		for(Unit unit : units) {
-			if(this.isInRange(unit)) {
-				unitsInRange.put(calculateDistance(this, unit), unit); // met toutes les units inRange dans une map
+			if(unit.getFaction() != this.getFaction()) {
+				if(this.isInRange(unit)) {
+					unitsInRange.put(calculateDistance(this, unit), unit); // met toutes les units inRange dans une map
+				}
 			}
 		}
 		if(!unitsInRange.isEmpty()) {
@@ -123,6 +129,14 @@ public abstract class AttackBuilding extends Entity{
 
 	public void setAttackCooldown(int attackCooldown) {
 		this.attackCooldown = attackCooldown;
+	}
+
+	public Tile getTile() {
+		return tile;
+	}
+
+	public void setTile(Tile tile) {
+		this.tile = tile;
 	}
 	
 }

@@ -2,15 +2,17 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.Unit;
+import engine.entity.unit.Fighter;
+import engine.entity.unit.Unit;
+import engine.map.Tile;
 import factionConfiguration.ForFighter;
 
 public class Stable extends ProductionBuilding{
 	
 	private ForFighter cavalry;
 	
-	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax) {
-		super(position, id, description, hpMax);
+	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax, int faction, Tile tile) {
+		super(position, id, description, hpMax, faction, tile);
 		this.cavalry = cavalry;
 		this.setProductionId(EntityConfiguration.CAVALRY);
 	}
@@ -43,7 +45,14 @@ public class Stable extends ProductionBuilding{
 		
 		if(id == EntityConfiguration.CAVALRY) {
 			System.out.println("starting cavalry production");
-			u = new Unit(cavalry.getHp(), 0, cavalry.getAttackRange(), cavalry.getMaxSpeed(), cavalry.getDamage(), cavalry.getRange(), cavalry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, cavalry.getDescription(), cavalry.getHpMax());
+			if(this.getDestination() == null) {
+				u = new Unit(cavalry.getHp(), 0, cavalry.getAttackRange(), cavalry.getMaxSpeed(), cavalry.getDamage(), cavalry.getRange(), cavalry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, cavalry.getDescription(), cavalry.getHpMax(), this.getFaction());
+		
+			}
+			else {
+				u = new Unit(cavalry.getHp(), 0, cavalry.getAttackRange(), cavalry.getMaxSpeed(), cavalry.getDamage(), cavalry.getRange(), cavalry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, cavalry.getDescription(), this.getDestination(), cavalry.getHpMax(), this.getFaction());
+				u.calculateSpeed(getDestination());
+			}
 		}
 		else {
 			System.out.println("Invalid id");

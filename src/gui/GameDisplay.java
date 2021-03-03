@@ -22,17 +22,19 @@ import javax.swing.event.ChangeListener;
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Camera;
-import engine.EntitiesManager;
 import engine.Entity;
 import engine.Faction;
 import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
-import engine.Map;
+import engine.entity.unit.Unit;
+import engine.manager.EntitiesManager;
+import engine.map.Map;
+import engine.map.Tile;
+import engine.math.SelectionRect;
 import engine.Mouse;
-import engine.SelectionRect;
+import engine.Position;
 import engine.Ressource;
-import engine.Unit;
 
 public class GameDisplay extends JPanel 
 {
@@ -822,6 +824,10 @@ public class GameDisplay extends JPanel
 			
 			gamePanel = createGamePanel();
 			gamePanel.setVisible(false);
+			
+			//création d'un ennemie pour test
+			Tile tile = map.getTile(15, 15);
+			manager.createBuilding(EntityConfiguration.ARCHERY, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * 32, tile.getLine() * 32), tile);
 			
 			manageState();
 		}

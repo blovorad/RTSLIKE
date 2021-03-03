@@ -1,6 +1,9 @@
-package engine;
+package engine.entity.unit;
 
 import configuration.GameConfiguration;
+import engine.Entity;
+import engine.Position;
+import engine.Speed;
 
 /**
  *
@@ -21,9 +24,9 @@ public class Unit extends Entity
 	
 	private Speed speed;
 	
-	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax)
+	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax, int faction)
 	{
-		super(hp, hpMax, description, position, id);
+		super(hp, hpMax, description, position, id, faction);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;
@@ -35,9 +38,9 @@ public class Unit extends Entity
 		this.speed = new Speed(0, 0);
 	}
 	
-	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax)
+	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction)
 	{
-		super(hp, hpMax, description, position, id);
+		super(hp, hpMax, description, position, id, faction);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;

@@ -2,15 +2,16 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.Unit;
+import engine.entity.unit.Unit;
+import engine.map.Tile;
 import factionConfiguration.ForFighter;
 
 public class Barrack extends ProductionBuilding{
 
 	private ForFighter infantry;
 	
-	public Barrack(Position position, ForFighter infantry, int id, String description, int hpMax) {
-		super(position, id, description, hpMax);
+	public Barrack(Position position, ForFighter infantry, int id, String description, int hpMax, int faction, Tile tile) {
+		super(position, id, description, hpMax, faction, tile);
 		this.infantry = infantry;
 		this.setProductionId(EntityConfiguration.INFANTRY);
 	}
@@ -40,10 +41,10 @@ public class Barrack extends ProductionBuilding{
 		if(id == EntityConfiguration.INFANTRY) {
 			System.out.println("starting infatry production");
 			if(this.getDestination() == null) {
-				u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, infantry.getDescription(), infantry.getHpMax());
+				u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, infantry.getDescription(), infantry.getHpMax(), this.getFaction());
 			}
 			else {
-				u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, infantry.getDescription(), this.getDestination(), infantry.getHpMax());
+				u = new Unit(infantry.getHp(), 0, infantry.getAttackRange(), infantry.getMaxSpeed(), infantry.getDamage(), infantry.getRange(), infantry.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, infantry.getDescription(), this.getDestination(), infantry.getHpMax(), this.getFaction());
 				u.calculateSpeed(getDestination());
 			}
 		}

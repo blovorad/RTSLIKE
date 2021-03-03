@@ -1,4 +1,4 @@
-package engine;
+package engine.map;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,51 +53,8 @@ public class Map
 				{
 					goldTiles.add(tile);
 				}
-				/*tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 0);
-				
-				if(id == 1)
-				{
-					if(columnIndex > 90)
-					{
-						tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 1);
-					}
-					else if(lineIndex % 2 == 0)
-					{
-						tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 1);
-					}
-					else if(columnIndex % 2 == 0)
-					{
-						tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 2);
-					}
-					else
-					{
-						tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 0);
-					}
-					
-				}
-				else if(id == 2)
-				{
-					tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 1);
-				}
-				else if(id == 3)
-				{
-					tiles[lineIndex][columnIndex] = new Tile(lineIndex, columnIndex, 2);
-				}*/
 			}
 		}
-	}
-	
-	public boolean existTiles(Position position)
-	{
-		if( position.getX() < 0  && position.getX() >= this.columnCount )
-		{
-			return false;
-		}
-		else if(position.getY() < 0 && position.getY() >= this.lineCount )
-		{
-			return false;
-		}
-		return true;
 	}
 	
 	public Tile[][] getTiles()

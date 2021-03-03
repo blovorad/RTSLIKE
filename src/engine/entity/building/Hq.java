@@ -2,15 +2,16 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.Unit;
+import engine.entity.unit.Unit;
+import engine.map.Tile;
 import factionConfiguration.ForWorker;
 
 public class Hq extends ProductionBuilding{
 
 	private ForWorker worker;
 	
-	public Hq(Position position, ForWorker worker, int id, String description, int hpMax) {
-		super(position, id, description, hpMax);
+	public Hq(Position position, ForWorker worker, int id, String description, int hpMax, int faction, Tile tile) {
+		super(position, id, description, hpMax, faction, tile);
 		this.worker = worker;
 		this.setProductionId(EntityConfiguration.WORKER);
 	}
@@ -44,10 +45,10 @@ public class Hq extends ProductionBuilding{
 		if(id == EntityConfiguration.WORKER) {
 			System.out.println("starting worker production");
 			if(this.getDestination() == null) {
-				u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription(), worker.getHpMax());
+				u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription(), worker.getHpMax(), this.getFaction());
 			}
 			else {
-				u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription(), this.getDestination(), worker.getHpMax());
+				u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription(), this.getDestination(), worker.getHpMax(), this.getFaction());
 				u.calculateSpeed(getDestination());
 			}
 		}

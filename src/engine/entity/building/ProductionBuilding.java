@@ -6,7 +6,8 @@ import java.util.List;
 import configuration.EntityConfiguration;
 import engine.Entity;
 import engine.Position;
-import engine.Unit;
+import engine.entity.unit.Unit;
+import engine.map.Tile;
 
 public abstract class ProductionBuilding extends Entity{
 
@@ -14,10 +15,12 @@ public abstract class ProductionBuilding extends Entity{
 	private int productionId;
 	private int timer;
 	private boolean isProducing;
+	private Tile tile;
 	
-	public ProductionBuilding(Position position, int id, String description, int hpMax) {
-		super(100, hpMax, description , position, id);
+	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile) {
+		super(100, hpMax, description , position, id, faction);
 		elementCount = new ArrayList<Unit>();
+		this.setTile(tile);
 	}
 	
 	public void update() {
@@ -78,6 +81,14 @@ public abstract class ProductionBuilding extends Entity{
 
 	public void setIsProducing(boolean isProducing) {
 		this.isProducing = isProducing;
+	}
+
+	public Tile getTile() {
+		return tile;
+	}
+
+	public void setTile(Tile tile) {
+		this.tile = tile;
 	}
 	
 }

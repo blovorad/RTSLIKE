@@ -15,18 +15,18 @@ import javax.swing.JTextField;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
-import engine.Collision;
-import engine.EntitiesManager;
 import engine.Camera;
 import engine.Mouse;
 import engine.Position;
 import engine.Ressource;
-import engine.SelectionRect;
-import engine.Tile;
-import engine.Unit;
 import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
+import engine.entity.unit.Unit;
+import engine.manager.EntitiesManager;
+import engine.map.Tile;
+import engine.math.Collision;
+import engine.math.SelectionRect;
 
 public class MainGui extends JFrame implements Runnable
 {
@@ -197,9 +197,11 @@ public class MainGui extends JFrame implements Runnable
 				
 				if(x > unitPosition.getX() && x < unitPosition.getX() + GameConfiguration.TILE_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + GameConfiguration.TILE_SIZE)
 				{
-					manager.addSelectedUnit(unit);
-					dashboard.setDescriptionPanelForUnit(unit);
-					noUnitSelected = false;
+					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+						manager.addSelectedUnit(unit);
+						dashboard.setDescriptionPanelForUnit(unit);
+						noUnitSelected = false;
+					}
 				}
 			}
 			
@@ -291,9 +293,11 @@ public class MainGui extends JFrame implements Runnable
 			{
 				if(Collision.collide(unit.getPosition(), rect, camera) == true)
 				{
-					manager.addSelectedUnit(unit);
-					dashboard.setDescriptionPanelForUnit(unit);
-					noUnitSelected = false;
+					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+						manager.addSelectedUnit(unit);
+						dashboard.setDescriptionPanelForUnit(unit);
+						noUnitSelected = false;
+					}
 				}
 			}
 			//if(Collision.collide(building.getPosition(), rect, camera))
@@ -393,7 +397,7 @@ public class MainGui extends JFrame implements Runnable
 							
 							Position p = new Position(x, y);
 							
-							manager.createBuilding(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p);
+							manager.createBuilding(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p, tile);
 							mouse.setId(-1);
 						}
 						selectionRectangle.setActive(false);

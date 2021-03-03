@@ -11,7 +11,7 @@ public class Entity
 	private int faction;
 	private int id;
 	
-	public Entity(int hp, int hpMax, String description, Position position, int id)
+	public Entity(int hp, int hpMax, String description, Position position, int id, int faction)
 	{
 		this.hp = hp;
 		this.hpMax = hpMax;
@@ -20,9 +20,10 @@ public class Entity
 		this.id = id;
 		this.target = null;
 		this.destination = null;
+		this.setFaction(faction);
 	}
 	
-	public Entity(int hp, String description, Position position, Position destination, int id)
+	public Entity(int hp, String description, Position position, Position destination, int id, int faction)
 	{
 		this.hp = hp;
 		this.description = description;
@@ -30,6 +31,7 @@ public class Entity
 		this.id = id;
 		this.destination = destination;
 		this.target = null;
+		this.setFaction(faction);
 	}
 	
 	public void damage(int damage)
@@ -101,5 +103,13 @@ public class Entity
 
 	public void setHpMax(int hpMax) {
 		this.hpMax = hpMax;
+	}
+
+	public int getFaction() {
+		return faction;
+	}
+
+	public void setFaction(int faction) {
+		this.faction = faction;
 	}
 }
