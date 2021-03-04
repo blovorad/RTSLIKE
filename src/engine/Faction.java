@@ -16,7 +16,7 @@ public class Faction
 	private int populationCount;
 	private int maxPopulation;
 	private int moneyCount;
-	private List<Upgrades> upgradesDone;
+	private List<Upgrade> upgradesDone;
 
 	public Faction(int id) 
 	{
@@ -91,11 +91,11 @@ public class Faction
 		this.moneyCount = moneyCount;
 	}
 
-	public List<Upgrades> getUpgradesDone() {
+	public List<Upgrade> getUpgradesDone() {
 		return upgradesDone;
 	}
 
-	public void setUpgradesDone(List<Upgrades> upgradesDone) {
+	public void setUpgradesDone(List<Upgrade> upgradesDone) {
 		this.upgradesDone = upgradesDone;
 	}
 
