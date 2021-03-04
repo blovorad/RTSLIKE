@@ -49,8 +49,11 @@ public class Unit extends Entity
 		this.range = range;
 		this.armor = armor;
 		this.setDestination(destination);
-		
 		this.speed = new Speed(0, 0);
+		
+		if(destination != null) {
+			calculateSpeed(destination);
+		}
 	}
 	
 	public void move(int vx, int vy)

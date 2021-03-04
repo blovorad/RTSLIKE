@@ -2,7 +2,6 @@ package engine.entity.building;
 
 import configuration.EntityConfiguration;
 import engine.Position;
-import engine.entity.unit.Unit;
 import engine.map.Tile;
 import factionConfiguration.ForFighter;
 
@@ -17,8 +16,8 @@ public class Archery extends ProductionBuilding{
 	}
 
 	@Override
-	public Unit produce() {
-		Unit u;
+	public int produce() {
+		/*Unit u;
 		
 		u = this.getElementCount().get(0);
 		this.getElementCount().remove(0);
@@ -31,12 +30,25 @@ public class Archery extends ProductionBuilding{
 		}
 		System.out.println("producing archer final");
 		
-		return u;
+		return u;*/
+		
+		int id = this.getElementCount().get(0);
+		this.getElementCount().remove(0);
+		if(this.getElementCount().isEmpty()) {
+			this.setIsProducing(false);
+		}
+		else
+		{
+			this.setTimer(archer.getTimeToBuild());
+		}
+		System.out.println("producing worker final");
+		
+		return id;
 	}
 
 	@Override
 	public void startProd(int id) {
-		Unit u = null;
+		/*Unit u = null;
 
 		if(id == EntityConfiguration.ARCHER) {
 			System.out.println("starting archer production");
@@ -50,9 +62,9 @@ public class Archery extends ProductionBuilding{
 		}
 		else {
 			System.out.println("Invalid id");
-		}
+		}*/
 		
-		this.getElementCount().add(u);
+		this.getElementCount().add(id);
 		if(this.getIsProducing() == false) {
 			this.setTimer(archer.getTimeToBuild());
 			this.setIsProducing(true);

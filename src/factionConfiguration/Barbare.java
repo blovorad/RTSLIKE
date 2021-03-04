@@ -28,27 +28,27 @@ public class Barbare extends Race
 	
 	public void initWorker()
 	{
-		setWorker(new ForWorker(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "Travailleur barbare", 5, 10, 1));
+		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Travailleur barbare", 5, 10, 1, 10));
 	}
 	
 	public void initCavalry()
 	{
-		setCavalry(new ForFighter(5, 10 ,10, 20, 5, 3, 50, 20, 2, 25, "Cavalier barbare", 5));
+		this.getPatronFighters().put(EntityConfiguration.CAVALRY, new ForFighter(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Cavalier barbare", 5));
 	}
 	
 	public void initInfantry()
 	{
-		setInfantry(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin barbare", 5));
+		this.getPatronFighters().put(EntityConfiguration.INFANTRY, new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin barbare", 5));
 	}
 	
 	public void initArcher()
 	{
-		setArcher(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer barbare", 5));
+		this.getPatronFighters().put(EntityConfiguration.ARCHER, new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer barbare", 5));
 	}
 	
 	public void initSpecial()
 	{
-		setSpecial(new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special barbare", 5));
+		this.getPatronFighters().put(EntityConfiguration.SPECIAL_UNIT, new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special barbare", 5));
 	}
 	
 	public void initForge()

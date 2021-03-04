@@ -19,6 +19,12 @@ public class Fighter extends Unit
 		super(hp, currentAction, attackRange, maxSpeed, damage, range, armor, position, id, description, hpMax, faction);
 		this.state = state;
 	}
+	
+	public Fighter (int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, int state, Position position, int id, String description, int hpMax, int faction, Position destination)
+	{	
+		super(hp, currentAction, attackRange, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction);
+		this.state = state;
+	}
 
 	public int getState() 
 	{
@@ -32,6 +38,6 @@ public class Fighter extends Unit
 	
 	public void update()
 	{
-		
+		super.update();
 	}
 }

@@ -1,7 +1,6 @@
 package engine.entity.building;
 
 import engine.Position;
-import engine.entity.unit.Unit;
 import engine.map.Tile;
 
 public class Forge extends ProductionBuilding{
@@ -12,9 +11,9 @@ public class Forge extends ProductionBuilding{
 	}
 
 	@Override
-	public Unit produce() {
+	public int produce() {
 		// TODO Auto-generated method stub
-		Unit u = null;
+		int u = 1;
 		return u;
 	}
 

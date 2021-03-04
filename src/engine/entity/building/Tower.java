@@ -1,7 +1,6 @@
 package engine.entity.building;
 
 import engine.Position;
-import engine.entity.unit.Unit;
 import engine.map.Tile;
 
 public class Tower extends AttackBuilding{

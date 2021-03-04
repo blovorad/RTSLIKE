@@ -4,7 +4,6 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 
-import configuration.EntityConfiguration;
 import engine.Entity;
 import engine.Position;
 import engine.entity.unit.Unit;
