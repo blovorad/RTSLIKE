@@ -14,16 +14,17 @@ public class Worker extends Unit
 {
 	private int repair;
 	
-	public Worker (int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, int repair, Position position, int id, String description, int hpMax, int faction)
+	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repair, Position position, int id, String description, int hpMax, int faction)
 	{	
-		super(hp, currentAction, attackRange, maxSpeed, damage, range, armor, position, id, description, hpMax, faction);
+		super(hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, hpMax, faction);
 		this.repair = repair;
 	}
 	
-	public Worker (int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, int repair, Position position, int id, String description, int hpMax, int faction, Position destination)
+	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repair, Position position, int id, String description, int hpMax, int faction, Position destination)
 	{	
-		super(hp, currentAction, attackRange, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction);
+		super(hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction);
 		this.repair = repair;
+		System.out.println("maxspeed worker : " + maxSpeed);
 	}
 
 	public int getRepair() 

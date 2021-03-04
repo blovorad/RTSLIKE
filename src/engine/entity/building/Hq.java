@@ -20,22 +20,7 @@ public class Hq extends ProductionBuilding{
 	}
 
 	@Override
-	public int produce() {
-		/*Unit u;
-		
-		u = this.getElementCount().get(0);
-		this.getElementCount().remove(0);
-		if(this.getElementCount().isEmpty()) {
-			this.setIsProducing(false);
-		}
-		else
-		{
-			this.setTimer(worker.getTimeToBuild());
-		}
-		System.out.println("producing worker final");
-		
-		return u;*/
-		
+	public int produce() {		
 		int id = this.getElementCount().get(0);
 		this.getElementCount().remove(0);
 		if(this.getElementCount().isEmpty()) {
@@ -51,28 +36,7 @@ public class Hq extends ProductionBuilding{
 	}
 
 	@Override
-	public void startProd(int id) {
-		/*Unit u = null;
-
-		if(id == EntityConfiguration.WORKER) {
-			System.out.println("starting worker production");
-			if(this.getDestination() == null) {
-				u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription(), worker.getHpMax(), this.getFaction());
-			}
-			else {
-				u = new Unit(worker.getHp() , 0, worker.getAttackRange(), worker.getMaxSpeed(), worker.getDamage(), worker.getRange(), worker.getArmor(), new Position(this.getPosition().getX()- 50, this.getPosition().getY() - 50), id, worker.getDescription(), this.getDestination(), worker.getHpMax(), this.getFaction());
-				u.calculateSpeed(getDestination());
-			}
-		}
-		else {
-			System.out.println("Invalid id");
-		}
-		this.getElementCount().add(u);
-		if(this.getIsProducing() == false) {
-			this.setTimer(worker.getTimeToBuild());
-			this.setIsProducing(true);
-		}*/
-		
+	public void startProd(int id) {		
 		this.getElementCount().add(id);
 		if(this.getIsProducing() == false) {
 			this.setTimer(worker.getTimeToBuild());

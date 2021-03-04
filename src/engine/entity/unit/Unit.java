@@ -17,6 +17,7 @@ public class Unit extends Entity
 {
 	private int currentAction;
 	private int attackRange;
+	private int attackSpeed;
 	private int maxSpeed;
 	private int damage;
 	private int range;
@@ -24,7 +25,7 @@ public class Unit extends Entity
 	
 	private Speed speed;
 	
-	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax, int faction)
+	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax, int faction)
 	{
 		super(hp, hpMax, description, position, id, faction);
 		
@@ -34,16 +35,18 @@ public class Unit extends Entity
 		this.damage = damage;
 		this.range = range;
 		this.armor = armor;
+		this.setAttackSpeed(attackSpeed);
 		
 		this.speed = new Speed(0, 0);
 	}
 	
-	public Unit(int hp, int currentAction, int attackRange, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction)
+	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction)
 	{
 		super(hp, hpMax, description, position, id, faction);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;
+		this.setAttackSpeed(attackSpeed);
 		this.maxSpeed = maxSpeed;
 		this.damage = damage;
 		this.range = range;
@@ -52,6 +55,7 @@ public class Unit extends Entity
 		this.speed = new Speed(0, 0);
 		
 		if(destination != null) {
+			System.out.println("calcul");
 			calculateSpeed(destination);
 		}
 	}
@@ -141,6 +145,9 @@ public class Unit extends Entity
 		this.setDestination(p);
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
 		this.move((int)(this.maxSpeed * Math.cos(angle)), (int)(this.maxSpeed * Math.sin(angle)));
+		System.out.println("Destination : " + this.getDestination().getX() + "," + this.getDestination().getY());
+		System.out.println("vitesse : " + this.getSpeed().getVx() + "," + this.getSpeed().getVy());
+		System.out.println("angle : " + angle);
 	}
 	
 
@@ -157,8 +164,11 @@ public class Unit extends Entity
 			
 			if(this.getDestination() != null)
 			{
+				//System.out.println("on a une destination");
 				if(!this.getPosition().equals(this.getDestination()))
 				{
+					//System.out.println("pas egal on bouge");
+					//System.out.println("speed : " + this.speed.getVx() + "," + this.speed.getVy());
 					if( (this.getPosition().getX() < this.getDestination().getX() && speed.getVx() < 0) || (this.getPosition().getX() > this.getDestination().getX() && speed.getVx() > 0) )
 					{
 						this.getPosition().setX(this.getDestination().getX());
@@ -201,5 +211,13 @@ public class Unit extends Entity
 			p.setY(GameConfiguration.LINE_COUNT * GameConfiguration.TILE_SIZE - GameConfiguration.TILE_SIZE);
 			this.getSpeed().setVy(0);
 		}
+	}
+
+	public int getAttackSpeed() {
+		return attackSpeed;
+	}
+
+	public void setAttackSpeed(int attackSpeed) {
+		this.attackSpeed = attackSpeed;
 	}
 }
