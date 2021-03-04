@@ -53,7 +53,9 @@ public class Archery extends ProductionBuilding{
 		}
 		
 		this.getElementCount().add(u);
-		this.setTimer(archer.getTimeToBuild());
-		this.setIsProducing(true);
+		if(this.getIsProducing() == false) {
+			this.setTimer(archer.getTimeToBuild());
+			this.setIsProducing(true);
+		}
 	}
 }

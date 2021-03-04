@@ -12,20 +12,19 @@ public class Faction
 {
 	private Race race;
 	private int age;
-	private int nbBuilding;
-	private int nbUnit;
-	private int population;
-	private int money;
+	private int buildingCount;
+	private int populationCount;
+	private int maxPopulation;
+	private int moneyCount;
 	private List<Upgrades> upgradesDone;
 
 	public Faction(int id) 
 	{
 		age = 1;
-		nbBuilding = 0;
-		population = 20;
-		money = 200;
-		nbUnit = 0;
-		setNbUnit(0);
+		buildingCount = 0;
+		maxPopulation = 20;
+		moneyCount = 200;
+		populationCount = 0;
 		
 		if(id == 1)
 		{
@@ -57,12 +56,12 @@ public class Faction
 
 	public int getBuildingCount() 
 	{
-		return nbBuilding;
+		return buildingCount;
 	}
 
 	public void setBuildingCount(int buildingCount) 
 	{
-		this.nbBuilding = buildingCount;
+		this.buildingCount = buildingCount;
 	}
 
 	public Race getRace() 
@@ -76,20 +75,20 @@ public class Faction
 	}
 	
 
-	public int getPopulation() {
-		return population;
+	public int getMaxPopulation() {
+		return maxPopulation;
 	}
 
-	public void setPopulation(int population) {
-		this.population = population;
+	public void setMaxPopulation(int maxPopulation) {
+		this.maxPopulation = maxPopulation;
 	}
 
-	public int getMoney() {
-		return money;
+	public int getMoneyCount() {
+		return moneyCount;
 	}
 
-	public void setMoney(int money) {
-		this.money = money;
+	public void setMoneyCount(int moneyCount) {
+		this.moneyCount = moneyCount;
 	}
 
 	public List<Upgrades> getUpgradesDone() {
@@ -100,11 +99,11 @@ public class Faction
 		this.upgradesDone = upgradesDone;
 	}
 
-	public int getNbUnit() {
-		return nbUnit;
+	public int getPopulationCount() {
+		return populationCount;
 	}
 
-	public void setNbUnit(int nbUnit) {
-		this.nbUnit = nbUnit;
+	public void setPopulationCount(int populationCount) {
+		this.populationCount = populationCount;
 	}
 }

@@ -56,8 +56,10 @@ public class Hq extends ProductionBuilding{
 			System.out.println("Invalid id");
 		}
 		this.getElementCount().add(u);
-		this.setTimer(worker.getTimeToBuild());
-		this.setIsProducing(true);
+		if(this.getIsProducing() == false) {
+			this.setTimer(worker.getTimeToBuild());
+			this.setIsProducing(true);
+		}
 	}
 	
 }

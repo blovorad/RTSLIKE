@@ -52,8 +52,10 @@ public class Barrack extends ProductionBuilding{
 			System.out.println("Invalid id");
 		}
 		this.getElementCount().add(u);
-		this.setTimer(infantry.getTimeToBuild());
-		this.setIsProducing(true);
+		if(this.getIsProducing() == false) {
+			this.setTimer(infantry.getTimeToBuild());
+			this.setIsProducing(true);
+		}
 	}
 	
 }

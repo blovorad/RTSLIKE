@@ -86,7 +86,7 @@ public class EntitiesManager
 			if(fighter.getHp() < 1)
 			{
 				removeFighters.add(fighter);
-				factionManager.getFactions().get(fighter.getFaction()).setNbUnit(factionManager.getFactions().get(fighter.getFaction()).getNbUnit() - 1);
+				factionManager.getFactions().get(fighter.getFaction()).setPopulationCount(factionManager.getFactions().get(fighter.getFaction()).getPopulationCount() - 1);
 			}
 		}
 		
@@ -102,7 +102,7 @@ public class EntitiesManager
 			if(worker.getHp() < 1)
 			{
 				removeWorkers.add(worker);
-				factionManager.getFactions().get(worker.getFaction()).setNbUnit(factionManager.getFactions().get(worker.getFaction()).getNbUnit() - 1);
+				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);
 			}
 		}
 		
@@ -119,7 +119,7 @@ public class EntitiesManager
 			if(unit.getHp() < 1)
 			{
 				removeUnits.add(unit);
-				factionManager.getFactions().get(unit.getFaction()).setNbUnit(factionManager.getFactions().get(unit.getFaction()).getNbUnit() - 1);
+				factionManager.getFactions().get(unit.getFaction()).setPopulationCount(factionManager.getFactions().get(unit.getFaction()).getPopulationCount() - 1);
 			}
 		}
 		
@@ -140,7 +140,7 @@ public class EntitiesManager
 					units.add(unit);
 					collisionList.add(unit);
 					drawingList.add(unit);
-					factionManager.getFactions().get(unit.getFaction()).setNbUnit(factionManager.getFactions().get(unit.getFaction()).getNbUnit() + 1);
+					factionManager.getFactions().get(unit.getFaction()).setPopulationCount(factionManager.getFactions().get(unit.getFaction()).getPopulationCount() + 1);
 					System.out.println("producing unit");
 				}
 			}

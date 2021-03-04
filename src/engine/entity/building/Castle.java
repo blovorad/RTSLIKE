@@ -58,8 +58,10 @@ public class Castle extends ProductionBuilding{
 			System.out.println("Invalid id");
 		}
 		this.getElementCount().add(u);
-		this.setTimer(special.getTimeToBuild());
-		this.setIsProducing(true);
+		if(this.getIsProducing() == false) {
+			this.setTimer(special.getTimeToBuild());
+			this.setIsProducing(true);
+		}
 	}
 	
 }

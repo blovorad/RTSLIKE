@@ -481,11 +481,11 @@ public class GameDisplay extends JPanel
 	{	
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 0));
 
-		this.moneyLabel =  new JLabel("ARGENT:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoney());
+		this.moneyLabel =  new JLabel("ARGENT:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoneyCount());
 		this.moneyLabel.setForeground(Color.WHITE);
 		this.timeLabel =  new JLabel("TEMPS:");
 		this.timeLabel.setForeground(Color.WHITE);
-		this.populationLabel =  new JLabel("POPULATION:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getNbUnit());
+		this.populationLabel =  new JLabel("POPULATION:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getPopulationCount());
 		this.populationLabel.setForeground(Color.WHITE);
 		this.ageLabel =  new JLabel("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
 		this.ageLabel.setForeground(Color.WHITE);
@@ -587,10 +587,12 @@ public class GameDisplay extends JPanel
 	
 	public void update() {
 		if(state == INGAME){
+			int populationCount = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getPopulationCount();
+			int maxPopulation = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMaxPopulation();
 			time += 1.0 / GameConfiguration.GAME_SPEED;
-			this.moneyLabel.setText("ARGENT:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoney());
+			this.moneyLabel.setText("ARGENT:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoneyCount());
 			this.timeLabel.setText("TEMPS:" + (int)time);
-			this.populationLabel.setText("POPULATION:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getNbUnit());
+			this.populationLabel.setText("POPULATION:" + populationCount + " / " + maxPopulation);
 			this.ageLabel.setText("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
 		}
 	}

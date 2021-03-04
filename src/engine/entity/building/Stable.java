@@ -57,8 +57,10 @@ public class Stable extends ProductionBuilding{
 			System.out.println("Invalid id");
 		}
 		this.getElementCount().add(u);
-		this.setTimer(cavalry.getTimeToBuild());
-		this.setIsProducing(true);
+		if(this.getIsProducing() == false) {
+			this.setTimer(cavalry.getTimeToBuild());
+			this.setIsProducing(true);
+		}
 	}
 
 }
