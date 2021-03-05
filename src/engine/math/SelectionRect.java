@@ -33,23 +33,21 @@ public class SelectionRect
 	
 	public void moveSelectionRect(int x, int y) {
 		
-		this.w = x - this.x;
-		this.h = y - this.y;
-		if(this.w < 0) {
-			this.w = 0;
+		if(x > this.firstPosition.getX()) {
+			this.w = x - this.x;
 		}
-		if(this.h < 0) {
-			this.h = 0;
+		else {
+			this.w = this.firstPosition.getX() - x;
+			this.x = x;
 		}
-		/*if(this.w < 0) {
-			this.x = this.firstPosition.getX() - this.w;
-			this.w = this.w * -1;
-			System.out.println("firstpos X : " + this.firstPosition.getX() + " et position : " + x + "," + y + " et w:" + w);
-		}*/
-		/*if(this.h < 0) {
+		
+		if(y > this.firstPosition.getY()) {
+			this.h = y - this.y;
+		}
+		else {
+			this.h = this.firstPosition.getY() - y;
 			this.y = y;
-			this.h = this.getFirstPosition().getY() - this.y;
-		}*/
+		}
 	}
 
 	public int getX() {
