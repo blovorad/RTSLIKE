@@ -606,10 +606,15 @@ public class GameDisplay extends JPanel
 		{
 			this.paintStrategy.paint(this.map, g, this.camera);
 			List<Entity> entities = manager.getDrawingList();
+			List<Unit> units = manager.getSelectedUnits();
 			
 			for(Entity entity : entities)
 			{
 				this.paintStrategy.paint(entity, g, camera);
+			}
+			
+			for(Unit unit : units) {
+				this.paintStrategy.paint(unit, g, camera);
 			}
 			
 			if(selectionRectangle.isActive())

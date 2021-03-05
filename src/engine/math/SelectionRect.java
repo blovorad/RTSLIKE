@@ -1,11 +1,14 @@
 package engine.math;
 
+import engine.Position;
+
 public class SelectionRect 
 {
 	private int x;
 	private int y;
 	private int w;
 	private int h;
+	private Position firstPosition;
 	private boolean active;
 
 	public SelectionRect()
@@ -14,6 +17,7 @@ public class SelectionRect
 		this.y = 0;
 		this.w = 0;
 		this.h = 0;
+		this.firstPosition = new Position(0, 0);
 		this.active = false;
 	}
 	
@@ -23,7 +27,29 @@ public class SelectionRect
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		this.active = true;
+		this.firstPosition = new Position(x, y);
+		this.active = false;
+	}
+	
+	public void moveSelectionRect(int x, int y) {
+		
+		this.w = x - this.x;
+		this.h = y - this.y;
+		if(this.w < 0) {
+			this.w = 0;
+		}
+		if(this.h < 0) {
+			this.h = 0;
+		}
+		/*if(this.w < 0) {
+			this.x = this.firstPosition.getX() - this.w;
+			this.w = this.w * -1;
+			System.out.println("firstpos X : " + this.firstPosition.getX() + " et position : " + x + "," + y + " et w:" + w);
+		}*/
+		/*if(this.h < 0) {
+			this.y = y;
+			this.h = this.getFirstPosition().getY() - this.y;
+		}*/
 	}
 
 	public int getX() {
@@ -32,6 +58,7 @@ public class SelectionRect
 
 	public void setX(int x) {
 		this.x = x;
+		this.firstPosition.setX(x);
 	}
 
 	public int getY() {
@@ -40,6 +67,7 @@ public class SelectionRect
 
 	public void setY(int y) {
 		this.y = y;
+		this.firstPosition.setY(y);
 	}
 
 	public int getW() {
@@ -64,5 +92,13 @@ public class SelectionRect
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public Position getFirstPosition() {
+		return firstPosition;
+	}
+
+	public void setFirstPosition(Position firstPosition) {
+		this.firstPosition = firstPosition;
 	}
 }

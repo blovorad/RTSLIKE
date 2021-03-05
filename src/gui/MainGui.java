@@ -275,17 +275,6 @@ public class MainGui extends JFrame implements Runnable
 			manager.clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
 			
-			if(w < 0)
-			{
-				x = x + w;
-				w = w * -1;
-			}
-			if(h < 0)
-			{
-				y = y + h;
-				h = h * -1;
-			}
-			
 			SelectionRect rect = new SelectionRect(x, y, w, h);
 			
 			boolean noUnitSelected = true;
@@ -385,6 +374,7 @@ public class MainGui extends JFrame implements Runnable
 						selectionRectangle.setY(e.getY());
 						selectionRectangle.setW(0);
 						selectionRectangle.setH(0);
+						System.out.println("on a presser");
 					}
 					
 					if(mouse.getId() > -1)
@@ -473,8 +463,7 @@ public class MainGui extends JFrame implements Runnable
 				int x = e.getX();
 				int y = e.getY();
 				
-				selectionRectangle.setW(x - selectionRectangle.getX());
-				selectionRectangle.setH(y - selectionRectangle.getY());
+				selectionRectangle.moveSelectionRect(x, y);
 			}
 		}
 

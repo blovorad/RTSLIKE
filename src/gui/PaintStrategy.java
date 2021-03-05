@@ -8,6 +8,7 @@ import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Camera;
 import engine.Entity;
+import engine.entity.unit.Unit;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
@@ -97,8 +98,15 @@ public class PaintStrategy
 		if(rectangle.isActive())
 		{
 			graphics.setColor(Color.green);
-			graphics.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getW(), rectangle.getH());
+			graphics.drawRect(rectangle.getX(), rectangle.getY(), rectangle.getW(), rectangle.getH());
 		}
+	}
+	
+	public void paint(Unit unit, Graphics graphics, Camera camera){
+		int tileSize = GameConfiguration.TILE_SIZE;
+		
+		graphics.setColor(Color.white);
+		graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	
 	public void paint(Entity entity, Graphics graphics, Camera camera)
@@ -129,7 +137,7 @@ public class PaintStrategy
 					graphics.setColor(Color.red);
 				}
 				else {
-					graphics.setColor(Color.white);
+					graphics.setColor(Color.black);
 				}
 			}
 			else {
