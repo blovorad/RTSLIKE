@@ -102,11 +102,19 @@ public class PaintStrategy
 		}
 	}
 	
-	public void paint(Unit unit, Graphics graphics, Camera camera){
+	public void paintRectSelectionUnit(Unit unit, Graphics graphics, Camera camera){
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
 		graphics.setColor(Color.white);
 		graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
+	}
+	
+	
+	public void paintSelectionRectBuilding(Entity building, Graphics graphics, Camera camera) {
+		int tileSize = GameConfiguration.TILE_SIZE;
+		
+		graphics.setColor(Color.white);
+		graphics.drawRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	
 	public void paint(Entity entity, Graphics graphics, Camera camera)

@@ -608,13 +608,28 @@ public class GameDisplay extends JPanel
 			List<Entity> entities = manager.getDrawingList();
 			List<Unit> units = manager.getSelectedUnits();
 			
+			Entity building = null;
+			if(manager.getSelectedAttackBuilding() != null) {
+				building = manager.getSelectedAttackBuilding();
+			}
+			else if(manager.getSelectedProdBuilding() != null) {
+				building = manager.getSelectedProdBuilding();
+			}
+			else if(manager.getSelectedStorageBuilding() != null) {
+				building = manager.getSelectedStorageBuilding();
+			}
+			
 			for(Entity entity : entities)
 			{
 				this.paintStrategy.paint(entity, g, camera);
 			}
 			
 			for(Unit unit : units) {
-				this.paintStrategy.paint(unit, g, camera);
+				this.paintStrategy.paintRectSelectionUnit(unit, g, camera);
+			}
+			
+			if(building != null) {
+				this.paintStrategy.paintSelectionRectBuilding(building, g, camera);
 			}
 			
 			if(selectionRectangle.isActive())
@@ -843,11 +858,11 @@ public class GameDisplay extends JPanel
 			}
 			manager.addRessource(map.getGoldTiles());
 			
-			oldState = state;
-			state = INGAME;
-			
 			gamePanel = createGamePanel();
 			gamePanel.setVisible(false);
+			
+			oldState = state;
+			state = INGAME;
 			
 			//création d'un ennemie pour test
 			Tile tile = map.getTile(15, 15);

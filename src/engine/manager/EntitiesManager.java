@@ -48,7 +48,6 @@ public class EntitiesManager
 	private List<Worker> removeWorkers = new ArrayList<Worker>();
 	
 	private List<Unit> units;
-	private List<Unit> removeUnits = new ArrayList<Unit>();
 	
 	private List<AttackBuilding> attackBuildings;
 	private List<AttackBuilding> removeAttackBuildings = new ArrayList<AttackBuilding>();
@@ -57,6 +56,8 @@ public class EntitiesManager
 	private List<ProductionBuilding> removeProdBuildings = new ArrayList<ProductionBuilding>();
 	
 	private List<StorageBuilding> storageBuildings;
+	private List<StorageBuilding> playerStorageBuildings;
+	private List<StorageBuilding> botStorageBuildings;
 	private List<StorageBuilding> removeStorageBuildings = new ArrayList<StorageBuilding>();
 	
 	private List<Ressource> ressources;
@@ -74,6 +75,8 @@ public class EntitiesManager
 		this.prodBuildings = new ArrayList<ProductionBuilding>();
 		this.attackBuildings = new ArrayList<AttackBuilding>();
 		this.storageBuildings = new ArrayList<StorageBuilding>();
+		this.playerStorageBuildings = new ArrayList<StorageBuilding>();
+		this.botStorageBuildings = new ArrayList<StorageBuilding>();
 		
 		this.selectedAttackBuilding = null;
 		this.selectedProdBuilding = null;
@@ -92,50 +95,18 @@ public class EntitiesManager
 			}
 		}
 		
-		//removing fighter
-		fighters.removeAll(removeFighters);
-		collisionList.removeAll(removeFighters);
-		drawingList.removeAll(removeFighters);
-		removeFighters.clear();
-		
-		for(Worker worker : workers) 
-		{
+		for(Worker worker : workers) {
 			worker.update();
-			if(worker.getHp() < 1)
-			{
+			if(worker.getHp() < 1) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);
 			}
 		}
 		
-		//removing worker
-		workers.removeAll(removeWorkers);
-		collisionList.removeAll(removeWorkers);
-		drawingList.removeAll(removeWorkers);
-		removeWorkers.clear();
-		
-		for(Unit unit : units)
-		{
-			//unit.update();
-			if(unit.getHp() < 1)
-			{
-				removeUnits.add(unit);
-			}
-		}
-		
-		//removing units
-		units.removeAll(removeUnits);
-		collisionList.removeAll(removeUnits);
-		drawingList.removeAll(removeUnits);
-		removeUnits.clear();
-		
-		for(ProductionBuilding building : prodBuildings) 
-		{
+		for(ProductionBuilding building : prodBuildings) {
 			building.update();
-			if(building.getIsProducing())
-			{
-				if(building.getTimer() <= 0)
-				{
+			if(building.getIsProducing()) {
+				if(building.getTimer() <= 0) {
 					int id = building.produce();
 					if(id >= EntityConfiguration.INFANTRY && id <= EntityConfiguration.SPECIAL_UNIT) {
 						ForFighter patron = factionManager.getFactions().get(building.getFaction()).getRace().getPatronFighters().get(id);
@@ -148,59 +119,39 @@ public class EntitiesManager
 					System.out.println("producing unit");
 				}
 			}
-			if(building.getHp() < 1)
-			{
+			if(building.getHp() < 1) {
 				//System.out.println("We removing a building cause : " + building.getHp());
 				removeProdBuildings.add(building);
 			}
 		}
 		
-		//removing building
-		prodBuildings.removeAll(removeProdBuildings);
-		collisionList.removeAll(removeProdBuildings);
-		drawingList.removeAll(removeProdBuildings);
-		removeProdBuildings.clear();
-		
-		for(AttackBuilding building : attackBuildings) 
-		{
+		for(AttackBuilding building : attackBuildings) {
 			building.update(units);
-			if(building.getHp() < 1)
-			{
+			if(building.getHp() < 1) {
 				//System.out.println("We removing a building cause : " + building.getHp());
 				removeAttackBuildings.add(building);
 			}
 		}
 		
-		//removing building
-		attackBuildings.removeAll(removeAttackBuildings);
-		collisionList.removeAll(removeAttackBuildings);
-		drawingList.removeAll(removeAttackBuildings);
-		removeAttackBuildings.clear();
-		
-		for(StorageBuilding building : storageBuildings) 
-		{
+		for(StorageBuilding building : storageBuildings) {
 			building.update();
-			if(building.getHp() < 1)
-			{
+			if(building.getHp() < 1) {
 				removeStorageBuildings.add(building);
 			}
 		}
 		
-		//removing building
-		storageBuildings.removeAll(removeStorageBuildings);
-		collisionList.removeAll(removeStorageBuildings);
-		drawingList.removeAll(removeStorageBuildings);
-		removeStorageBuildings.clear();
-		
-		for(Ressource ressource : ressources) 
-		{
+		for(Ressource ressource : ressources) {
 			//ressource.update();
-			if(ressource.getHp() < 1)
-			{
+			if(ressource.getHp() < 1) {
 				ressource.getTileAttach().setSolid(false);
 				removeRessources.add(ressource);
 			}
 		}
+		
+		cleanList();	
+	}
+	
+	public void cleanList() {
 		
 		//removing ressource
 		ressources.removeAll(removeRessources);
@@ -208,7 +159,43 @@ public class EntitiesManager
 		drawingList.removeAll(removeRessources);
 		removeRessources.clear();
 		
+		//removing storage building
+		storageBuildings.removeAll(removeStorageBuildings);
+		collisionList.removeAll(removeStorageBuildings);
+		drawingList.removeAll(removeStorageBuildings);
+		playerStorageBuildings.removeAll(removeStorageBuildings);
+		botStorageBuildings.removeAll(removeStorageBuildings);
+		removeStorageBuildings.clear();
+		
+		//removing attack building
+		attackBuildings.removeAll(removeAttackBuildings);
+		collisionList.removeAll(removeAttackBuildings);
+		drawingList.removeAll(removeAttackBuildings);
+		removeAttackBuildings.clear();
+		
+		//removing production building
+		prodBuildings.removeAll(removeProdBuildings);
+		collisionList.removeAll(removeProdBuildings);
+		drawingList.removeAll(removeProdBuildings);
+		removeProdBuildings.clear();
+		
+		//removing worker
+		workers.removeAll(removeWorkers);
+		collisionList.removeAll(removeWorkers);
+		drawingList.removeAll(removeWorkers);
+		units.removeAll(removeWorkers);
+		selectedUnits.removeAll(removeWorkers);
+		removeWorkers.clear();
+		
+		//removing fighter
+		fighters.removeAll(removeFighters);
+		collisionList.removeAll(removeFighters);
+		drawingList.removeAll(removeFighters);
+		units.removeAll(removeFighters);
+		selectedUnits.removeAll(removeFighters);
+		removeFighters.clear();
 	}
+	
 	public void createFighter(int id, int faction, ForFighter patron, Position position, Position destination)
 	{
 		Fighter fighter = null;
@@ -338,6 +325,12 @@ public class EntitiesManager
 		else if(bstorage != null){
 			this.drawingList.add(bstorage);
 			this.storageBuildings.add(bstorage);
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				this.playerStorageBuildings.add(bstorage);
+			}
+			else if(faction == EntityConfiguration.BOT_FACTION) {
+				this.botStorageBuildings.add(bstorage);
+			}
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout building storage");
 		}
@@ -510,5 +503,21 @@ public class EntitiesManager
 
 	public void setStorageBuildings(List<StorageBuilding> storageBuildings) {
 		this.storageBuildings = storageBuildings;
+	}
+
+	public List<StorageBuilding> getPlayerStorageBuildings() {
+		return playerStorageBuildings;
+	}
+
+	public void setPlayerStoragesBuildings(List<StorageBuilding> playerStorageBuildings) {
+		this.playerStorageBuildings = playerStorageBuildings;
+	}
+
+	public List<StorageBuilding> getBotStorageBuildings() {
+		return botStorageBuildings;
+	}
+
+	public void setBotStorageBuildings(List<StorageBuilding> botStorageBuildings) {
+		this.botStorageBuildings = botStorageBuildings;
 	}
 }
