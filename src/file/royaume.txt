@@ -1,0 +1,2 @@
+infantry
+attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : infantry royaume;hpMax : 20;

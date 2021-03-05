@@ -1,6 +1,7 @@
 package engine.math;
 
 import configuration.GameConfiguration;
+
 import engine.Camera;
 import engine.Position;
 

@@ -1,5 +1,8 @@
 package factionConfiguration;
 
+import java.io.File;
+import java.util.Scanner;
+
 import configuration.EntityConfiguration;
 
 public class Royaume extends Race 
@@ -7,9 +10,19 @@ public class Royaume extends Race
 	public Royaume()
 	{
 		super();
+		Scanner scan = null;
+		
+		try
+		{
+			scan = new Scanner(new File("src/file/royaume.txt"));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
 		initCavalry();
-		initInfantry();
+		initInfantry(scan);
 		initArcher();
 		initSpecial();
 		initWorker();
@@ -22,6 +35,8 @@ public class Royaume extends Race
 		initArchery();
 		initStable();
 		initUpgrades();
+		
+		scan.close();
 		
 		setName("Royaume");
 	}
@@ -36,9 +51,16 @@ public class Royaume extends Race
 		this.getPatronFighters().put(EntityConfiguration.CAVALRY, new ForFighter(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Cavalier royaume", 5));
 	}
 	
-	public void initInfantry()
+	public void initInfantry(Scanner scan)
 	{
-		this.getPatronFighters().put(EntityConfiguration.INFANTRY, new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin royaume", 5));
+		//int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax
+		System.out.println("" + scan.nextLine());
+		String s = scan.nextLine();
+		System.out.println("" + s);
+		String[] s2 = s.split(";");
+		String splitFormat = ": ";
+		
+		this.getPatronFighters().put(EntityConfiguration.INFANTRY, new ForFighter(Integer.valueOf(s2[0].split(splitFormat)[1]), Integer.valueOf(s2[1].split(splitFormat)[1]), Integer.valueOf(s2[2].split(splitFormat)[1]), Integer.valueOf(s2[3].split(splitFormat)[1]),  Integer.valueOf(s2[4].split(splitFormat)[1]),  Integer.valueOf(s2[5].split(splitFormat)[1]),  Integer.valueOf(s2[6].split(splitFormat)[1]),  Integer.valueOf(s2[7].split(splitFormat)[1]),  Integer.valueOf(s2[8].split(splitFormat)[1]),  Integer.valueOf(s2[9].split(splitFormat)[1]), s2[10].split(splitFormat)[1],  Integer.valueOf(s2[11].split(splitFormat)[1])));
 	}
 	
 	public void initArcher()
