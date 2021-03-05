@@ -11,7 +11,7 @@ public class Empire extends Race
 	{
 		super();
 		
-Scanner scan = null;
+		Scanner scan = null;
 		
 		try
 		{
