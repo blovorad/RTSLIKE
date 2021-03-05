@@ -1,5 +1,7 @@
 package engine;
 
+import configuration.EntityConfiguration;
+
 public class Entity 
 {
 	private int hp;
@@ -10,6 +12,8 @@ public class Entity
 	private Position destination;
 	private int faction;
 	private int id;
+	private boolean isHit;
+	private int timerHit;
 	
 	public Entity(int hp, int hpMax, String description, Position position, int id, int faction)
 	{
@@ -34,9 +38,21 @@ public class Entity
 		this.setFaction(faction);
 	}
 	
+	public void update()
+	{
+		if(this.isHit) {
+			timerHit--;
+			if(timerHit < 0) {
+				this.setHit(false);
+			}
+		}
+	}
+	
 	public void damage(int damage)
 	{
 		this.setHp(this.getHp() - damage);
+		this.setHit(true);
+		this.setTimerHit(EntityConfiguration.MAX_TIME_HIT_ANIMATION);
 	}
 
 	public void heal(int hp)
@@ -111,5 +127,21 @@ public class Entity
 
 	public void setFaction(int faction) {
 		this.faction = faction;
+	}
+
+	public boolean isHit() {
+		return isHit;
+	}
+
+	public void setHit(boolean isHit) {
+		this.isHit = isHit;
+	}
+
+	public int getTimerHit() {
+		return timerHit;
+	}
+
+	public void setTimerHit(int timerHit) {
+		this.timerHit = timerHit;
 	}
 }

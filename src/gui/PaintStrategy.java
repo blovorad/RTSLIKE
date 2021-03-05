@@ -107,18 +107,38 @@ public class PaintStrategy
 		
 		if(entity.getId() >= 5 && entity.getId() <= 12){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
-				graphics.setColor(Color.green);
+				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
+					graphics.setColor(Color.red);
+				}
+				else {
+					graphics.setColor(Color.green);
+				}
 			}
 			else{
-				graphics.setColor(Color.orange);
+				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
+					graphics.setColor(Color.red);
+				}
+				else {
+					graphics.setColor(Color.orange);
+				}
 			}
 		}
 		else if(entity.getId() >= 0 && entity.getId() <= 4){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
-				graphics.setColor(Color.white);
+				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
+					graphics.setColor(Color.red);
+				}
+				else {
+					graphics.setColor(Color.white);
+				}
 			}
 			else {
-				graphics.setColor(Color.red);
+				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
+					graphics.setColor(Color.red);
+				}
+				else {
+					graphics.setColor(new Color(145, 40, 59));
+				}
 			}
 		}
 		else if(entity.getId() == 13){

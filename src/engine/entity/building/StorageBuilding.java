@@ -15,7 +15,7 @@ public class StorageBuilding extends Entity{
 	
 	public void update()
 	{
-		
+		super.update();
 	}
 
 	public Tile getTile() {

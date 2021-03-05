@@ -24,6 +24,7 @@ public abstract class AttackBuilding extends Entity{
 	}
 	
 	public void update(List<Unit> units) {
+		super.update();
 		if(this.getAttackCooldown() > 0) {
 			this.setAttackCooldown(this.getAttackCooldown()-1);
 			//System.out.println(this.getDescription() + " attack cooldown is " + this.getAttackCooldown());
@@ -40,6 +41,9 @@ public abstract class AttackBuilding extends Entity{
 						System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
 					}
 				}
+			}
+			else {
+				this.setTarget(null);
 			}
 		}else {
 			lookForTarget(units);

@@ -23,6 +23,7 @@ public abstract class ProductionBuilding extends Entity{
 	}
 	
 	public void update() {
+		super.update();
 		if(timer > 0)
 		{
 			timer--;
