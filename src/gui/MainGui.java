@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 import javax.sound.sampled.AudioInputStream;
@@ -17,8 +16,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-
-import com.sun.tools.javac.Main;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
@@ -50,8 +47,6 @@ public class MainGui extends JFrame implements Runnable
 	private Mouse mouse;
 	
 	private SelectionRect selectionRectangle;
-	
-	private Clip clip;
 
 	public MainGui()
 	{
@@ -89,7 +84,7 @@ public class MainGui extends JFrame implements Runnable
 		
 		try {
 			File file = new File("src/sounds/musiqueTest.wav");
-			clip = AudioSystem.getClip();
+			Clip clip = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 			clip.open(inputStream);
 			clip.start();
