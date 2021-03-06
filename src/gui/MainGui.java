@@ -50,6 +50,8 @@ public class MainGui extends JFrame implements Runnable
 	private Mouse mouse;
 	
 	private SelectionRect selectionRectangle;
+	
+	private Clip clip;
 
 	public MainGui()
 	{
@@ -87,11 +89,11 @@ public class MainGui extends JFrame implements Runnable
 		
 		try {
 			File file = new File("src/sounds/musiqueTest.wav");
-			Clip clip = AudioSystem.getClip();
+			clip = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 			clip.open(inputStream);
 			clip.start();
-			
+			//si jamais on avait plusieurs son, pour economiser la mémoire si un clip est open il faut le close avant d'en jouer un nouveau !!
 		} catch(Exception e){
 			e.printStackTrace();
 		}
