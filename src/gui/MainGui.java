@@ -8,10 +8,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.net.URL;
 import java.util.List;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+import com.sun.tools.javac.Main;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
@@ -77,6 +84,17 @@ public class MainGui extends JFrame implements Runnable
 		setResizable(false);
 		setPreferredSize(preferredSize);
 		System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
+		
+		try {
+			File file = new File("src/sounds/musiqueTest.wav");
+			Clip clip = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+			clip.open(inputStream);
+			clip.start();
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override
