@@ -28,6 +28,7 @@ import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Unit;
+import engine.manager.AudioManager;
 import engine.manager.EntitiesManager;
 import engine.map.Map;
 import engine.map.Tile;
@@ -57,6 +58,8 @@ public class GameDisplay extends JPanel
 	//state of the game
 	private int state;
 	private int oldState;
+	
+	private AudioManager audioManager;
 	
 	//state constant
 	private final int MAINMENU = 0;
@@ -125,7 +128,7 @@ public class GameDisplay extends JPanel
 	
 	private float time;
 
-	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle)
+	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager)
 	{
 		this.camera = camera;
 		this.manager = manager;
@@ -134,6 +137,9 @@ public class GameDisplay extends JPanel
 		this.state = MAINMENU;
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
+		
+		audioManager.setState(state);
+		this.audioManager = audioManager;
 		
 		/*gamePanel = createGamePanel();
 		gamePanel.setVisible(false);*/
@@ -1228,6 +1234,7 @@ public class GameDisplay extends JPanel
 			default:
 				break;
 		}
+		audioManager.setState(state);
 	}
 	
 	public Map getMap()
