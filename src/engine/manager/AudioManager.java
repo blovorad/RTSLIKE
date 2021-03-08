@@ -5,6 +5,7 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class AudioManager {
 	
@@ -25,6 +26,10 @@ public class AudioManager {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		//gestion du volume très sommaire pour le moment
+		float volume = 0.3f;
+		FloatControl gainControl = (FloatControl) musique.getControl(FloatControl.Type.MASTER_GAIN);        
+		gainControl.setValue(20f * (float) Math.log10(volume));
 	}
 	
 	public void update() {
@@ -73,6 +78,10 @@ public class AudioManager {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
+		//gestion du volume très sommaire pour le moment
+		float volume = 0.3f;
+		FloatControl gainControl = (FloatControl) musique.getControl(FloatControl.Type.MASTER_GAIN);        
+	    gainControl.setValue(20f * (float) Math.log10(volume));
 	}
 	
 	public int getState() {
