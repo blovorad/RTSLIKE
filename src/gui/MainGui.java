@@ -82,7 +82,7 @@ public class MainGui extends JFrame implements Runnable
 		setPreferredSize(preferredSize);
 		System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
 		
-		try {
+		/*try {
 			File file = new File("src/sounds/musiqueTest.wav");
 			Clip clip = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
@@ -91,7 +91,7 @@ public class MainGui extends JFrame implements Runnable
 			//si jamais on avait plusieurs son, pour economiser la mémoire si un clip est open il faut le close avant d'en jouer un nouveau !!
 		} catch(Exception e){
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	@Override
@@ -288,6 +288,7 @@ public class MainGui extends JFrame implements Runnable
 		public void checkWhatIsSelected(int x, int y, int w, int h)
 		{
 			manager.clearSelectedBuildings();
+			manager.clearSelectedUnits();
 			dashboard.setDescriptionPanelStandard();
 			
 			SelectionRect rect = new SelectionRect(x, y, w, h);

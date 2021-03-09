@@ -378,6 +378,7 @@ public class EntitiesManager
 		this.selectedUnits.clear();
 		clearSelectedBuildings();
 		factionManager.clean();
+		this.units.clear();
 	}
 
 	public List<Entity> getDrawingList() {
