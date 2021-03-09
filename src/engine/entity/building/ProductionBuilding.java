@@ -30,7 +30,7 @@ public abstract class ProductionBuilding extends Entity{
 		}
 	}
 	
-	public void update() {
+	public void update(int moneyCount) {
 		super.update();
 		if(timer > 0)
 		{
