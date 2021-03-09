@@ -4,7 +4,7 @@ import engine.Position;
 import engine.map.Tile;
 
 public class Forge extends ProductionBuilding{
-
+	
 	public Forge(Position position, int id, String description, int hpMax, int faction, Tile tile) {
 		super(position, id, description, hpMax, faction, tile);
 		this.setProductionId(-1);
