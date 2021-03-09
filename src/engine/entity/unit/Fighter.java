@@ -19,7 +19,7 @@ public class Fighter extends Unit
 	{	
 		super(hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction);
 		this.state = state;
-		System.out.println("maxspeed fighter : " + maxSpeed);
+		//System.out.println("maxspeed fighter : " + maxSpeed);
 	}
 
 	public int getState() {

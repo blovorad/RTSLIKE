@@ -28,6 +28,7 @@ import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Unit;
+import engine.entity.unit.Worker;
 import engine.manager.EntitiesManager;
 import engine.map.Map;
 import engine.map.Tile;
@@ -348,11 +349,14 @@ public class GameDisplay extends JPanel
 		return descriptionPanel;
 	}
 	
-	public void setDescriptionPanelForWorker()
+	public void setDescriptionPanelForWorker(Worker worker)
 	{
 		descriptionPanel.removeAll();
 		
-		//code entre les deux
+		descriptionPanel.setLayout(new GridLayout(2, 2));
+		
+		descriptionPanel.add(constructionButton);
+		descriptionPanel.add(new JLabel("" + worker.getDescription()));
 		
 		descriptionPanel.validate();
 	}
@@ -670,9 +674,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			prodBuilding.startProd(id);
-
 		}
-		
 	}
 	
 	private class PauseGameMenu extends AbstractAction

@@ -34,5 +34,6 @@ public class Worker extends Unit
 	
 	public void update() {
 		super.update();
+		
 	}
 }

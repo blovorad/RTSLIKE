@@ -306,7 +306,6 @@ public class MainGui extends JFrame implements Runnable
 					}
 				}
 			}
-			//if(Collision.collide(building.getPosition(), rect, camera))
 			if(noUnitSelected == true)
 			{
 				boolean noBuildingSelected = true;

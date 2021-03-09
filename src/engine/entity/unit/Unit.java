@@ -18,6 +18,7 @@ public class Unit extends Entity
 	private int currentAction;
 	private int attackRange;
 	private int attackSpeed;
+	private int sightRange;
 	private int maxSpeed;
 	private int damage;
 	private int range;
@@ -220,5 +221,13 @@ public class Unit extends Entity
 
 	public void setAttackSpeed(int attackSpeed) {
 		this.attackSpeed = attackSpeed;
+	}
+
+	public int getSightRange() {
+		return sightRange;
+	}
+
+	public void setSightRange(int sightRange) {
+		this.sightRange = sightRange;
 	}
 }
