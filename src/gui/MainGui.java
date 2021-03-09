@@ -8,27 +8,29 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.List;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
-import engine.Building;
-import engine.Collision;
-import engine.EntitiesManager;
 import engine.Camera;
-import engine.FactionManager;
-import engine.Fighter;
-import engine.Map;
 import engine.Mouse;
 import engine.Position;
 import engine.Ressource;
-import engine.SelectionRect;
-import engine.Tile;
-import engine.Unit;
-import engine.Worker;
+import engine.entity.building.AttackBuilding;
+import engine.entity.building.ProductionBuilding;
+import engine.entity.building.StorageBuilding;
+import engine.entity.unit.Unit;
+import engine.manager.EntitiesManager;
+import engine.map.Tile;
+import engine.math.Collision;
+import engine.math.SelectionRect;
 
 public class MainGui extends JFrame implements Runnable
 {
@@ -79,6 +81,17 @@ public class MainGui extends JFrame implements Runnable
 		setResizable(false);
 		setPreferredSize(preferredSize);
 		System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
+		
+		try {
+			File file = new File("src/sounds/musiqueTest.wav");
+			Clip clip = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+			clip.open(inputStream);
+			clip.start();
+			//si jamais on avait plusieurs son, pour economiser la mémoire si un clip est open il faut le close avant d'en jouer un nouveau !!
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -95,6 +108,7 @@ public class MainGui extends JFrame implements Runnable
 			}
 			manager.update();
 			camera.update();
+			dashboard.update();
 			dashboard.repaint();
 		}
 	}
@@ -185,6 +199,7 @@ public class MainGui extends JFrame implements Runnable
 		public void checkWhatIsSelected(int mouseX, int mouseY)
 		{
 			manager.clearSelectedBuildings();
+			manager.clearSelectedUnits();
 			dashboard.setDescriptionPanelStandard();
 
 			int x = mouseX + camera.getX();
@@ -198,28 +213,59 @@ public class MainGui extends JFrame implements Runnable
 				
 				if(x > unitPosition.getX() && x < unitPosition.getX() + GameConfiguration.TILE_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + GameConfiguration.TILE_SIZE)
 				{
-					manager.addSelectedUnit(unit);
-					dashboard.setDescriptionPanelForUnit(unit);
-					noUnitSelected = false;
+					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+						manager.addSelectedUnit(unit);
+						dashboard.setDescriptionPanelForUnit(unit);
+						noUnitSelected = false;
+					}
 				}
 			}
 			
 			if(noUnitSelected == true)
 			{
 				boolean noBuildingSelected = true;
-				manager.clearSelectedUnits();
-				List<Building> listBuildings = manager.getBuildings();
+				List<ProductionBuilding> listProdBuildings = manager.getProdBuildings();
 				
-				for(Building building : listBuildings)
+				for(ProductionBuilding building : listProdBuildings)
 				{
 
 					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
 											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
 					{
-						manager.selectBuilding(building);
+						manager.setSelectedProdBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
 						noBuildingSelected = false;
 						break;
+					}
+				}
+				if(noBuildingSelected == true){
+					List<AttackBuilding> listAttackBuildings = manager.getAttackBuildings();
+					for(AttackBuilding building : listAttackBuildings)
+					{
+
+						if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
+												&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
+						{
+							manager.setSelectedAttackBuilding(building);
+							dashboard.setDescriptionPanelForBuilding(building);
+							noBuildingSelected = false;
+							break;
+						}
+					}
+				}
+				if(noBuildingSelected == true){
+					List<StorageBuilding> listStorageBuildings = manager.getStorageBuildings();
+					for(StorageBuilding building : listStorageBuildings)
+					{
+
+						if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
+												&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
+						{
+							manager.setSelectedStorageBuilding(building);
+							dashboard.setDescriptionPanelForBuilding(building);
+							noBuildingSelected = false;
+							break;
+						}
 					}
 				}
 				
@@ -244,17 +290,6 @@ public class MainGui extends JFrame implements Runnable
 			manager.clearSelectedBuildings();
 			dashboard.setDescriptionPanelStandard();
 			
-			if(w < 0)
-			{
-				x = x + w;
-				w = w * -1;
-			}
-			if(h < 0)
-			{
-				y = y + h;
-				h = h * -1;
-			}
-			
 			SelectionRect rect = new SelectionRect(x, y, w, h);
 			
 			boolean noUnitSelected = true;
@@ -263,26 +298,54 @@ public class MainGui extends JFrame implements Runnable
 			{
 				if(Collision.collide(unit.getPosition(), rect, camera) == true)
 				{
-					manager.addSelectedUnit(unit);
-					dashboard.setDescriptionPanelForUnit(unit);
-					noUnitSelected = false;
+					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+						manager.addSelectedUnit(unit);
+						dashboard.setDescriptionPanelForUnit(unit);
+						noUnitSelected = false;
+					}
 				}
 			}
-			
+			//if(Collision.collide(building.getPosition(), rect, camera))
 			if(noUnitSelected == true)
 			{
 				boolean noBuildingSelected = true;
-				manager.clearSelectedUnits();
-				List<Building> listBuildings = manager.getBuildings();
+				List<ProductionBuilding> listProdBuildings = manager.getProdBuildings();
 				
-				for(Building building : listBuildings)
+				for(ProductionBuilding building : listProdBuildings)
 				{
+
 					if(Collision.collide(building.getPosition(), rect, camera))
 					{
-						manager.selectBuilding(building);
+						manager.setSelectedProdBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building);
 						noBuildingSelected = false;
 						break;
+					}
+				}
+				if(noBuildingSelected == true){
+					List<AttackBuilding> listAttackBuildings = manager.getAttackBuildings();
+					for(AttackBuilding building : listAttackBuildings)
+					{
+
+						if(Collision.collide(building.getPosition(), rect, camera)){
+							manager.setSelectedAttackBuilding(building);
+							dashboard.setDescriptionPanelForBuilding(building);
+							noBuildingSelected = false;
+							break;
+						}
+					}
+				}
+				if(noBuildingSelected == true){
+					List<StorageBuilding> listStorageBuildings = manager.getStorageBuildings();
+					for(StorageBuilding building : listStorageBuildings)
+					{
+
+						if(Collision.collide(building.getPosition(), rect, camera)){
+							manager.setSelectedStorageBuilding(building);
+							dashboard.setDescriptionPanelForBuilding(building);
+							noBuildingSelected = false;
+							break;
+						}
 					}
 				}
 				
@@ -326,6 +389,7 @@ public class MainGui extends JFrame implements Runnable
 						selectionRectangle.setY(e.getY());
 						selectionRectangle.setW(0);
 						selectionRectangle.setH(0);
+						System.out.println("on a presser");
 					}
 					
 					if(mouse.getId() > -1)
@@ -339,7 +403,7 @@ public class MainGui extends JFrame implements Runnable
 							
 							Position p = new Position(x, y);
 							
-							manager.createBuilding(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p);
+							manager.createBuilding(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p, tile);
 							mouse.setId(-1);
 						}
 						selectionRectangle.setActive(false);
@@ -349,21 +413,17 @@ public class MainGui extends JFrame implements Runnable
 				{
 					List<Unit> listSelectedUnit = manager.getSelectedUnits();
 					
-					
 					if(!listSelectedUnit.isEmpty()) {
-						for(Unit unit : listSelectedUnit)
-						{
+						for(Unit unit : listSelectedUnit){
 							unit.calculateSpeed(new Position(mouseX, mouseY));
 						}
 					}
 					else {
-						List<Building> listSelectedBuilding = manager.getSelectedBuildings();
-						if(!listSelectedBuilding.isEmpty()) {
-							for(Building building : listSelectedBuilding) {
-								building.setDestination(new Position(mouseX, mouseY));
-								System.out.println(building.getDestination().getX());
-								System.out.println(building.getDestination().getY());
-							}
+						ProductionBuilding building = manager.getSelectedProdBuilding();
+						if(building != null) {
+							building.setDestination(new Position(mouseX, mouseY));
+							System.out.println(building.getDestination().getX());
+							System.out.println(building.getDestination().getY());
 						}
 					}
 
@@ -418,8 +478,7 @@ public class MainGui extends JFrame implements Runnable
 				int x = e.getX();
 				int y = e.getY();
 				
-				selectionRectangle.setW(x - selectionRectangle.getX());
-				selectionRectangle.setH(y - selectionRectangle.getY());
+				selectionRectangle.moveSelectionRect(x, y);
 			}
 		}
 

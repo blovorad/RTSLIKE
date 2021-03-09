@@ -1,11 +1,9 @@
 package engine;
 
-import java.util.AbstractMap;
 import java.util.List;
 
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
-import factionConfiguration.ForBuilding;
 import factionConfiguration.Gaia;
 import factionConfiguration.Race;
 import factionConfiguration.Royaume;
@@ -14,20 +12,19 @@ public class Faction
 {
 	private Race race;
 	private int age;
-	private int nbBuilding;
-	private int nbUnit;
-	private int population;
-	private int money;
-	private List<Upgrades> upgradesDone;
-	private AbstractMap<Integer, ForBuilding> buildings;
+	private int buildingCount;
+	private int populationCount;
+	private int maxPopulation;
+	private int moneyCount;
+	private List<Upgrade> upgradesDone;
 
 	public Faction(int id) 
 	{
 		age = 1;
-		nbBuilding = 0;
-		population = 20;
-		money = 0;
-		setNbUnit(0);
+		buildingCount = 0;
+		maxPopulation = 20;
+		moneyCount = 200;
+		populationCount = 0;
 		
 		if(id == 1)
 		{
@@ -45,8 +42,6 @@ public class Faction
 		{
 			race = new Gaia();
 		}
-		
-		buildings = race.getBuildings();
 	}
 	
 	public int getAge() 
@@ -61,12 +56,12 @@ public class Faction
 
 	public int getBuildingCount() 
 	{
-		return nbBuilding;
+		return buildingCount;
 	}
 
 	public void setBuildingCount(int buildingCount) 
 	{
-		this.nbBuilding = buildingCount;
+		this.buildingCount = buildingCount;
 	}
 
 	public Race getRace() 
@@ -80,43 +75,35 @@ public class Faction
 	}
 	
 
-	public int getPopulation() {
-		return population;
+	public int getMaxPopulation() {
+		return maxPopulation;
 	}
 
-	public void setPopulation(int population) {
-		this.population = population;
+	public void setMaxPopulation(int maxPopulation) {
+		this.maxPopulation = maxPopulation;
 	}
 
-	public int getMoney() {
-		return money;
+	public int getMoneyCount() {
+		return moneyCount;
 	}
 
-	public void setMoney(int money) {
-		this.money = money;
+	public void setMoneyCount(int moneyCount) {
+		this.moneyCount = moneyCount;
 	}
 
-	public AbstractMap<Integer, ForBuilding> getBuildings() {
-		return buildings;
-	}
-
-	public void setBuildings(AbstractMap<Integer, ForBuilding> buildings) {
-		this.buildings = buildings;
-	}
-
-	public List<Upgrades> getUpgradesDone() {
+	public List<Upgrade> getUpgradesDone() {
 		return upgradesDone;
 	}
 
-	public void setUpgradesDone(List<Upgrades> upgradesDone) {
+	public void setUpgradesDone(List<Upgrade> upgradesDone) {
 		this.upgradesDone = upgradesDone;
 	}
 
-	public int getNbUnit() {
-		return nbUnit;
+	public int getPopulationCount() {
+		return populationCount;
 	}
 
-	public void setNbUnit(int nbUnit) {
-		this.nbUnit = nbUnit;
+	public void setPopulationCount(int populationCount) {
+		this.populationCount = populationCount;
 	}
 }
