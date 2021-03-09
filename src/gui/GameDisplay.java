@@ -1060,7 +1060,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public int getExtent() 
 		{
-			return 10;
+			return 0;
 		}
 
 		@Override
