@@ -116,6 +116,9 @@ public class EntitiesManager
 						ForWorker patron = factionManager.getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(id);
 						createWorker(id, building.getFaction(), patron, new Position(building.getPosition().getX() - 50, building.getPosition().getY()- 50), building.getDestination());
 					}
+					/*else if(id >= Enti && id <=) {
+						createUpgrade(id, building.getFaction(), patron);
+					}*/
 					System.out.println("producing unit");
 				}
 			}
@@ -376,6 +379,7 @@ public class EntitiesManager
 		this.workers.clear();
 		this.ressources.clear();
 		this.selectedUnits.clear();
+		this.units.clear();
 		clearSelectedBuildings();
 		factionManager.clean();
 	}
