@@ -30,6 +30,12 @@ import engine.map.Tile;
 import engine.math.Collision;
 import engine.math.SelectionRect;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class MainGui extends JFrame implements Runnable
 {
 	private final static long serialVersionUID = 1L;

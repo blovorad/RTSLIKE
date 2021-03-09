@@ -30,9 +30,17 @@ import factionConfiguration.ForStorageBuilding;
 import factionConfiguration.ForUpgrade;
 import factionConfiguration.ForWorker;
 
+
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class EntitiesManager 
 {
 	private FactionManager factionManager;
+	private GraphicsManager graphicsManager;
 	
 	private List<Entity> collisionList = new ArrayList<Entity>();
 	private List<Entity> drawingList = new ArrayList<Entity>();
@@ -68,6 +76,7 @@ public class EntitiesManager
 	
 	public EntitiesManager() 
 	{
+		this.graphicsManager = new GraphicsManager();
 		this.factionManager = new FactionManager();
 		this.fighters = new ArrayList<Fighter>();
 		this.workers = new ArrayList<Worker>();
@@ -417,9 +426,9 @@ public class EntitiesManager
 	{
 		for(Tile t : listPositionRessources)
 		{
-			this.ressources.add(new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION));
-			this.collisionList.add(new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION));
-			this.drawingList.add(new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION));
+			Ressource r = new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION, graphicsManager.getImage(0));
+			this.ressources.add(r);
+			this.drawingList.add(r);
 		}
 	}
 	

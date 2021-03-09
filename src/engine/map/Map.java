@@ -7,6 +7,13 @@ import java.util.Scanner;
 
 import configuration.MapConfiguration;
 
+
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class Map 
 {
 	private Tile[][] tiles;

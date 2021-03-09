@@ -4,6 +4,12 @@ import java.awt.Color;
 
 import configuration.MapConfiguration;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class Tile 
 {
 	private int line;

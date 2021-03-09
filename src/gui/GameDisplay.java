@@ -3,11 +3,17 @@ package gui;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ButtonGroup;
@@ -42,6 +48,12 @@ import factionConfiguration.ForUpgrade;
 import engine.Mouse;
 import engine.Position;
 import engine.Ressource;
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class GameDisplay extends JPanel 
 {
@@ -131,11 +143,18 @@ public class GameDisplay extends JPanel
 	private JLabel moneyLabel;
 	private JLabel ageLabel;
 	private JLabel timeLabel;
+	private BufferedImage buff;
 	
 	private float time;
 
 	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager)
 	{
+		buff = null;
+		try {
+			buff = ImageIO.read(new File("src/graphics/mainMenuBackground.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.camera = camera;
 		this.manager = manager;
 		this.mouse = mouse;
@@ -685,6 +704,9 @@ public class GameDisplay extends JPanel
 		else if(state == MAINMENU)
 		{
 			//this.paintStrategy.paint(g);
+			
+			
+			
 		}
 		else if(state == OPTION)
 		{
@@ -694,6 +716,7 @@ public class GameDisplay extends JPanel
 		{
 			
 		}
+		//g.drawImage(buff, 0, 0, 1366, 768, null);
 	}
 	
 	private class CreateUnit extends AbstractAction

@@ -2,6 +2,12 @@ package configuration;
 
 import java.awt.Toolkit;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class GameConfiguration 
 {
 	public final static int GAME_SPEED = 1000/30;

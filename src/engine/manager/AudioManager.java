@@ -7,6 +7,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class AudioManager {
 	
 	private int state;

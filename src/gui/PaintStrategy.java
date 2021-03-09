@@ -13,6 +13,12 @@ import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class PaintStrategy 
 {
 	//variable for generate Minimap
@@ -161,6 +167,7 @@ public class PaintStrategy
 			graphics.setColor(Color.yellow);
 		}
 		graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);
+		//graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 	}
 	
 	public void paint(Map map, Graphics graphics, Camera camera)
