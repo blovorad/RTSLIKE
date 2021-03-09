@@ -24,7 +24,20 @@ public class Worker extends Unit
 		this.repair = repair;
 	}
 	
-	public toHarvest()
+	public void toHarvest()
+	{
+		if(this.ressource != null)
+		{
+			this.ressource.setHp(this.ressource.getHp() -1);
+			this.nbrRessource++;
+			if(this.ressource.getHp() == 0)
+			{
+				this.ressource = null;
+			}
+		}
+	}
+	
+	public void toRepair()
 	{
 		
 	}
