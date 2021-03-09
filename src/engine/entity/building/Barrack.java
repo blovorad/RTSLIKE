@@ -10,7 +10,7 @@ public class Barrack extends ProductionBuilding{
 	private ForFighter infantry;
 	
 	public Barrack(Position position, ForFighter infantry, int id, String description, int hpMax, int faction, Tile tile) {
-		super(position, id, description, hpMax, faction, tile);
+		super(position, id, description, hpMax, faction, tile, null);
 		this.infantry = infantry;
 		this.setProductionId(EntityConfiguration.INFANTRY);
 	}

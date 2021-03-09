@@ -1,16 +1,20 @@
 package engine.entity.building;
 
+import java.util.AbstractMap;
+import java.util.List;
+
 import configuration.EntityConfiguration;
 import engine.Position;
 import engine.map.Tile;
+import factionConfiguration.ForUpgrade;
 import factionConfiguration.ForWorker;
 
 public class Hq extends ProductionBuilding{
 
 	private ForWorker worker;
 	
-	public Hq(Position position, ForWorker worker, int id, String description, int hpMax, int faction, Tile tile) {
-		super(position, id, description, hpMax, faction, tile);
+	public Hq(Position position, ForWorker worker, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades) {
+		super(position, id, description, hpMax, faction, tile, upgrades);
 		this.worker = worker;
 		this.setProductionId(EntityConfiguration.WORKER);
 	}

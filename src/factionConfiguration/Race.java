@@ -18,7 +18,7 @@ public abstract class Race
 	private AbstractMap<Integer, ForProductionBuilding>productionBuildings;
 	private AbstractMap<Integer, ForAttackBuilding>attackBuildings;
 	private AbstractMap<Integer, ForStorageBuilding>storageBuildings;
-	private List<ForUpgrade> upgrades;
+	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
 	public Race()
 	{
@@ -27,7 +27,8 @@ public abstract class Race
 		this.storageBuildings = new HashMap<Integer, ForStorageBuilding>();
 		this.attackBuildings = new HashMap<Integer, ForAttackBuilding>();
 		this.productionBuildings = new HashMap<Integer, ForProductionBuilding>();
-		this.upgrades = new ArrayList<ForUpgrade>();
+		this.upgrades = new HashMap<Integer, ForUpgrade>();
+		
 	}
 	
 	/*public ForFighter getCavalry() 
@@ -83,11 +84,11 @@ public abstract class Race
 		this.special = special;
 	}*/
 
-	public List<ForUpgrade> getUpgrades() {
+	public AbstractMap<Integer, ForUpgrade> getUpgrades() {
 		return upgrades;
 	}
 
-	public void setUpgrades(List<ForUpgrade> upgrades) {
+	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) {
 		this.upgrades = upgrades;
 	}
 

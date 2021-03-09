@@ -1,12 +1,15 @@
 package engine.entity.building;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
 import engine.Entity;
 import engine.Position;
 import engine.map.Tile;
+import factionConfiguration.ForUpgrade;
 
 public abstract class ProductionBuilding extends Entity{
 
@@ -15,14 +18,19 @@ public abstract class ProductionBuilding extends Entity{
 	private int timer;
 	private boolean isProducing;
 	private Tile tile;
+	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
-	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile) {
+	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades) {
 		super(100, hpMax, description , position, id, faction);
 		elementCount = new ArrayList<Integer>();
 		this.setTile(tile);
+		this.setUpgrades(upgrades);
+		if(upgrades == null) {
+			this.upgrades = new HashMap<Integer, ForUpgrade>();
+		}
 	}
 	
-	public void update() {
+	public void update(int moneyCount) {
 		super.update();
 		if(timer > 0)
 		{
@@ -41,6 +49,9 @@ public abstract class ProductionBuilding extends Entity{
 			}
 			else if(this.getProductionId() == EntityConfiguration.WORKER) {
 				System.out.println("updating worker production time remaning : " + timer);
+			}
+			else if(this.getProductionId() == EntityConfiguration.ARMOR_UPGRADE) {
+				System.out.println("updating armor upgrade production time remaning : " + timer);
 			}
 			else {
 				System.out.println("Invalid id");
@@ -89,6 +100,14 @@ public abstract class ProductionBuilding extends Entity{
 
 	public void setTile(Tile tile) {
 		this.tile = tile;
+	}
+
+	public AbstractMap<Integer, ForUpgrade> getUpgrades() {
+		return upgrades;
+	}
+
+	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) {
+		this.upgrades = upgrades;
 	}
 	
 }
