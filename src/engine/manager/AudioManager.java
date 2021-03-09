@@ -12,6 +12,7 @@ public class AudioManager {
 	private int state;
 	private int oldState = -1;
 	private Clip musique;
+	private int sliderVolume;
 	private int currentMusique;
 	
 	public AudioManager() {
@@ -26,10 +27,14 @@ public class AudioManager {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		//gestion du volume très sommaire pour le moment
-		float volume = 0.3f;
+		manageVolume(25);
+	}
+	
+	public void manageVolume(int volume) {
+		this.sliderVolume = volume;
+		float volumeInFloat = (float)volume / 100;
 		FloatControl gainControl = (FloatControl) musique.getControl(FloatControl.Type.MASTER_GAIN);        
-		gainControl.setValue(20f * (float) Math.log10(volume));
+	    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
 	}
 	
 	public void update() {
@@ -69,19 +74,12 @@ public class AudioManager {
 		musique.close();
 		try {
 			System.out.println("tentative nouvelle musique " + currentMusique);
-			//File file = new File("src/sounds/musiqueTest.wav");
-			//Clip clip = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(path);
 			musique.open(inputStream);
 			musique.start();
-			//si jamais on avait plusieurs son, pour economiser la mémoire si un clip est open il faut le close avant d'en jouer un nouveau !!
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		//gestion du volume très sommaire pour le moment
-		float volume = 0.3f;
-		FloatControl gainControl = (FloatControl) musique.getControl(FloatControl.Type.MASTER_GAIN);        
-	    gainControl.setValue(20f * (float) Math.log10(volume));
 	}
 	
 	public int getState() {
@@ -117,6 +115,14 @@ public class AudioManager {
 
 	public void setCurrentMusique(int currentMusique) {
 		this.currentMusique = currentMusique;
+	}
+
+	public int getSliderVolume() {
+		return sliderVolume;
+	}
+
+	public void setSliderVolume(int sliderVolume) {
+		this.sliderVolume = sliderVolume;
 	}
 
 }

@@ -1,23 +1,24 @@
 package factionConfiguration;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 public class ForProductionBuilding extends Patron{
 	
-	private List<ForUpgrade>upgrades;
+	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
-	public ForProductionBuilding(int hp, int age, List<ForUpgrade>upgrades, String description, int hpMax)
+	public ForProductionBuilding(int hp, int age, AbstractMap<Integer, ForUpgrade> upgrades, String description, int hpMax)
 	{
 		super(hp, age, description, hpMax);
 		this.upgrades = upgrades;
 	}
 
-	public List<ForUpgrade> getUpgrades() 
+	public AbstractMap<Integer, ForUpgrade> getUpgrades() 
 	{
 		return upgrades;
 	}
 
-	public void setUpgrades(List<ForUpgrade> upgrades) 
+	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) 
 	{
 		this.upgrades = upgrades;
 	}

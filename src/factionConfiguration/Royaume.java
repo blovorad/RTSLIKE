@@ -54,7 +54,7 @@ public class Royaume extends Race
 	
 	public void initWorker()
 	{
-		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 20, 5, 3, 20, 20, 2, 25, "Travailleur royaume", 5, 10, 1, 10));
+		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5, 10, 10, 20, 5, 3, 20, 20, 2, 25, "Travailleur royaume", 5, 10, 1, 10, 10, 15));
 	}
 	
 	public void initCavalry(String line)
@@ -88,7 +88,7 @@ public class Royaume extends Race
 	
 	public void initForge()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, null, "Forge Royaume", 100));
+		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, this.getUpgrades(), "Forge Royaume", 100));
 	}
 	
 	public void initHq()
@@ -128,6 +128,8 @@ public class Royaume extends Race
 	
 	public void initUpgrades()
 	{
+		this.getUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(1, "better armor", 5, EntityConfiguration.ARMOR_UPGRADE, 30));
+		this.getUpgrades().put(EntityConfiguration.DAMAGE_UPGRADE, new ForUpgrade(1, "better sword", 5, EntityConfiguration.DAMAGE_UPGRADE, 30));
 		
 	}
 	

@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -278,6 +279,7 @@ public class MainGui extends JFrame implements Runnable
 		public void checkWhatIsSelected(int x, int y, int w, int h)
 		{
 			manager.clearSelectedBuildings();
+			manager.clearSelectedUnits();
 			dashboard.setDescriptionPanelStandard();
 			
 			SelectionRect rect = new SelectionRect(x, y, w, h);
@@ -295,7 +297,6 @@ public class MainGui extends JFrame implements Runnable
 					}
 				}
 			}
-			//if(Collision.collide(building.getPosition(), rect, camera))
 			if(noUnitSelected == true)
 			{
 				boolean noBuildingSelected = true;

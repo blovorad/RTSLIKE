@@ -53,7 +53,7 @@ public class Empire extends Race
 	
 	public void initWorker()
 	{
-		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 20, 5, 3, 20, 20, 2, 25, "Travailleur empire", 5, 10, 1, 10));
+		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 20, 5, 3, 20, 20, 2, 25, "Travailleur empire", 5, 10, 1, 10, 10, 15));
 	}
 	
 	public void initCavalry(String line)

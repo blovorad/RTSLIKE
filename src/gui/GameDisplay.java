@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.AbstractMap;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -28,11 +29,16 @@ import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Unit;
+
 import engine.manager.AudioManager;
+
+import engine.entity.unit.Worker;
+
 import engine.manager.EntitiesManager;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
+import factionConfiguration.ForUpgrade;
 import engine.Mouse;
 import engine.Position;
 import engine.Ressource;
@@ -213,6 +219,7 @@ public class GameDisplay extends JPanel
         		JPanel panel2 = new JPanel(new GridLayout(2,0));
         		panel2.add(new JLabel("Player 2"));
         		boxPlayer2 = new JComboBox<String>(races);
+        		boxPlayer2.setSelectedIndex(1);
         		panel2.add(boxPlayer2);
                 panel.add(panel2);
         	}
@@ -300,7 +307,7 @@ public class GameDisplay extends JPanel
 	
 	private JPanel createGamePanel()
 	{
-		GridLayout gridLayout = new GridLayout(4,2);
+		GridLayout gridLayout = new GridLayout(4,3);
 		JPanel panel = new JPanel(gridLayout);
 		panel.setOpaque(false);
 		
@@ -311,11 +318,11 @@ public class GameDisplay extends JPanel
 			{
 				panel.add(createRessourceInfo());
 			}
-			else if(i == 1)
+			else if(i == 2)
 			{
 				panel.add(createGameMenuPanel());
 			}
-			else if(i == 6)
+			else if(i == 9)
 			{
 				panel.add(createDescriptionPanel());
 			}
@@ -332,16 +339,21 @@ public class GameDisplay extends JPanel
 
 	private JPanel createGameMenuPanel()
 	{
-		JPanel panel = new JPanel(new GridLayout(3, 5));
-		
-		JLabel label = new JLabel();
-		label.setVisible(false);
-		panel.add(label);
-		panel.add(new JButton(new PauseGameMenu("MENU")));
-		panel.add(label);
-		panel.add(label);
-		panel.add(label);
+		GridLayout gridLayout = new GridLayout(6,5);
+		JPanel panel = new JPanel(gridLayout);
 		panel.setOpaque(false);
+		
+		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
+		
+		for(int i = 0; i < gridPlacement; i++) {
+			if(i == 4) {
+				panel.add(new JButton(new PauseGameMenu("MENU")));
+			}
+			else {
+				panel.add(new JLabel());
+			}
+		}
+
 		return panel;
 	}
 	
@@ -354,11 +366,14 @@ public class GameDisplay extends JPanel
 		return descriptionPanel;
 	}
 	
-	public void setDescriptionPanelForWorker()
+	public void setDescriptionPanelForWorker(Worker worker)
 	{
 		descriptionPanel.removeAll();
 		
-		//code entre les deux
+		descriptionPanel.setLayout(new GridLayout(2, 2));
+		
+		descriptionPanel.add(constructionButton);
+		descriptionPanel.add(new JLabel("" + worker.getDescription()));
 		
 		descriptionPanel.validate();
 	}
@@ -448,10 +463,22 @@ public class GameDisplay extends JPanel
 		
 		if(building.getProductionId() > -1)
 		{
-			JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
-			button.setFocusable(false);
-			descriptionPanel.add(button);
-			descriptionPanel.add(new JLabel(building.getDescription()));
+			if(building.getId() == EntityConfiguration.FORGE) {
+				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
+				descriptionPanel.setLayout(new GridLayout(upgrades.size(), 1));
+				for(ForUpgrade upgrade : upgrades.values()) {
+					JButton button = new JButton(new CreateUnit("" + upgrade.getDescription(), upgrade.getId(), building ));
+					button.setFocusable(false);
+					descriptionPanel.add(button);
+				}
+				descriptionPanel.add(new JLabel(building.getDescription()));
+			}
+			else {
+				JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
+				button.setFocusable(false);
+				descriptionPanel.add(button);
+				descriptionPanel.add(new JLabel(building.getDescription()));
+			}
 		}
 		else
 		{
@@ -495,7 +522,7 @@ public class GameDisplay extends JPanel
 		this.populationLabel.setForeground(Color.WHITE);
 		this.ageLabel =  new JLabel("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
 		this.ageLabel.setForeground(Color.WHITE);
-		JLabel race = new JLabel(" " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
+		JLabel race = new JLabel("FACTION :  " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
 		race.setForeground(Color.WHITE);
 		
 		panel.add(moneyLabel);
@@ -512,6 +539,13 @@ public class GameDisplay extends JPanel
 	{
 		JPanel panel = new JPanel();
 		JPanel panelBis = new JPanel();
+		
+		sonSlider.setMinimum(0);
+		sonSlider.setPaintTicks(true);
+		sonSlider.setPaintTrack(true);
+		sonSlider.setPaintLabels(true);
+		sonSlider.setMaximum(100);
+		sonSlider.setMajorTickSpacing(25);
 		
 		scrollingSlider.setMinimum(0);
 		scrollingSlider.setMaximum(100);
@@ -601,6 +635,9 @@ public class GameDisplay extends JPanel
 			this.populationLabel.setText("POPULATION:" + populationCount + " / " + maxPopulation);
 			this.ageLabel.setText("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
 		}
+		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {
+			audioManager.manageVolume(this.sonSlider.getValue());
+		}
 	}
 	
 	@Override
@@ -676,9 +713,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			prodBuilding.startProd(id);
-
 		}
-		
 	}
 	
 	private class PauseGameMenu extends AbstractAction
@@ -1007,9 +1042,13 @@ public class GameDisplay extends JPanel
 	 */
 	private class SonModel implements BoundedRangeModel
 	{
+		private int value;
+		
 		public SonModel()
 		{
 			super();
+			this.value = 25;
+			this.setValue(value);
 		}
 
 		@Override
@@ -1021,13 +1060,13 @@ public class GameDisplay extends JPanel
 		@Override
 		public int getExtent() 
 		{
-			return 0;
+			return 10;
 		}
 
 		@Override
 		public int getMaximum() 
 		{
-			return 0;
+			return 100;
 		}
 
 		@Override
@@ -1039,7 +1078,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public int getValue() 
 		{
-			return 0;
+			return value;
 		}
 
 		@Override
@@ -1081,7 +1120,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public void setValue(int arg0) 
 		{
-			
+			value = arg0;
 		}
 
 		@Override

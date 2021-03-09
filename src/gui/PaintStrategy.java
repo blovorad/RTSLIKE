@@ -52,20 +52,20 @@ public class PaintStrategy
 		}
 		else if(width == 1366 && height == 768)
 		{
-			rectXOfMinimap = 1100;
-			rectYOfMinimap = 525;
-			rectWOfMinimap = width - 1100;
-			rectHOfMinimap = height - 525;
+			rectXOfMinimap = 1225;
+			rectYOfMinimap = 625;
+			rectWOfMinimap = width - 1225;
+			rectHOfMinimap = height - 625;
 			
 			System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
 			
-			firstGridXOfMap = 1125;
-			firstGridYOfMap = 550;
+			firstGridXOfMap = 1250;
+			firstGridYOfMap = 650;
 			gridMapWidth = 1;
 			gridMapHeight = 1;
 			
-			camX = 1125;
-			camY = 550;
+			camX = 1250;
+			camY = 650;
 			camW = (width / GameConfiguration.TILE_SIZE);
 			camH = (height / GameConfiguration.TILE_SIZE);
 		}
@@ -208,7 +208,7 @@ public class PaintStrategy
 		}
 		
 		graphics.setColor(new Color(168,104,38));
-		graphics.fillRect(0, 0, 500, 50);
+		graphics.fillRect(0, 0, 550, 50);
 				
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.white);
