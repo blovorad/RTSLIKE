@@ -5,7 +5,10 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.AbstractMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
@@ -33,6 +36,7 @@ import engine.manager.EntitiesManager;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
+import factionConfiguration.ForUpgrade;
 import engine.Mouse;
 import engine.Position;
 import engine.Ressource;
@@ -446,10 +450,22 @@ public class GameDisplay extends JPanel
 		
 		if(building.getProductionId() > -1)
 		{
-			JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
-			button.setFocusable(false);
-			descriptionPanel.add(button);
-			descriptionPanel.add(new JLabel(building.getDescription()));
+			if(building.getId() == EntityConfiguration.FORGE) {
+				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
+				descriptionPanel.setLayout(new GridLayout(upgrades.size(), 1));
+				for(ForUpgrade upgrade : upgrades.values()) {
+					JButton button = new JButton(new CreateUnit("" + upgrade.getDescription(), upgrade.getId(), building ));
+					button.setFocusable(false);
+					descriptionPanel.add(button);
+				}
+				descriptionPanel.add(new JLabel(building.getDescription()));
+			}
+			else {
+				JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
+				button.setFocusable(false);
+				descriptionPanel.add(button);
+				descriptionPanel.add(new JLabel(building.getDescription()));
+			}
 		}
 		else
 		{

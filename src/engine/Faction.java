@@ -1,9 +1,13 @@
 package engine;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
+import factionConfiguration.ForUpgrade;
 import factionConfiguration.Gaia;
 import factionConfiguration.Race;
 import factionConfiguration.Royaume;
@@ -16,7 +20,7 @@ public class Faction
 	private int populationCount;
 	private int maxPopulation;
 	private int moneyCount;
-	private List<Upgrade> upgradesDone;
+	private AbstractMap<Integer, ForUpgrade> upgradesDone;
 
 	public Faction(int id) 
 	{
@@ -25,6 +29,7 @@ public class Faction
 		maxPopulation = 20;
 		moneyCount = 200;
 		populationCount = 0;
+		upgradesDone = new HashMap<Integer, ForUpgrade>();
 		
 		if(id == 1)
 		{
@@ -91,11 +96,11 @@ public class Faction
 		this.moneyCount = moneyCount;
 	}
 
-	public List<Upgrade> getUpgradesDone() {
+	public AbstractMap<Integer, ForUpgrade> getUpgradesDone() {
 		return upgradesDone;
 	}
 
-	public void setUpgradesDone(List<Upgrade> upgradesDone) {
+	public void setUpgradesDone(AbstractMap<Integer, ForUpgrade> upgradesDone) {
 		this.upgradesDone = upgradesDone;
 	}
 

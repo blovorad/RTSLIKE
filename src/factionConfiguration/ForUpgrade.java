@@ -1,15 +1,12 @@
 package factionConfiguration;
 
-import java.util.Map;
-
-public class ForUpgrade 
-{
+public class ForUpgrade {
+	
 	private int age; // age ou l'upgrade est dispo
 	private String description;
 	private int id;
 	private int effect;
 	private int timeToProduce;
-	private int idBuilding;
 	
 	public ForUpgrade(int age, String description, int effect, int id, int timeToProduce) {
 		this.setAge(age);
@@ -33,14 +30,6 @@ public class ForUpgrade
 
 	public void setTimeToProduce(int timeToProduce) {
 		this.timeToProduce = timeToProduce;
-	}
-
-	public int getIdBuilding() {
-		return idBuilding;
-	}
-
-	public void setIdBuilding(int idBuilding) {
-		this.idBuilding = idBuilding;
 	}
 
 	public int getEffect() {

@@ -1,5 +1,6 @@
 package engine.manager;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import factionConfiguration.ForAttackBuilding;
 import factionConfiguration.ForFighter;
 import factionConfiguration.ForProductionBuilding;
 import factionConfiguration.ForStorageBuilding;
+import factionConfiguration.ForUpgrade;
 import factionConfiguration.ForWorker;
 
 public class EntitiesManager 
@@ -116,9 +118,9 @@ public class EntitiesManager
 						ForWorker patron = factionManager.getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(id);
 						createWorker(id, building.getFaction(), patron, new Position(building.getPosition().getX() - 50, building.getPosition().getY()- 50), building.getDestination());
 					}
-					/*else if(id >= Enti && id <=) {
-						createUpgrade(id, building.getFaction(), patron);
-					}*/
+					else if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE) {
+						createUpgrade(id, building.getFaction());
+					}
 					System.out.println("producing unit");
 				}
 			}
@@ -254,6 +256,63 @@ public class EntitiesManager
 		}
 	}
 	
+	public void createUpgrade(int id, int faction) {
+		//TODO simplifier les update de list avec un fonction
+		ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getUpgrades().get(id);
+		if(id== EntityConfiguration.ARMOR_UPGRADE) {
+			System.out.println("upgrade armure !");
+			for(Fighter fighter : fighters) {
+				if(fighter.getFaction() == faction) {
+					fighter.setArmor(fighter.getArmor() + upgrade.getEffect());
+				}
+			}
+			for(Worker worker : workers) {
+				if(worker.getFaction() == faction) {
+					worker.setArmor(worker.getArmor() + upgrade.getEffect());
+				}
+			}
+			for(Unit unit : units) {
+				if(unit.getFaction() == faction) {
+					unit.setArmor(unit.getArmor() + upgrade.getEffect());
+				}
+			}
+			for(Unit unit : selectedUnits) {
+				if(unit.getFaction() == faction) {
+					unit.setArmor(unit.getArmor() + upgrade.getEffect());
+				}
+			}
+		}
+		else if(id== EntityConfiguration.DAMAGE_UPGRADE){
+			System.out.println("upgrade damage !");
+			for(Fighter fighter : fighters) {
+				if(fighter.getFaction() == faction) {
+					fighter.setArmor(fighter.getDamage() + upgrade.getEffect());
+				}
+			}
+			for(Worker worker : workers) {
+				if(worker.getFaction() == faction) {
+					worker.setArmor(worker.getDamage() + upgrade.getEffect());
+				}
+			}
+			for(Unit unit : units) {
+				if(unit.getFaction() == faction) {
+					unit.setArmor(unit.getDamage() + upgrade.getEffect());
+				}
+			}
+			for(Unit unit : selectedUnits) {
+				if(unit.getFaction() == faction) {
+					unit.setArmor(unit.getDamage() + upgrade.getEffect());
+				}
+			}
+		}
+		factionManager.getFactions().get(faction).getRace().getUpgrades().remove(id); //supprime l upgrade faite
+		for(ProductionBuilding prodBuilding : prodBuildings) {
+			if(prodBuilding.getFaction() == faction) {
+				prodBuilding.getUpgrades().remove(id); //supprime dans l affichage
+			}
+		}
+	}
+	
 	public void createBuilding(int id, int faction, Position position, Tile tile) 
 	{
 		ProductionBuilding bprod = null;
@@ -263,15 +322,18 @@ public class EntitiesManager
 		
 		if(id == EntityConfiguration.FORGE)
 		{
-			//List<Upgrades> list = faction.getListUpgrade();
-			//tu dois créer les upgrades a la main ici
-			//exemple Upgrades epe = new Upgrades();
-			for(int i =0; i < 1; i++)
-			{
-				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
+			
+			AbstractMap<Integer, ForUpgrade> upgrades = factionManager.getFactions().get(faction).getRace().getUpgrades();
+			AbstractMap<Integer, ForUpgrade> removeUpgrades = factionManager.getFactions().get(faction).getUpgradesDone();
+			for(int key : upgrades.keySet()) {
+				if(removeUpgrades.containsKey(key)) {
+					upgrades.remove(key);
+				}
 			}
+			System.out.println("taille upgrade " + upgrades.size());
+			//remove upgrade age
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, upgrades);
 		}
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
@@ -296,7 +358,7 @@ public class EntitiesManager
 		{
 			ForWorker patronWorker = factionManager.getFactions().get(faction).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, null);
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
