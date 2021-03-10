@@ -699,10 +699,7 @@ public class GameDisplay extends JPanel
 		}
 		else if(state == MAINMENU)
 		{
-			//this.paintStrategy.paint(g);
-			
-			
-			
+			//this.paintStrategy.paint(g);		
 		}
 		else if(state == OPTION)
 		{
@@ -712,7 +709,6 @@ public class GameDisplay extends JPanel
 		{
 			
 		}
-		//g.drawImage(buff, 0, 0, 1366, 768, null);
 	}
 	
 	private class CreateUnit extends AbstractAction
