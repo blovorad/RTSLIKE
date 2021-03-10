@@ -40,7 +40,7 @@ public class Hq extends ProductionBuilding{
 
 	@Override
 	public int startProd(int id, int moneyCount) {	
-		System.out.println("Start prod de infantry, cout : " + this.worker.getCost() + ", gold : " + moneyCount);
+		System.out.println("Start prod de worker, cout : " + this.worker.getCost() + ", gold : " + moneyCount);
 		if(this.worker.getCost() <= moneyCount) {
 			this.getElementCount().add(id);
 			if(this.getIsProducing() == false) {
@@ -57,7 +57,16 @@ public class Hq extends ProductionBuilding{
 
 	@Override
 	public int removeProduction() {
-		// TODO Auto-generated method stub
+		
+		if(this.getIsProducing() == true) {
+			System.out.println("Suppression prod de worker, cout : " + this.worker.getCost());
+			this.getElementCount().remove(this.getElementCount().size() - 1);
+			if(this.getElementCount().isEmpty()) {
+				this.setIsProducing(false);
+				this.setTimer(0);
+			}
+			return this.worker.getCost();
+		}
 		return 0;
 	}
 	
