@@ -41,6 +41,7 @@ import engine.manager.AudioManager;
 import engine.entity.unit.Worker;
 
 import engine.manager.EntitiesManager;
+import engine.manager.GraphicsManager;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
@@ -143,18 +144,13 @@ public class GameDisplay extends JPanel
 	private JLabel moneyLabel;
 	private JLabel ageLabel;
 	private JLabel timeLabel;
-	private BufferedImage buff;
+	private GraphicsManager graphicsManager;
 	
 	private float time;
 
-	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager)
+	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager, GraphicsManager graphicsManager)
 	{
-		buff = null;
-		try {
-			buff = ImageIO.read(new File("src/graphics/mainMenuBackground.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.graphicsManager = graphicsManager;
 		this.camera = camera;
 		this.manager = manager;
 		this.mouse = mouse;
@@ -666,7 +662,7 @@ public class GameDisplay extends JPanel
 		
 		if(state == INGAME)
 		{
-			this.paintStrategy.paint(this.map, g, this.camera);
+			this.paintStrategy.paint(this.map, g, this.camera, graphicsManager);
 			List<Entity> entities = manager.getDrawingList();
 			List<Unit> units = manager.getSelectedUnits();
 			
@@ -910,15 +906,15 @@ public class GameDisplay extends JPanel
 			
 			if(radioButton1.isSelected())
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 1, "src/file/map1.txt");
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 1, "src/file/map1.txt", graphicsManager);
 			}
 			else if(radioButton2.isSelected())
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 2, "src/file/map2.txt");
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 2, "src/file/map2.txt", graphicsManager);
 			}
 			else
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3, "src/file/map3.txt");
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3, "src/file/map3.txt", graphicsManager);
 			}
 			manager.addRessource(map.getGoldTiles());
 			

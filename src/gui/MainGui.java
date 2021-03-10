@@ -26,6 +26,7 @@ import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Unit;
 import engine.manager.AudioManager;
 import engine.manager.EntitiesManager;
+import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import engine.math.Collision;
 import engine.math.SelectionRect;
@@ -60,6 +61,7 @@ public class MainGui extends JFrame implements Runnable
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
+		GraphicsManager graphicsManager = new GraphicsManager();
 		
 		selectionRectangle = new SelectionRect();
 		audioManager = new AudioManager();
@@ -67,7 +69,7 @@ public class MainGui extends JFrame implements Runnable
 		mouse = new Mouse();
 		manager = new EntitiesManager();
 		camera = new Camera(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
-		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle, audioManager);
+		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle, audioManager, graphicsManager);
 		
 		MouseControls mouseControls = new MouseControls();
 		MouseMotion mouseMotion = new MouseMotion();

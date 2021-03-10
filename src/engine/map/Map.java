@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import configuration.MapConfiguration;
+import engine.manager.GraphicsManager;
 
 
 /**
@@ -23,7 +24,7 @@ public class Map
 	
 	private List<Tile> goldTiles;
 	
-	public Map(int line, int column, int id, String fileName)
+	public Map(int line, int column, int id, String fileName, GraphicsManager graphicsManager)
 	{
 		this.columnCount = column;
 		this.lineCount = line;
@@ -53,7 +54,7 @@ public class Map
 				}
 				int index = scan.nextInt();
 				
-				Tile tile = new Tile(lineIndex, columnIndex, index);
+				Tile tile = new Tile(lineIndex, columnIndex, index, graphicsManager.getGraphicsTile(index));
 				tiles[columnIndex][lineIndex] = tile;
 				
 				if(index == MapConfiguration.GOLD)

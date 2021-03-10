@@ -426,7 +426,7 @@ public class EntitiesManager
 	{
 		for(Tile t : listPositionRessources)
 		{
-			Ressource r = new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION, graphicsManager.getImage(0));
+			Ressource r = new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION, graphicsManager.getGraphicsEntity(EntityConfiguration.RESSOURCE));
 			this.ressources.add(r);
 			this.drawingList.add(r);
 		}
