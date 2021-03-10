@@ -267,59 +267,66 @@ public class EntitiesManager
 	
 	public void createUpgrade(int id, int faction) {
 		//TODO simplifier les update de list avec un fonction
-		ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getUpgrades().get(id);
-		if(id== EntityConfiguration.ARMOR_UPGRADE) {
-			System.out.println("upgrade armure !");
-			for(Fighter fighter : fighters) {
-				if(fighter.getFaction() == faction) {
-					fighter.setArmor(fighter.getArmor() + upgrade.getEffect());
+		ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getForgeUpgrades().get(id);
+		if(id == EntityConfiguration.AGE_UPGRADE) {
+			System.out.println("upgrade age !");
+			factionManager.getFactions().get(faction).setAge(factionManager.getFactions().get(faction).getAge() + 1);
+		}
+		else {
+			if(id== EntityConfiguration.ARMOR_UPGRADE) {
+				System.out.println("upgrade armure !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setArmor(fighter.getArmor() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setArmor(worker.getArmor() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setArmor(unit.getArmor() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setArmor(unit.getArmor() + upgrade.getEffect());
+					}
 				}
 			}
-			for(Worker worker : workers) {
-				if(worker.getFaction() == faction) {
-					worker.setArmor(worker.getArmor() + upgrade.getEffect());
+			else if(id== EntityConfiguration.DAMAGE_UPGRADE){
+				System.out.println("upgrade damage !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setArmor(fighter.getDamage() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setArmor(worker.getDamage() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setArmor(unit.getDamage() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setArmor(unit.getDamage() + upgrade.getEffect());
+					}
 				}
 			}
-			for(Unit unit : units) {
-				if(unit.getFaction() == faction) {
-					unit.setArmor(unit.getArmor() + upgrade.getEffect());
-				}
-			}
-			for(Unit unit : selectedUnits) {
-				if(unit.getFaction() == faction) {
-					unit.setArmor(unit.getArmor() + upgrade.getEffect());
+			factionManager.getFactions().get(faction).getRace().getForgeUpgrades().remove(id); //supprime l upgrade faite
+			for(ProductionBuilding prodBuilding : prodBuildings) {
+				if(prodBuilding.getFaction() == faction) {
+					prodBuilding.getUpgrades().remove(id); //supprime dans l affichage
 				}
 			}
 		}
-		else if(id== EntityConfiguration.DAMAGE_UPGRADE){
-			System.out.println("upgrade damage !");
-			for(Fighter fighter : fighters) {
-				if(fighter.getFaction() == faction) {
-					fighter.setArmor(fighter.getDamage() + upgrade.getEffect());
-				}
-			}
-			for(Worker worker : workers) {
-				if(worker.getFaction() == faction) {
-					worker.setArmor(worker.getDamage() + upgrade.getEffect());
-				}
-			}
-			for(Unit unit : units) {
-				if(unit.getFaction() == faction) {
-					unit.setArmor(unit.getDamage() + upgrade.getEffect());
-				}
-			}
-			for(Unit unit : selectedUnits) {
-				if(unit.getFaction() == faction) {
-					unit.setArmor(unit.getDamage() + upgrade.getEffect());
-				}
-			}
-		}
-		factionManager.getFactions().get(faction).getRace().getUpgrades().remove(id); //supprime l upgrade faite
-		for(ProductionBuilding prodBuilding : prodBuildings) {
-			if(prodBuilding.getFaction() == faction) {
-				prodBuilding.getUpgrades().remove(id); //supprime dans l affichage
-			}
-		}
+			
 	}
 	
 	public void createBuilding(int id, int faction, Position position, Tile tile) 
@@ -332,7 +339,7 @@ public class EntitiesManager
 		if(id == EntityConfiguration.FORGE)
 		{
 			
-			AbstractMap<Integer, ForUpgrade> upgrades = factionManager.getFactions().get(faction).getRace().getUpgrades();
+			AbstractMap<Integer, ForUpgrade> upgrades = factionManager.getFactions().get(faction).getRace().getForgeUpgrades();
 			AbstractMap<Integer, ForUpgrade> removeUpgrades = factionManager.getFactions().get(faction).getUpgradesDone();
 			for(int key : upgrades.keySet()) {
 				if(removeUpgrades.containsKey(key)) {

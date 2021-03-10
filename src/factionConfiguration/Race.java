@@ -11,7 +11,8 @@ public abstract class Race
 	private AbstractMap<Integer, ForProductionBuilding>productionBuildings;
 	private AbstractMap<Integer, ForAttackBuilding>attackBuildings;
 	private AbstractMap<Integer, ForStorageBuilding>storageBuildings;
-	private AbstractMap<Integer, ForUpgrade> upgrades;
+	private AbstractMap<Integer, ForUpgrade> HQUpgrades;
+	private AbstractMap<Integer, ForUpgrade> ForgeUpgrades;
 	
 	public Race()
 	{
@@ -20,7 +21,8 @@ public abstract class Race
 		this.storageBuildings = new HashMap<Integer, ForStorageBuilding>();
 		this.attackBuildings = new HashMap<Integer, ForAttackBuilding>();
 		this.productionBuildings = new HashMap<Integer, ForProductionBuilding>();
-		this.upgrades = new HashMap<Integer, ForUpgrade>();
+		this.setHQUpgrades(new HashMap<Integer, ForUpgrade>());
+		this.setForgeUpgrades(new HashMap<Integer, ForUpgrade>());
 		
 	}
 	
@@ -37,14 +39,6 @@ public abstract class Race
 	public String toString()
 	{
 		return "" + name;
-	}
-
-	public AbstractMap<Integer, ForUpgrade> getUpgrades() {
-		return upgrades;
-	}
-
-	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) {
-		this.upgrades = upgrades;
 	}
 
 	public AbstractMap<Integer, ForProductionBuilding> getProductionBuildings() {
@@ -85,5 +79,21 @@ public abstract class Race
 
 	public void setPatronWorkers(AbstractMap<Integer, ForWorker> patronWorkers) {
 		this.patronWorkers = patronWorkers;
+	}
+
+	public AbstractMap<Integer, ForUpgrade> getHQUpgrades() {
+		return HQUpgrades;
+	}
+
+	public void setHQUpgrades(AbstractMap<Integer, ForUpgrade> hQUpgrades) {
+		HQUpgrades = hQUpgrades;
+	}
+
+	public AbstractMap<Integer, ForUpgrade> getForgeUpgrades() {
+		return ForgeUpgrades;
+	}
+
+	public void setForgeUpgrades(AbstractMap<Integer, ForUpgrade> forgeUpgrades) {
+		ForgeUpgrades = forgeUpgrades;
 	}
 }

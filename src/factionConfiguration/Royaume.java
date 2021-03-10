@@ -45,7 +45,8 @@ public class Royaume extends Race
 		initBarrack();
 		initArchery();
 		initStable();
-		initUpgrades();
+		initHQUpgrades();
+		initForgeUpgrades();
 		
 		scan.close();
 		
@@ -88,12 +89,12 @@ public class Royaume extends Race
 	
 	public void initForge()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, this.getUpgrades(), "Forge Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, this.getForgeUpgrades(), "Forge Royaume", 100, 20, 25));
 	}
 	
 	public void initHq()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, null, "Quartier general Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, this.getHQUpgrades(), "Quartier general Royaume", 100, 20, 25));
 	}
 	
 	public void initCastle()
@@ -126,10 +127,16 @@ public class Royaume extends Race
 		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 1, null, "Ecurie Royaume", 100, 20, 25));
 	}
 	
-	public void initUpgrades()
+	public void initForgeUpgrades()
 	{
-		this.getUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(1, "better armor", 5, EntityConfiguration.ARMOR_UPGRADE, 30, 25));
-		this.getUpgrades().put(EntityConfiguration.DAMAGE_UPGRADE, new ForUpgrade(1, "better sword", 5, EntityConfiguration.DAMAGE_UPGRADE, 30, 25));
+		this.getForgeUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(1, "better armor", 5, EntityConfiguration.ARMOR_UPGRADE, 30, 25));
+		this.getForgeUpgrades().put(EntityConfiguration.DAMAGE_UPGRADE, new ForUpgrade(1, "better sword", 5, EntityConfiguration.DAMAGE_UPGRADE, 30, 25));
+		
+	}
+	
+	public void initHQUpgrades()
+	{
+		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE, new ForUpgrade(1, "upgrade age", 1, EntityConfiguration.AGE_UPGRADE, 200, 300));
 		
 	}
 	
