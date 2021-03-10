@@ -19,7 +19,7 @@ public abstract class AttackBuilding extends Entity{
 	private Tile tile;
 	
 	public AttackBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile) {
-		super(100, hpMax, description , position, id, faction);
+		super(100, hpMax, description , position, id, faction, null);
 		this.setTile(tile);
 	}
 	

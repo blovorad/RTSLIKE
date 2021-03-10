@@ -1,9 +1,17 @@
 package engine.manager;
 
 import java.util.AbstractMap;
+
+
 import java.util.HashMap;
 
 import engine.Faction;
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class FactionManager 
 {

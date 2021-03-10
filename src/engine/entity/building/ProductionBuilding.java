@@ -21,7 +21,7 @@ public abstract class ProductionBuilding extends Entity{
 	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
 	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades) {
-		super(100, hpMax, description , position, id, faction);
+		super(100, hpMax, description , position, id, faction, null);
 		elementCount = new ArrayList<Integer>();
 		this.setTile(tile);
 		this.setUpgrades(upgrades);

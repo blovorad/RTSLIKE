@@ -1,5 +1,11 @@
 package configuration;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class EntityConfiguration {
 	
 	public final static int INFANTRY = 0;

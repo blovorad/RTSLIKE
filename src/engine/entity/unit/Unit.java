@@ -28,7 +28,7 @@ public class Unit extends Entity
 	
 	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax, int faction)
 	{
-		super(hp, hpMax, description, position, id, faction);
+		super(hp, hpMax, description, position, id, faction, null);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;
@@ -43,7 +43,7 @@ public class Unit extends Entity
 	
 	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction)
 	{
-		super(hp, hpMax, description, position, id, faction);
+		super(hp, hpMax, description, position, id, faction, null);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;

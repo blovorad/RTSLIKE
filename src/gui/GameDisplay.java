@@ -3,13 +3,17 @@ package gui;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.AbstractMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ButtonGroup;
@@ -31,8 +35,13 @@ import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Unit;
+
+import engine.manager.AudioManager;
+
 import engine.entity.unit.Worker;
+
 import engine.manager.EntitiesManager;
+import engine.manager.GraphicsManager;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
@@ -40,6 +49,12 @@ import factionConfiguration.ForUpgrade;
 import engine.Mouse;
 import engine.Position;
 import engine.Ressource;
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class GameDisplay extends JPanel 
 {
@@ -62,6 +77,8 @@ public class GameDisplay extends JPanel
 	//state of the game
 	private int state;
 	private int oldState;
+	
+	private AudioManager audioManager;
 	
 	//state constant
 	private final int MAINMENU = 0;
@@ -127,11 +144,13 @@ public class GameDisplay extends JPanel
 	private JLabel moneyLabel;
 	private JLabel ageLabel;
 	private JLabel timeLabel;
+	private GraphicsManager graphicsManager;
 	
 	private float time;
 
-	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle)
+	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager, GraphicsManager graphicsManager)
 	{
+		this.graphicsManager = graphicsManager;
 		this.camera = camera;
 		this.manager = manager;
 		this.mouse = mouse;
@@ -139,6 +158,9 @@ public class GameDisplay extends JPanel
 		this.state = MAINMENU;
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
+		
+		audioManager.setState(state);
+		this.audioManager = audioManager;
 		
 		/*gamePanel = createGamePanel();
 		gamePanel.setVisible(false);*/
@@ -212,6 +234,7 @@ public class GameDisplay extends JPanel
         		JPanel panel2 = new JPanel(new GridLayout(2,0));
         		panel2.add(new JLabel("Player 2"));
         		boxPlayer2 = new JComboBox<String>(races);
+        		boxPlayer2.setSelectedIndex(1);
         		panel2.add(boxPlayer2);
                 panel.add(panel2);
         	}
@@ -299,7 +322,7 @@ public class GameDisplay extends JPanel
 	
 	private JPanel createGamePanel()
 	{
-		GridLayout gridLayout = new GridLayout(4,2);
+		GridLayout gridLayout = new GridLayout(4,3);
 		JPanel panel = new JPanel(gridLayout);
 		panel.setOpaque(false);
 		
@@ -310,11 +333,11 @@ public class GameDisplay extends JPanel
 			{
 				panel.add(createRessourceInfo());
 			}
-			else if(i == 1)
+			else if(i == 2)
 			{
 				panel.add(createGameMenuPanel());
 			}
-			else if(i == 6)
+			else if(i == 9)
 			{
 				panel.add(createDescriptionPanel());
 			}
@@ -331,16 +354,21 @@ public class GameDisplay extends JPanel
 
 	private JPanel createGameMenuPanel()
 	{
-		JPanel panel = new JPanel(new GridLayout(3, 5));
-		
-		JLabel label = new JLabel();
-		label.setVisible(false);
-		panel.add(label);
-		panel.add(new JButton(new PauseGameMenu("MENU")));
-		panel.add(label);
-		panel.add(label);
-		panel.add(label);
+		GridLayout gridLayout = new GridLayout(6,5);
+		JPanel panel = new JPanel(gridLayout);
 		panel.setOpaque(false);
+		
+		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
+		
+		for(int i = 0; i < gridPlacement; i++) {
+			if(i == 4) {
+				panel.add(new JButton(new PauseGameMenu("MENU")));
+			}
+			else {
+				panel.add(new JLabel());
+			}
+		}
+
 		return panel;
 	}
 	
@@ -509,7 +537,7 @@ public class GameDisplay extends JPanel
 		this.populationLabel.setForeground(Color.WHITE);
 		this.ageLabel =  new JLabel("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
 		this.ageLabel.setForeground(Color.WHITE);
-		JLabel race = new JLabel(" " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
+		JLabel race = new JLabel("FACTION :  " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
 		race.setForeground(Color.WHITE);
 		
 		panel.add(moneyLabel);
@@ -526,6 +554,13 @@ public class GameDisplay extends JPanel
 	{
 		JPanel panel = new JPanel();
 		JPanel panelBis = new JPanel();
+		
+		sonSlider.setMinimum(0);
+		sonSlider.setPaintTicks(true);
+		sonSlider.setPaintTrack(true);
+		sonSlider.setPaintLabels(true);
+		sonSlider.setMaximum(100);
+		sonSlider.setMajorTickSpacing(25);
 		
 		scrollingSlider.setMinimum(0);
 		scrollingSlider.setMaximum(100);
@@ -615,6 +650,9 @@ public class GameDisplay extends JPanel
 			this.populationLabel.setText("POPULATION:" + populationCount + " / " + maxPopulation);
 			this.ageLabel.setText("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
 		}
+		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {
+			audioManager.manageVolume(this.sonSlider.getValue());
+		}
 	}
 	
 	@Override
@@ -624,7 +662,7 @@ public class GameDisplay extends JPanel
 		
 		if(state == INGAME)
 		{
-			this.paintStrategy.paint(this.map, g, this.camera);
+			this.paintStrategy.paint(this.map, g, this.camera, graphicsManager);
 			List<Entity> entities = manager.getDrawingList();
 			List<Unit> units = manager.getSelectedUnits();
 			
@@ -661,7 +699,7 @@ public class GameDisplay extends JPanel
 		}
 		else if(state == MAINMENU)
 		{
-			//this.paintStrategy.paint(g);
+			//this.paintStrategy.paint(g);		
 		}
 		else if(state == OPTION)
 		{
@@ -865,15 +903,15 @@ public class GameDisplay extends JPanel
 			
 			if(radioButton1.isSelected())
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 1, "src/file/map1.txt");
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 1, "src/file/map1.txt", graphicsManager);
 			}
 			else if(radioButton2.isSelected())
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 2, "src/file/map2.txt");
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 2, "src/file/map2.txt", graphicsManager);
 			}
 			else
 			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3, "src/file/map3.txt");
+				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3, "src/file/map3.txt", graphicsManager);
 			}
 			manager.addRessource(map.getGoldTiles());
 			
@@ -1020,9 +1058,13 @@ public class GameDisplay extends JPanel
 	 */
 	private class SonModel implements BoundedRangeModel
 	{
+		private int value;
+		
 		public SonModel()
 		{
 			super();
+			this.value = 25;
+			this.setValue(value);
 		}
 
 		@Override
@@ -1040,7 +1082,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public int getMaximum() 
 		{
-			return 0;
+			return 100;
 		}
 
 		@Override
@@ -1052,7 +1094,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public int getValue() 
 		{
-			return 0;
+			return value;
 		}
 
 		@Override
@@ -1094,7 +1136,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public void setValue(int arg0) 
 		{
-			
+			value = arg0;
 		}
 
 		@Override
@@ -1247,6 +1289,7 @@ public class GameDisplay extends JPanel
 			default:
 				break;
 		}
+		audioManager.setState(state);
 	}
 	
 	public Map getMap()

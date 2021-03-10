@@ -8,12 +8,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.File;
+
 import java.util.List;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
@@ -27,10 +24,18 @@ import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Unit;
+import engine.manager.AudioManager;
 import engine.manager.EntitiesManager;
+import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import engine.math.Collision;
 import engine.math.SelectionRect;
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class MainGui extends JFrame implements Runnable
 {
@@ -47,6 +52,8 @@ public class MainGui extends JFrame implements Runnable
 	private Mouse mouse;
 	
 	private SelectionRect selectionRectangle;
+	
+	private AudioManager audioManager;
 
 	public MainGui()
 	{
@@ -54,13 +61,15 @@ public class MainGui extends JFrame implements Runnable
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
+		GraphicsManager graphicsManager = new GraphicsManager();
 		
 		selectionRectangle = new SelectionRect();
+		audioManager = new AudioManager();
 		
 		mouse = new Mouse();
 		manager = new EntitiesManager();
 		camera = new Camera(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
-		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle);
+		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle, audioManager, graphicsManager);
 		
 		MouseControls mouseControls = new MouseControls();
 		MouseMotion mouseMotion = new MouseMotion();
@@ -81,17 +90,6 @@ public class MainGui extends JFrame implements Runnable
 		setResizable(false);
 		setPreferredSize(preferredSize);
 		System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
-		
-		/*try {
-			File file = new File("src/sounds/musiqueTest.wav");
-			Clip clip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-			clip.open(inputStream);
-			clip.start();
-			//si jamais on avait plusieurs son, pour economiser la mémoire si un clip est open il faut le close avant d'en jouer un nouveau !!
-		} catch(Exception e){
-			e.printStackTrace();
-		}*/
 	}
 
 	@Override
@@ -108,6 +106,7 @@ public class MainGui extends JFrame implements Runnable
 			}
 			manager.update();
 			camera.update();
+			audioManager.update();
 			dashboard.update();
 			dashboard.repaint();
 		}
@@ -519,5 +518,13 @@ public class MainGui extends JFrame implements Runnable
 	public void setManager(EntitiesManager manager) 
 	{
 		this.manager = manager;
+	}
+
+	public AudioManager getAudioManager() {
+		return audioManager;
+	}
+
+	public void setAudioManager(AudioManager audioManager) {
+		this.audioManager = audioManager;
 	}
 }
