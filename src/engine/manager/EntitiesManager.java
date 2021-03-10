@@ -115,7 +115,7 @@ public class EntitiesManager
 		}
 		
 		for(ProductionBuilding building : prodBuildings) {
-			building.update(factionManager.getFactions().get(building.getFaction()).getPopulationCount(), factionManager.getFactions().get(building.getFaction()).getMaxPopulation(), prodBuildings);
+			building.update(factionManager.getFactions().get(building.getFaction()).getPopulationCount(), factionManager.getFactions().get(building.getFaction()).getMaxPopulation());
 			if(building.getIsProducing()) {
 				if(building.getTimer() <= 0) {
 					int id = building.produce();
@@ -268,7 +268,7 @@ public class EntitiesManager
 	public void createUpgrade(int id, int faction) {
 		//TODO simplifier les update de list avec un fonction
 		ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getUpgrades().get(id);
-		if(id== EntityConfiguration.ARMOR_UPGRADE) {
+		if(id == EntityConfiguration.ARMOR_UPGRADE) {
 			System.out.println("upgrade armure !");
 			for(Fighter fighter : fighters) {
 				if(fighter.getFaction() == faction) {
@@ -314,6 +314,7 @@ public class EntitiesManager
 				}
 			}
 		}
+		
 		factionManager.getFactions().get(faction).getRace().getUpgrades().remove(id); //supprime l upgrade faite
 		for(ProductionBuilding prodBuilding : prodBuildings) {
 			if(prodBuilding.getFaction() == faction) {
@@ -342,48 +343,48 @@ public class EntitiesManager
 			System.out.println("taille upgrade " + upgrades.size());
 			//remove upgrade age
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, upgrades);
+			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, upgrades, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE));
 		}
 		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE)
 		{
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.CAVALRY);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Stable(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Stable(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.STABLE));
 		}
 		else if(id == EntityConfiguration.BARRACK)
 		{
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.INFANTRY);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Barrack(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Barrack(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE));
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.ARCHER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Archery(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Archery(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE));
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
 			ForWorker patronWorker = factionManager.getFactions().get(faction).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, null);
+			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, null, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE));
 		}
 		else if(id == EntityConfiguration.CASTLE)
 		{
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.SPECIAL_UNIT);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Castle(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Castle(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.CASTLE));
 		}
 		else if(id == EntityConfiguration.STORAGE)
 		{
 			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getStorageBuildings().get(id);
-			bstorage = new StorageBuilding(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bstorage = new StorageBuilding(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.STORAGE));
 		}
 		else if(id == EntityConfiguration.TOWER)
 		{
 			ForAttackBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getAttackBuildings().get(id);
-			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE));
 		}
 		else
 		{

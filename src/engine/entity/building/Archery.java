@@ -1,5 +1,7 @@
 package engine.entity.building;
 
+import java.awt.image.BufferedImage;
+
 import configuration.EntityConfiguration;
 import engine.Position;
 import engine.map.Tile;
@@ -9,8 +11,8 @@ public class Archery extends ProductionBuilding{
 
 	private ForFighter archer;
 	
-	public Archery(Position position, ForFighter archer, int id, String description, int hpMax, int faction, Tile tile) {
-		super(position, id, description, hpMax, faction, tile, null);
+	public Archery(Position position, ForFighter archer, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture) {
+		super(position, id, description, hpMax, faction, tile, null, texture);
 		this.archer = archer;
 		this.setProductionId(EntityConfiguration.ARCHER);
 	}
@@ -43,7 +45,15 @@ public class Archery extends ProductionBuilding{
 
 	@Override
 	public int removeProduction() {
-		// TODO Auto-generated method stub
+		if(this.getIsProducing() == true) {
+			System.out.println("Suppression prod de archer, cout : " + this.archer.getCost());
+			this.getElementCount().remove(this.getElementCount().size() - 1);
+			if(this.getElementCount().isEmpty()) {
+				this.setIsProducing(false);
+				this.setTimer(0);
+			}
+			return this.archer.getCost();
+		}
 		return 0;
 	}
 }

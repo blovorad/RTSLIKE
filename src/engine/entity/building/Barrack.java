@@ -1,5 +1,7 @@
 package engine.entity.building;
 
+import java.awt.image.BufferedImage;
+
 import configuration.EntityConfiguration;
 import engine.Position;
 import engine.map.Tile;
@@ -9,8 +11,8 @@ public class Barrack extends ProductionBuilding{
 
 	private ForFighter infantry;
 	
-	public Barrack(Position position, ForFighter infantry, int id, String description, int hpMax, int faction, Tile tile) {
-		super(position, id, description, hpMax, faction, tile, null);
+	public Barrack(Position position, ForFighter infantry, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture) {
+		super(position, id, description, hpMax, faction, tile, null, texture);
 		this.infantry = infantry;
 		this.setProductionId(EntityConfiguration.INFANTRY);
 	}
@@ -50,7 +52,15 @@ public class Barrack extends ProductionBuilding{
 
 	@Override
 	public int removeProduction() {
-		// TODO Auto-generated method stub
+		if(this.getIsProducing() == true) {
+			System.out.println("Suppression prod de infantry, cout : " + this.infantry.getCost());
+			this.getElementCount().remove(this.getElementCount().size() - 1);
+			if(this.getElementCount().isEmpty()) {
+				this.setIsProducing(false);
+				this.setTimer(0);
+			}
+			return this.infantry.getCost();
+		}
 		return 0;
 	}
 }

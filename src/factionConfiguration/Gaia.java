@@ -93,6 +93,7 @@ public class Gaia extends Race
 	
 	public void initUpgrades()
 	{
-		
+		this.getUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(1, "better armor", 5, EntityConfiguration.ARMOR_UPGRADE, 30, 25));
+		this.getUpgrades().put(EntityConfiguration.DAMAGE_UPGRADE, new ForUpgrade(1, "better sword", 5, EntityConfiguration.DAMAGE_UPGRADE, 30, 25));
 	}
 }

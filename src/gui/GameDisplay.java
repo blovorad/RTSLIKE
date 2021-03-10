@@ -415,7 +415,6 @@ public class GameDisplay extends JPanel
 		buttonArchery.setFocusable(false);
 		
 		JButton buttonTower = new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER));
-		buttonTower.setFocusable(false);
 		
 		descriptionPanel.add(new JLabel("Liste des constructions"));
 		descriptionPanel.add(new JLabel());
@@ -488,8 +487,21 @@ public class GameDisplay extends JPanel
 				descriptionPanel.add(productionCountLabel);
 				descriptionPanel.add(new JLabel(building.getDescription()));
 			}
+			else if(building.getId() == EntityConfiguration.HQ) {
+				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(building.getProductionId()).getDescription();
+				JButton button = new JButton(new CreateUnit("" + name, building.getProductionId(), building ));
+				button.setFocusable(false);
+				JButton button1 = new JButton(new UndoProduction("retirer production", building));
+				button1.setFocusable(false);
+				
+				descriptionPanel.add(button1);
+				descriptionPanel.add(productionCountLabel);
+				descriptionPanel.add(button);
+				descriptionPanel.add(new JLabel(building.getDescription()));
+			}
 			else {
-				JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
+				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronFighters().get(building.getProductionId()).getDescription();
+				JButton button = new JButton(new CreateUnit("" + name, building.getProductionId(), building ));
 				button.setFocusable(false);
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
 				button1.setFocusable(false);

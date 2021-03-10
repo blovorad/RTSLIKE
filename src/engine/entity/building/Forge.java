@@ -1,5 +1,6 @@
 package engine.entity.building;
 
+import java.awt.image.BufferedImage;
 import java.util.AbstractMap;
 
 import engine.Position;
@@ -8,8 +9,8 @@ import factionConfiguration.ForUpgrade;
 
 public class Forge extends ProductionBuilding{
 	
-	public Forge(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades) {
-		super(position, id, description, hpMax, faction, tile, upgrades);
+	public Forge(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture) {
+		super(position, id, description, hpMax, faction, tile, upgrades, texture);
 		this.setProductionId(1);
 	}
 

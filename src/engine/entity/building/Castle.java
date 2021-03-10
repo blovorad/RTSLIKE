@@ -1,5 +1,7 @@
 package engine.entity.building;
 
+import java.awt.image.BufferedImage;
+
 import configuration.EntityConfiguration;
 import engine.Position;
 import engine.map.Tile;
@@ -9,8 +11,8 @@ public class Castle extends ProductionBuilding{
 
 	private ForFighter special;
 	
-	public Castle(Position position, ForFighter special, int id, String description, int hpMax, int faction, Tile tile) {
-		super(position, id, description, hpMax, faction, tile, null);
+	public Castle(Position position, ForFighter special, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture) {
+		super(position, id, description, hpMax, faction, tile, null, texture);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
 		/*this.setCanAttak(false);
@@ -49,7 +51,15 @@ public class Castle extends ProductionBuilding{
 
 	@Override
 	public int removeProduction() {
-		// TODO Auto-generated method stub
+		if(this.getIsProducing() == true) {
+			System.out.println("Suppression prod de special, cout : " + this.special.getCost());
+			this.getElementCount().remove(this.getElementCount().size() - 1);
+			if(this.getElementCount().isEmpty()) {
+				this.setIsProducing(false);
+				this.setTimer(0);
+			}
+			return this.special.getCost();
+		}
 		return 0;
 	}
 	
