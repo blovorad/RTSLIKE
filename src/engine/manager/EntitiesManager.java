@@ -127,7 +127,7 @@ public class EntitiesManager
 						ForWorker patron = factionManager.getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(id);
 						createWorker(id, building.getFaction(), patron, new Position(building.getPosition().getX() - 50, building.getPosition().getY()- 50), building.getDestination());
 					}
-					else if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE) {
+					else if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {
 						createUpgrade(id, building.getFaction());
 					}
 					System.out.println("producing unit");
@@ -266,13 +266,13 @@ public class EntitiesManager
 	}
 	
 	public void createUpgrade(int id, int faction) {
-		//TODO simplifier les update de list avec un fonction
-		ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getForgeUpgrades().get(id);
-		if(id == EntityConfiguration.AGE_UPGRADE) {
+		if(id == EntityConfiguration.AGE_UPGRADE || id == EntityConfiguration.AGE_UPGRADE_2) {
 			System.out.println("upgrade age !");
 			factionManager.getFactions().get(faction).setAge(factionManager.getFactions().get(faction).getAge() + 1);
+			factionManager.getFactions().get(faction).getRace().getHQUpgrades().remove(id);
 		}
 		else {
+			ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getForgeUpgrades().get(id);
 			if(id== EntityConfiguration.ARMOR_UPGRADE) {
 				System.out.println("upgrade armure !");
 				for(Fighter fighter : fighters) {
@@ -320,6 +320,7 @@ public class EntitiesManager
 				}
 			}
 			factionManager.getFactions().get(faction).getRace().getForgeUpgrades().remove(id); //supprime l upgrade faite
+			
 			for(ProductionBuilding prodBuilding : prodBuildings) {
 				if(prodBuilding.getFaction() == faction) {
 					prodBuilding.getUpgrades().remove(id); //supprime dans l affichage
@@ -361,13 +362,13 @@ public class EntitiesManager
 		{
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.INFANTRY);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Barrack(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
+			bprod = new Barrack(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.BARRACK), patronBuilding.getSightRange());
 		}
 		else if(id == EntityConfiguration.ARCHERY)
 		{
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.ARCHER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Archery(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
+			bprod = new Archery(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.ARCHER), patronBuilding.getSightRange());
 		}
 		else if(id == EntityConfiguration.HQ)
 		{
