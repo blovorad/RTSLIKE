@@ -115,7 +115,7 @@ public class EntitiesManager
 		}
 		
 		for(ProductionBuilding building : prodBuildings) {
-			building.update(factionManager.getFactions().get(building.getFaction()).getPopulationCount(), factionManager.getFactions().get(building.getFaction()).getMaxPopulation());
+			building.update(factionManager.getFactions().get(building.getFaction()).getPopulationCount(), factionManager.getFactions().get(building.getFaction()).getMaxPopulation(), prodBuildings);
 			if(building.getIsProducing()) {
 				if(building.getTimer() <= 0) {
 					int id = building.produce();

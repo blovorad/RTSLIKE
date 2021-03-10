@@ -5,11 +5,10 @@ public class ForAttackBuilding extends Patron{
 	private int attackDamage;
 	private int attackRange;
 	private int attackSpeed;
-	// TODO ajout cost et modifier constructeur
 	
-	public ForAttackBuilding(int hp, int sightRange, int attackDamage, int attackRange, int attackSpeed, int age, String description, int hpMax)
+	public ForAttackBuilding(int hp, int sightRange, int attackDamage, int attackRange, int attackSpeed, int age, String description, int hpMax, int cost)
 	{
-		super(hp, age, description, hpMax, 0, sightRange);
+		super(hp, age, description, hpMax, sightRange, cost);
 		this.attackRange = attackRange;
 		this.attackDamage = attackDamage;
 		this.attackSpeed = attackSpeed;

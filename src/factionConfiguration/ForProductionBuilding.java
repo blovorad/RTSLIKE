@@ -5,11 +5,10 @@ import java.util.AbstractMap;
 public class ForProductionBuilding extends Patron{
 	
 	private AbstractMap<Integer, ForUpgrade> upgrades;
-	// TODO ajout cost et modifier constructeur
 	
-	public ForProductionBuilding(int hp, int age, AbstractMap<Integer, ForUpgrade> upgrades, String description, int hpMax, int sightRange)
+	public ForProductionBuilding(int hp, int age, AbstractMap<Integer, ForUpgrade> upgrades, String description, int hpMax, int sightRange, int cost)
 	{
-		super(hp, age, description, hpMax, 0, sightRange);
+		super(hp, age, description, hpMax, sightRange, cost);
 		this.upgrades = upgrades;
 	}
 

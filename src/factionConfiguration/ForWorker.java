@@ -14,11 +14,10 @@ public class ForWorker extends Patron
 	private int attackRange;
 	private int repair;
 	private int repairSpeed;
-	// TODO ajout cost et modifier constructeur
 	
-	public ForWorker(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int ressourceMax, int harvest, int repair, int harvestSpeed, int repairSpeed)
+	public ForWorker(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int ressourceMax, int harvest, int repair, int harvestSpeed, int repairSpeed, int cost)
 	{
-		super(hp, age, description, hpMax, 50, sightRange);
+		super(hp, age, description, hpMax, cost, sightRange);
 		
 		this.range = range;
 		this.damage = damage;

@@ -9,11 +9,10 @@ public class ForFighter extends Patron
 	private int timeToBuild;
 	private int attackSpeed;
 	private int attackRange;
-	// TODO ajout cost et modifier constructeur
 	
-	public ForFighter(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax)
+	public ForFighter(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int cost)
 	{
-		super(hp, age, description, hpMax, 500, sightRange);
+		super(hp, age, description, hpMax, cost, sightRange);
 		
 		this.range = range;
 		this.damage = damage;

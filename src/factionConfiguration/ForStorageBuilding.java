@@ -3,11 +3,10 @@ package factionConfiguration;
 public class ForStorageBuilding extends Patron{
 	
 	private int ressources;
-	// TODO ajout cost et modifier constructeur
 	
-	public ForStorageBuilding(int hp, int age, String description, int hpMax, int sightRange)
+	public ForStorageBuilding(int hp, int age, String description, int hpMax, int sightRange, int cost)
 	{
-		super(hp, age, description, hpMax, 0, sightRange);
+		super(hp, age, description, hpMax, sightRange, cost);
 	}
 
 	public int getRessources() {

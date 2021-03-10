@@ -138,6 +138,7 @@ public class GameDisplay extends JPanel
 	private JLabel moneyLabel;
 	private JLabel ageLabel;
 	private JLabel timeLabel;
+	private JLabel productionCountLabel;
 	private GraphicsManager graphicsManager;
 	
 	private float time;
@@ -469,9 +470,10 @@ public class GameDisplay extends JPanel
 		descriptionPanel.removeAll();
 		
 		descriptionPanel.setLayout(new GridLayout(2, 2));
-		
+		productionCountLabel = new JLabel();
 		if(building.getProductionId() > -1)
 		{
+			productionCountLabel.setText(("file d'attente : " + building.getElementCount().size()));
 			if(building.getId() == EntityConfiguration.FORGE) {
 				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
 				descriptionPanel.setLayout(new GridLayout(upgrades.size() + 2, 1));
@@ -483,7 +485,7 @@ public class GameDisplay extends JPanel
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
 				button1.setFocusable(false);
 				descriptionPanel.add(button1);
-				descriptionPanel.add(new JLabel("file d'attente : " + building.getElementCount().size()));
+				descriptionPanel.add(productionCountLabel);
 				descriptionPanel.add(new JLabel(building.getDescription()));
 			}
 			else {
@@ -491,8 +493,9 @@ public class GameDisplay extends JPanel
 				button.setFocusable(false);
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
 				button1.setFocusable(false);
+				
 				descriptionPanel.add(button1);
-				descriptionPanel.add(new JLabel("file d'attente : " + building.getElementCount().size()));
+				descriptionPanel.add(productionCountLabel);
 				descriptionPanel.add(button);
 				descriptionPanel.add(new JLabel(building.getDescription()));
 			}
@@ -651,6 +654,11 @@ public class GameDisplay extends JPanel
 			this.timeLabel.setText("TEMPS:" + (int)time);
 			this.populationLabel.setText("POPULATION:" + populationCount + " / " + maxPopulation);
 			this.ageLabel.setText("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
+			
+			if(this.manager.getSelectedProdBuilding() != null) {
+				ProductionBuilding prod = manager.getSelectedProdBuilding();
+				productionCountLabel.setText(("file d'attente : " + prod.getElementCount().size()));
+			}
 		}
 		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {
 			audioManager.manageVolume(this.sonSlider.getValue());
