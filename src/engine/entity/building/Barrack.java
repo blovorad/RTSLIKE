@@ -32,12 +32,19 @@ public class Barrack extends ProductionBuilding{
 	}
 
 	@Override
-	public void startProd(int id) {
-		this.getElementCount().add(id);
-		if(this.getIsProducing() == false) {
-			this.setTimer(infantry.getTimeToBuild());
-			this.setIsProducing(true);
+	public int startProd(int id, int moneyCount) {
+		System.out.println("Start prod de infantry, cout : " + this.infantry.getCost() + ", gold : " + moneyCount);
+		if(this.infantry.getCost() <= moneyCount) {
+			this.getElementCount().add(id);
+			if(this.getIsProducing() == false) {
+				this.setTimer(infantry.getTimeToBuild());
+				this.setIsProducing(true);
+			}
+			return infantry.getCost();
+		}
+		else {
+			System.out.println("Pas assez de gold !");
+			return 0;
 		}
 	}
-	
 }

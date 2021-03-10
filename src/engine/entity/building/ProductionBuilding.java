@@ -32,8 +32,8 @@ public abstract class ProductionBuilding extends Entity{
 	
 	public void update(int moneyCount) {
 		super.update();
-		if(timer > 0)
-		{
+		
+		if(timer > 0) {
 			timer--;
 			if(this.getProductionId() == EntityConfiguration.INFANTRY) {
 				System.out.println("updating infantry production time remaning : " + timer);
@@ -57,10 +57,11 @@ public abstract class ProductionBuilding extends Entity{
 				System.out.println("Invalid id");
 			}
 		}
+		
 	}
 	
 	public abstract int produce();
-	public abstract void startProd(int id);
+	public abstract int startProd(int id, int moneyCount);
 
 	public List<Integer> getElementCount() {
 		return elementCount;

@@ -38,12 +38,13 @@ public class Castle extends ProductionBuilding{
 	}
 
 	@Override
-	public void startProd(int id) {
+	public int startProd(int id, int moneyCount) {
 		this.getElementCount().add(id);
 		if(this.getIsProducing() == false) {
 			this.setTimer(special.getTimeToBuild());
 			this.setIsProducing(true);
 		}
+		return 0;
 	}
 	
 }

@@ -727,7 +727,8 @@ public class GameDisplay extends JPanel
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			prodBuilding.startProd(id);
+			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
+			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money - prodBuilding.startProd(id, money)); 
 		}
 	}
 	

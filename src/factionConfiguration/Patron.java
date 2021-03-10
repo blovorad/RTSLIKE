@@ -6,13 +6,15 @@ public abstract class Patron
 	private int age;
 	private int hpMax;
 	private String description;
+	private int cost;
 	
-	public Patron(int hp, int age, String description, int hpMax)
+	public Patron(int hp, int age, String description, int hpMax, int cost)
 	{
 		this.hp = hp;
 		this.age = age;
 		this.description = description;
 		this.setHpMax(hpMax);
+		this.setCost(cost);
 	}
 	
 	public int getHp() 
@@ -49,5 +51,13 @@ public abstract class Patron
 
 	public void setHpMax(int hpMax) {
 		this.hpMax = hpMax;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 }
