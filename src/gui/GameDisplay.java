@@ -491,6 +491,7 @@ public class GameDisplay extends JPanel
 				button.setFocusable(false);
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
 				button1.setFocusable(false);
+				
 				descriptionPanel.add(button1);
 				descriptionPanel.add(new JLabel("file d'attente : " + building.getElementCount().size()));
 				descriptionPanel.add(button);

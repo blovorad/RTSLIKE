@@ -9,13 +9,14 @@ public abstract class Patron
 	private int cost;
 	private int sightRange;
 	
-	public Patron(int hp, int age, String description, int hpMax, int cost, int sightRange)
+	public Patron(int hp, int age, String description, int hpMax, int sightRange, int cost)
 	{
 		this.hp = hp;
 		this.age = age;
 		this.description = description;
 		this.setHpMax(hpMax);
 		this.setCost(cost);
+		this.sightRange = sightRange;
 	}
 	
 	public int getHp() 
@@ -60,5 +61,13 @@ public abstract class Patron
 
 	public void setCost(int cost) {
 		this.cost = cost;
+	}
+
+	public int getSightRange() {
+		return sightRange;
+	}
+
+	public void setSightRange(int sightRange) {
+		this.sightRange = sightRange;
 	}
 }

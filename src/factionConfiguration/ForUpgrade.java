@@ -7,8 +7,9 @@ public class ForUpgrade {
 	private int id;
 	private int effect;
 	private int timeToProduce;
+	private int cost;
 	
-	public ForUpgrade(int age, String description, int effect, int id, int timeToProduce) {
+	public ForUpgrade(int age, String description, int effect, int id, int timeToProduce, int cost) {
 		this.setAge(age);
 		this.id = id;
 		this.effect = effect;
@@ -54,5 +55,13 @@ public class ForUpgrade {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 }
