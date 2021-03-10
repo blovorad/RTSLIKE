@@ -268,9 +268,10 @@ public class EntitiesManager
 	public void createUpgrade(int id, int faction) {
 		//TODO simplifier les update de list avec un fonction
 		ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getForgeUpgrades().get(id);
-		if(id == EntityConfiguration.AGE_UPGRADE) {
+		if(id >= EntityConfiguration.AGE_UPGRADE) {
 			System.out.println("upgrade age !");
 			factionManager.getFactions().get(faction).setAge(factionManager.getFactions().get(faction).getAge() + 1);
+			factionManager.getFactions().get(faction).getRace().getHQUpgrades().remove(id);
 		}
 		else {
 			if(id== EntityConfiguration.ARMOR_UPGRADE) {
@@ -320,6 +321,7 @@ public class EntitiesManager
 				}
 			}
 			factionManager.getFactions().get(faction).getRace().getForgeUpgrades().remove(id); //supprime l upgrade faite
+			
 			for(ProductionBuilding prodBuilding : prodBuildings) {
 				if(prodBuilding.getFaction() == faction) {
 					prodBuilding.getUpgrades().remove(id); //supprime dans l affichage

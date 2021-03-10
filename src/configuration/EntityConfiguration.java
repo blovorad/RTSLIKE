@@ -36,6 +36,7 @@ public class EntityConfiguration {
 	public final static int ATTACK_RANGE_UPGRADE = 21;
 	public final static int SIGHT_RANGE_UPGRADE = 22;
 	public final static int AGE_UPGRADE = 23;
+	public final static int AGE_UPGRADE_2 = 24;
 	
 	public final static int MAX_TIME_HIT_ANIMATION = 10;
 }
