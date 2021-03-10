@@ -30,7 +30,7 @@ public abstract class ProductionBuilding extends Entity{
 		}
 	}
 	
-	public void update(int popCount, int maxPop) {
+	public void update(int popCount, int maxPop, List<ProductionBuilding>buildings) {
 		super.update();
 		
 		if(timer > 0) {
