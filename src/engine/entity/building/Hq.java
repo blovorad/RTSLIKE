@@ -12,8 +12,8 @@ public class Hq extends ProductionBuilding{
 
 	private ForWorker worker;
 	
-	public Hq(Position position, ForWorker worker, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades) {
-		super(position, id, description, hpMax, faction, tile, upgrades);
+	public Hq(Position position, ForWorker worker, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, int sightRange) {
+		super(position, id, description, hpMax, faction, tile, upgrades, sightRange);
 		this.worker = worker;
 		this.setProductionId(EntityConfiguration.WORKER);
 	}

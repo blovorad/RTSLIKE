@@ -9,8 +9,8 @@ public class Stable extends ProductionBuilding{
 	
 	private ForFighter cavalry;
 	
-	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax, int faction, Tile tile) {
-		super(position, id, description, hpMax, faction, tile, null);
+	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax, int faction, Tile tile, int sightRange) {
+		super(position, id, description, hpMax, faction, tile, null, sightRange);
 		this.cavalry = cavalry;
 		this.setProductionId(EntityConfiguration.CAVALRY);
 	}
