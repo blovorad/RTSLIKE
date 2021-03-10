@@ -1,15 +1,12 @@
 package engine.entity.building;
 
 import java.util.AbstractMap;
-import java.util.List;
 
 import engine.Position;
 import engine.map.Tile;
 import factionConfiguration.ForUpgrade;
 
 public class Forge extends ProductionBuilding{
-	
-	
 	
 	public Forge(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades) {
 		super(position, id, description, hpMax, faction, tile, upgrades);
@@ -40,6 +37,12 @@ public class Forge extends ProductionBuilding{
 			this.setTimer(getUpgrades().get(id).getTimeToProduce());
 			this.setIsProducing(true);
 		}
+		return 0;
+	}
+
+	@Override
+	public int removeProduction() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 	

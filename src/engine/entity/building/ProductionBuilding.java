@@ -30,7 +30,7 @@ public abstract class ProductionBuilding extends Entity{
 		}
 	}
 	
-	public void update(int moneyCount) {
+	public void update(int popCount, int maxPop) {
 		super.update();
 		
 		if(timer > 0) {
@@ -62,6 +62,7 @@ public abstract class ProductionBuilding extends Entity{
 	
 	public abstract int produce();
 	public abstract int startProd(int id, int moneyCount);
+	public abstract int removeProduction();
 
 	public List<Integer> getElementCount() {
 		return elementCount;

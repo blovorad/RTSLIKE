@@ -166,7 +166,8 @@ public class PaintStrategy
 			}
 		}
 		else if(entity.getId() == EntityConfiguration.RESSOURCE){
-			graphics.setColor(Color.yellow);
+			//graphics.setColor(Color.yellow);
+			//graphics.drawImage(graphics, entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 		}
 		graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);	
 		graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);

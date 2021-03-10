@@ -4,9 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -32,8 +30,8 @@ public class GraphicsManager {
 			graphicsTile.put(MapConfiguration.ROCK, ImageIO.read(new File("src/graphics/stone_1.png")));
 			graphicsTile.put(MapConfiguration.WOOD, ImageIO.read(new File("src/graphics/plant_3.png")));
 			graphicsTile.put(MapConfiguration.WATER, ImageIO.read(new File("src/graphics/water_1.png")));
-			graphicsEntity.put(EntityConfiguration.RESSOURCE, ImageIO.read(new File("src/graphics/gold_1.png")));
 			
+			graphicsEntity.put(EntityConfiguration.RESSOURCE, ImageIO.read(new File("src/graphics/gold_1.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

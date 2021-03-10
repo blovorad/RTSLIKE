@@ -7,8 +7,9 @@ public abstract class Patron
 	private int hpMax;
 	private String description;
 	private int cost;
+	private int sightRange;
 	
-	public Patron(int hp, int age, String description, int hpMax, int cost)
+	public Patron(int hp, int age, String description, int hpMax, int cost, int sightRange)
 	{
 		this.hp = hp;
 		this.age = age;

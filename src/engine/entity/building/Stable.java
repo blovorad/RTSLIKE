@@ -46,4 +46,10 @@ public class Stable extends ProductionBuilding{
 		return 0;
 	}
 
+	@Override
+	public int removeProduction() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

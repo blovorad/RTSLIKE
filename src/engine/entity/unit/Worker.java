@@ -1,6 +1,5 @@
 package engine.entity.unit;
 
-import java.awt.image.BufferedImage;
 
 import engine.Position;
 
