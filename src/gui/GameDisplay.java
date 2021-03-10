@@ -489,6 +489,13 @@ public class GameDisplay extends JPanel
 			}
 			else if(building.getId() == EntityConfiguration.HQ) {
 				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(building.getProductionId()).getDescription();
+				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
+				descriptionPanel.setLayout(new GridLayout(10, 1));
+				for(ForUpgrade upgrade : upgrades.values()) {
+					JButton button = new JButton(new CreateUnit("" + upgrade.getDescription(), upgrade.getId(), building ));
+					button.setFocusable(false);
+					descriptionPanel.add(button);
+				}
 				JButton button = new JButton(new CreateUnit("" + name, building.getProductionId(), building ));
 				button.setFocusable(false);
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));

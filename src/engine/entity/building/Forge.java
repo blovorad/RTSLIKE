@@ -9,8 +9,8 @@ import factionConfiguration.ForUpgrade;
 
 public class Forge extends ProductionBuilding{
 	
-	public Forge(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture) {
-		super(position, id, description, hpMax, faction, tile, upgrades, texture);
+	public Forge(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture, int sightRange) {
+		super(position, id, description, hpMax, faction, tile, upgrades, texture, sightRange);
 		this.setProductionId(1);
 	}
 

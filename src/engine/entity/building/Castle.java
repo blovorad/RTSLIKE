@@ -11,8 +11,8 @@ public class Castle extends ProductionBuilding{
 
 	private ForFighter special;
 	
-	public Castle(Position position, ForFighter special, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture) {
-		super(position, id, description, hpMax, faction, tile, null, texture);
+	public Castle(Position position, ForFighter special, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture, int sightRange) {
+		super(position, id, description, hpMax, faction, tile, null, texture, sightRange);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
 		/*this.setCanAttak(false);

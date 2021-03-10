@@ -11,8 +11,8 @@ public class Archery extends ProductionBuilding{
 
 	private ForFighter archer;
 	
-	public Archery(Position position, ForFighter archer, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture) {
-		super(position, id, description, hpMax, faction, tile, null, texture);
+	public Archery(Position position, ForFighter archer, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture, int sightRange) {
+		super(position, id, description, hpMax, faction, tile, null, texture, sightRange);
 		this.archer = archer;
 		this.setProductionId(EntityConfiguration.ARCHER);
 	}

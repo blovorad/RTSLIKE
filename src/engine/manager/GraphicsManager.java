@@ -34,7 +34,7 @@ public class GraphicsManager {
 			graphicsEntity.put(EntityConfiguration.RESSOURCE, ImageIO.read(new File("src/graphics/gold_1.png")));
 			graphicsEntity.put(EntityConfiguration.FORGE, ImageIO.read(new File("src/graphics/forge.png")));
 			graphicsEntity.put(EntityConfiguration.STORAGE, ImageIO.read(new File("src/graphics/storage.png")));
-			graphicsEntity.put(EntityConfiguration.STABLE, ImageIO.read(new File("src/graphics/stable.png")));
+			graphicsEntity.put(EntityConfiguration.STABLE, ImageIO.read(new File("src/graphics/castle.png")));
 			graphicsEntity.put(EntityConfiguration.CASTLE, ImageIO.read(new File("src/graphics/castle.png")));
 		} catch (IOException e) {
 			e.printStackTrace();

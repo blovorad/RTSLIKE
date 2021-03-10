@@ -21,8 +21,8 @@ public abstract class ProductionBuilding extends Entity{
 	private Tile tile;
 	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
-	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture) {
-		super(100, hpMax, description , position, id, faction, texture);
+	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture, int sightRange) {
+		super(100, hpMax, description , position, id, faction, texture, sightRange);
 		elementCount = new ArrayList<Integer>();
 		this.setTile(tile);
 		this.setUpgrades(upgrades);
@@ -33,8 +33,6 @@ public abstract class ProductionBuilding extends Entity{
 	
 	public void update(int popCount, int maxPop) {
 		super.update();
-		
-		
 		if(this.getId() == EntityConfiguration.FORGE) {
 			timer--;
 			if(this.getProductionId() == EntityConfiguration.ARMOR_UPGRADE) {

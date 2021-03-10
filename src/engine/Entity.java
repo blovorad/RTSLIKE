@@ -17,8 +17,9 @@ public class Entity
 	private boolean isHit;
 	private int timerHit;
 	private BufferedImage texture;
+	private int sightRange;
 	
-	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, BufferedImage texture)
+	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, BufferedImage texture, int sightRange)
 	{
 		this.hp = hp;
 		this.hpMax = hpMax;
@@ -29,6 +30,7 @@ public class Entity
 		this.destination = null;
 		this.setFaction(faction);
 		this.texture = texture;
+		this.setSightRange(sightRange);
 	}
 	
 	public Entity(int hp, String description, Position position, Position destination, int id, int faction)
@@ -155,5 +157,13 @@ public class Entity
 
 	public void setTexture(BufferedImage texture) {
 		this.texture = texture;
+	}
+
+	public int getSightRange() {
+		return sightRange;
+	}
+
+	public void setSightRange(int sightRange) {
+		this.sightRange = sightRange;
 	}
 }
