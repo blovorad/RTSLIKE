@@ -1,7 +1,6 @@
 package engine.entity.building;
 
 import java.util.AbstractMap;
-import java.util.List;
 
 import configuration.EntityConfiguration;
 import engine.Position;
@@ -54,6 +53,12 @@ public class Hq extends ProductionBuilding{
 			System.out.println("Pas assez de gold !");
 			return 0;
 		}
+	}
+
+	@Override
+	public int removeProduction() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

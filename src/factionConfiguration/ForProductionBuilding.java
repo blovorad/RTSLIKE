@@ -1,16 +1,15 @@
 package factionConfiguration;
 
 import java.util.AbstractMap;
-import java.util.List;
 
 public class ForProductionBuilding extends Patron{
 	
 	private AbstractMap<Integer, ForUpgrade> upgrades;
 	// TODO ajout cost et modifier constructeur
 	
-	public ForProductionBuilding(int hp, int age, AbstractMap<Integer, ForUpgrade> upgrades, String description, int hpMax)
+	public ForProductionBuilding(int hp, int age, AbstractMap<Integer, ForUpgrade> upgrades, String description, int hpMax, int sightRange)
 	{
-		super(hp, age, description, hpMax, 0);
+		super(hp, age, description, hpMax, 0, sightRange);
 		this.upgrades = upgrades;
 	}
 

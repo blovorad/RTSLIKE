@@ -3,17 +3,11 @@ package gui;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ButtonGroup;
@@ -474,23 +468,31 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 1));
+		descriptionPanel.setLayout(new GridLayout(2, 2));
 		
 		if(building.getProductionId() > -1)
 		{
 			if(building.getId() == EntityConfiguration.FORGE) {
 				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
-				descriptionPanel.setLayout(new GridLayout(upgrades.size(), 1));
+				descriptionPanel.setLayout(new GridLayout(upgrades.size() + 2, 1));
 				for(ForUpgrade upgrade : upgrades.values()) {
 					JButton button = new JButton(new CreateUnit("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
 					descriptionPanel.add(button);
 				}
+				JButton button1 = new JButton(new UndoProduction("retirer production", building));
+				button1.setFocusable(false);
+				descriptionPanel.add(button1);
+				descriptionPanel.add(new JLabel("file d'attente : " + building.getElementCount().size()));
 				descriptionPanel.add(new JLabel(building.getDescription()));
 			}
 			else {
 				JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
 				button.setFocusable(false);
+				JButton button1 = new JButton(new UndoProduction("retirer production", building));
+				button1.setFocusable(false);
+				descriptionPanel.add(button1);
+				descriptionPanel.add(new JLabel("file d'attente : " + building.getElementCount().size()));
 				descriptionPanel.add(button);
 				descriptionPanel.add(new JLabel(building.getDescription()));
 			}
@@ -729,6 +731,22 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) {
 			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
 			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money - prodBuilding.startProd(id, money)); 
+		}
+	}
+	
+	private class UndoProduction extends AbstractAction{
+		private static final long serialVersionUID = 1L;
+		
+		private ProductionBuilding prodBuilding;
+		
+		public UndoProduction(String name, ProductionBuilding building) {
+			super(name);
+			this.prodBuilding = building;
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
+			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money + prodBuilding.removeProduction());
 		}
 	}
 	

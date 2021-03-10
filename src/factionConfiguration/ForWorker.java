@@ -10,7 +10,6 @@ public class ForWorker extends Patron
 	private int ressourceMax;
 	private int harvest;
 	private int harvestSpeed;
-	private int sightRange;
 	private int attackSpeed;
 	private int attackRange;
 	private int repair;
@@ -19,14 +18,13 @@ public class ForWorker extends Patron
 	
 	public ForWorker(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int ressourceMax, int harvest, int repair, int harvestSpeed, int repairSpeed)
 	{
-		super(hp, age, description, hpMax, 50);
+		super(hp, age, description, hpMax, 50, sightRange);
 		
 		this.range = range;
 		this.damage = damage;
 		this.armor = armor;
 		this.maxSpeed = maxSpeed;
 		this.setTimeToBuild(timeToBuild);
-		this.setSightRange(sightRange);
 		this.setRessourceMax(ressourceMax);
 		this.setHarvest(harvest);
 		this.repair = repair;
@@ -98,14 +96,6 @@ public class ForWorker extends Patron
 
 	public void setHarvest(int harvest) {
 		this.harvest = harvest;
-	}
-
-	public int getSightRange() {
-		return sightRange;
-	}
-
-	public void setSightRange(int sightRange) {
-		this.sightRange = sightRange;
 	}
 
 	public int getAttackSpeed() {

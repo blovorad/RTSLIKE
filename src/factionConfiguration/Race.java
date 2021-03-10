@@ -1,17 +1,10 @@
 package factionConfiguration;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public abstract class Race 
 {
-	/*private ForFighter cavalry;
-	private ForFighter infantry;
-	private ForFighter archer;
-	private ForFighter special;
-	private ForWorker worker;*/
 	private String name;
 	private AbstractMap<Integer, ForFighter>patronFighters;
 	private AbstractMap<Integer, ForWorker>patronWorkers;
@@ -31,36 +24,6 @@ public abstract class Race
 		
 	}
 	
-	/*public ForFighter getCavalry() 
-	{
-		return cavalry;
-	}
-	
-	public void setCavalry(ForFighter cavalry) 
-	{
-		this.cavalry = cavalry;
-	}
-	
-	public ForFighter getInfantry() 
-	{
-		return infantry;
-	}
-	
-	public void setInfantry(ForFighter infantry) 
-	{
-		this.infantry = infantry;
-	}
-	
-	public ForFighter getArcher() 
-	{
-		return archer;
-	}
-	
-	public void setArcher(ForFighter archer) 
-	{
-		this.archer = archer;
-	}*/
-	
 	public void setName(String name)
 	{
 		this.name = name;
@@ -76,14 +39,6 @@ public abstract class Race
 		return "" + name;
 	}
 
-	/*public ForFighter getSpecial() {
-		return special;
-	}
-
-	public void setSpecial(ForFighter special) {
-		this.special = special;
-	}*/
-
 	public AbstractMap<Integer, ForUpgrade> getUpgrades() {
 		return upgrades;
 	}
@@ -91,14 +46,6 @@ public abstract class Race
 	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) {
 		this.upgrades = upgrades;
 	}
-
-	/*public ForWorker getWorker() {
-		return worker;
-	}
-
-	public void setWorker(ForWorker worker) {
-		this.worker = worker;
-	}*/
 
 	public AbstractMap<Integer, ForProductionBuilding> getProductionBuildings() {
 		return productionBuildings;
