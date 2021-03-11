@@ -13,32 +13,26 @@ import engine.Faction;
  *
  */
 
-public class FactionManager 
-{
+public class FactionManager {
 	private AbstractMap<Integer, Faction> factions;
 	
-	public FactionManager() 
-	{
+	public FactionManager() {
 		factions = new HashMap<Integer, Faction>();
 	}
 
-	public AbstractMap<Integer, Faction> getFactions() 
-	{
+	public AbstractMap<Integer, Faction> getFactions() {
 		return factions;
 	}
 
-	public void setFactions(AbstractMap<Integer, Faction> factions) 
-	{
+	public void setFactions(AbstractMap<Integer, Faction> factions) {
 		this.factions = factions;
 	}
 	
-	public void addFaction(int id, Faction faction)
-	{
+	public void addFaction(int id, Faction faction){
 		factions.put(id, faction);
 	}
 
-	public void clean() 
-	{
+	public void clean() {
 		factions.clear();
 	}
 }

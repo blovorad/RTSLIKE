@@ -15,8 +15,7 @@ import engine.manager.GraphicsManager;
  *
  */
 
-public class Map 
-{
+public class Map {
 	private Tile[][] tiles;
 	
 	private int columnCount;
@@ -24,8 +23,7 @@ public class Map
 	
 	private List<Tile> goldTiles;
 	
-	public Map(int line, int column, int id, String fileName, GraphicsManager graphicsManager)
-	{
+	public Map(int line, int column, int id, String fileName, GraphicsManager graphicsManager){
 		this.columnCount = column;
 		this.lineCount = line;
 		this.setGoldTiles(new ArrayList<Tile>());
@@ -34,21 +32,16 @@ public class Map
 		
 		Scanner scan = null;
 		
-		try
-		{
+		try{
 			scan = new Scanner(new File(fileName));
 		}
-		catch(Exception e)
-		{
+		catch(Exception e){
 			e.printStackTrace();
 		}
 		
-		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) 
-		{
-			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) 
-			{
-				if(scan.hasNextInt() != true)
-				{
+		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
+			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
+				if(scan.hasNextInt() != true){
 					System.out.println("erreur format map invalide");
 					System.exit(1);
 				}
@@ -57,31 +50,26 @@ public class Map
 				Tile tile = new Tile(lineIndex, columnIndex, index, graphicsManager.getGraphicsTile(index));
 				tiles[columnIndex][lineIndex] = tile;
 				
-				if(index == MapConfiguration.GOLD)
-				{
+				if(index == MapConfiguration.GOLD){
 					goldTiles.add(tile);
 				}
 			}
 		}
 	}
 	
-	public Tile[][] getTiles()
-	{
+	public Tile[][] getTiles(){
 		return tiles;
 	}
 	
-	public int getLineCount()
-	{
+	public int getLineCount(){
 		return this.lineCount;
 	}
 	
-	public int getColumnCount()
-	{
+	public int getColumnCount(){
 		return this.columnCount;
 	}
 	
-	public Tile getTile(int line, int column)
-	{
+	public Tile getTile(int line, int column){
 		return this.tiles[line][column];
 	}
 
