@@ -111,7 +111,7 @@ public class PaintStrategy
 	}
 	
 	public void paintRectSelectionUnit(Unit unit, Graphics graphics, Camera camera){
-		int tileSize = GameConfiguration.TILE_SIZE;
+		int tileSize = EntityConfiguration.UNIT_SIZE;
 		
 		graphics.setColor(Color.white);
 		graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
@@ -125,9 +125,10 @@ public class PaintStrategy
 		graphics.drawRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	
-	public void paint(Entity entity, Graphics graphics, Camera camera)
+	public void paint(Entity entity, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
+		int unitSize = EntityConfiguration.UNIT_SIZE;
 		
 		if(entity.getId() >= 5 && entity.getId() <= 12){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
@@ -146,6 +147,7 @@ public class PaintStrategy
 					graphics.setColor(Color.orange);
 				}
 			}
+			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);
 		}
 		else if(entity.getId() >= EntityConfiguration.INFANTRY && entity.getId() <= EntityConfiguration.WORKER){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
@@ -164,12 +166,12 @@ public class PaintStrategy
 					graphics.setColor(new Color(145, 40, 59));
 				}
 			}
+			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize);
 		}
 		else if(entity.getId() == EntityConfiguration.RESSOURCE){
 			//graphics.setColor(Color.yellow);
-			//graphics.drawImage(graphics, entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
-		}
-		graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);	
+			graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		}	
 		graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 	}
 	
@@ -185,10 +187,10 @@ public class PaintStrategy
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
 				
-				//graphics.setColor(tile.getColor());
-				//graphics.fillRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
 				graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
 				graphics.drawImage(graphicsManager.getGraphicsTile(tile.getId()), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
+				graphics.setColor(Color.black);
+				graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
 			}
 		}
 	}
