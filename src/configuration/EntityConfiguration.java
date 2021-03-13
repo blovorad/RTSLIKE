@@ -8,6 +8,8 @@ package configuration;
 
 public class EntityConfiguration {
 	
+	public final static int UNIT_SIZE = 32;
+	
 	public final static int INFANTRY = 0;
 	public final static int ARCHER = 1;
 	public final static int CAVALRY = 2;

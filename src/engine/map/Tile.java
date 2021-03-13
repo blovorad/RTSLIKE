@@ -11,8 +11,7 @@ import configuration.MapConfiguration;
  *
  */
 
-public class Tile 
-{
+public class Tile {
 	private int line;
 	private int column;
 	private int id;
@@ -20,8 +19,7 @@ public class Tile
 	private Color color;
 	private BufferedImage texture;
 	
-	public Tile(int line, int column, int id, BufferedImage texture)
-	{
+	public Tile(int line, int column, int id, BufferedImage texture){
 		this.line = line;
 		this.column = column;
 		this.id = id;
@@ -30,23 +28,19 @@ public class Tile
 		this.setColor(MapConfiguration.getTileColor(this.id));
 	}
 	
-	public int getLine()
-	{
+	public int getLine(){
 		return this.line;
 	}
 	
-	public int getColumn()
-	{
+	public int getColumn(){
 		return this.column;
 	}
 	
-	public int getId()
-	{
+	public int getId(){
 		return this.id;
 	}
 	
-	public boolean isSolid()
-	{
+	public boolean isSolid(){
 		return this.solid;
 	}
 

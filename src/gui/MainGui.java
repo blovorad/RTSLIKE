@@ -210,7 +210,7 @@ public class MainGui extends JFrame implements Runnable
 			{
 				Position unitPosition = new Position(unit.getPosition().getX(),  unit.getPosition().getY());
 				
-				if(x > unitPosition.getX() && x < unitPosition.getX() + GameConfiguration.TILE_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + GameConfiguration.TILE_SIZE)
+				if(x > unitPosition.getX() && x < unitPosition.getX() + EntityConfiguration.UNIT_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + EntityConfiguration.UNIT_SIZE)
 				{
 					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
 						manager.addSelectedUnit(unit);
@@ -296,7 +296,7 @@ public class MainGui extends JFrame implements Runnable
 			List<Unit> listUnits = manager.getUnits();
 			for(Unit unit : listUnits)
 			{
-				if(Collision.collide(unit.getPosition(), rect, camera) == true)
+				if(Collision.collideUnit(unit.getPosition(), rect, camera) == true)
 				{
 					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
 						manager.addSelectedUnit(unit);

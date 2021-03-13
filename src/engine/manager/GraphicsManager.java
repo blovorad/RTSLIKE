@@ -38,7 +38,8 @@ public class GraphicsManager {
 			graphicsEntity.put(EntityConfiguration.CASTLE, ImageIO.read(new File("src/graphics/castle.png")));
 			graphicsEntity.put(EntityConfiguration.BARRACK, ImageIO.read(new File("src/graphics/barrack.png")));
 			graphicsEntity.put(EntityConfiguration.ARCHER, ImageIO.read(new File("src/graphics/archer.png")));
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

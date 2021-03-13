@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -21,7 +20,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 
-import configuration.BoutonConfiguration;
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Camera;
@@ -710,7 +708,7 @@ public class GameDisplay extends JPanel
 			
 			for(Entity entity : entities)
 			{
-				this.paintStrategy.paint(entity, g, camera);
+				this.paintStrategy.paint(entity, g, camera, graphicsManager);
 			}
 			
 			for(Unit unit : units) {
