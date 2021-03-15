@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
@@ -464,7 +465,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
-	public void setDescriptionPanelForBuilding(ProductionBuilding building)
+	public void setDescriptionPanelForBuilding(ProductionBuilding building, List<Integer> searchingUpgrades)
 	{
 		descriptionPanel.removeAll();
 		
@@ -475,9 +476,15 @@ public class GameDisplay extends JPanel
 			productionCountLabel.setText(("file d'attente : " + building.getElementCount().size()));
 			if(building.getId() == EntityConfiguration.FORGE) {
 				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
+				for(Integer id : searchingUpgrades) {
+					if(upgrades.containsKey(id)) {
+						upgrades.remove(id);
+					}
+				}
+				
 				descriptionPanel.setLayout(new GridLayout(upgrades.size() + 2, 1));
 				for(ForUpgrade upgrade : upgrades.values()) {
-					JButton button = new JButton(new CreateUnit("" + upgrade.getDescription(), upgrade.getId(), building ));
+					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
 					descriptionPanel.add(button);
 				}
@@ -490,13 +497,19 @@ public class GameDisplay extends JPanel
 			else if(building.getId() == EntityConfiguration.HQ) {
 				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(building.getProductionId()).getDescription();
 				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
+				for(Integer id : searchingUpgrades) {
+					if(upgrades.containsKey(id)) {
+						upgrades.remove(id);
+					}
+				}
+				
 				descriptionPanel.setLayout(new GridLayout(10, 1));
 				for(ForUpgrade upgrade : upgrades.values()) {
-					JButton button = new JButton(new CreateUnit("" + upgrade.getDescription(), upgrade.getId(), building ));
+					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
 					descriptionPanel.add(button);
 				}
-				JButton button = new JButton(new CreateUnit("" + name, building.getProductionId(), building ));
+				JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
 				button.setFocusable(false);
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
 				button1.setFocusable(false);
@@ -508,7 +521,7 @@ public class GameDisplay extends JPanel
 			}
 			else {
 				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronFighters().get(building.getProductionId()).getDescription();
-				JButton button = new JButton(new CreateUnit("" + name, building.getProductionId(), building ));
+				JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
 				button.setFocusable(false);
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
 				button1.setFocusable(false);
@@ -740,14 +753,14 @@ public class GameDisplay extends JPanel
 		}
 	}
 	
-	private class CreateUnit extends AbstractAction
+	private class BuildingProduction extends AbstractAction
 	{
 		private static final long serialVersionUID = 1L;
 		
 		private int id;
 		private ProductionBuilding prodBuilding;
 		
-		public CreateUnit(String name, int id, ProductionBuilding building)
+		public BuildingProduction(String name, int id, ProductionBuilding building)
 		{
 			super(name);
 			this.id = id;
@@ -757,7 +770,8 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
-			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money - prodBuilding.startProd(id, money)); 
+			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money - prodBuilding.startProd(id, money));
+			setDescriptionPanelForBuilding(prodBuilding, manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades());
 		}
 	}
 	

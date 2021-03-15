@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
+import java.util.AbstractMap;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -30,6 +30,7 @@ import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import engine.math.Collision;
 import engine.math.SelectionRect;
+import factionConfiguration.ForUpgrade;
 
 /**
  * 
@@ -231,8 +232,9 @@ public class MainGui extends JFrame implements Runnable
 					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
 											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
 					{
+						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						manager.setSelectedProdBuilding(building);
-						dashboard.setDescriptionPanelForBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
 						noBuildingSelected = false;
 						break;
 					}
@@ -315,8 +317,9 @@ public class MainGui extends JFrame implements Runnable
 
 					if(Collision.collide(building.getPosition(), rect, camera))
 					{
+						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						manager.setSelectedProdBuilding(building);
-						dashboard.setDescriptionPanelForBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
 						noBuildingSelected = false;
 						break;
 					}

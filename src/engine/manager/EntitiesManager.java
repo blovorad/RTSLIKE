@@ -135,6 +135,8 @@ public class EntitiesManager
 			}
 			if(building.getHp() < 1) {
 				//System.out.println("We removing a building cause : " + building.getHp());
+				this.factionManager.getFactions().get(building.getFaction()).checkUpgrade(building.getElementCount());
+				building.remove();
 				removeProdBuildings.add(building);
 			}
 		}
