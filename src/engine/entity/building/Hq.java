@@ -2,6 +2,7 @@ package engine.entity.building;
 
 import java.awt.image.BufferedImage;
 import java.util.AbstractMap;
+import java.util.List;
 
 import configuration.EntityConfiguration;
 import engine.Position;
@@ -41,32 +42,72 @@ public class Hq extends ProductionBuilding{
 
 	@Override
 	public int startProd(int id, int moneyCount) {	
-		System.out.println("Start prod de worker, cout : " + this.worker.getCost() + ", gold : " + moneyCount);
-		if(this.worker.getCost() <= moneyCount) {
-			this.getElementCount().add(id);
-			if(this.getIsProducing() == false) {
-				this.setTimer(worker.getTimeToBuild());
-				this.setIsProducing(true);
+		if(id == EntityConfiguration.WORKER) {
+			System.out.println("Start prod de worker, cout : " + this.worker.getCost() + ", gold : " + moneyCount);
+			if(this.worker.getCost() <= moneyCount) {
+				this.getElementCount().add(id);
+				if(this.getIsProducing() == false) {
+					this.setTimer(worker.getTimeToBuild());
+					this.setIsProducing(true);
+				}
+				return worker.getCost();
 			}
-			return worker.getCost();
+			else {
+				System.out.println("Pas assez de gold !");
+				return 0;
+			}
 		}
 		else {
-			System.out.println("Pas assez de gold !");
-			return 0;
+			ForUpgrade upgrade = this.getUpgrades().get(id);
+			if(upgrade.getCost() <= moneyCount) {
+				this.getElementCount().add(id);
+				if(this.getIsProducing() == false) {
+					this.setTimer(upgrade.getTimeToProduce());
+					this.setIsProducing(true);
+				}
+				return upgrade.getCost();
+			}
+			else {
+				System.out.println("Pas assez de gold !");
+				return 0;
+			}
 		}
 	}
 
 	@Override
-	public int removeProduction() {
-		
+	public int removeProduction(List<Integer> searchingUpgrade) {
 		if(this.getIsProducing() == true) {
-			System.out.println("Suppression prod de worker, cout : " + this.worker.getCost());
-			this.getElementCount().remove(this.getElementCount().size() - 1);
-			if(this.getElementCount().isEmpty()) {
-				this.setIsProducing(false);
-				this.setTimer(0);
+			int idRemove = this.getElementCount().get(this.getElementCount().size() - 1);
+			if(idRemove == EntityConfiguration.WORKER) {
+				System.out.println("Suppression prod de worker, cout : " + this.worker.getCost());
+				this.getElementCount().remove(this.getElementCount().size() - 1);
+				if(this.getElementCount().isEmpty()) {
+					this.setIsProducing(false);
+					this.setTimer(0);
+				}
+				return this.worker.getCost();
 			}
-			return this.worker.getCost();
+			else {
+				int upgradeCost = this.getUpgrades().get(this.getElementCount().get(this.getElementCount().size() - 1)).getCost();
+				
+				boolean remove = false;
+				int i = 0;
+				while(remove == false && searchingUpgrade.get(i) != null) {
+					if(searchingUpgrade.get(i) == idRemove) {
+						searchingUpgrade.remove(i);
+						remove = true;
+					}
+					i++;
+				}
+				
+				System.out.println("Suppression prod de upgrade, cout : " + upgradeCost);
+				this.getElementCount().remove(this.getElementCount().size() - 1);
+				if(this.getElementCount().isEmpty()) {
+					this.setIsProducing(false);
+					this.setTimer(0);
+				}
+				return upgradeCost;
+			}
 		}
 		return 0;
 	}

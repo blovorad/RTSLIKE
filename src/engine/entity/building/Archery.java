@@ -1,6 +1,7 @@
 package engine.entity.building;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import configuration.EntityConfiguration;
 import engine.Position;
@@ -35,16 +36,23 @@ public class Archery extends ProductionBuilding{
 
 	@Override
 	public int startProd(int id, int moneyCount) {
-		this.getElementCount().add(id);
-		if(this.getIsProducing() == false) {
-			this.setTimer(archer.getTimeToBuild());
-			this.setIsProducing(true);
+		System.out.println("Start prod de archer, cout : " + this.archer.getCost() + ", gold : " + moneyCount);
+		if(this.archer.getCost() <= moneyCount) {
+			this.getElementCount().add(id);
+			if(this.getIsProducing() == false) {
+				this.setTimer(archer.getTimeToBuild());
+				this.setIsProducing(true);
+			}
+			return archer.getCost();
 		}
-		return 0;
+		else {
+			System.out.println("Pas assez de gold !");
+			return 0;
+		}
 	}
 
 	@Override
-	public int removeProduction() {
+	public int removeProduction(List<Integer> searchingUpgrade) {
 		if(this.getIsProducing() == true) {
 			System.out.println("Suppression prod de archer, cout : " + this.archer.getCost());
 			this.getElementCount().remove(this.getElementCount().size() - 1);

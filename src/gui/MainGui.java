@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.AbstractMap;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -30,7 +29,6 @@ import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import engine.math.Collision;
 import engine.math.SelectionRect;
-import factionConfiguration.ForUpgrade;
 
 /**
  * 
@@ -391,7 +389,7 @@ public class MainGui extends JFrame implements Runnable
 						selectionRectangle.setY(e.getY());
 						selectionRectangle.setW(0);
 						selectionRectangle.setH(0);
-						System.out.println("on a presser");
+						//System.out.println("on a presser");
 					}
 					
 					if(mouse.getId() > -1)
@@ -438,7 +436,7 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				System.out.println("released");
+				//System.out.println("released");
 				if(selectionRectangle.isActive() == true)
 				{
 					if(selectionRectangle.getW() == 0 && selectionRectangle.getH() == 0)

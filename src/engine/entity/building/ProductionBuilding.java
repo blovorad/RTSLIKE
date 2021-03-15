@@ -66,7 +66,7 @@ public abstract class ProductionBuilding extends Entity{
 	
 	public abstract int produce();
 	public abstract int startProd(int id, int moneyCount);
-	public abstract int removeProduction();
+	public abstract int removeProduction(List<Integer> searchingUpgrade);
 	
 	public void remove() {
 		timer = 0;

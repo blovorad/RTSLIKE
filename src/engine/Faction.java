@@ -29,7 +29,7 @@ public class Faction
 		age = 1;
 		buildingCount = 0;
 		maxPopulation = 20;
-		moneyCount = 200;
+		moneyCount = 500;
 		populationCount = 0;
 		upgradesDone = new HashMap<Integer, ForUpgrade>();
 		searchingUpgrades = new ArrayList<Integer>();
