@@ -331,15 +331,13 @@ public class EntitiesManager
 		}
 	}
 	
-	public void createBuilding(int id, int faction, Position position, Tile tile) 
-	{
+	public void createBuilding(int id, int faction, Position position, Tile tile) {
 		ProductionBuilding bprod = null;
 		AttackBuilding battack = null;
 		StorageBuilding bstorage = null;
 		tile.setSolid(true);
 		
-		if(id == EntityConfiguration.FORGE)
-		{
+		if(id == EntityConfiguration.FORGE){
 			
 			AbstractMap<Integer, ForUpgrade> upgrades = factionManager.getFactions().get(faction).getRace().getForgeUpgrades();
 			AbstractMap<Integer, ForUpgrade> removeUpgrades = factionManager.getFactions().get(faction).getUpgradesDone();
@@ -348,54 +346,45 @@ public class EntitiesManager
 					upgrades.remove(key);
 				}
 			}
-			System.out.println("taille upgrade " + upgrades.size());
 			//remove upgrade age
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, upgrades, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
 		}
 		//dans les autres tu balances le ForUnit de la race.
-		else if(id == EntityConfiguration.STABLE)
-		{
+		else if(id == EntityConfiguration.STABLE){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.CAVALRY);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Stable(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.STABLE), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.BARRACK)
-		{
+		else if(id == EntityConfiguration.BARRACK){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.INFANTRY);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Barrack(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.BARRACK), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.ARCHERY)
-		{
+		else if(id == EntityConfiguration.ARCHERY){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.ARCHER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Archery(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.ARCHER), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.HQ)
-		{
+		else if(id == EntityConfiguration.HQ){
 			ForWorker patronWorker = factionManager.getFactions().get(faction).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, patronBuilding.getUpgrades(), graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.CASTLE)
-		{
+		else if(id == EntityConfiguration.CASTLE){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.SPECIAL_UNIT);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Castle(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.CASTLE), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.STORAGE)
-		{
+		else if(id == EntityConfiguration.STORAGE){
 			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getStorageBuildings().get(id);
 			bstorage = new StorageBuilding(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.STORAGE), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.TOWER)
-		{
+		else if(id == EntityConfiguration.TOWER){
 			ForAttackBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getAttackBuildings().get(id);
 			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
 		}
-		else
-		{
+		else{
 			System.out.println("invalide ID");
 		}
 		
@@ -426,30 +415,25 @@ public class EntitiesManager
 		
 	}
 	
-	public void addSelectedUnit(Unit unit)
-	{
+	public void addSelectedUnit(Unit unit){
 		this.selectedUnits.add(unit);
 	}
 	
-	public void addRessource(List<Tile> listPositionRessources)
-	{
-		for(Tile t : listPositionRessources)
-		{
+	public void addRessource(List<Tile> listPositionRessources){
+		for(Tile t : listPositionRessources){
 			Ressource r = new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION, graphicsManager.getGraphicsEntity(EntityConfiguration.RESSOURCE));
 			this.ressources.add(r);
 			this.drawingList.add(r);
 		}
 	}
 	
-	public void clearSelectedBuildings()
-	{
+	public void clearSelectedBuildings(){
 		this.selectedAttackBuilding = null;
 		this.selectedProdBuilding = null;
 		this.selectedStorageBuilding = null;
 	}
 	
-	public void clean()
-	{
+	public void clean(){
 		this.collisionList.clear();
 		this.drawingList.clear();
 		this.fighters.clear();

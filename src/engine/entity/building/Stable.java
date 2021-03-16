@@ -17,10 +17,6 @@ public class Stable extends ProductionBuilding{
 		this.cavalry = cavalry;
 		this.setProductionId(EntityConfiguration.CAVALRY);
 	}
-	
-	public void addUnit() {
-		
-	}
 
 	@Override
 	public int produce() {

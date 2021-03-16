@@ -149,7 +149,7 @@ public class PaintStrategy
 		if(entity.getId() >= 5 && entity.getId() <= 12){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.red);
+					graphics.setColor(Color.orange);
 				}
 				else {
 					graphics.setColor(Color.green);
@@ -157,10 +157,10 @@ public class PaintStrategy
 			}
 			else{
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.red);
+					graphics.setColor(Color.orange);
 				}
 				else {
-					graphics.setColor(Color.orange);
+					graphics.setColor(Color.red);
 				}
 			}
 			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);
@@ -168,15 +168,15 @@ public class PaintStrategy
 		else if(entity.getId() >= EntityConfiguration.INFANTRY && entity.getId() <= EntityConfiguration.WORKER){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.red);
+					graphics.setColor(Color.orange);
 				}
 				else {
-					graphics.setColor(Color.black);
+					graphics.setColor(Color.white);
 				}
 			}
 			else {
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.red);
+					graphics.setColor(Color.orange);
 				}
 				else {
 					graphics.setColor(new Color(145, 40, 59));
@@ -185,7 +185,6 @@ public class PaintStrategy
 			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize);
 		}
 		else if(entity.getId() == EntityConfiguration.RESSOURCE){
-			//graphics.setColor(Color.yellow);
 			graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 		}	
 		graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);

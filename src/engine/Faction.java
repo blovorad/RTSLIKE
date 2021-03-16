@@ -13,8 +13,7 @@ import factionConfiguration.Gaia;
 import factionConfiguration.Race;
 import factionConfiguration.Royaume;
 
-public class Faction 
-{
+public class Faction {
 	private Race race;
 	private int age;
 	private int buildingCount;
@@ -24,30 +23,25 @@ public class Faction
 	private AbstractMap<Integer, ForUpgrade> upgradesDone;
 	private List<Integer> searchingUpgrades;
 
-	public Faction(int id) 
-	{
+	public Faction(int id) {
 		age = 1;
 		buildingCount = 0;
 		maxPopulation = 20;
-		moneyCount = 500;
+		moneyCount = 5000;
 		populationCount = 0;
 		upgradesDone = new HashMap<Integer, ForUpgrade>();
 		searchingUpgrades = new ArrayList<Integer>();
 		
-		if(id == 1)
-		{
+		if(id == 1){
 			race = new Royaume();
 		}
-		else if(id == 2)
-		{
+		else if(id == 2){
 			race = new Barbare();
 		}
-		else if(id == 3)
-		{
+		else if(id == 3){
 			race = new Empire();
 		}
-		else if(id == 4)
-		{
+		else if(id == 4){
 			race = new Gaia();
 		}
 	}
@@ -60,33 +54,27 @@ public class Faction
 		}
 	}
 	
-	public int getAge() 
-	{
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(int age) 
-	{
+	public void setAge(int age) {
 		this.age = age;
 	}
 
-	public int getBuildingCount() 
-	{
+	public int getBuildingCount() {
 		return buildingCount;
 	}
 
-	public void setBuildingCount(int buildingCount) 
-	{
+	public void setBuildingCount(int buildingCount) {
 		this.buildingCount = buildingCount;
 	}
 
-	public Race getRace() 
-	{
+	public Race getRace() {
 		return race;
 	}
 
-	public void setRace(Race race) 
-	{
+	public void setRace(Race race) {
 		this.race = race;
 	}
 	

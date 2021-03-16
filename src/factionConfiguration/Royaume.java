@@ -89,7 +89,7 @@ public class Royaume extends Race
 	
 	public void initForge()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, this.getForgeUpgrades(), "Forge Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 2, this.getForgeUpgrades(), "Forge Royaume", 100, 20, 25));
 	}
 	
 	public void initHq()
@@ -99,7 +99,7 @@ public class Royaume extends Race
 	
 	public void initCastle()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 1, null, "Chateau Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 3, null, "Chateau Royaume", 100, 20, 25));
 	}
 	
 	public void initTower()
@@ -119,12 +119,12 @@ public class Royaume extends Race
 	
 	public void initArchery()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 1, null, "Archerie Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 2, null, "Archerie Royaume", 100, 20, 25));
 	}
 	
 	public void initStable()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 1, null, "Ecurie Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 2, null, "Ecurie Royaume", 100, 20, 25));
 	}
 	
 	public void initForgeUpgrades()

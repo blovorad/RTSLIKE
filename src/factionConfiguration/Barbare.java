@@ -87,7 +87,7 @@ public class Barbare extends Race
 	
 	public void initForge()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 1, null, "Forge Barbare", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 2, null, "Forge Barbare", 100, 20, 25));
 	}
 	
 	public void initHq()
@@ -97,7 +97,7 @@ public class Barbare extends Race
 	
 	public void initCastle()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 1, null, "Chateau Barbare", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 3, null, "Chateau Barbare", 100, 20, 25));
 	}
 	
 	public void initTower()
@@ -117,12 +117,12 @@ public class Barbare extends Race
 	
 	public void initArchery()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 1, null, "Archerie Barbare", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 2, null, "Archerie Barbare", 100, 20, 25));
 	}
 	
 	public void initStable()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 1, null, "Ecurie Barbare", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 2, null, "Ecurie Barbare", 100, 20, 25));
 	}
 	
 	public void initUpgrades()

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
+import configuration.GameConfiguration;
 import engine.Entity;
 import engine.Position;
 import engine.map.Tile;
@@ -16,7 +17,7 @@ public abstract class ProductionBuilding extends Entity{
 
 	private List<Integer> elementCount;
 	private int productionId;
-	private int timer;
+	private float timer;
 	private boolean isProducing;
 	private Tile tile;
 	private AbstractMap<Integer, ForUpgrade> upgrades;
@@ -34,14 +35,14 @@ public abstract class ProductionBuilding extends Entity{
 	public void update(int popCount, int maxPop) {
 		super.update();
 		if(this.getId() == EntityConfiguration.FORGE) {
-			timer--;
+			timer -= 1.0 / GameConfiguration.GAME_SPEED;
 			if(this.getProductionId() == EntityConfiguration.ARMOR_UPGRADE) {
 				System.out.println("updating armor upgrade production time remaning : " + timer);
 			}
 		}
 		else if(popCount < maxPop) {
 			if(timer > 0) {
-				timer--;
+				timer -= 1.0 / GameConfiguration.GAME_SPEED; ;
 				if(this.getProductionId() == EntityConfiguration.INFANTRY) {
 					System.out.println("updating infantry production time remaning : " + timer);
 				}
@@ -90,11 +91,11 @@ public abstract class ProductionBuilding extends Entity{
 		this.productionId = productionId;
 	}
 
-	public int getTimer() {
+	public float getTimer() {
 		return timer;
 	}
 
-	public void setTimer(int timer) {
+	public void setTimer(float timer) {
 		this.timer = timer;
 	}
 
