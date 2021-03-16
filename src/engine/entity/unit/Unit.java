@@ -150,11 +150,11 @@ public class Unit extends Entity
 		System.out.println("vitesse : " + this.getSpeed().getVx() + "," + this.getSpeed().getVy());
 		System.out.println("angle : " + angle);
 	}
-	
 
 	public void update()
 	{
 		super.update();
+
 		Position p = this.getPosition();
 		
 		if(this.getTarget() != null && (!this.getTarget().getPosition().equals(this.getPosition())))
@@ -188,9 +188,12 @@ public class Unit extends Entity
 				}
 			}
 		}
+		//sauvegarder l'ancienne position
 		
 		this.getPosition().setX(this.getPosition().getX() + this.getSpeed().getVx());
 		this.getPosition().setY(this.getPosition().getY() + this.getSpeed().getVy());
+		
+		//ici 
 		
 		if(p.getX() < 0)
 		{
