@@ -20,8 +20,12 @@ public class Camera
 		this.x = 0;
 		this.y = 0;
 		this.speed = new Speed();
+		rectX = 10;
+		rectY = 10;
+		rectW = GameConfiguration.WINDOW_WIDTH - rectX - 20;
+		rectH = GameConfiguration.WINDOW_HEIGHT - rectY - 40;
 		
-		if(width == 1920 && height == 1080)
+		/*if(width == 1920 && height == 1080)
 		{
 			rectX = 10;
 			rectY = 10;
@@ -41,7 +45,7 @@ public class Camera
 			rectY = 10;
 			rectW = 1250;
 			rectH = 700;
-		}
+		}*/
 
 	}
 	

@@ -14,6 +14,7 @@ public class ForUpgrade {
 		this.id = id;
 		this.effect = effect;
 		this.description = description;
+		this.cost = cost;
 		this.setTimeToProduce(timeToProduce);
 	}
 

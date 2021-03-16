@@ -1,8 +1,11 @@
 package engine;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import configuration.EntityConfiguration;
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
 import factionConfiguration.ForUpgrade;
@@ -19,15 +22,17 @@ public class Faction
 	private int maxPopulation;
 	private int moneyCount;
 	private AbstractMap<Integer, ForUpgrade> upgradesDone;
+	private List<Integer> searchingUpgrades;
 
 	public Faction(int id) 
 	{
 		age = 1;
 		buildingCount = 0;
 		maxPopulation = 20;
-		moneyCount = 200;
+		moneyCount = 500;
 		populationCount = 0;
 		upgradesDone = new HashMap<Integer, ForUpgrade>();
+		searchingUpgrades = new ArrayList<Integer>();
 		
 		if(id == 1)
 		{
@@ -44,6 +49,14 @@ public class Faction
 		else if(id == 4)
 		{
 			race = new Gaia();
+		}
+	}
+	
+	public void checkUpgrade(List<Integer> upgrades) {
+		for(Integer id : upgrades) {
+			if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {
+				searchingUpgrades.remove(id);
+			}
 		}
 	}
 	
@@ -108,5 +121,13 @@ public class Faction
 
 	public void setPopulationCount(int populationCount) {
 		this.populationCount = populationCount;
+	}
+
+	public List<Integer> getSearchingUpgrades() {
+		return searchingUpgrades;
+	}
+
+	public void setSearchingUpgrades(List<Integer> searchingUpgrades) {
+		this.searchingUpgrades = searchingUpgrades;
 	}
 }

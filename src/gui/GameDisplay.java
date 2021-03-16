@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.AbstractMap;
+
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -22,6 +24,7 @@ import javax.swing.event.ChangeListener;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
+import configuration.PositionConfiguration;
 import engine.Camera;
 import engine.Entity;
 import engine.Faction;
@@ -101,28 +104,6 @@ public class GameDisplay extends JPanel
 	//for option panel
 	private JSlider scrollingSlider = new JSlider(new ScrollingModel());
 	private JSlider sonSlider = new JSlider(new SonModel());
-	
-	/**
-	 * 
-	 * Constant for the management of Layout of optionPanel.
-	 * 
-	 */
-	private final int OPTIONSMENUMAXINDEX = 11;
-	private final int SCROLLINGLABELINDEX = 5;
-	private final int SCROLLINGINDEX = 6;
-	private final int SONLABELINDEX = 2;
-	private final int SONINDEX = 3;
-	private final int BACKINDEX = 9;
-	
-	//for pauseMenuPanel
-	/**
-	 * 
-	 * constant for the management of Layout of pauseMenuPanel.
-	 */
-	private final int PAUSEMENUMAXINDEX = 11;
-	private final int BACKTOGAMEINDEX = 3;
-	private final int OPTIONSINDEX = 6;
-	private final int LEAVEINDEX = 9;
 	
 	//button
 	private JButton constructionButton = new JButton(new PrintConstruction("construction"));
@@ -464,7 +445,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
-	public void setDescriptionPanelForBuilding(ProductionBuilding building)
+	public void setDescriptionPanelForBuilding(ProductionBuilding building, List<Integer> searchingUpgrades)
 	{
 		descriptionPanel.removeAll();
 		
@@ -474,10 +455,23 @@ public class GameDisplay extends JPanel
 		{
 			productionCountLabel.setText(("file d'attente : " + building.getElementCount().size()));
 			if(building.getId() == EntityConfiguration.FORGE) {
-				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
-				descriptionPanel.setLayout(new GridLayout(upgrades.size() + 2, 1));
-				for(ForUpgrade upgrade : upgrades.values()) {
-					JButton button = new JButton(new CreateUnit("" + upgrade.getDescription(), upgrade.getId(), building ));
+				AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
+				AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
+				
+				for(int key : upgradesAvailable.keySet()) {
+					upgradesUse.put(key, upgradesAvailable.get(key));
+				}
+				
+				for(Integer id : searchingUpgrades) {
+					if(upgradesAvailable.containsKey(id)) {
+						System.out.println("ici");
+						upgradesUse.remove(id);
+					}
+				}
+				
+				descriptionPanel.setLayout(new GridLayout(upgradesUse.size() + 2, 1));
+				for(ForUpgrade upgrade : upgradesUse.values()) {
+					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
 					descriptionPanel.add(button);
 				}
@@ -489,14 +483,27 @@ public class GameDisplay extends JPanel
 			}
 			else if(building.getId() == EntityConfiguration.HQ) {
 				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(building.getProductionId()).getDescription();
-				AbstractMap<Integer, ForUpgrade> upgrades = building.getUpgrades();
+				AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
+				AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
+				
+				for(int key : upgradesAvailable.keySet()) {
+					upgradesUse.put(key, upgradesAvailable.get(key));
+				}
+				
+				for(Integer id : searchingUpgrades) {
+					if(upgradesAvailable.containsKey(id)) {
+						System.out.println("ici");
+						upgradesUse.remove(id);
+					}
+				}
+				
 				descriptionPanel.setLayout(new GridLayout(10, 1));
-				for(ForUpgrade upgrade : upgrades.values()) {
-					JButton button = new JButton(new CreateUnit("" + upgrade.getDescription(), upgrade.getId(), building ));
+				for(ForUpgrade upgrade : upgradesUse.values()) {
+					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
 					descriptionPanel.add(button);
 				}
-				JButton button = new JButton(new CreateUnit("" + name, building.getProductionId(), building ));
+				JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
 				button.setFocusable(false);
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
 				button1.setFocusable(false);
@@ -508,7 +515,7 @@ public class GameDisplay extends JPanel
 			}
 			else {
 				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronFighters().get(building.getProductionId()).getDescription();
-				JButton button = new JButton(new CreateUnit("" + name, building.getProductionId(), building ));
+				JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
 				button.setFocusable(false);
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
 				button1.setFocusable(false);
@@ -590,25 +597,25 @@ public class GameDisplay extends JPanel
 		scrollingSlider.setMaximum(100);
 
 		GridLayout gridLayout = new GridLayout(1,3);
-		panelBis.setLayout(new GridLayout(OPTIONSMENUMAXINDEX,1));
+		panelBis.setLayout(new GridLayout(PositionConfiguration.OPTIONSMENUMAXINDEX,1));
 		
-		for(int i = 1; i <= OPTIONSMENUMAXINDEX; i++)
+		for(int i = 1; i <= PositionConfiguration.OPTIONSMENUMAXINDEX; i++)
 		{
 			switch (i)
 			{
-				case SONLABELINDEX:
+				case PositionConfiguration.SONLABELINDEX:
 					panelBis.add(new JLabel("Son:"));
 					break;
-				case SONINDEX:
+				case PositionConfiguration.SONINDEX:
 					panelBis.add(sonSlider);
 					break;
-				case SCROLLINGLABELINDEX:
+				case PositionConfiguration.SCROLLINGLABELINDEX:
 					panelBis.add(new JLabel("Scrolling:"));
 					break;
-				case SCROLLINGINDEX:
+				case PositionConfiguration.SCROLLINGINDEX:
 					panelBis.add(scrollingSlider);
 					break;
-				case BACKINDEX:
+				case PositionConfiguration.BACKINDEX:
 					panelBis.add(new JButton(new BackToOldStateFromOptionButton("RETOUR")));
 					break;
 				default:
@@ -633,19 +640,19 @@ public class GameDisplay extends JPanel
 		JPanel panelBis = new JPanel();
 		
 		GridLayout gridLayaout = new GridLayout(1,3);
-		panelBis.setLayout(new GridLayout(PAUSEMENUMAXINDEX,1));
+		panelBis.setLayout(new GridLayout(PositionConfiguration.PAUSEMENUMAXINDEX,1));
 		
-		for(int i = 1; i <= PAUSEMENUMAXINDEX; i++)
+		for(int i = 1; i <= PositionConfiguration.PAUSEMENUMAXINDEX; i++)
 		{
 			switch(i)
 			{
-				case BACKTOGAMEINDEX:
+				case PositionConfiguration.BACKTOGAMEINDEX:
 					panelBis.add(new JButton(new UnpauseGameButton("RETOUR AU JEU")));
 					break;
-				case OPTIONSINDEX:
+				case PositionConfiguration.OPTIONSINDEX:
 					panelBis.add(new JButton(new GoToOptionFromPauseMenuButton("OPTION")));
 					break;
-				case LEAVEINDEX:
+				case PositionConfiguration.LEAVEINDEX:
 					panelBis.add(new JButton(new GoToMainMenuFromPauseMenu("RETOUR AU MENU PRINCIPAL")));
 					break;
 				default:
@@ -740,14 +747,14 @@ public class GameDisplay extends JPanel
 		}
 	}
 	
-	private class CreateUnit extends AbstractAction
+	private class BuildingProduction extends AbstractAction
 	{
 		private static final long serialVersionUID = 1L;
 		
 		private int id;
 		private ProductionBuilding prodBuilding;
 		
-		public CreateUnit(String name, int id, ProductionBuilding building)
+		public BuildingProduction(String name, int id, ProductionBuilding building)
 		{
 			super(name);
 			this.id = id;
@@ -757,7 +764,14 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
-			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money - prodBuilding.startProd(id, money)); 
+			int priceOfProduction = prodBuilding.startProd(id, money);
+			if(priceOfProduction > 0) {
+				manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money - priceOfProduction);
+				if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {
+					manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades().add(id);
+					setDescriptionPanelForBuilding(prodBuilding, manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades());
+				}
+			}
 		}
 	}
 	
@@ -773,7 +787,9 @@ public class GameDisplay extends JPanel
 		
 		public void actionPerformed(ActionEvent e) {
 			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
-			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money + prodBuilding.removeProduction());
+			List<Integer>searchingUpgrades = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades();
+			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money + prodBuilding.removeProduction(searchingUpgrades));
+			setDescriptionPanelForBuilding(prodBuilding, searchingUpgrades);
 		}
 	}
 	

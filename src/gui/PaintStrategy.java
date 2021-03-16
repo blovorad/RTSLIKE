@@ -41,7 +41,23 @@ public class PaintStrategy
 	
 	public PaintStrategy(int width, int height)
 	{
-		if(width == 1920 && height == 1080)
+		//if(width == 800 && height == 600) {
+			rectXOfMinimap = (int)(650f * GameConfiguration.SCALE_X);
+			rectYOfMinimap = (int)(475f * GameConfiguration.SCALE_Y);
+			rectWOfMinimap = (int)(650f * GameConfiguration.SCALE_X);
+			rectHOfMinimap = (int)(475f * GameConfiguration.SCALE_Y);
+			
+			firstGridXOfMap = (int)(675f * GameConfiguration.SCALE_X);
+			firstGridYOfMap = (int)(490f * GameConfiguration.SCALE_Y);
+			gridMapWidth = 1;
+			gridMapHeight = 1;
+			
+			camX = (int)(675f * GameConfiguration.SCALE_X);
+			camY = (int)(490f * GameConfiguration.SCALE_Y);
+			camW = (width / GameConfiguration.TILE_SIZE);
+			camH = (height / GameConfiguration.TILE_SIZE);
+		//}
+		/*if(width == 1920 && height == 1080)
 		{
 			rectXOfMinimap = 1625;
 			rectYOfMinimap = 775;
@@ -95,7 +111,7 @@ public class PaintStrategy
 			camY = 515;
 			camW = (width / GameConfiguration.TILE_SIZE);
 			camH = (height / GameConfiguration.TILE_SIZE);
-		}
+		}*/
 		/*System.out.println("on construit dans : " + width + "x" + height);
 		System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
 		System.out.println("camera dimension : " + camW + "," + camH);*/
@@ -228,7 +244,7 @@ public class PaintStrategy
 		graphics.setColor(Color.white);
 		graphics.drawRect(camX + camera.getX() / GameConfiguration.TILE_SIZE, camY + camera.getY() / GameConfiguration.TILE_SIZE, camW, camH);	
 				
-		//graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
+		graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
 	}
 	
 	public void paintEntityGui(Entity entity, Graphics graphics, Camera camera)

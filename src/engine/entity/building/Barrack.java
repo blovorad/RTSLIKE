@@ -1,6 +1,7 @@
 package engine.entity.building;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import configuration.EntityConfiguration;
 import engine.Position;
@@ -51,7 +52,7 @@ public class Barrack extends ProductionBuilding{
 	}
 
 	@Override
-	public int removeProduction() {
+	public int removeProduction(List<Integer> searchingUpgrade) {
 		if(this.getIsProducing() == true) {
 			System.out.println("Suppression prod de infantry, cout : " + this.infantry.getCost());
 			this.getElementCount().remove(this.getElementCount().size() - 1);

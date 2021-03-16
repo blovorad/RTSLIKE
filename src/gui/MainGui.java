@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -231,8 +230,9 @@ public class MainGui extends JFrame implements Runnable
 					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
 											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
 					{
+						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						manager.setSelectedProdBuilding(building);
-						dashboard.setDescriptionPanelForBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
 						noBuildingSelected = false;
 						break;
 					}
@@ -315,8 +315,9 @@ public class MainGui extends JFrame implements Runnable
 
 					if(Collision.collide(building.getPosition(), rect, camera))
 					{
+						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						manager.setSelectedProdBuilding(building);
-						dashboard.setDescriptionPanelForBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
 						noBuildingSelected = false;
 						break;
 					}
@@ -388,7 +389,7 @@ public class MainGui extends JFrame implements Runnable
 						selectionRectangle.setY(e.getY());
 						selectionRectangle.setW(0);
 						selectionRectangle.setH(0);
-						System.out.println("on a presser");
+						//System.out.println("on a presser");
 					}
 					
 					if(mouse.getId() > -1)
@@ -435,7 +436,7 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				System.out.println("released");
+				//System.out.println("released");
 				if(selectionRectangle.isActive() == true)
 				{
 					if(selectionRectangle.getW() == 0 && selectionRectangle.getH() == 0)
