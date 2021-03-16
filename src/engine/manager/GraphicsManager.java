@@ -36,6 +36,8 @@ public class GraphicsManager {
 			graphicsEntity.put(EntityConfiguration.FORGE, ImageIO.read(new File("src/graphics/forge.png")));
 			graphicsEntity.put(EntityConfiguration.STORAGE, ImageIO.read(new File("src/graphics/storage.png")));
 			graphicsEntity.put(EntityConfiguration.STABLE, ImageIO.read(new File("src/graphics/stable.png")));
+			graphicsEntity.put(EntityConfiguration.HQ, ImageIO.read(new File("src/graphics/hq.png")));
+			graphicsEntity.put(EntityConfiguration.TOWER, ImageIO.read(new File("src/graphics/tower.png")));
 			graphicsEntity.put(EntityConfiguration.CASTLE, ImageIO.read(new File("src/graphics/castle.png")));
 			graphicsEntity.put(EntityConfiguration.BARRACK, ImageIO.read(new File("src/graphics/barrack.png")));
 			graphicsEntity.put(EntityConfiguration.ARCHER, ImageIO.read(new File("src/graphics/archer.png")));
