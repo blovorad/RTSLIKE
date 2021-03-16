@@ -419,11 +419,29 @@ public class MainGui extends JFrame implements Runnable
 						}
 					}
 					else {
-						ProductionBuilding building = manager.getSelectedProdBuilding();
-						if(building != null) {
-							building.setDestination(new Position(mouseX, mouseY));
-							System.out.println(building.getDestination().getX());
-							System.out.println(building.getDestination().getY());
+						
+						if(manager.getSelectedAttackBuilding() != null) {
+							List<Unit> units = manager.getUnits();
+							int x = mouseX + camera.getX();
+							int y = mouseY + camera.getY();
+							for(Unit unit : units) {
+								Position unitPosition = unit.getPosition();
+								if(unit.getFaction() == EntityConfiguration.BOT_FACTION) {
+									if (x > unitPosition.getX() && x < unitPosition.getX() + EntityConfiguration.UNIT_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + EntityConfiguration.UNIT_SIZE) {
+										manager.getSelectedAttackBuilding().setTarget(unit);
+										System.out.println("new target : " + manager.getSelectedAttackBuilding().getTarget().getDescription());
+										break;
+									}
+								}
+							}
+						}
+						else {
+							ProductionBuilding building = manager.getSelectedProdBuilding();
+							if(building != null) {
+								building.setDestination(new Position(mouseX, mouseY));
+								System.out.println(building.getDestination().getX());
+								System.out.println(building.getDestination().getY());
+							}
 						}
 					}
 

@@ -39,6 +39,7 @@ import engine.manager.AudioManager;
 import engine.entity.unit.Worker;
 
 import engine.manager.EntitiesManager;
+import engine.manager.GameBuilder;
 import engine.manager.GraphicsManager;
 import engine.map.Map;
 import engine.map.Tile;
@@ -126,6 +127,8 @@ public class GameDisplay extends JPanel
 	private JLabel productionCountLabel = new JLabel();
 	private JTextArea currentProductionLabel = new JTextArea();
 	private GraphicsManager graphicsManager;
+	
+	private int selectedMap = 1;
 	
 	private float time;
 
@@ -371,6 +374,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.setLayout(new GridLayout(2, 2));
 		
 		descriptionPanel.add(constructionButton);
+
 		descriptionPanel.add(new JLabel("" + worker.getDescription()));
 		
 		descriptionPanel.validate();
@@ -944,6 +948,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{
 			labelMap.setIcon(map1);
+			setSelectedMap(1);
 		}
 		
 	}
@@ -962,6 +967,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{
 			labelMap.setIcon(map2);
+			setSelectedMap(2);
 		}
 		
 	}
@@ -980,9 +986,11 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{
 			labelMap.setIcon(map3);
+			setSelectedMap(3);
 		}
 		
 	}
+	
 	
 	private class ExitGameButton extends AbstractAction
 	{
@@ -1036,29 +1044,8 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{	
 			time = 0;
-			
-			
-			Faction faction1 = new Faction(boxPlayer1.getSelectedIndex() + 1);
-			Faction faction2 = new Faction(boxPlayer2.getSelectedIndex() + 1);
-			Faction gaia = new Faction(4);
-			
-			manager.getFactionManager().addFaction(EntityConfiguration.PLAYER_FACTION, faction1);
-			manager.getFactionManager().addFaction(EntityConfiguration.BOT_FACTION, faction2);
-			manager.getFactionManager().addFaction(EntityConfiguration.GAIA_FACTION, gaia);
-			
-			if(radioButton1.isSelected())
-			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 1, "src/file/map1.txt", graphicsManager);
-			}
-			else if(radioButton2.isSelected())
-			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 2, "src/file/map2.txt", graphicsManager);
-			}
-			else
-			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3, "src/file/map3.txt", graphicsManager);
-			}
-			manager.addRessource(map.getGoldTiles());
+			GameBuilder.buildFaction(manager, boxPlayer1.getSelectedIndex() + 1, boxPlayer2.getSelectedIndex() + 1);
+			map = GameBuilder.buildMap(selectedMap, graphicsManager, manager);
 			
 			gamePanel = createGamePanel();
 			gamePanel.setVisible(false);
@@ -1480,5 +1467,13 @@ public class GameDisplay extends JPanel
 
 	public void setTimeLabel(JLabel timeLabel) {
 		this.timeLabel = timeLabel;
+	}
+
+	public int getSelectedMap() {
+		return selectedMap;
+	}
+
+	public void setSelectedMap(int selectedMap) {
+		this.selectedMap = selectedMap;
 	}
 }

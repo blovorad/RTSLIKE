@@ -1,8 +1,8 @@
 infantry
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : infantry barbare;hpMax : 20;
+attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 7;description : infantry barbare;hpMax : 20;
 archer
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : archer barbare;hpMax : 20;
+attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 15;description : archer barbare;hpMax : 20;
 cavalry
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : cavalry barbare;hpMax : 20;
+attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 10;description : cavalry barbare;hpMax : 20;
 special
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : special barbare;hpMax : 20;
+attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 10;description : special barbare;hpMax : 20;

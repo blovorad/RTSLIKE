@@ -20,6 +20,7 @@ import configuration.MapConfiguration;
 public class GraphicsManager {
 	private AbstractMap<Integer, BufferedImage> graphicsEntity;
 	private AbstractMap<Integer, BufferedImage> graphicsTile;
+	private BufferedImage panelGaucheBas;
 	
 	public GraphicsManager() {
 		this.setGraphicsEntity(new HashMap<Integer, BufferedImage>());
@@ -38,6 +39,8 @@ public class GraphicsManager {
 			graphicsEntity.put(EntityConfiguration.CASTLE, ImageIO.read(new File("src/graphics/castle.png")));
 			graphicsEntity.put(EntityConfiguration.BARRACK, ImageIO.read(new File("src/graphics/barrack.png")));
 			graphicsEntity.put(EntityConfiguration.ARCHER, ImageIO.read(new File("src/graphics/archer.png")));
+			
+			panelGaucheBas = ImageIO.read(new File("src/graphics/panelGaucheBas.png"));
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -66,5 +69,13 @@ public class GraphicsManager {
 
 	public void setGraphicsEntity(AbstractMap<Integer, BufferedImage> graphicsEntity) {
 		this.graphicsEntity = graphicsEntity;
+	}
+
+	public BufferedImage getPanelGaucheBas() {
+		return panelGaucheBas;
+	}
+
+	public void setPanelGaucheBas(BufferedImage panelGaucheBas) {
+		this.panelGaucheBas = panelGaucheBas;
 	}
 }
