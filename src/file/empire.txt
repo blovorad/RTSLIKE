@@ -1,8 +1,8 @@
 infantry
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : infantry empire;hpMax : 20;
+attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 21;description : infantry empire;hpMax : 20;
 archer
 attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : archer empire;hpMax : 20;
 cavalry
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : cavalry empire;hpMax : 20;
+attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 30;description : cavalry empire;hpMax : 20;
 special
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 35;description : special empire;hpMax : 20;
+attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 20;description : special empire;hpMax : 20;
