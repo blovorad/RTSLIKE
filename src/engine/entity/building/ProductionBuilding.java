@@ -40,8 +40,8 @@ public abstract class ProductionBuilding extends Entity{
 				System.out.println("updating armor upgrade production time remaning : " + timer);
 			}
 		}
-		else if(popCount < maxPop) {
-			if(timer > 0) {
+		if(timer > 0) {
+			if(popCount < maxPop) {
 				timer -= 1.0 / GameConfiguration.GAME_SPEED; ;
 				if(this.getProductionId() == EntityConfiguration.INFANTRY) {
 					System.out.println("updating infantry production time remaning : " + timer);

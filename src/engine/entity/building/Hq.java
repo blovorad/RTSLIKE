@@ -13,15 +13,13 @@ import factionConfiguration.ForWorker;
 public class Hq extends ProductionBuilding{
 
 	private ForWorker worker;
+	private AbstractMap<Integer, ForUpgrade> upgradesOfHq;
 	
 	public Hq(Position position, ForWorker worker, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture, int sightRange) {
 		super(position, id, description, hpMax, faction, tile, upgrades, texture, sightRange);
 		this.worker = worker;
+		this.setUpgradesOfHq(upgrades);
 		this.setProductionId(EntityConfiguration.WORKER);
-	}
-	
-	public void upgradeTier() {
-		
 	}
 
 	@Override
@@ -33,7 +31,15 @@ public class Hq extends ProductionBuilding{
 		}
 		else
 		{
-			this.setTimer(worker.getTimeToBuild());
+			if(id == EntityConfiguration.AGE_UPGRADE) {
+				this.setTimer(upgradesOfHq.get(id).getTimeToProduce());
+			}
+			else if(id == EntityConfiguration.AGE_UPGRADE_2) {
+				this.setTimer(upgradesOfHq.get(id).getTimeToProduce());
+			}
+			else {
+				this.setTimer(worker.getTimeToBuild());
+			}
 		}
 		System.out.println("producing worker final");
 		
@@ -110,6 +116,14 @@ public class Hq extends ProductionBuilding{
 			}
 		}
 		return 0;
+	}
+
+	public AbstractMap<Integer, ForUpgrade> getUpgradesOfHq() {
+		return upgradesOfHq;
+	}
+
+	public void setUpgradesOfHq(AbstractMap<Integer, ForUpgrade> upgradesOfHq) {
+		this.upgradesOfHq = upgradesOfHq;
 	}
 	
 }
