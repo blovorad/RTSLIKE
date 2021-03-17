@@ -124,7 +124,6 @@ public class GameDisplay extends JPanel
 	private JLabel moneyLabel;
 	private JLabel ageLabel;
 	private JLabel timeLabel;
-	private JLabel productionCountLabel = new JLabel();
 	private JTextArea currentProductionLabel = new JTextArea();
 	private GraphicsManager graphicsManager;
 	
@@ -482,8 +481,119 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 3));
-		if(building.getProductionId() > -1)
+		GridLayout gridLayout = new GridLayout(5, 2);
+		descriptionPanel.setLayout(gridLayout);
+		int caseLayoutCount = gridLayout.getColumns() * gridLayout.getRows();
+		int infoEnd = 4;
+		
+		for(int i = 0; i < infoEnd; i++) {
+			if(i == 0) {
+				descriptionPanel.add(new JLabel("" + building.getDescription()));
+			}
+			else if(i == 1) {
+				if(building.getIsProducing()) {
+					int idProduction = building.getElementCount().get(0);
+					
+					Race race = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace();
+					ForFighter fighter = race.getPatronFighters().get(idProduction);
+					ForUpgrade forgeUpgrade = race.getForgeUpgrades().get(idProduction);
+					ForUpgrade hqUpgrade = race.getHQUpgrades().get(idProduction);
+					ForWorker worker = race.getPatronWorkers().get(idProduction);
+					if(fighter != null) {
+						currentProductionLabel.setText("Prod: " + fighter.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+					}
+					else if(forgeUpgrade != null) {
+						currentProductionLabel.setText("Prod: " + forgeUpgrade.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+					}
+					else if(hqUpgrade != null){
+						currentProductionLabel.setText("Prod: " + hqUpgrade.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+					}
+					else if(worker != null) {
+						currentProductionLabel.setText("Prod: " + worker.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+					}
+				}
+				else {
+					currentProductionLabel.setText("Rien n'est en production");
+				}
+				descriptionPanel.add(currentProductionLabel);
+			}
+			else if(i == 2) {
+				descriptionPanel.add(new JLabel("points de vie :" + building.getHp()));
+			}
+			else if(i == 3) {
+				JButton button1 = new JButton(new UndoProduction("retirer production", building));
+				button1.setFocusable(false);
+				descriptionPanel.add(button1);
+			}
+			else {
+				descriptionPanel.add(new JLabel("" + i));
+			}
+		}
+		if(building.getId() == EntityConfiguration.FORGE) {
+			AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
+			AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
+			
+			for(int key : upgradesAvailable.keySet()) {
+				upgradesUse.put(key, upgradesAvailable.get(key));
+			}
+			
+			for(Integer id : searchingUpgrades) {
+				if(upgradesAvailable.containsKey(id)) {
+					upgradesUse.remove(id);
+				}
+			}
+			
+			for(ForUpgrade upgrade : upgradesUse.values()) {
+				infoEnd++;
+				JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
+				button.setFocusable(false);
+				button.setToolTipText("Coût : " + upgrade.getCost());
+				descriptionPanel.add(button);
+			}
+		}
+		else if(building.getId() == EntityConfiguration.HQ) {
+			String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(building.getProductionId()).getDescription();
+			AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
+			AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
+			
+			for(int key : upgradesAvailable.keySet()) {
+				upgradesUse.put(key, upgradesAvailable.get(key));
+			}
+			
+			for(Integer id : searchingUpgrades) {
+				if(upgradesAvailable.containsKey(id)) {
+					upgradesUse.remove(id);
+				}
+			}
+			
+			for(ForUpgrade upgrade : upgradesUse.values()) {
+				JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
+				button.setFocusable(false);
+				button.setToolTipText("Coût : " + upgrade.getCost());
+				descriptionPanel.add(button);
+				infoEnd++;
+			}
+			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
+			button.setFocusable(false);
+			button.setToolTipText("Coût : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(building.getProductionId()).getCost());
+			infoEnd++;
+			
+			descriptionPanel.add(button);
+		}
+		else {
+			String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronFighters().get(building.getProductionId()).getDescription();
+			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
+			button.setFocusable(false);
+			button.setToolTipText("Coût : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronFighters().get(building.getProductionId()).getCost());
+			infoEnd++;
+	
+			descriptionPanel.add(button);
+		}
+		
+		for(int i = infoEnd; i < caseLayoutCount; i++) {
+			descriptionPanel.add(new JLabel());
+		}
+		/*if(building.getProductionId() > -1)
 		{
 			productionCountLabel.setText(("file d'attente : " + building.getElementCount().size()));
 			
@@ -526,7 +636,7 @@ public class GameDisplay extends JPanel
 					}
 				}
 				
-				descriptionPanel.setLayout(new GridLayout(upgradesUse.size() + 2, 1));
+				//descriptionPanel.setLayout(new GridLayout(upgradesUse.size() + 2, 1));
 				for(ForUpgrade upgrade : upgradesUse.values()) {
 					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
@@ -554,7 +664,7 @@ public class GameDisplay extends JPanel
 					}
 				}
 				
-				descriptionPanel.setLayout(new GridLayout(10, 1));
+				//descriptionPanel.setLayout(new GridLayout(10, 1));
 				for(ForUpgrade upgrade : upgradesUse.values()) {
 					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
@@ -587,7 +697,7 @@ public class GameDisplay extends JPanel
 				descriptionPanel.add(button);
 				descriptionPanel.add(new JLabel(building.getDescription()));
 			}
-		}
+		}*/
 		
 		descriptionPanel.validate();
 	}
@@ -739,23 +849,23 @@ public class GameDisplay extends JPanel
 			ForUpgrade hqUpgrade = race.getHQUpgrades().get(idProduction);
 			ForWorker worker = race.getPatronWorkers().get(idProduction);
 			if(fighter != null) {
-				currentProductionLabel.setText("Prod: " + fighter.getDescription()+ "\n temps restant : " + (int)building.getTimer());
+				currentProductionLabel.setText("Prod: " + fighter.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
 			}
 			else if(forgeUpgrade != null) {
-				currentProductionLabel.setText("Prod: " + forgeUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer());
+				currentProductionLabel.setText("Prod: " + forgeUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
 			}
 			else if(hqUpgrade != null){
-				currentProductionLabel.setText("Prod: " + hqUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer());
+				currentProductionLabel.setText("Prod: " + hqUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
 			}
 			else if(worker != null) {
-				currentProductionLabel.setText("Prod: " + worker.getDescription()+ "\n temps restant : " + (int)building.getTimer());
+				currentProductionLabel.setText("Prod: " + worker.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
 			}
 		}
 		else {
 			currentProductionLabel.setText("Rien n'est en production");
 		}
 	}
-	
+
 	public void update() {
 		if(state == INGAME){
 			int populationCount = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getPopulationCount();
@@ -768,8 +878,18 @@ public class GameDisplay extends JPanel
 			
 			if(this.manager.getSelectedProdBuilding() != null) {
 				ProductionBuilding prod = manager.getSelectedProdBuilding();
-				productionCountLabel.setText(("file d'attente : " + prod.getElementCount().size()));
 				actualiseCurrentProdLabel(prod);
+			}
+			
+			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isUpgradeAge()) {
+				if(this.manager.getSelectedProdBuilding() !=  null) {
+					List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(this.manager.getSelectedProdBuilding().getFaction()).getSearchingUpgrades();
+					setDescriptionPanelForBuilding(this.manager.getSelectedProdBuilding(), searchingUpgrades);
+				}
+				else if(this.manager.getSelectedAttackBuilding() == null && this.manager.getSelectedStorageBuilding() == null && this.manager.getSelectedUnits().isEmpty()) {
+					setDescriptionPanelForConstruction();
+				}
+				manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setUpgradeAge(false);
 			}
 		}
 		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {

@@ -22,6 +22,7 @@ public class Faction {
 	private int moneyCount;
 	private AbstractMap<Integer, ForUpgrade> upgradesDone;
 	private List<Integer> searchingUpgrades;
+	private boolean upgradeAge;
 
 	public Faction(int id) {
 		age = 1;
@@ -31,6 +32,7 @@ public class Faction {
 		populationCount = 0;
 		upgradesDone = new HashMap<Integer, ForUpgrade>();
 		searchingUpgrades = new ArrayList<Integer>();
+		upgradeAge = false;
 		
 		if(id == 1){
 			race = new Royaume();
@@ -117,5 +119,13 @@ public class Faction {
 
 	public void setSearchingUpgrades(List<Integer> searchingUpgrades) {
 		this.searchingUpgrades = searchingUpgrades;
+	}
+
+	public boolean isUpgradeAge() {
+		return upgradeAge;
+	}
+
+	public void setUpgradeAge(boolean upgradeAge) {
+		this.upgradeAge = upgradeAge;
 	}
 }

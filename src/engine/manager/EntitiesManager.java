@@ -270,6 +270,9 @@ public class EntitiesManager
 	public void createUpgrade(int id, int faction) {
 		if(id == EntityConfiguration.AGE_UPGRADE || id == EntityConfiguration.AGE_UPGRADE_2) {
 			System.out.println("upgrade age !");
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				factionManager.getFactions().get(faction).setUpgradeAge(true);
+			}
 			factionManager.getFactions().get(faction).setAge(factionManager.getFactions().get(faction).getAge() + 1);
 			factionManager.getFactions().get(faction).getRace().getHQUpgrades().remove(id);
 		}
