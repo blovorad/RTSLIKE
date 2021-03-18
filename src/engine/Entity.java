@@ -22,6 +22,7 @@ public class Entity
 	private int timerHit;
 	private BufferedImage texture;
 	private int sightRange;
+	private boolean selected;
 	
 	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, BufferedImage texture, int sightRange)
 	{
@@ -35,6 +36,7 @@ public class Entity
 		this.setFaction(faction);
 		this.texture = texture;
 		this.setSightRange(sightRange);
+		this.setSelected(false);
 	}
 	
 	public Entity(int hp, String description, Position position, Position destination, int id, int faction)
@@ -169,5 +171,13 @@ public class Entity
 
 	public void setSightRange(int sightRange) {
 		this.sightRange = sightRange;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 }

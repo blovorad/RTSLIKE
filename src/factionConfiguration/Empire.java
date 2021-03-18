@@ -106,7 +106,7 @@ public class Empire extends Race
 	
 	public void initTower()
 	{
-		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(100, 10, 10, 10 ,10 ,1, "Tour Empire", 100, 25));
+		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(100, 10, 1, 80 ,10 ,1, "Tour Empire", 100, 25));
 	}
 	
 	public void initRessourceStockage()

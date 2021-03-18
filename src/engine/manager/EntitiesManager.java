@@ -438,7 +438,7 @@ public class EntitiesManager
 		}
 		else if(id == EntityConfiguration.TOWER){
 			ForAttackBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getAttackBuildings().get(id);
-			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.TOWER), patronBuilding.getSightRange());
+			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.TOWER), patronBuilding.getSightRange(), patronBuilding.getAttackDamage(), patronBuilding.getAttackSpeed(), patronBuilding.getAttackRange());
 		}
 		else{
 			System.out.println("invalide ID");
@@ -472,6 +472,7 @@ public class EntitiesManager
 	}
 	
 	public void addSelectedUnit(Unit unit){
+		unit.setSelected(true);
 		this.selectedUnits.add(unit);
 	}
 	
@@ -484,9 +485,9 @@ public class EntitiesManager
 	}
 	
 	public void clearSelectedBuildings(){
-		this.selectedAttackBuilding = null;
-		this.selectedProdBuilding = null;
-		this.selectedStorageBuilding = null;
+		this.clearSelectedAttackBuilding();
+		this.clearSelectedStorageBuilding();
+		this.clearSelectedProdBuilding();
 	}
 	
 	public void clean(){
@@ -595,6 +596,7 @@ public class EntitiesManager
 	}
 
 	public void setSelectedProdBuilding(ProductionBuilding selectedProdBuilding) {
+		selectedProdBuilding.setSelected(true);
 		this.selectedProdBuilding = selectedProdBuilding;
 	}
 
@@ -603,6 +605,7 @@ public class EntitiesManager
 	}
 
 	public void setSelectedAttackBuilding(AttackBuilding selectedAttackBuilding) {
+		selectedAttackBuilding.setSelected(true);
 		this.selectedAttackBuilding = selectedAttackBuilding;
 	}
 
@@ -611,6 +614,7 @@ public class EntitiesManager
 	}
 
 	public void setSelectedStorageBuilding(StorageBuilding selectedStorageBuilding) {
+		selectedStorageBuilding.setSelected(true);
 		this.selectedStorageBuilding = selectedStorageBuilding;
 	}
 
@@ -644,5 +648,33 @@ public class EntitiesManager
 
 	public void setBotStorageBuildings(List<StorageBuilding> botStorageBuildings) {
 		this.botStorageBuildings = botStorageBuildings;
+	}
+	
+	public void clearSelectedUnit() {
+		for(Unit unit : selectedUnits) {
+			unit.setSelected(false);
+		}
+		this.selectedUnits.clear();
+	}
+	
+	public void clearSelectedProdBuilding() {
+		if(this.selectedProdBuilding != null) {
+			this.selectedProdBuilding.setSelected(false);
+		}
+		this.selectedProdBuilding = null;
+	}
+	
+	public void clearSelectedAttackBuilding() {
+		if(this.selectedAttackBuilding != null) {
+			this.selectedAttackBuilding.setSelected(false);
+		}
+		this.selectedAttackBuilding = null;
+	}
+	
+	public void clearSelectedStorageBuilding() {
+		if(this.selectedStorageBuilding != null) {
+			this.selectedStorageBuilding.setSelected(false);
+		}
+		this.selectedStorageBuilding = null;
 	}
 }

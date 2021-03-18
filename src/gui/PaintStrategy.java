@@ -9,6 +9,7 @@ import configuration.GameConfiguration;
 import configuration.MapConfiguration;
 import engine.Camera;
 import engine.Entity;
+import engine.Position;
 import engine.entity.unit.Unit;
 import engine.manager.GraphicsManager;
 import engine.map.Map;
@@ -188,6 +189,15 @@ public class PaintStrategy
 			graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 		}	
 		graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		
+		if(entity.isSelected()) {
+			Position p = entity.getPosition();
+			int widthLife = EntityConfiguration.UNIT_SIZE - (int)((((float)entity.getHpMax() - (float)entity.getHp()) / (float)entity.getHpMax()) * (float)EntityConfiguration.UNIT_SIZE);
+			graphics.setColor(Color.red);
+			graphics.fillRect(p.getX() - camera.getX(), p.getY() - 20 - camera.getY(), EntityConfiguration.UNIT_SIZE, 10);
+			graphics.setColor(Color.green);
+			graphics.fillRect(p.getX() - camera.getX(), p.getY() - 20 - camera.getY(), widthLife, 10);
+		}
 	}
 	
 	public void paint(Map map, Graphics graphics, Camera camera, GraphicsManager graphicsManager)

@@ -197,7 +197,7 @@ public class MainGui extends JFrame implements Runnable
 		public void checkWhatIsSelected(int mouseX, int mouseY)
 		{
 			manager.clearSelectedBuildings();
-			manager.clearSelectedUnits();
+			manager.clearSelectedUnit();
 			dashboard.setDescriptionPanelStandard();
 
 			int x = mouseX + camera.getX();
@@ -287,7 +287,7 @@ public class MainGui extends JFrame implements Runnable
 		public void checkWhatIsSelected(int x, int y, int w, int h)
 		{
 			manager.clearSelectedBuildings();
-			manager.clearSelectedUnits();
+			manager.clearSelectedUnit();
 			dashboard.setDescriptionPanelStandard();
 			
 			SelectionRect rect = new SelectionRect(x, y, w, h);

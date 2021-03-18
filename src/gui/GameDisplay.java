@@ -818,6 +818,11 @@ public class GameDisplay extends JPanel
 					manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setStatUpgrade(false);
 				}
 			}
+			if(manager.getSelectedUnits().size() > 0) {
+				if(this.manager.getSelectedUnits().get(0).isHit()) {
+					setDescriptionPanelForUnit(this.manager.getSelectedUnits().get(0));
+				}
+			}
 		}
 		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {
 			audioManager.manageVolume(this.sonSlider.getValue());
