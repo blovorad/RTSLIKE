@@ -2,7 +2,11 @@ package factionConfiguration;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public abstract class Race 
 {
 	private String name;

@@ -1,5 +1,10 @@
 package factionConfiguration;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class ForAttackBuilding extends Patron{
 	
 	private int attackDamage;

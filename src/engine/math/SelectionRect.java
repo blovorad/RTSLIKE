@@ -1,7 +1,11 @@
 package engine.math;
 
 import engine.Position;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class SelectionRect 
 {
 	private int x;

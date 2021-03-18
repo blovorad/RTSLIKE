@@ -9,7 +9,11 @@ import engine.Entity;
 import engine.Position;
 import engine.entity.unit.Unit;
 import engine.map.Tile;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public abstract class AttackBuilding extends Entity{
 
 	private int sightRange;

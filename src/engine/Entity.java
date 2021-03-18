@@ -3,7 +3,11 @@ package engine;
 import java.awt.image.BufferedImage;
 
 import configuration.EntityConfiguration;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class Entity 
 {
 	private int hp;

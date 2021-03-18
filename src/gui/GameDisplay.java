@@ -125,6 +125,7 @@ public class GameDisplay extends JPanel
 	private JLabel ageLabel;
 	private JLabel timeLabel;
 	private JTextArea currentProductionLabel = new JTextArea();
+	private JTextArea unitStatistiquesLabel = new JTextArea();
 	private GraphicsManager graphicsManager;
 	
 	private int selectedMap = 1;
@@ -158,6 +159,7 @@ public class GameDisplay extends JPanel
 		mainMenuPanel.setVisible(true);
 		
 		currentProductionLabel.setEditable(false);
+		unitStatistiquesLabel.setEditable(false);
 		this.add(mainMenuPanel);
 	}
 	
@@ -448,9 +450,13 @@ public class GameDisplay extends JPanel
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(1, 3));
 		
+		unitStatistiquesLabel.setText("Points de vie : " + unit.getHp() +
+										"\nDégâts : " + unit.getDamage() + 
+										"\nArmure : " + unit.getArmor());
+		
 		descriptionPanel.add(new JLabel("etat"));
 		descriptionPanel.add(new JLabel(unit.getDescription()));
-		descriptionPanel.add(new JLabel("LES STATS"));
+		descriptionPanel.add(unitStatistiquesLabel);
 		
 		descriptionPanel.validate();
 	}
@@ -555,6 +561,9 @@ public class GameDisplay extends JPanel
 					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
 					button.setToolTipText("Coût : " + upgrade.getCost());
+					if(upgrade.getAge() > this.manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge()) {
+						button.setEnabled(false);
+					}
 					descriptionPanel.add(button);
 				}
 				infoEnd++;
@@ -610,111 +619,6 @@ public class GameDisplay extends JPanel
 		for(int i = infoEnd; i < caseLayoutCount; i++) {
 			descriptionPanel.add(new JLabel());
 		}
-		/*if(building.getProductionId() > -1)
-		{
-			productionCountLabel.setText(("file d'attente : " + building.getElementCount().size()));
-			
-			if(building.getIsProducing()) {
-				int idProduction = building.getElementCount().get(0);
-				
-				Race race = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace();
-				ForFighter fighter = race.getPatronFighters().get(idProduction);
-				ForUpgrade forgeUpgrade = race.getForgeUpgrades().get(idProduction);
-				ForUpgrade hqUpgrade = race.getHQUpgrades().get(idProduction);
-				ForWorker worker = race.getPatronWorkers().get(idProduction);
-				if(fighter != null) {
-					currentProductionLabel.setText("Prod: " + fighter.getDescription()+ "\n temps restant : " + building.getTimer());
-				}
-				else if(forgeUpgrade != null) {
-					currentProductionLabel.setText("Prod: " + forgeUpgrade.getDescription()+ "\n temps restant : " + building.getTimer());
-				}
-				else if(hqUpgrade != null){
-					currentProductionLabel.setText("Prod: " + hqUpgrade.getDescription()+ "\n temps restant : " + building.getTimer());
-				}
-				else if(worker != null) {
-					currentProductionLabel.setText("Prod: " + worker.getDescription()+ "\n temps restant : " + building.getTimer());
-				}
-			}
-			else {
-				currentProductionLabel.setText("Rien n'est en production");
-			}
-			descriptionPanel.add(currentProductionLabel);
-			if(building.getId() == EntityConfiguration.FORGE) {
-				AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
-				AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
-				
-				for(int key : upgradesAvailable.keySet()) {
-					upgradesUse.put(key, upgradesAvailable.get(key));
-				}
-				
-				for(Integer id : searchingUpgrades) {
-					if(upgradesAvailable.containsKey(id)) {
-						upgradesUse.remove(id);
-					}
-				}
-				
-				//descriptionPanel.setLayout(new GridLayout(upgradesUse.size() + 2, 1));
-				for(ForUpgrade upgrade : upgradesUse.values()) {
-					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
-					button.setFocusable(false);
-					button.setToolTipText("Coût : " + upgrade.getCost());
-					descriptionPanel.add(button);
-				}
-				JButton button1 = new JButton(new UndoProduction("retirer production", building));
-				button1.setFocusable(false);
-				descriptionPanel.add(button1);
-				descriptionPanel.add(productionCountLabel);
-				descriptionPanel.add(new JLabel(building.getDescription()));
-			}
-			else if(building.getId() == EntityConfiguration.HQ) {
-				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(building.getProductionId()).getDescription();
-				AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
-				AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
-				
-				for(int key : upgradesAvailable.keySet()) {
-					upgradesUse.put(key, upgradesAvailable.get(key));
-				}
-				
-				for(Integer id : searchingUpgrades) {
-					if(upgradesAvailable.containsKey(id)) {
-						upgradesUse.remove(id);
-					}
-				}
-				
-				//descriptionPanel.setLayout(new GridLayout(10, 1));
-				for(ForUpgrade upgrade : upgradesUse.values()) {
-					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
-					button.setFocusable(false);
-					button.setToolTipText("Coût : " + upgrade.getCost());
-					descriptionPanel.add(button);
-				}
-				JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
-				button.setFocusable(false);
-				button.setToolTipText("Coût : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(building.getProductionId()).getCost());
-				
-				JButton button1 = new JButton(new UndoProduction("retirer production", building));
-				button1.setFocusable(false);
-				
-				descriptionPanel.add(button1);
-				descriptionPanel.add(productionCountLabel);
-				descriptionPanel.add(button);
-				descriptionPanel.add(new JLabel(building.getDescription()));
-			}
-			else {
-				String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronFighters().get(building.getProductionId()).getDescription();
-				JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
-				button.setFocusable(false);
-				button.setToolTipText("Coût : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronFighters().get(building.getProductionId()).getCost());
-				
-				JButton button1 = new JButton(new UndoProduction("retirer production", building));
-				button1.setFocusable(false);
-				
-				descriptionPanel.add(button1);
-				descriptionPanel.add(productionCountLabel);
-				descriptionPanel.add(button);
-				descriptionPanel.add(new JLabel(building.getDescription()));
-			}
-		}*/
 		
 		descriptionPanel.validate();
 	}
@@ -907,6 +811,12 @@ public class GameDisplay extends JPanel
 					setDescriptionPanelForConstruction();
 				}
 				manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setUpgradeAge(false);
+			}
+			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isStatUpgrade()) {
+				if(this.manager.getSelectedUnits().size() > 0) {
+					setDescriptionPanelForUnit(this.manager.getSelectedUnits().get(0));
+					manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setStatUpgrade(false);
+				}
 			}
 		}
 		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {

@@ -5,7 +5,11 @@ import java.awt.image.BufferedImage;
 import engine.Entity;
 import engine.Position;
 import engine.map.Tile;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public class StorageBuilding extends Entity{
 	
 	private Tile tile;

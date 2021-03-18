@@ -7,7 +7,11 @@ import java.util.List;
 import engine.Position;
 import engine.map.Tile;
 import factionConfiguration.ForUpgrade;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public class Forge extends ProductionBuilding{
 	
 	public Forge(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture, int sightRange) {

@@ -12,7 +12,11 @@ import engine.Entity;
 import engine.Position;
 import engine.map.Tile;
 import factionConfiguration.ForUpgrade;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public abstract class ProductionBuilding extends Entity{
 
 	private List<Integer> elementCount;

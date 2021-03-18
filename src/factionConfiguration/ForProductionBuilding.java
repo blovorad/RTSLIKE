@@ -1,7 +1,11 @@
 package factionConfiguration;
 
 import java.util.AbstractMap;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class ForProductionBuilding extends Patron{
 	
 	private AbstractMap<Integer, ForUpgrade> upgrades;

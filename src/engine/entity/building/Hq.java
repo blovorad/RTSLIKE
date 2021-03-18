@@ -9,7 +9,11 @@ import engine.Position;
 import engine.map.Tile;
 import factionConfiguration.ForUpgrade;
 import factionConfiguration.ForWorker;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public class Hq extends ProductionBuilding{
 
 	private ForWorker worker;

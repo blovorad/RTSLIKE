@@ -1,5 +1,9 @@
 package factionConfiguration;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class ForStorageBuilding extends Patron{
 	
 	private int ressources;

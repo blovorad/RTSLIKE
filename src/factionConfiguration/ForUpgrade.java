@@ -1,5 +1,9 @@
 package factionConfiguration;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class ForUpgrade {
 
 	private int age; // age ou l'upgrade est dispo

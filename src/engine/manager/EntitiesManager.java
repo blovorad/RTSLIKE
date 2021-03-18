@@ -276,6 +276,9 @@ public class EntitiesManager
 		}
 		else {
 			ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getForgeUpgrades().get(id);
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				factionManager.getFactions().get(faction).setStatUpgrade(true);
+			}
 			if(id== EntityConfiguration.ARMOR_UPGRADE) {
 				System.out.println("upgrade armure !");
 				for(Fighter fighter : fighters) {
@@ -303,22 +306,91 @@ public class EntitiesManager
 				System.out.println("upgrade damage !");
 				for(Fighter fighter : fighters) {
 					if(fighter.getFaction() == faction) {
-						fighter.setArmor(fighter.getDamage() + upgrade.getEffect());
+						fighter.setDamage(fighter.getDamage() + upgrade.getEffect());
 					}
 				}
 				for(Worker worker : workers) {
 					if(worker.getFaction() == faction) {
-						worker.setArmor(worker.getDamage() + upgrade.getEffect());
+						worker.setDamage(worker.getDamage() + upgrade.getEffect());
 					}
 				}
 				for(Unit unit : units) {
 					if(unit.getFaction() == faction) {
-						unit.setArmor(unit.getDamage() + upgrade.getEffect());
+						unit.setDamage(unit.getDamage() + upgrade.getEffect());
 					}
 				}
 				for(Unit unit : selectedUnits) {
 					if(unit.getFaction() == faction) {
-						unit.setArmor(unit.getDamage() + upgrade.getEffect());
+						unit.setDamage(unit.getDamage() + upgrade.getEffect());
+					}
+				}
+			}
+			else if(id == EntityConfiguration.ATTACK_RANGE_UPGRADE) {
+				System.out.println("upgrade attack range !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setAttackRange(fighter.getAttackRange() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setAttackRange(worker.getAttackRange() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setAttackRange(unit.getAttackRange() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setAttackRange(unit.getAttackRange() + upgrade.getEffect());
+					}
+				}
+			}
+			else if(id == EntityConfiguration.ATTACK_SPEED_UPGRADE) {
+				System.out.println("upgrade attack speed !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setAttackSpeed(fighter.getAttackSpeed() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setAttackSpeed(worker.getAttackSpeed() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setAttackSpeed(unit.getAttackSpeed() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setAttackSpeed(unit.getAttackSpeed() + upgrade.getEffect());
+					}
+				}
+			}
+			else if(id == EntityConfiguration.SIGHT_RANGE_UPGRADE) {
+				System.out.println("upgrade sight range !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setSightRange(fighter.getSightRange() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setSightRange(worker.getSightRange() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setSightRange(unit.getSightRange() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setSightRange(unit.getSightRange() + upgrade.getEffect());
 					}
 				}
 			}

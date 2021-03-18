@@ -4,7 +4,11 @@ import java.awt.image.BufferedImage;
 
 import engine.Position;
 import engine.map.Tile;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public class Tower extends AttackBuilding{
 
 	public Tower(Position position, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture, int sightRange) {

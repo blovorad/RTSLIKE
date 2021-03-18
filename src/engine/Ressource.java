@@ -4,7 +4,11 @@ import java.awt.image.BufferedImage;
 
 import configuration.EntityConfiguration;
 import engine.map.Tile;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class Ressource extends Entity
 {
 	private Tile tileAttach;

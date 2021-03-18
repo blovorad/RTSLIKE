@@ -12,7 +12,11 @@ import factionConfiguration.ForUpgrade;
 import factionConfiguration.Gaia;
 import factionConfiguration.Race;
 import factionConfiguration.Royaume;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class Faction {
 	private Race race;
 	private int age;
@@ -23,6 +27,7 @@ public class Faction {
 	private AbstractMap<Integer, ForUpgrade> upgradesDone;
 	private List<Integer> searchingUpgrades;
 	private boolean upgradeAge;
+	private boolean statUpgrade;
 
 	public Faction(int id) {
 		age = 1;
@@ -33,6 +38,7 @@ public class Faction {
 		upgradesDone = new HashMap<Integer, ForUpgrade>();
 		searchingUpgrades = new ArrayList<Integer>();
 		upgradeAge = false;
+		setStatUpgrade(false);
 		
 		if(id == 1){
 			race = new Royaume();
@@ -127,5 +133,13 @@ public class Faction {
 
 	public void setUpgradeAge(boolean upgradeAge) {
 		this.upgradeAge = upgradeAge;
+	}
+
+	public boolean isStatUpgrade() {
+		return statUpgrade;
+	}
+
+	public void setStatUpgrade(boolean statUpgrade) {
+		this.statUpgrade = statUpgrade;
 	}
 }

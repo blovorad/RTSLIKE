@@ -5,6 +5,12 @@ import configuration.GameConfiguration;
 import engine.Faction;
 import engine.map.Map;
 
+/**
+ * 
+ * @author maxime
+ *
+ */
+
 public class GameBuilder {
 
 	public static Map buildMap(int selectedMap, GraphicsManager graphicsManager, EntitiesManager manager) {

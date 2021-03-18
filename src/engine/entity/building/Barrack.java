@@ -7,7 +7,11 @@ import configuration.EntityConfiguration;
 import engine.Position;
 import engine.map.Tile;
 import factionConfiguration.ForFighter;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public class Barrack extends ProductionBuilding{
 
 	private ForFighter infantry;

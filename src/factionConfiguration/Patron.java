@@ -1,5 +1,9 @@
 package factionConfiguration;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public abstract class Patron 
 {
 	private int hp;

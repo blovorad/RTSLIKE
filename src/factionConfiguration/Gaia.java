@@ -1,7 +1,11 @@
 package factionConfiguration;
 
 import configuration.EntityConfiguration;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class Gaia extends Race
 {
 	public Gaia()

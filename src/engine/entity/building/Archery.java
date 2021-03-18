@@ -7,7 +7,11 @@ import configuration.EntityConfiguration;
 import engine.Position;
 import engine.map.Tile;
 import factionConfiguration.ForFighter;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public class Archery extends ProductionBuilding{
 
 	private ForFighter archer;

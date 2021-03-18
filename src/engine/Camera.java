@@ -3,6 +3,12 @@ package engine;
 
 import configuration.GameConfiguration;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class Camera 
 {
 	private int x;

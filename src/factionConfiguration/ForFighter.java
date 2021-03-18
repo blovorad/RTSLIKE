@@ -1,5 +1,11 @@
 package factionConfiguration;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class ForFighter extends Patron
 {
 	private int range;
@@ -12,7 +18,7 @@ public class ForFighter extends Patron
 	
 	public ForFighter(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int cost)
 	{
-		super(hp, age, description, hpMax, cost, sightRange);
+		super(hp, age, description, hpMax, sightRange, cost);
 		
 		this.range = range;
 		this.damage = damage;
