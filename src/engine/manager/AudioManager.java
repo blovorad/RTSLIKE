@@ -1,6 +1,8 @@
 package engine.manager;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -20,15 +22,23 @@ public class AudioManager {
 	private Clip musique;
 	private int sliderVolume;
 	private int currentMusique;
+	private Clip fx;
+	private List<File>fxs;
 	
 	public AudioManager() {
 		currentMusique = 1;
+		fxs = new ArrayList<File>();
 		try {
 			File file = new File("src/sounds/musique1.wav");
 			musique = AudioSystem.getClip();
+			setFx(AudioSystem.getClip());
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 			musique.open(inputStream);
 			musique.start();
+			
+			fxs.add(new File("src/sounds/launchGameFx.wav"));
+			fxs.add(new File("src/sounds/menuButtonFx.wav"));
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -88,6 +98,19 @@ public class AudioManager {
 		}
 	}
 	
+	public void startFx(int id) {
+		if(fx != null) {
+			fx.close();
+		}
+		try {
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
+			fx.open(inputStream);
+			fx.start();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public int getState() {
 		return state;
 	}
@@ -129,6 +152,14 @@ public class AudioManager {
 
 	public void setSliderVolume(int sliderVolume) {
 		this.sliderVolume = sliderVolume;
+	}
+
+	public Clip getFx() {
+		return fx;
+	}
+
+	public void setFx(Clip fx) {
+		this.fx = fx;
 	}
 
 }

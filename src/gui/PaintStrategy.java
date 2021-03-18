@@ -40,6 +40,8 @@ public class PaintStrategy
 	private int camW;
 	private int camH;
 	
+	private int lifeBarreY;
+	
 	public PaintStrategy(int width, int height)
 	{
 		//if(width == 800 && height == 600) {
@@ -57,6 +59,7 @@ public class PaintStrategy
 			camY = (int)(490f * GameConfiguration.SCALE_Y);
 			camW = (width / GameConfiguration.TILE_SIZE);
 			camH = (height / GameConfiguration.TILE_SIZE);
+			lifeBarreY = 10;
 		//}
 		/*if(width == 1920 && height == 1080)
 		{
@@ -193,10 +196,18 @@ public class PaintStrategy
 		if(entity.isSelected()) {
 			Position p = entity.getPosition();
 			int widthLife = EntityConfiguration.UNIT_SIZE - (int)((((float)entity.getHpMax() - (float)entity.getHp()) / (float)entity.getHpMax()) * (float)EntityConfiguration.UNIT_SIZE);
-			graphics.setColor(Color.red);
-			graphics.fillRect(p.getX() - camera.getX(), p.getY() - 20 - camera.getY(), EntityConfiguration.UNIT_SIZE, 10);
-			graphics.setColor(Color.green);
-			graphics.fillRect(p.getX() - camera.getX(), p.getY() - 20 - camera.getY(), widthLife, 10);
+			if(p.getY() > lifeBarreY) {
+				graphics.setColor(Color.red);
+				graphics.fillRect(p.getX() - camera.getX(), p.getY() - lifeBarreY - camera.getY(), EntityConfiguration.UNIT_SIZE, lifeBarreY / 2);
+				graphics.setColor(Color.green);
+				graphics.fillRect(p.getX() - camera.getX(), p.getY() - lifeBarreY - camera.getY(), widthLife, lifeBarreY / 2);
+			}
+			else {
+				graphics.setColor(Color.red);
+				graphics.fillRect(p.getX() - camera.getX(), p.getY() + lifeBarreY + EntityConfiguration.UNIT_SIZE - camera.getY(), EntityConfiguration.UNIT_SIZE, lifeBarreY / 2);
+				graphics.setColor(Color.green);
+				graphics.fillRect(p.getX() - camera.getX(), p.getY() + lifeBarreY + EntityConfiguration.UNIT_SIZE - camera.getY(), widthLife, lifeBarreY / 2);
+			}
 		}
 	}
 	

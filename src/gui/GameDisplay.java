@@ -1095,6 +1095,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{	
+			audioManager.startFx(0);
 			time = 0;
 			GameBuilder.buildFaction(manager, boxPlayer1.getSelectedIndex() + 1, boxPlayer2.getSelectedIndex() + 1);
 			map = GameBuilder.buildMap(selectedMap, graphicsManager, manager);
@@ -1418,6 +1419,7 @@ public class GameDisplay extends JPanel
 					manager.clean();
 					camera.reset();
 				}
+				audioManager.startFx(1);
 				mainMenuPanel.setVisible(true);
 				getMainPanel().add(mainMenuPanel);
 				break;
@@ -1450,6 +1452,7 @@ public class GameDisplay extends JPanel
 					mainMenuPanel.setVisible(false);
 					getMainPanel().remove(mainMenuPanel);
 				}
+				audioManager.startFx(1);
 				optionPanel.setVisible(true);
 				getMainPanel().add(optionPanel);
 				break;
@@ -1457,6 +1460,7 @@ public class GameDisplay extends JPanel
 			case PAUSE:
 				if(oldState == OPTION)
 				{
+					audioManager.startFx(1);
 					optionPanel.setVisible(false);
 					getMainPanel().remove(optionPanel);
 				}
@@ -1465,7 +1469,7 @@ public class GameDisplay extends JPanel
 					gamePanel.setVisible(false);
 					getMainPanel().remove(gamePanel);
 				}
-				
+				audioManager.startFx(1);
 				pauseMenuPanel.setVisible(true);
 				getMainPanel().add(pauseMenuPanel);
 				break;
