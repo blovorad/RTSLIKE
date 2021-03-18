@@ -43,6 +43,7 @@ public class EntitiesManager
 	
 	private List<Entity> collisionList = new ArrayList<Entity>();
 	private List<Entity> drawingList = new ArrayList<Entity>();
+	private List<Entity> playerEntities = new ArrayList<Entity>();
 	
 	private List<Unit> selectedUnits = new ArrayList<Unit>();
 	
@@ -180,18 +181,21 @@ public class EntitiesManager
 		drawingList.removeAll(removeStorageBuildings);
 		playerStorageBuildings.removeAll(removeStorageBuildings);
 		botStorageBuildings.removeAll(removeStorageBuildings);
+		playerEntities.removeAll(removeStorageBuildings);
 		removeStorageBuildings.clear();
 		
 		//removing attack building
 		attackBuildings.removeAll(removeAttackBuildings);
 		collisionList.removeAll(removeAttackBuildings);
 		drawingList.removeAll(removeAttackBuildings);
+		playerEntities.removeAll(removeAttackBuildings);
 		removeAttackBuildings.clear();
 		
 		//removing production building
 		prodBuildings.removeAll(removeProdBuildings);
 		collisionList.removeAll(removeProdBuildings);
 		drawingList.removeAll(removeProdBuildings);
+		playerEntities.removeAll(removeProdBuildings);
 		removeProdBuildings.clear();
 		
 		//removing worker
@@ -200,6 +204,7 @@ public class EntitiesManager
 		drawingList.removeAll(removeWorkers);
 		units.removeAll(removeWorkers);
 		selectedUnits.removeAll(removeWorkers);
+		playerEntities.removeAll(removeWorkers);
 		removeWorkers.clear();
 		
 		//removing fighter
@@ -208,6 +213,7 @@ public class EntitiesManager
 		drawingList.removeAll(removeFighters);
 		units.removeAll(removeFighters);
 		selectedUnits.removeAll(removeFighters);
+		playerEntities.removeAll(removeFighters);
 		removeFighters.clear();
 	}
 	
@@ -235,6 +241,9 @@ public class EntitiesManager
 			System.out.println("error adding worker in tab cause fighter is null");
 		}
 		else {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(fighter);
+			}
 			this.collisionList.add(fighter);
 			this.drawingList.add(fighter);
 			this.units.add(fighter);
@@ -258,6 +267,9 @@ public class EntitiesManager
 			System.out.println("error adding worker in tab cause worker is null");
 		}
 		else {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(worker);
+			}
 			this.collisionList.add(worker);
 			this.drawingList.add(worker);
 			this.units.add(worker);
@@ -445,12 +457,18 @@ public class EntitiesManager
 		}
 		
 		if(bprod != null) {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(bprod);
+			}
 			this.drawingList.add(bprod);
 			this.prodBuildings.add(bprod);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout Building production");
 		}
 		else if(bstorage != null){
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(bstorage);
+			}
 			this.drawingList.add(bstorage);
 			this.storageBuildings.add(bstorage);
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
@@ -463,6 +481,9 @@ public class EntitiesManager
 			System.out.println("ajout building storage");
 		}
 		else if(battack != null) {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(battack);
+			}
 			this.drawingList.add(battack);
 			this.attackBuildings.add(battack);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
@@ -491,6 +512,7 @@ public class EntitiesManager
 	}
 	
 	public void clean(){
+		this.playerEntities.clear();
 		this.collisionList.clear();
 		this.drawingList.clear();
 		this.fighters.clear();
@@ -676,5 +698,13 @@ public class EntitiesManager
 			this.selectedStorageBuilding.setSelected(false);
 		}
 		this.selectedStorageBuilding = null;
+	}
+
+	public List<Entity> getPlayerEntities() {
+		return playerEntities;
+	}
+
+	public void setPlayerEntities(List<Entity> playerEntities) {
+		this.playerEntities = playerEntities;
 	}
 }

@@ -93,42 +93,42 @@ public class Royaume extends Race
 	
 	public void initForge()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 2, this.getForgeUpgrades(), "Forge Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 2, this.getForgeUpgrades(), "Forge Royaume", 100, 100, 25));
 	}
 	
 	public void initHq()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, this.getHQUpgrades(), "Quartier general Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, this.getHQUpgrades(), "Quartier general Royaume", 100, 100, 25));
 	}
 	
 	public void initCastle()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 3, null, "Chateau Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 3, null, "Chateau Royaume", 100, 100, 25));
 	}
 	
 	public void initTower()
 	{
-		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(100, 10, 1, 80 ,10 ,1, "Tour Royaume", 100, 25));
+		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(100, 100, 1, 80 ,10 ,1, "Tour Royaume", 100, 25));
 	}
 	
 	public void initRessourceStockage()
 	{
-		this.getStorageBuildings().put(EntityConfiguration.STORAGE, new ForStorageBuilding(100 , 1, "Stockage Royaume", 100, 20, 25));
+		this.getStorageBuildings().put(EntityConfiguration.STORAGE, new ForStorageBuilding(100 , 1, "Stockage Royaume", 100, 100, 25));
 	}
 	
 	public void initBarrack()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.BARRACK, new ForProductionBuilding(100, 1, null, "Caserne Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.BARRACK, new ForProductionBuilding(100, 1, null, "Caserne Royaume", 100, 100, 25));
 	}
 	
 	public void initArchery()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 2, null, "Archerie Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 2, null, "Archerie Royaume", 100, 100, 25));
 	}
 	
 	public void initStable()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 2, null, "Ecurie Royaume", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 2, null, "Ecurie Royaume", 100, 100, 25));
 	}
 	
 	public void initForgeUpgrades()

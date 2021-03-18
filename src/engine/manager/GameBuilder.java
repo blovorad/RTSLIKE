@@ -16,7 +16,6 @@ public class GameBuilder {
 	public static Map buildMap(int selectedMap, GraphicsManager graphicsManager, EntitiesManager manager) {
 		
 		Map map;
-		
 		map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, selectedMap, "src/file/map" + selectedMap + ".txt", graphicsManager);
 		manager.addRessource(map.getGoldTiles());
 		

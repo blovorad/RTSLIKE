@@ -41,6 +41,7 @@ public class PaintStrategy
 	private int camH;
 	
 	private int lifeBarreY;
+	private SelectionRect flagDestinationRect;
 	
 	public PaintStrategy(int width, int height)
 	{
@@ -60,6 +61,7 @@ public class PaintStrategy
 			camW = (width / GameConfiguration.TILE_SIZE);
 			camH = (height / GameConfiguration.TILE_SIZE);
 			lifeBarreY = 10;
+			flagDestinationRect = new SelectionRect(0, 0, 10, 10);
 		//}
 		/*if(width == 1920 && height == 1080)
 		{
@@ -143,6 +145,12 @@ public class PaintStrategy
 		
 		graphics.setColor(Color.white);
 		graphics.drawRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
+		if(building.getDestination() != null) {
+			Position p = building.getDestination();
+			flagDestinationRect.updateAlpha();
+			graphics.setColor(new Color(255, 255, 255, flagDestinationRect.getAlpha()));
+			graphics.fillRect(p.getX() - camera.getX() - flagDestinationRect.getW() / 2, p.getY() - camera.getY() - flagDestinationRect.getH() / 2, flagDestinationRect.getW(), flagDestinationRect.getH());
+		}
 	}
 	
 	public void paint(Entity entity, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
@@ -226,7 +234,7 @@ public class PaintStrategy
 				graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
 				graphics.drawImage(graphicsManager.getGraphicsTile(tile.getId()), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
 				graphics.setColor(Color.black);
-				graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
+				//graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
 			}
 		}
 	}
@@ -264,7 +272,7 @@ public class PaintStrategy
 		graphics.setColor(Color.white);
 		graphics.drawRect(camX + camera.getX() / GameConfiguration.TILE_SIZE, camY + camera.getY() / GameConfiguration.TILE_SIZE, camW, camH);	
 				
-		graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
+		//graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
 	}
 	
 	public void paintEntityGui(Entity entity, Graphics graphics, Camera camera)
