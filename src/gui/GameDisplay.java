@@ -459,9 +459,11 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 1));
-	
+		descriptionPanel.setLayout(new GridLayout(2, 2));
+
 		descriptionPanel.add(new JLabel(building.getDescription()));
+		descriptionPanel.add(new JLabel("Points de vie : " + building.getHp()));
+		descriptionPanel.add(new JLabel("Attaque les unités adverse proche"));
 		
 		descriptionPanel.validate();
 	}
@@ -470,9 +472,11 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 1));
+		descriptionPanel.setLayout(new GridLayout(2, 2));
 	
 		descriptionPanel.add(new JLabel(building.getDescription()));
+		descriptionPanel.add(new JLabel("Points de vie : " + building.getHp()));
+		descriptionPanel.add(new JLabel("permet de déposer les ressources"));
 		
 		descriptionPanel.validate();
 	}
@@ -543,12 +547,17 @@ public class GameDisplay extends JPanel
 				}
 			}
 			
-			for(ForUpgrade upgrade : upgradesUse.values()) {
+			for(ForUpgrade upgrade : upgradesAvailable.values()) {
+				if(!upgradesUse.containsValue(upgrade)) {
+					descriptionPanel.add(new JLabel());
+				}
+				else {
+					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
+					button.setFocusable(false);
+					button.setToolTipText("Coût : " + upgrade.getCost());
+					descriptionPanel.add(button);
+				}
 				infoEnd++;
-				JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
-				button.setFocusable(false);
-				button.setToolTipText("Coût : " + upgrade.getCost());
-				descriptionPanel.add(button);
 			}
 		}
 		else if(building.getId() == EntityConfiguration.HQ) {
@@ -566,11 +575,19 @@ public class GameDisplay extends JPanel
 				}
 			}
 			
-			for(ForUpgrade upgrade : upgradesUse.values()) {
-				JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
-				button.setFocusable(false);
-				button.setToolTipText("Coût : " + upgrade.getCost());
-				descriptionPanel.add(button);
+			for(ForUpgrade upgrade : upgradesAvailable.values()) {
+				if(!upgradesUse.containsValue(upgrade)) {
+					descriptionPanel.add(new JLabel());
+				}
+				else {
+					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
+					button.setFocusable(false);
+					button.setToolTipText("Coût : " + upgrade.getCost());
+					if(upgrade.getId() == EntityConfiguration.AGE_UPGRADE_2 && this.manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge() < 2) {
+						button.setEnabled(false);
+					}
+					descriptionPanel.add(button);
+				}
 				infoEnd++;
 			}
 			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));

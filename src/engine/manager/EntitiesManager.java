@@ -1,6 +1,5 @@
 package engine.manager;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -274,7 +273,6 @@ public class EntitiesManager
 				factionManager.getFactions().get(faction).setUpgradeAge(true);
 			}
 			factionManager.getFactions().get(faction).setAge(factionManager.getFactions().get(faction).getAge() + 1);
-			factionManager.getFactions().get(faction).getRace().getHQUpgrades().remove(id);
 		}
 		else {
 			ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getForgeUpgrades().get(id);
@@ -324,13 +322,6 @@ public class EntitiesManager
 					}
 				}
 			}
-			factionManager.getFactions().get(faction).getRace().getForgeUpgrades().remove(id); //supprime l upgrade faite
-			
-			for(ProductionBuilding prodBuilding : prodBuildings) {
-				if(prodBuilding.getFaction() == faction) {
-					prodBuilding.getUpgrades().remove(id); //supprime dans l affichage
-				}
-			}
 		}
 	}
 	
@@ -341,19 +332,9 @@ public class EntitiesManager
 		tile.setSolid(true);
 		
 		if(id == EntityConfiguration.FORGE){
-			
-			AbstractMap<Integer, ForUpgrade> upgrades = factionManager.getFactions().get(faction).getRace().getForgeUpgrades();
-			AbstractMap<Integer, ForUpgrade> removeUpgrades = factionManager.getFactions().get(faction).getUpgradesDone();
-			for(int key : upgrades.keySet()) {
-				if(removeUpgrades.containsKey(key)) {
-					upgrades.remove(key);
-				}
-			}
-			//remove upgrade age
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, upgrades, graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
+			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, factionManager.getFactions().get(faction).getRace().getForgeUpgrades(), graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
 		}
-		//dans les autres tu balances le ForUnit de la race.
 		else if(id == EntityConfiguration.STABLE){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.CAVALRY);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
@@ -372,7 +353,7 @@ public class EntitiesManager
 		else if(id == EntityConfiguration.HQ){
 			ForWorker patronWorker = factionManager.getFactions().get(faction).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, patronBuilding.getUpgrades(), graphicsManager.getGraphicsEntity(EntityConfiguration.HQ), patronBuilding.getSightRange());
+			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, factionManager.getFactions().get(faction).getRace().getHQUpgrades(), graphicsManager.getGraphicsEntity(EntityConfiguration.HQ), patronBuilding.getSightRange());
 		}
 		else if(id == EntityConfiguration.CASTLE){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.SPECIAL_UNIT);
