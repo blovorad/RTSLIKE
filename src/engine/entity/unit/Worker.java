@@ -19,7 +19,6 @@ public class Worker extends Unit
 	{	
 		super(hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction, sightRange);
 		this.repair = repair;
-		System.out.println("maxspeed worker : " + maxSpeed);
 	}
 
 	public int getRepair() 

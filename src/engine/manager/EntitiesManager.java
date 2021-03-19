@@ -269,6 +269,7 @@ public class EntitiesManager
 		else {
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(worker);
+				System.out.println("worker sightRange : " + worker.getSightRange());
 			}
 			this.collisionList.add(worker);
 			this.drawingList.add(worker);

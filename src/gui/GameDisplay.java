@@ -43,7 +43,6 @@ import engine.manager.GameBuilder;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
 import engine.map.Map;
-import engine.map.Tile;
 import engine.math.SelectionRect;
 import factionConfiguration.ForFighter;
 import factionConfiguration.ForUpgrade;
@@ -1107,20 +1106,14 @@ public class GameDisplay extends JPanel
 			fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
 			audioManager.startFx(0);
 			time = 0;
-			GameBuilder.buildFaction(manager, boxPlayer1.getSelectedIndex() + 1, boxPlayer2.getSelectedIndex() + 1);
 			map = GameBuilder.buildMap(selectedMap, graphicsManager, manager);
+			GameBuilder.buildFaction(manager, boxPlayer1.getSelectedIndex() + 1, boxPlayer2.getSelectedIndex() + 1, map);
 			
 			gamePanel = createGamePanel();
 			gamePanel.setVisible(false);
 			
 			oldState = state;
 			state = INGAME;
-			
-			//création d'un ennemie pour test
-			Tile tile = map.getTile(15, 15);
-			Tile tile2 = map.getTile(20, 15);
-			manager.createBuilding(EntityConfiguration.ARCHERY, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), map.getTile(15, 15));
-			manager.createBuilding(EntityConfiguration.TOWER, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), map.getTile(20, 15));
 			
 			manageState();
 		}
