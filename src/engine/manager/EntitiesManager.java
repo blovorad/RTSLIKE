@@ -40,6 +40,7 @@ public class EntitiesManager
 {
 	private FactionManager factionManager;
 	private GraphicsManager graphicsManager;
+	private AudioManager audioManager;
 	
 	private List<Entity> collisionList = new ArrayList<Entity>();
 	private List<Entity> drawingList = new ArrayList<Entity>();
@@ -74,8 +75,9 @@ public class EntitiesManager
 	private List<Ressource> removeRessources = new ArrayList<Ressource>();
 
 	
-	public EntitiesManager() 
+	public EntitiesManager(AudioManager audioManager) 
 	{
+		this.audioManager = audioManager;
 		this.graphicsManager = new GraphicsManager();
 		this.factionManager = new FactionManager();
 		this.fighters = new ArrayList<Fighter>();
@@ -269,7 +271,6 @@ public class EntitiesManager
 		else {
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(worker);
-				System.out.println("worker sightRange : " + worker.getSightRange());
 			}
 			this.collisionList.add(worker);
 			this.drawingList.add(worker);
@@ -280,6 +281,9 @@ public class EntitiesManager
 	}
 	
 	public void createUpgrade(int id, int faction) {
+		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			audioManager.startFx(2);
+		}
 		if(id == EntityConfiguration.AGE_UPGRADE || id == EntityConfiguration.AGE_UPGRADE_2) {
 			System.out.println("upgrade age !");
 			if(faction == EntityConfiguration.PLAYER_FACTION) {

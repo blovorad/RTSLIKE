@@ -38,6 +38,7 @@ public class AudioManager {
 			
 			fxs.add(new File("src/sounds/launchGameFx.wav"));
 			fxs.add(new File("src/sounds/menuButtonFx.wav"));
+			fxs.add(new File("src/sounds/produceUpgradeFx.wav"));
 			
 		}
 		catch(Exception e) {
