@@ -2,6 +2,12 @@ package engine.map;
 
 import configuration.GameConfiguration;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class Fog {
 	
 	private boolean[][]fog;
