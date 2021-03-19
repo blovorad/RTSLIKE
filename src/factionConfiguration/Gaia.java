@@ -32,7 +32,7 @@ public class Gaia extends Race
 	
 	public void initWorker()
 	{
-		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 20, 5, 3, 20, 20, 2, 25, "Travailleur gaia", 5, 10, 1, 10, 10, 15, 25));
+		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 20, 5, 3, 20, 20, 2, 25, "Travailleur gaia", 20, 10, 1, 10, 10, 15, 25));
 	}
 	
 	public void initCavalry()

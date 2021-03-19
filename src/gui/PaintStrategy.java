@@ -12,6 +12,7 @@ import engine.Entity;
 import engine.Position;
 import engine.entity.unit.Unit;
 import engine.manager.GraphicsManager;
+import engine.map.Fog;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
@@ -219,6 +220,21 @@ public class PaintStrategy
 		}
 	}
 	
+	public void paint(Fog fog, Graphics graphics, Camera camera) {
+		graphics.setColor(Color.black);
+		boolean[][] removeFog = fog.getFog();
+		int tileSize = GameConfiguration.TILE_SIZE;
+		for (int lineIndex = 0; lineIndex < fog.getLineCount(); lineIndex++) 
+		{
+			for (int columnIndex = 0; columnIndex < fog.getColumnCount(); columnIndex++) 
+			{
+				if(removeFog[lineIndex][columnIndex] == true) {
+					graphics.fillRect(columnIndex * tileSize - camera.getX(), lineIndex * tileSize - camera.getY(), tileSize, tileSize);
+				}
+			}
+		}
+	}
+	
 	public void paint(Map map, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
@@ -239,9 +255,10 @@ public class PaintStrategy
 		}
 	}
 	
-	public void paintGui(Map map, List<Entity> entities, Graphics graphics, Camera camera)
+	public void paintGui(Map map, Fog fog, List<Entity> entities, Graphics graphics, Camera camera)
 	{	
 		Tile[][] tiles = map.getTiles();
+		boolean[][] removeFog = fog.getFog();
 		
 		//draw the rect of the minimap
 		graphics.setColor(new Color(168,104,38));
@@ -253,9 +270,8 @@ public class PaintStrategy
 			for (int columnIndex = 0; columnIndex < map.getColumnCount(); columnIndex++) 
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
-						
 				graphics.setColor(tile.getColor());
-		
+					
 				graphics.fillRect(tile.getColumn() * gridMapWidth + firstGridXOfMap, tile.getLine() * gridMapHeight + firstGridYOfMap, gridMapWidth, gridMapHeight);
 			}
 		}
@@ -263,6 +279,17 @@ public class PaintStrategy
 		for(Entity entity : entities)
 		{
 			paintEntityGui(entity, graphics, camera);
+		}
+		
+		graphics.setColor(Color.black);
+		for (int lineIndex = 0; lineIndex < fog.getLineCount(); lineIndex++) 
+		{
+			for (int columnIndex = 0; columnIndex < fog.getColumnCount(); columnIndex++) 
+			{
+				if(removeFog[lineIndex][columnIndex] == true) {
+					graphics.fillRect(columnIndex * gridMapWidth + firstGridXOfMap, lineIndex * gridMapHeight + firstGridYOfMap, gridMapWidth, gridMapHeight);
+				}
+			}
 		}
 		
 		graphics.setColor(new Color(168,104,38));

@@ -1,8 +1,10 @@
 infantry
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 7;description : infantry royaume;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 7;description : infantry royaume;hpMax : 20;cost : 25;
 archer
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 15;description : archer royaume;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 15;description : archer royaume;hpMax : 20;cost : 25;
 cavalry
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 10;description : cavalry royaume;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 10;description : cavalry royaume;hpMax : 20;cost : 25;
 special
-attackRange : 5;attackSpeed : 10;sightRange : 20;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 10;description : special royaume;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 10;description : special royaume;hpMax : 20;cost : 25;
+worker
+attackRange : 5;attackSpeed : 10;sightRange : 200;range : 20;damage : 5;armor : 3;maxSpeed : 20;hp : 20;age : 1;timeToBuild : 15;description : travailleur royaume;hpMax : 20;ressourceMax : 10;harvest : 1;repair : 10;harvestSpeed : 10;repairSpeed : 15;cost : 25;

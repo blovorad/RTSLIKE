@@ -41,6 +41,7 @@ import engine.entity.unit.Worker;
 import engine.manager.EntitiesManager;
 import engine.manager.GameBuilder;
 import engine.manager.GraphicsManager;
+import engine.map.Fog;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
@@ -65,6 +66,7 @@ public class GameDisplay extends JPanel
 	private PaintStrategy paintStrategy = new PaintStrategy(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
 	
 	private Map map;
+	private Fog fog;
 	
 	private Camera camera;
 	
@@ -823,6 +825,11 @@ public class GameDisplay extends JPanel
 					setDescriptionPanelForUnit(this.manager.getSelectedUnits().get(0));
 				}
 			}
+			
+			for(Entity entity : manager.getPlayerEntities()) {
+				Position p = entity.getPosition();
+				fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange());
+			}
 		}
 		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {
 			audioManager.manageVolume(this.sonSlider.getValue());
@@ -869,7 +876,9 @@ public class GameDisplay extends JPanel
 				this.paintStrategy.paint(selectionRectangle, g, camera);
 			}
 			
-			this.paintStrategy.paintGui(map, entities, g, camera);
+			this.paintStrategy.paint(fog, g, camera);
+			
+			this.paintStrategy.paintGui(map, fog, entities, g, camera);
 		}
 		else if(state == MAINMENU)
 		{
@@ -1095,6 +1104,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{	
+			fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
 			audioManager.startFx(0);
 			time = 0;
 			GameBuilder.buildFaction(manager, boxPlayer1.getSelectedIndex() + 1, boxPlayer2.getSelectedIndex() + 1);
@@ -1109,8 +1119,8 @@ public class GameDisplay extends JPanel
 			//création d'un ennemie pour test
 			Tile tile = map.getTile(15, 15);
 			Tile tile2 = map.getTile(20, 15);
-			manager.createBuilding(EntityConfiguration.ARCHERY, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * 32, tile.getLine() * 32), tile);
-			manager.createBuilding(EntityConfiguration.TOWER, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * 32, tile2.getLine() * 32), tile2);
+			manager.createBuilding(EntityConfiguration.ARCHERY, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), map.getTile(15, 15));
+			manager.createBuilding(EntityConfiguration.TOWER, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), map.getTile(20, 15));
 			
 			manageState();
 		}
@@ -1531,5 +1541,13 @@ public class GameDisplay extends JPanel
 
 	public void setSelectedMap(int selectedMap) {
 		this.selectedMap = selectedMap;
+	}
+
+	public Fog getFog() {
+		return fog;
+	}
+
+	public void setFog(Fog fog) {
+		this.fog = fog;
 	}
 }

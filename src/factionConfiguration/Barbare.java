@@ -42,8 +42,10 @@ public class Barbare extends Race
 			else if(line.equals("special")) {
 				initSpecial(scan.nextLine());
 			}
+			else if(line.equals("worker")) {
+				initWorker(scan.nextLine());
+			}
 		}
-		initWorker();
 		initForge();
 		initHq();
 		initCastle();
@@ -57,9 +59,11 @@ public class Barbare extends Race
 		setName("Barbare");
 	}
 	
-	public void initWorker()
+	public void initWorker(String line)
 	{
-		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 20, 5, 3, 20, 20, 2, 25, "Travailleur barbare", 5, 10, 1, 10, 10, 15, 25));
+		String[] s2 = line.split(";");
+		String splitFormat = ": ";
+		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(Integer.valueOf(s2[0].split(splitFormat)[1]), Integer.valueOf(s2[1].split(splitFormat)[1]), Integer.valueOf(s2[2].split(splitFormat)[1]), Integer.valueOf(s2[3].split(splitFormat)[1]), Integer.valueOf(s2[4].split(splitFormat)[1]), Integer.valueOf(s2[5].split(splitFormat)[1]), Integer.valueOf(s2[6].split(splitFormat)[1]), Integer.valueOf(s2[7].split(splitFormat)[1]), Integer.valueOf(s2[8].split(splitFormat)[1]), Integer.valueOf(s2[9].split(splitFormat)[1]), s2[10].split(splitFormat)[1], Integer.valueOf(s2[11].split(splitFormat)[1]), Integer.valueOf(s2[12].split(splitFormat)[1]), Integer.valueOf(s2[13].split(splitFormat)[1]), Integer.valueOf(s2[14].split(splitFormat)[1]), Integer.valueOf(s2[15].split(splitFormat)[1]), Integer.valueOf(s2[16].split(splitFormat)[1]), Integer.valueOf(s2[17].split(splitFormat)[1])));
 	}
 	
 	public void initCavalry(String line)
