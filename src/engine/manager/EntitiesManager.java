@@ -233,7 +233,7 @@ public class EntitiesManager
 		Worker worker = null;
 		
 		if(id == EntityConfiguration.WORKER) {
-			worker = new Worker(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepair(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination);
+			worker = new Worker(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage() , patron.getRange(), patron.getArmor(), 0 , position , id , patron.getDescription(), patron.getHpMax() , faction , destination, 0 , 0);
 		}
 		else {
 			System.out.print("invalid id production worker : " + id);
@@ -261,7 +261,7 @@ public class EntitiesManager
 		if(id == EntityConfiguration.FORGE)
 		{
 			//List<Upgrades> list = faction.getListUpgrade();
-			//tu dois créer les upgrades a la main ici
+			//tu dois crï¿½er les upgrades a la main ici
 			//exemple Upgrades epe = new Upgrades();
 			for(int i =0; i < 1; i++)
 			{
