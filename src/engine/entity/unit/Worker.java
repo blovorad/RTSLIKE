@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.text.html.HTMLDocument.Iterator;
 
 import configuration.EntityConfiguration;
+
 import engine.Position;
 import engine.Ressource;
 import engine.entity.building.StorageBuilding;
@@ -22,6 +23,7 @@ public class Worker extends Unit
 {	
 	private StorageBuilding storageBuilding;
 	
+
 	private Ressource ressource;
 	
 	private int quantityRessource;
@@ -42,7 +44,6 @@ public class Worker extends Unit
 		
 		this.storageBuilding = null;
 		System.out.println("maxspeed worker : " + maxSpeed);
-		
 	}
 	
 	public void toHarvest()

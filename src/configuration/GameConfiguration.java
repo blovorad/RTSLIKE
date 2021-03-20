@@ -1,6 +1,12 @@
 package configuration;
 
-import java.awt.Toolkit;
+//import java.awt.Toolkit;
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class GameConfiguration 
 {
@@ -14,5 +20,9 @@ public class GameConfiguration
 	
 	public final static int LINE_COUNT = 100;
 	
-	public final static int TILE_SIZE = 32;
+	public final static int TILE_SIZE = 64;
+	
+	public final static float SCALE_X = (float)WINDOW_WIDTH / 800f;
+	
+	public final static float SCALE_Y = (float)WINDOW_HEIGHT / 600f;
 }

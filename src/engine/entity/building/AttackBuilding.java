@@ -1,5 +1,6 @@
 package engine.entity.building;
 
+import java.awt.image.BufferedImage;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +9,11 @@ import engine.Entity;
 import engine.Position;
 import engine.entity.unit.Unit;
 import engine.map.Tile;
-
+/**
+ * 
+ * @author maxime
+ *
+ */
 public abstract class AttackBuilding extends Entity{
 
 	private int sightRange;
@@ -18,8 +23,8 @@ public abstract class AttackBuilding extends Entity{
 	private int attackCooldown;
 	private Tile tile;
 	
-	public AttackBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile) {
-		super(100, hpMax, description , position, id, faction);
+	public AttackBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture, int sightRange) {
+		super(100, hpMax, description, position, id, faction, texture, sightRange);
 		this.setTile(tile);
 	}
 	

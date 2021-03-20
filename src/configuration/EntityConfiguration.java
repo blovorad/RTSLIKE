@@ -1,6 +1,14 @@
 package configuration;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class EntityConfiguration {
+	
+	public final static int UNIT_SIZE = 32;
 	
 	public final static int INFANTRY = 0;
 	public final static int ARCHER = 1;
@@ -30,6 +38,11 @@ public class EntityConfiguration {
 	public final static int ATTACK_RANGE_UPGRADE = 21;
 	public final static int SIGHT_RANGE_UPGRADE = 22;
 	public final static int AGE_UPGRADE = 23;
+	public final static int AGE_UPGRADE_2 = 24;
+	
+	public final static int PASSIF_STATE = 0;
+	public final static int DEFENSIF_STATE = 1;
+	public final static int AGGRESIF_STATE = 2;
 	
 	public final static int MAX_TIME_HIT_ANIMATION = 10;
 }

@@ -8,12 +8,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.File;
 import java.util.List;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
@@ -27,10 +23,18 @@ import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Unit;
+import engine.manager.AudioManager;
 import engine.manager.EntitiesManager;
+import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import engine.math.Collision;
 import engine.math.SelectionRect;
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class MainGui extends JFrame implements Runnable
 {
@@ -47,6 +51,8 @@ public class MainGui extends JFrame implements Runnable
 	private Mouse mouse;
 	
 	private SelectionRect selectionRectangle;
+	
+	private AudioManager audioManager;
 
 	public MainGui()
 	{
@@ -54,13 +60,15 @@ public class MainGui extends JFrame implements Runnable
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
+		GraphicsManager graphicsManager = new GraphicsManager();
 		
 		selectionRectangle = new SelectionRect();
+		audioManager = new AudioManager();
 		
 		mouse = new Mouse();
-		manager = new EntitiesManager();
+		manager = new EntitiesManager(audioManager);
 		camera = new Camera(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
-		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle);
+		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle, audioManager, graphicsManager);
 		
 		MouseControls mouseControls = new MouseControls();
 		MouseMotion mouseMotion = new MouseMotion();
@@ -81,17 +89,6 @@ public class MainGui extends JFrame implements Runnable
 		setResizable(false);
 		setPreferredSize(preferredSize);
 		System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
-		
-		try {
-			File file = new File("src/sounds/musiqueTest.wav");
-			Clip clip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-			clip.open(inputStream);
-			clip.start();
-			//si jamais on avait plusieurs son, pour economiser la mémoire si un clip est open il faut le close avant d'en jouer un nouveau !!
-		} catch(Exception e){
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -108,6 +105,7 @@ public class MainGui extends JFrame implements Runnable
 			}
 			manager.update();
 			camera.update();
+			audioManager.update();
 			dashboard.update();
 			dashboard.repaint();
 		}
@@ -199,7 +197,7 @@ public class MainGui extends JFrame implements Runnable
 		public void checkWhatIsSelected(int mouseX, int mouseY)
 		{
 			manager.clearSelectedBuildings();
-			manager.clearSelectedUnits();
+			manager.clearSelectedUnit();
 			dashboard.setDescriptionPanelStandard();
 
 			int x = mouseX + camera.getX();
@@ -211,7 +209,7 @@ public class MainGui extends JFrame implements Runnable
 			{
 				Position unitPosition = new Position(unit.getPosition().getX(),  unit.getPosition().getY());
 				
-				if(x > unitPosition.getX() && x < unitPosition.getX() + GameConfiguration.TILE_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + GameConfiguration.TILE_SIZE)
+				if(x > unitPosition.getX() && x < unitPosition.getX() + EntityConfiguration.UNIT_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + EntityConfiguration.UNIT_SIZE)
 				{
 					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
 						manager.addSelectedUnit(unit);
@@ -232,8 +230,9 @@ public class MainGui extends JFrame implements Runnable
 					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
 											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
 					{
+						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						manager.setSelectedProdBuilding(building);
-						dashboard.setDescriptionPanelForBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
 						noBuildingSelected = false;
 						break;
 					}
@@ -288,6 +287,7 @@ public class MainGui extends JFrame implements Runnable
 		public void checkWhatIsSelected(int x, int y, int w, int h)
 		{
 			manager.clearSelectedBuildings();
+			manager.clearSelectedUnit();
 			dashboard.setDescriptionPanelStandard();
 			
 			SelectionRect rect = new SelectionRect(x, y, w, h);
@@ -296,7 +296,7 @@ public class MainGui extends JFrame implements Runnable
 			List<Unit> listUnits = manager.getUnits();
 			for(Unit unit : listUnits)
 			{
-				if(Collision.collide(unit.getPosition(), rect, camera) == true)
+				if(Collision.collideUnit(unit.getPosition(), rect, camera) == true)
 				{
 					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
 						manager.addSelectedUnit(unit);
@@ -305,7 +305,6 @@ public class MainGui extends JFrame implements Runnable
 					}
 				}
 			}
-			//if(Collision.collide(building.getPosition(), rect, camera))
 			if(noUnitSelected == true)
 			{
 				boolean noBuildingSelected = true;
@@ -316,8 +315,9 @@ public class MainGui extends JFrame implements Runnable
 
 					if(Collision.collide(building.getPosition(), rect, camera))
 					{
+						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						manager.setSelectedProdBuilding(building);
-						dashboard.setDescriptionPanelForBuilding(building);
+						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
 						noBuildingSelected = false;
 						break;
 					}
@@ -389,7 +389,7 @@ public class MainGui extends JFrame implements Runnable
 						selectionRectangle.setY(e.getY());
 						selectionRectangle.setW(0);
 						selectionRectangle.setH(0);
-						System.out.println("on a presser");
+						//System.out.println("on a presser");
 					}
 					
 					if(mouse.getId() > -1)
@@ -419,11 +419,29 @@ public class MainGui extends JFrame implements Runnable
 						}
 					}
 					else {
-						ProductionBuilding building = manager.getSelectedProdBuilding();
-						if(building != null) {
-							building.setDestination(new Position(mouseX, mouseY));
-							System.out.println(building.getDestination().getX());
-							System.out.println(building.getDestination().getY());
+						
+						if(manager.getSelectedAttackBuilding() != null) {
+							List<Unit> units = manager.getUnits();
+							int x = mouseX + camera.getX();
+							int y = mouseY + camera.getY();
+							for(Unit unit : units) {
+								Position unitPosition = unit.getPosition();
+								if(unit.getFaction() == EntityConfiguration.BOT_FACTION) {
+									if (x > unitPosition.getX() && x < unitPosition.getX() + EntityConfiguration.UNIT_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + EntityConfiguration.UNIT_SIZE) {
+										manager.getSelectedAttackBuilding().setTarget(unit);
+										System.out.println("new target : " + manager.getSelectedAttackBuilding().getTarget().getDescription());
+										break;
+									}
+								}
+							}
+						}
+						else {
+							ProductionBuilding building = manager.getSelectedProdBuilding();
+							if(building != null) {
+								building.setDestination(new Position(mouseX, mouseY));
+								System.out.println(building.getDestination().getX());
+								System.out.println(building.getDestination().getY());
+							}
 						}
 					}
 
@@ -436,7 +454,7 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				System.out.println("released");
+				//System.out.println("released");
 				if(selectionRectangle.isActive() == true)
 				{
 					if(selectionRectangle.getW() == 0 && selectionRectangle.getH() == 0)
@@ -519,5 +537,13 @@ public class MainGui extends JFrame implements Runnable
 	public void setManager(EntitiesManager manager) 
 	{
 		this.manager = manager;
+	}
+
+	public AudioManager getAudioManager() {
+		return audioManager;
+	}
+
+	public void setAudioManager(AudioManager audioManager) {
+		this.audioManager = audioManager;
 	}
 }

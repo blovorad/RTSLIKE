@@ -26,14 +26,25 @@ import factionConfiguration.ForAttackBuilding;
 import factionConfiguration.ForFighter;
 import factionConfiguration.ForProductionBuilding;
 import factionConfiguration.ForStorageBuilding;
+import factionConfiguration.ForUpgrade;
 import factionConfiguration.ForWorker;
+
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class EntitiesManager 
 {
 	private FactionManager factionManager;
+	private GraphicsManager graphicsManager;
+	private AudioManager audioManager;
 	
 	private List<Entity> collisionList = new ArrayList<Entity>();
 	private List<Entity> drawingList = new ArrayList<Entity>();
+	private List<Entity> playerEntities = new ArrayList<Entity>();
 	
 	private List<Unit> selectedUnits = new ArrayList<Unit>();
 	
@@ -64,8 +75,10 @@ public class EntitiesManager
 	private List<Ressource> removeRessources = new ArrayList<Ressource>();
 
 	
-	public EntitiesManager() 
+	public EntitiesManager(AudioManager audioManager) 
 	{
+		this.audioManager = audioManager;
+		this.graphicsManager = new GraphicsManager();
 		this.factionManager = new FactionManager();
 		this.fighters = new ArrayList<Fighter>();
 		this.workers = new ArrayList<Worker>();
@@ -104,7 +117,7 @@ public class EntitiesManager
 		}
 		
 		for(ProductionBuilding building : prodBuildings) {
-			building.update();
+			building.update(factionManager.getFactions().get(building.getFaction()).getPopulationCount(), factionManager.getFactions().get(building.getFaction()).getMaxPopulation());
 			if(building.getIsProducing()) {
 				if(building.getTimer() <= 0) {
 					int id = building.produce();
@@ -116,11 +129,16 @@ public class EntitiesManager
 						ForWorker patron = factionManager.getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(id);
 						createWorker(id, building.getFaction(), patron, new Position(building.getPosition().getX() - 50, building.getPosition().getY()- 50), building.getDestination());
 					}
+					else if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {
+						createUpgrade(id, building.getFaction());
+					}
 					System.out.println("producing unit");
 				}
 			}
 			if(building.getHp() < 1) {
 				//System.out.println("We removing a building cause : " + building.getHp());
+				this.factionManager.getFactions().get(building.getFaction()).checkUpgrade(building.getElementCount());
+				building.remove();
 				removeProdBuildings.add(building);
 			}
 		}
@@ -165,18 +183,21 @@ public class EntitiesManager
 		drawingList.removeAll(removeStorageBuildings);
 		playerStorageBuildings.removeAll(removeStorageBuildings);
 		botStorageBuildings.removeAll(removeStorageBuildings);
+		playerEntities.removeAll(removeStorageBuildings);
 		removeStorageBuildings.clear();
 		
 		//removing attack building
 		attackBuildings.removeAll(removeAttackBuildings);
 		collisionList.removeAll(removeAttackBuildings);
 		drawingList.removeAll(removeAttackBuildings);
+		playerEntities.removeAll(removeAttackBuildings);
 		removeAttackBuildings.clear();
 		
 		//removing production building
 		prodBuildings.removeAll(removeProdBuildings);
 		collisionList.removeAll(removeProdBuildings);
 		drawingList.removeAll(removeProdBuildings);
+		playerEntities.removeAll(removeProdBuildings);
 		removeProdBuildings.clear();
 		
 		//removing worker
@@ -185,6 +206,7 @@ public class EntitiesManager
 		drawingList.removeAll(removeWorkers);
 		units.removeAll(removeWorkers);
 		selectedUnits.removeAll(removeWorkers);
+		playerEntities.removeAll(removeWorkers);
 		removeWorkers.clear();
 		
 		//removing fighter
@@ -193,6 +215,7 @@ public class EntitiesManager
 		drawingList.removeAll(removeFighters);
 		units.removeAll(removeFighters);
 		selectedUnits.removeAll(removeFighters);
+		playerEntities.removeAll(removeFighters);
 		removeFighters.clear();
 	}
 	
@@ -201,16 +224,16 @@ public class EntitiesManager
 		Fighter fighter = null;
 		
 		if(id == EntityConfiguration.INFANTRY) {
-			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination);
+			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange());
 		}
 		else if(id == EntityConfiguration.ARCHER) {
-			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination);
+			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange());
 		}
 		else if(id == EntityConfiguration.CAVALRY) {
-			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination);
+			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange());
 		}
 		else if(id == EntityConfiguration.SPECIAL_UNIT) {
-			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination);
+			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange());
 		}
 		else {
 			System.out.println("invalid id production fighter : " + id);
@@ -220,6 +243,9 @@ public class EntitiesManager
 			System.out.println("error adding worker in tab cause fighter is null");
 		}
 		else {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(fighter);
+			}
 			this.collisionList.add(fighter);
 			this.drawingList.add(fighter);
 			this.units.add(fighter);
@@ -233,7 +259,7 @@ public class EntitiesManager
 		Worker worker = null;
 		
 		if(id == EntityConfiguration.WORKER) {
-			worker = new Worker(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage() , patron.getRange(), patron.getArmor(), 0 , position , id , patron.getDescription(), patron.getHpMax() , faction , destination, 0 , 0);
+			worker = new Worker(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepair(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 0);
 		}
 		else {
 			System.out.print("invalid id production worker : " + id);
@@ -243,6 +269,9 @@ public class EntitiesManager
 			System.out.println("error adding worker in tab cause worker is null");
 		}
 		else {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(worker);
+			}
 			this.collisionList.add(worker);
 			this.drawingList.add(worker);
 			this.units.add(worker);
@@ -251,13 +280,147 @@ public class EntitiesManager
 		}
 	}
 	
-	public void createBuilding(int id, int faction, Position position, Tile tile) 
-	{
+	public void createUpgrade(int id, int faction) {
+		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			audioManager.startFx(2);
+		}
+		if(id == EntityConfiguration.AGE_UPGRADE || id == EntityConfiguration.AGE_UPGRADE_2) {
+			System.out.println("upgrade age !");
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				factionManager.getFactions().get(faction).setUpgradeAge(true);
+			}
+			factionManager.getFactions().get(faction).setAge(factionManager.getFactions().get(faction).getAge() + 1);
+		}
+		else {
+			ForUpgrade upgrade = factionManager.getFactions().get(faction).getRace().getForgeUpgrades().get(id);
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				factionManager.getFactions().get(faction).setStatUpgrade(true);
+			}
+			if(id== EntityConfiguration.ARMOR_UPGRADE) {
+				System.out.println("upgrade armure !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setArmor(fighter.getArmor() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setArmor(worker.getArmor() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setArmor(unit.getArmor() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setArmor(unit.getArmor() + upgrade.getEffect());
+					}
+				}
+			}
+			else if(id== EntityConfiguration.DAMAGE_UPGRADE){
+				System.out.println("upgrade damage !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setDamage(fighter.getDamage() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setDamage(worker.getDamage() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setDamage(unit.getDamage() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setDamage(unit.getDamage() + upgrade.getEffect());
+					}
+				}
+			}
+			else if(id == EntityConfiguration.ATTACK_RANGE_UPGRADE) {
+				System.out.println("upgrade attack range !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setAttackRange(fighter.getAttackRange() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setAttackRange(worker.getAttackRange() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setAttackRange(unit.getAttackRange() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setAttackRange(unit.getAttackRange() + upgrade.getEffect());
+					}
+				}
+			}
+			else if(id == EntityConfiguration.ATTACK_SPEED_UPGRADE) {
+				System.out.println("upgrade attack speed !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setAttackSpeed(fighter.getAttackSpeed() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setAttackSpeed(worker.getAttackSpeed() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setAttackSpeed(unit.getAttackSpeed() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setAttackSpeed(unit.getAttackSpeed() + upgrade.getEffect());
+					}
+				}
+			}
+			else if(id == EntityConfiguration.SIGHT_RANGE_UPGRADE) {
+				System.out.println("upgrade sight range !");
+				for(Fighter fighter : fighters) {
+					if(fighter.getFaction() == faction) {
+						fighter.setSightRange(fighter.getSightRange() + upgrade.getEffect());
+					}
+				}
+				for(Worker worker : workers) {
+					if(worker.getFaction() == faction) {
+						worker.setSightRange(worker.getSightRange() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : units) {
+					if(unit.getFaction() == faction) {
+						unit.setSightRange(unit.getSightRange() + upgrade.getEffect());
+					}
+				}
+				for(Unit unit : selectedUnits) {
+					if(unit.getFaction() == faction) {
+						unit.setSightRange(unit.getSightRange() + upgrade.getEffect());
+					}
+				}
+			}
+		}
+	}
+	
+	public void createBuilding(int id, int faction, Position position, Tile tile) {
 		ProductionBuilding bprod = null;
 		AttackBuilding battack = null;
 		StorageBuilding bstorage = null;
 		tile.setSolid(true);
 		
+<<<<<<< HEAD
 		if(id == EntityConfiguration.FORGE)
 		{
 			//List<Upgrades> list = faction.getListUpgrade();
@@ -267,62 +430,62 @@ public class EntitiesManager
 			{
 				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
 			}
+=======
+		if(id == EntityConfiguration.FORGE){
+>>>>>>> branch 'blovorad' of https://github.com/blovorad/RTSLIKE.git
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, factionManager.getFactions().get(faction).getRace().getForgeUpgrades(), graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
 		}
-		//dans les autres tu balances le ForUnit de la race.
-		else if(id == EntityConfiguration.STABLE)
-		{
+		else if(id == EntityConfiguration.STABLE){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.CAVALRY);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Stable(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Stable(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.STABLE), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.BARRACK)
-		{
+		else if(id == EntityConfiguration.BARRACK){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.INFANTRY);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Barrack(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Barrack(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.BARRACK), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.ARCHERY)
-		{
+		else if(id == EntityConfiguration.ARCHERY){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.ARCHER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Archery(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Archery(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.ARCHER), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.HQ)
-		{
+		else if(id == EntityConfiguration.HQ){
 			ForWorker patronWorker = factionManager.getFactions().get(faction).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Hq(position, patronWorker, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, factionManager.getFactions().get(faction).getRace().getHQUpgrades(), graphicsManager.getGraphicsEntity(EntityConfiguration.HQ), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.CASTLE)
-		{
+		else if(id == EntityConfiguration.CASTLE){
 			ForFighter patronFighter = factionManager.getFactions().get(faction).getRace().getPatronFighters().get(EntityConfiguration.SPECIAL_UNIT);
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
-			bprod = new Castle(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bprod = new Castle(position, patronFighter, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.CASTLE), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.STORAGE)
-		{
+		else if(id == EntityConfiguration.STORAGE){
 			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getStorageBuildings().get(id);
-			bstorage = new StorageBuilding(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			bstorage = new StorageBuilding(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.STORAGE), patronBuilding.getSightRange());
 		}
-		else if(id == EntityConfiguration.TOWER)
-		{
+		else if(id == EntityConfiguration.TOWER){
 			ForAttackBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getAttackBuildings().get(id);
-			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile);
+			battack = new Tower(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, graphicsManager.getGraphicsEntity(EntityConfiguration.TOWER), patronBuilding.getSightRange(), patronBuilding.getAttackDamage(), patronBuilding.getAttackSpeed(), patronBuilding.getAttackRange());
 		}
-		else
-		{
+		else{
 			System.out.println("invalide ID");
 		}
 		
 		if(bprod != null) {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(bprod);
+			}
 			this.drawingList.add(bprod);
 			this.prodBuildings.add(bprod);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout Building production");
 		}
 		else if(bstorage != null){
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(bstorage);
+			}
 			this.drawingList.add(bstorage);
 			this.storageBuildings.add(bstorage);
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
@@ -335,6 +498,9 @@ public class EntitiesManager
 			System.out.println("ajout building storage");
 		}
 		else if(battack != null) {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(battack);
+			}
 			this.drawingList.add(battack);
 			this.attackBuildings.add(battack);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
@@ -343,30 +509,27 @@ public class EntitiesManager
 		
 	}
 	
-	public void addSelectedUnit(Unit unit)
-	{
+	public void addSelectedUnit(Unit unit){
+		unit.setSelected(true);
 		this.selectedUnits.add(unit);
 	}
 	
-	public void addRessource(List<Tile> listPositionRessources)
-	{
-		for(Tile t : listPositionRessources)
-		{
-			this.ressources.add(new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION));
-			this.collisionList.add(new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION));
-			this.drawingList.add(new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION));
+	public void addRessource(List<Tile> listPositionRessources){
+		for(Tile t : listPositionRessources){
+			Ressource r = new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION, graphicsManager.getGraphicsEntity(EntityConfiguration.RESSOURCE));
+			this.ressources.add(r);
+			this.drawingList.add(r);
 		}
 	}
 	
-	public void clearSelectedBuildings()
-	{
-		this.selectedAttackBuilding = null;
-		this.selectedProdBuilding = null;
-		this.selectedStorageBuilding = null;
+	public void clearSelectedBuildings(){
+		this.clearSelectedAttackBuilding();
+		this.clearSelectedStorageBuilding();
+		this.clearSelectedProdBuilding();
 	}
 	
-	public void clean()
-	{
+	public void clean(){
+		this.playerEntities.clear();
 		this.collisionList.clear();
 		this.drawingList.clear();
 		this.fighters.clear();
@@ -376,8 +539,10 @@ public class EntitiesManager
 		this.workers.clear();
 		this.ressources.clear();
 		this.selectedUnits.clear();
+		this.units.clear();
 		clearSelectedBuildings();
 		factionManager.clean();
+		this.units.clear();
 	}
 
 	public List<Entity> getDrawingList() {
@@ -470,6 +635,7 @@ public class EntitiesManager
 	}
 
 	public void setSelectedProdBuilding(ProductionBuilding selectedProdBuilding) {
+		selectedProdBuilding.setSelected(true);
 		this.selectedProdBuilding = selectedProdBuilding;
 	}
 
@@ -478,6 +644,7 @@ public class EntitiesManager
 	}
 
 	public void setSelectedAttackBuilding(AttackBuilding selectedAttackBuilding) {
+		selectedAttackBuilding.setSelected(true);
 		this.selectedAttackBuilding = selectedAttackBuilding;
 	}
 
@@ -486,6 +653,7 @@ public class EntitiesManager
 	}
 
 	public void setSelectedStorageBuilding(StorageBuilding selectedStorageBuilding) {
+		selectedStorageBuilding.setSelected(true);
 		this.selectedStorageBuilding = selectedStorageBuilding;
 	}
 
@@ -519,5 +687,41 @@ public class EntitiesManager
 
 	public void setBotStorageBuildings(List<StorageBuilding> botStorageBuildings) {
 		this.botStorageBuildings = botStorageBuildings;
+	}
+	
+	public void clearSelectedUnit() {
+		for(Unit unit : selectedUnits) {
+			unit.setSelected(false);
+		}
+		this.selectedUnits.clear();
+	}
+	
+	public void clearSelectedProdBuilding() {
+		if(this.selectedProdBuilding != null) {
+			this.selectedProdBuilding.setSelected(false);
+		}
+		this.selectedProdBuilding = null;
+	}
+	
+	public void clearSelectedAttackBuilding() {
+		if(this.selectedAttackBuilding != null) {
+			this.selectedAttackBuilding.setSelected(false);
+		}
+		this.selectedAttackBuilding = null;
+	}
+	
+	public void clearSelectedStorageBuilding() {
+		if(this.selectedStorageBuilding != null) {
+			this.selectedStorageBuilding.setSelected(false);
+		}
+		this.selectedStorageBuilding = null;
+	}
+
+	public List<Entity> getPlayerEntities() {
+		return playerEntities;
+	}
+
+	public void setPlayerEntities(List<Entity> playerEntities) {
+		this.playerEntities = playerEntities;
 	}
 }

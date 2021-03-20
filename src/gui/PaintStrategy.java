@@ -6,12 +6,22 @@ import java.util.List;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
+import configuration.MapConfiguration;
 import engine.Camera;
 import engine.Entity;
+import engine.Position;
 import engine.entity.unit.Unit;
+import engine.manager.GraphicsManager;
+import engine.map.Fog;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.SelectionRect;
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class PaintStrategy 
 {
@@ -31,9 +41,30 @@ public class PaintStrategy
 	private int camW;
 	private int camH;
 	
+	private int lifeBarreY;
+	private SelectionRect flagDestinationRect;
+	
 	public PaintStrategy(int width, int height)
 	{
-		if(width == 1920 && height == 1080)
+		//if(width == 800 && height == 600) {
+			rectXOfMinimap = (int)(650f * GameConfiguration.SCALE_X);
+			rectYOfMinimap = (int)(475f * GameConfiguration.SCALE_Y);
+			rectWOfMinimap = (int)(650f * GameConfiguration.SCALE_X);
+			rectHOfMinimap = (int)(475f * GameConfiguration.SCALE_Y);
+			
+			firstGridXOfMap = (int)(675f * GameConfiguration.SCALE_X);
+			firstGridYOfMap = (int)(490f * GameConfiguration.SCALE_Y);
+			gridMapWidth = 1;
+			gridMapHeight = 1;
+			
+			camX = (int)(675f * GameConfiguration.SCALE_X);
+			camY = (int)(490f * GameConfiguration.SCALE_Y);
+			camW = (width / GameConfiguration.TILE_SIZE);
+			camH = (height / GameConfiguration.TILE_SIZE);
+			lifeBarreY = 10;
+			flagDestinationRect = new SelectionRect(0, 0, 10, 10);
+		//}
+		/*if(width == 1920 && height == 1080)
 		{
 			rectXOfMinimap = 1625;
 			rectYOfMinimap = 775;
@@ -52,20 +83,20 @@ public class PaintStrategy
 		}
 		else if(width == 1366 && height == 768)
 		{
-			rectXOfMinimap = 1100;
-			rectYOfMinimap = 525;
-			rectWOfMinimap = width - 1100;
-			rectHOfMinimap = height - 525;
+			rectXOfMinimap = 1225;
+			rectYOfMinimap = 625;
+			rectWOfMinimap = width - 1225;
+			rectHOfMinimap = height - 625;
 			
 			System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
 			
-			firstGridXOfMap = 1125;
-			firstGridYOfMap = 550;
+			firstGridXOfMap = 1250;
+			firstGridYOfMap = 650;
 			gridMapWidth = 1;
 			gridMapHeight = 1;
 			
-			camX = 1125;
-			camY = 550;
+			camX = 1250;
+			camY = 650;
 			camW = (width / GameConfiguration.TILE_SIZE);
 			camH = (height / GameConfiguration.TILE_SIZE);
 		}
@@ -87,7 +118,7 @@ public class PaintStrategy
 			camY = 515;
 			camW = (width / GameConfiguration.TILE_SIZE);
 			camH = (height / GameConfiguration.TILE_SIZE);
-		}
+		}*/
 		/*System.out.println("on construit dans : " + width + "x" + height);
 		System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
 		System.out.println("camera dimension : " + camW + "," + camH);*/
@@ -103,7 +134,7 @@ public class PaintStrategy
 	}
 	
 	public void paintRectSelectionUnit(Unit unit, Graphics graphics, Camera camera){
-		int tileSize = GameConfiguration.TILE_SIZE;
+		int tileSize = EntityConfiguration.UNIT_SIZE;
 		
 		graphics.setColor(Color.white);
 		graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
@@ -115,16 +146,23 @@ public class PaintStrategy
 		
 		graphics.setColor(Color.white);
 		graphics.drawRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
+		if(building.getDestination() != null) {
+			Position p = building.getDestination();
+			flagDestinationRect.updateAlpha();
+			graphics.setColor(new Color(255, 255, 255, flagDestinationRect.getAlpha()));
+			graphics.fillRect(p.getX() - camera.getX() - flagDestinationRect.getW() / 2, p.getY() - camera.getY() - flagDestinationRect.getH() / 2, flagDestinationRect.getW(), flagDestinationRect.getH());
+		}
 	}
 	
-	public void paint(Entity entity, Graphics graphics, Camera camera)
+	public void paint(Entity entity, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
+		int unitSize = EntityConfiguration.UNIT_SIZE;
 		
 		if(entity.getId() >= 5 && entity.getId() <= 12){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.red);
+					graphics.setColor(Color.orange);
 				}
 				else {
 					graphics.setColor(Color.green);
@@ -132,38 +170,72 @@ public class PaintStrategy
 			}
 			else{
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.red);
-				}
-				else {
 					graphics.setColor(Color.orange);
 				}
-			}
-		}
-		else if(entity.getId() >= 0 && entity.getId() <= 4){
-			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
-				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
+				else {
 					graphics.setColor(Color.red);
 				}
+			}
+			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);
+		}
+		else if(entity.getId() >= EntityConfiguration.INFANTRY && entity.getId() <= EntityConfiguration.WORKER){
+			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
+				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
+					graphics.setColor(Color.orange);
+				}
 				else {
-					graphics.setColor(Color.black);
+					graphics.setColor(Color.white);
 				}
 			}
 			else {
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.red);
+					graphics.setColor(Color.orange);
 				}
 				else {
 					graphics.setColor(new Color(145, 40, 59));
 				}
 			}
+			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize);
 		}
-		else if(entity.getId() == 13){
-			graphics.setColor(Color.yellow);
+		else if(entity.getId() == EntityConfiguration.RESSOURCE){
+			graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		}	
+		graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		
+		if(entity.isSelected()) {
+			Position p = entity.getPosition();
+			int widthLife = EntityConfiguration.UNIT_SIZE - (int)((((float)entity.getHpMax() - (float)entity.getHp()) / (float)entity.getHpMax()) * (float)EntityConfiguration.UNIT_SIZE);
+			if(p.getY() > lifeBarreY) {
+				graphics.setColor(Color.red);
+				graphics.fillRect(p.getX() - camera.getX(), p.getY() - lifeBarreY - camera.getY(), EntityConfiguration.UNIT_SIZE, lifeBarreY / 2);
+				graphics.setColor(Color.green);
+				graphics.fillRect(p.getX() - camera.getX(), p.getY() - lifeBarreY - camera.getY(), widthLife, lifeBarreY / 2);
+			}
+			else {
+				graphics.setColor(Color.red);
+				graphics.fillRect(p.getX() - camera.getX(), p.getY() + lifeBarreY + EntityConfiguration.UNIT_SIZE - camera.getY(), EntityConfiguration.UNIT_SIZE, lifeBarreY / 2);
+				graphics.setColor(Color.green);
+				graphics.fillRect(p.getX() - camera.getX(), p.getY() + lifeBarreY + EntityConfiguration.UNIT_SIZE - camera.getY(), widthLife, lifeBarreY / 2);
+			}
 		}
-		graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	
-	public void paint(Map map, Graphics graphics, Camera camera)
+	public void paint(Fog fog, Graphics graphics, Camera camera) {
+		graphics.setColor(Color.black);
+		boolean[][] removeFog = fog.getFog();
+		int tileSize = GameConfiguration.TILE_SIZE;
+		for (int lineIndex = 0; lineIndex < fog.getLineCount(); lineIndex++) 
+		{
+			for (int columnIndex = 0; columnIndex < fog.getColumnCount(); columnIndex++) 
+			{
+				if(removeFog[lineIndex][columnIndex] == true) {
+					graphics.fillRect(columnIndex * tileSize - camera.getX(), lineIndex * tileSize - camera.getY(), tileSize, tileSize);
+				}
+			}
+		}
+	}
+	
+	public void paint(Map map, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
@@ -175,15 +247,18 @@ public class PaintStrategy
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
 				
-				graphics.setColor(tile.getColor());
-				graphics.fillRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
+				graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
+				graphics.drawImage(graphicsManager.getGraphicsTile(tile.getId()), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
+				graphics.setColor(Color.black);
+				//graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
 			}
 		}
 	}
 	
-	public void paintGui(Map map, List<Entity> entities, Graphics graphics, Camera camera)
+	public void paintGui(Map map, Fog fog, List<Entity> entities, Graphics graphics, Camera camera)
 	{	
 		Tile[][] tiles = map.getTiles();
+		boolean[][] removeFog = fog.getFog();
 		
 		//draw the rect of the minimap
 		graphics.setColor(new Color(168,104,38));
@@ -195,9 +270,8 @@ public class PaintStrategy
 			for (int columnIndex = 0; columnIndex < map.getColumnCount(); columnIndex++) 
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
-						
 				graphics.setColor(tile.getColor());
-		
+					
 				graphics.fillRect(tile.getColumn() * gridMapWidth + firstGridXOfMap, tile.getLine() * gridMapHeight + firstGridYOfMap, gridMapWidth, gridMapHeight);
 			}
 		}
@@ -207,8 +281,19 @@ public class PaintStrategy
 			paintEntityGui(entity, graphics, camera);
 		}
 		
+		graphics.setColor(Color.black);
+		for (int lineIndex = 0; lineIndex < fog.getLineCount(); lineIndex++) 
+		{
+			for (int columnIndex = 0; columnIndex < fog.getColumnCount(); columnIndex++) 
+			{
+				if(removeFog[lineIndex][columnIndex] == true) {
+					graphics.fillRect(columnIndex * gridMapWidth + firstGridXOfMap, lineIndex * gridMapHeight + firstGridYOfMap, gridMapWidth, gridMapHeight);
+				}
+			}
+		}
+		
 		graphics.setColor(new Color(168,104,38));
-		graphics.fillRect(0, 0, 500, 50);
+		graphics.fillRect(0, 0, 550, 50);
 				
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.white);

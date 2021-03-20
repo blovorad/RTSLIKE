@@ -1,7 +1,13 @@
 package engine;
 
-import configuration.EntityConfiguration;
+import java.awt.image.BufferedImage;
 
+import configuration.EntityConfiguration;
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class Entity 
 {
 	private int hp;
@@ -14,8 +20,11 @@ public class Entity
 	private int id;
 	private boolean isHit;
 	private int timerHit;
+	private BufferedImage texture;
+	private int sightRange;
+	private boolean selected;
 	
-	public Entity(int hp, int hpMax, String description, Position position, int id, int faction)
+	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, BufferedImage texture, int sightRange)
 	{
 		this.hp = hp;
 		this.hpMax = hpMax;
@@ -25,6 +34,9 @@ public class Entity
 		this.target = null;
 		this.destination = null;
 		this.setFaction(faction);
+		this.texture = texture;
+		this.setSightRange(sightRange);
+		this.setSelected(false);
 	}
 	
 	public Entity(int hp, String description, Position position, Position destination, int id, int faction)
@@ -143,5 +155,29 @@ public class Entity
 
 	public void setTimerHit(int timerHit) {
 		this.timerHit = timerHit;
+	}
+
+	public BufferedImage getTexture() {
+		return texture;
+	}
+
+	public void setTexture(BufferedImage texture) {
+		this.texture = texture;
+	}
+
+	public int getSightRange() {
+		return sightRange;
+	}
+
+	public void setSightRange(int sightRange) {
+		this.sightRange = sightRange;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 }

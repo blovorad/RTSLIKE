@@ -1,5 +1,9 @@
 package engine;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class Speed 
 {
 	private int vx;

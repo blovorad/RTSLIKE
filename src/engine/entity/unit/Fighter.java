@@ -14,17 +14,12 @@ public class Fighter extends Unit
 {
 	private int state;
 	
-	public Fighter (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int state, Position position, int id, String description, int hpMax, int faction)
-	{	
-		super(hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, hpMax, faction);
-		this.state = state;
-	}
 	
-	public Fighter (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int state, Position position, int id, String description, int hpMax, int faction, Position destination)
+	public Fighter (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int state, Position position, int id, String description, int hpMax, int faction, Position destination, int sightRange)
 	{	
-		super(hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction);
+		super(hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction, sightRange);
 		this.state = state;
-		System.out.println("maxspeed fighter : " + maxSpeed);
+		//System.out.println("maxspeed fighter : " + maxSpeed);
 	}
 
 	public int getState() {

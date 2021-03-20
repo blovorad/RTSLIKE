@@ -1,55 +1,83 @@
 package engine.entity.building;
 
+import java.awt.image.BufferedImage;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
+import configuration.GameConfiguration;
 import engine.Entity;
 import engine.Position;
 import engine.map.Tile;
-
+import factionConfiguration.ForUpgrade;
+/**
+ * 
+ * @author maxime
+ *
+ */
 public abstract class ProductionBuilding extends Entity{
 
 	private List<Integer> elementCount;
 	private int productionId;
-	private int timer;
+	private float timer;
 	private boolean isProducing;
 	private Tile tile;
+	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
-	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile) {
-		super(100, hpMax, description , position, id, faction);
+	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture, int sightRange) {
+		super(100, hpMax, description , position, id, faction, texture, sightRange);
 		elementCount = new ArrayList<Integer>();
 		this.setTile(tile);
+		this.setUpgrades(upgrades);
+		if(upgrades == null) {
+			this.upgrades = new HashMap<Integer, ForUpgrade>();
+		}
 	}
 	
-	public void update() {
+	public void update(int popCount, int maxPop) {
 		super.update();
-		if(timer > 0)
-		{
-			timer--;
-			if(this.getProductionId() == EntityConfiguration.INFANTRY) {
-				System.out.println("updating infantry production time remaning : " + timer);
+		if(this.getId() == EntityConfiguration.FORGE) {
+			timer -= 1.0 / GameConfiguration.GAME_SPEED;
+			if(this.getProductionId() == EntityConfiguration.ARMOR_UPGRADE) {
+				System.out.println("updating armor upgrade production time remaning : " + timer);
 			}
-			else if(this.getProductionId() == EntityConfiguration.ARCHER) {
-				System.out.println("updating archer production time remaning : " + timer);
-			}
-			else if(this.getProductionId() == EntityConfiguration.CAVALRY) {
-				System.out.println("updating cavalry production time remaning : " + timer);
-			}
-			else if(this.getProductionId() == EntityConfiguration.SPECIAL_UNIT) {
-				System.out.println("updating special production time remaning : " + timer);
-			}
-			else if(this.getProductionId() == EntityConfiguration.WORKER) {
-				System.out.println("updating worker production time remaning : " + timer);
-			}
-			else {
-				System.out.println("Invalid id");
+		}
+		if(timer > 0) {
+			if(popCount < maxPop) {
+				timer -= 1.0 / GameConfiguration.GAME_SPEED; ;
+				if(this.getProductionId() == EntityConfiguration.INFANTRY) {
+					System.out.println("updating infantry production time remaning : " + timer);
+				}
+				else if(this.getProductionId() == EntityConfiguration.ARCHER) {
+					System.out.println("updating archer production time remaning : " + timer);
+				}
+				else if(this.getProductionId() == EntityConfiguration.CAVALRY) {
+					System.out.println("updating cavalry production time remaning : " + timer);
+				}
+				else if(this.getProductionId() == EntityConfiguration.SPECIAL_UNIT) {
+					System.out.println("updating special production time remaning : " + timer);
+				}
+				else if(this.getProductionId() == EntityConfiguration.WORKER) {
+					System.out.println("updating worker production time remaning : " + timer);
+				}
+				else {
+					System.out.println("Invalid id");
+				}
 			}
 		}
 	}
 	
 	public abstract int produce();
-	public abstract void startProd(int id);
+	public abstract int startProd(int id, int moneyCount);
+	public abstract int removeProduction(List<Integer> searchingUpgrade);
+	
+	public void remove() {
+		timer = 0;
+		isProducing = false;
+		elementCount.clear();
+	}
 
 	public List<Integer> getElementCount() {
 		return elementCount;
@@ -67,11 +95,11 @@ public abstract class ProductionBuilding extends Entity{
 		this.productionId = productionId;
 	}
 
-	public int getTimer() {
+	public float getTimer() {
 		return timer;
 	}
 
-	public void setTimer(int timer) {
+	public void setTimer(float timer) {
 		this.timer = timer;
 	}
 
@@ -89,6 +117,14 @@ public abstract class ProductionBuilding extends Entity{
 
 	public void setTile(Tile tile) {
 		this.tile = tile;
+	}
+
+	public AbstractMap<Integer, ForUpgrade> getUpgrades() {
+		return upgrades;
+	}
+
+	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) {
+		this.upgrades = upgrades;
 	}
 	
 }

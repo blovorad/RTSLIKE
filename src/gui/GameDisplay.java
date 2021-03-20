@@ -5,6 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.AbstractMap;
+
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -17,10 +20,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.event.ChangeListener;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
+import configuration.PositionConfiguration;
 import engine.Camera;
 import engine.Entity;
 import engine.Faction;
@@ -28,13 +33,30 @@ import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Unit;
+
+import engine.manager.AudioManager;
+
+import engine.entity.unit.Worker;
+
 import engine.manager.EntitiesManager;
+import engine.manager.GameBuilder;
+import engine.manager.GraphicsManager;
+import engine.map.Fog;
 import engine.map.Map;
-import engine.map.Tile;
 import engine.math.SelectionRect;
+import factionConfiguration.ForFighter;
+import factionConfiguration.ForUpgrade;
+import factionConfiguration.ForWorker;
+import factionConfiguration.Race;
 import engine.Mouse;
 import engine.Position;
 import engine.Ressource;
+
+/**
+ * 
+ * @author gautier
+ *
+ */
 
 public class GameDisplay extends JPanel 
 {
@@ -43,6 +65,7 @@ public class GameDisplay extends JPanel
 	private PaintStrategy paintStrategy = new PaintStrategy(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
 	
 	private Map map;
+	private Fog fog;
 	
 	private Camera camera;
 	
@@ -57,6 +80,8 @@ public class GameDisplay extends JPanel
 	//state of the game
 	private int state;
 	private int oldState;
+	
+	private AudioManager audioManager;
 	
 	//state constant
 	private final int MAINMENU = 0;
@@ -86,28 +111,6 @@ public class GameDisplay extends JPanel
 	private JSlider scrollingSlider = new JSlider(new ScrollingModel());
 	private JSlider sonSlider = new JSlider(new SonModel());
 	
-	/**
-	 * 
-	 * Constant for the management of Layout of optionPanel.
-	 * 
-	 */
-	private final int OPTIONSMENUMAXINDEX = 11;
-	private final int SCROLLINGLABELINDEX = 5;
-	private final int SCROLLINGINDEX = 6;
-	private final int SONLABELINDEX = 2;
-	private final int SONINDEX = 3;
-	private final int BACKINDEX = 9;
-	
-	//for pauseMenuPanel
-	/**
-	 * 
-	 * constant for the management of Layout of pauseMenuPanel.
-	 */
-	private final int PAUSEMENUMAXINDEX = 11;
-	private final int BACKTOGAMEINDEX = 3;
-	private final int OPTIONSINDEX = 6;
-	private final int LEAVEINDEX = 9;
-	
 	//button
 	private JButton constructionButton = new JButton(new PrintConstruction("construction"));
 
@@ -122,11 +125,17 @@ public class GameDisplay extends JPanel
 	private JLabel moneyLabel;
 	private JLabel ageLabel;
 	private JLabel timeLabel;
+	private JTextArea currentProductionLabel = new JTextArea();
+	private JTextArea unitStatistiquesLabel = new JTextArea();
+	private GraphicsManager graphicsManager;
+	
+	private int selectedMap = 1;
 	
 	private float time;
 
-	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle)
+	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager, GraphicsManager graphicsManager)
 	{
+		this.graphicsManager = graphicsManager;
 		this.camera = camera;
 		this.manager = manager;
 		this.mouse = mouse;
@@ -134,6 +143,9 @@ public class GameDisplay extends JPanel
 		this.state = MAINMENU;
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
+		
+		audioManager.setState(state);
+		this.audioManager = audioManager;
 		
 		/*gamePanel = createGamePanel();
 		gamePanel.setVisible(false);*/
@@ -146,6 +158,9 @@ public class GameDisplay extends JPanel
 		
 		mainMenuPanel = createMainMenuPanel();
 		mainMenuPanel.setVisible(true);
+		
+		currentProductionLabel.setEditable(false);
+		unitStatistiquesLabel.setEditable(false);
 		this.add(mainMenuPanel);
 	}
 	
@@ -207,6 +222,7 @@ public class GameDisplay extends JPanel
         		JPanel panel2 = new JPanel(new GridLayout(2,0));
         		panel2.add(new JLabel("Player 2"));
         		boxPlayer2 = new JComboBox<String>(races);
+        		boxPlayer2.setSelectedIndex(1);
         		panel2.add(boxPlayer2);
                 panel.add(panel2);
         	}
@@ -294,7 +310,7 @@ public class GameDisplay extends JPanel
 	
 	private JPanel createGamePanel()
 	{
-		GridLayout gridLayout = new GridLayout(4,2);
+		GridLayout gridLayout = new GridLayout(4,3);
 		JPanel panel = new JPanel(gridLayout);
 		panel.setOpaque(false);
 		
@@ -305,11 +321,11 @@ public class GameDisplay extends JPanel
 			{
 				panel.add(createRessourceInfo());
 			}
-			else if(i == 1)
+			else if(i == 2)
 			{
 				panel.add(createGameMenuPanel());
 			}
-			else if(i == 6)
+			else if(i == 9)
 			{
 				panel.add(createDescriptionPanel());
 			}
@@ -326,16 +342,21 @@ public class GameDisplay extends JPanel
 
 	private JPanel createGameMenuPanel()
 	{
-		JPanel panel = new JPanel(new GridLayout(3, 5));
-		
-		JLabel label = new JLabel();
-		label.setVisible(false);
-		panel.add(label);
-		panel.add(new JButton(new PauseGameMenu("MENU")));
-		panel.add(label);
-		panel.add(label);
-		panel.add(label);
+		GridLayout gridLayout = new GridLayout(6,5);
+		JPanel panel = new JPanel(gridLayout);
 		panel.setOpaque(false);
+		
+		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
+		
+		for(int i = 0; i < gridPlacement; i++) {
+			if(i == 4) {
+				panel.add(new JButton(new PauseGameMenu("MENU")));
+			}
+			else {
+				panel.add(new JLabel());
+			}
+		}
+
 		return panel;
 	}
 	
@@ -348,11 +369,15 @@ public class GameDisplay extends JPanel
 		return descriptionPanel;
 	}
 	
-	public void setDescriptionPanelForWorker()
+	public void setDescriptionPanelForWorker(Worker worker)
 	{
 		descriptionPanel.removeAll();
 		
-		//code entre les deux
+		descriptionPanel.setLayout(new GridLayout(2, 2));
+		
+		descriptionPanel.add(constructionButton);
+
+		descriptionPanel.add(new JLabel("" + worker.getDescription()));
 		
 		descriptionPanel.validate();
 	}
@@ -361,30 +386,51 @@ public class GameDisplay extends JPanel
 	{		
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(5, 2));
+		Faction faction = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION);
 		
 		JButton buttonForge = new JButton(new ConstructBuilding("Forge", EntityConfiguration.FORGE));
 		buttonForge.setFocusable(false);
+		if(faction.getAge() <= 1) {
+			buttonForge.setEnabled(false);
+		}
+		buttonForge.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getAge());
 		
 		JButton buttonBarrack = new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACK));
 		buttonBarrack.setFocusable(false);
+		buttonBarrack.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.BARRACK).getCost());
 		
 		JButton buttonStable = new JButton(new ConstructBuilding("Ecurie", EntityConfiguration.STABLE));
 		buttonStable.setFocusable(false);
+		if(faction.getAge() <= 1) {
+			buttonStable.setEnabled(false);
+		}
+		buttonStable.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getAge());
 		
 		JButton buttonHq = new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ));
 		buttonHq.setFocusable(false);
+		buttonHq.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getCost());
 		
 		JButton buttonStockage = new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE));
 		buttonStockage.setFocusable(false);
+		buttonStockage.setToolTipText("Coût : " + faction.getRace().getStorageBuildings().get(EntityConfiguration.STORAGE).getCost());
 		
 		JButton buttonCastle = new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE));
 		buttonCastle.setFocusable(false);
+		if(faction.getAge() <= 2) {
+			buttonCastle.setEnabled(false);
+		}
+		buttonCastle.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getAge());
 		
 		JButton buttonArchery = new JButton(new ConstructBuilding("Acherie", EntityConfiguration.ARCHERY));
 		buttonArchery.setFocusable(false);
+		if(faction.getAge() <= 1) {
+			buttonArchery.setEnabled(false);
+		}
+		buttonArchery.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getAge());
 		
 		JButton buttonTower = new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER));
 		buttonTower.setFocusable(false);
+		buttonTower.setToolTipText("Coût : " + faction.getRace().getAttackBuildings().get(EntityConfiguration.TOWER).getCost());
 		
 		descriptionPanel.add(new JLabel("Liste des constructions"));
 		descriptionPanel.add(new JLabel());
@@ -405,9 +451,13 @@ public class GameDisplay extends JPanel
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(1, 3));
 		
+		unitStatistiquesLabel.setText("Points de vie : " + unit.getHp() +
+										"\nDégâts : " + unit.getDamage() + 
+										"\nArmure : " + unit.getArmor());
+		
 		descriptionPanel.add(new JLabel("etat"));
 		descriptionPanel.add(new JLabel(unit.getDescription()));
-		descriptionPanel.add(new JLabel("LES STATS"));
+		descriptionPanel.add(unitStatistiquesLabel);
 		
 		descriptionPanel.validate();
 	}
@@ -416,9 +466,11 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 1));
-	
+		descriptionPanel.setLayout(new GridLayout(2, 2));
+
 		descriptionPanel.add(new JLabel(building.getDescription()));
+		descriptionPanel.add(new JLabel("Points de vie : " + building.getHp()));
+		descriptionPanel.add(new JLabel("Attaque les unités adverse proche"));
 		
 		descriptionPanel.validate();
 	}
@@ -427,29 +479,146 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 1));
+		descriptionPanel.setLayout(new GridLayout(2, 2));
 	
 		descriptionPanel.add(new JLabel(building.getDescription()));
+		descriptionPanel.add(new JLabel("Points de vie : " + building.getHp()));
+		descriptionPanel.add(new JLabel("permet de déposer les ressources"));
 		
 		descriptionPanel.validate();
 	}
 	
-	public void setDescriptionPanelForBuilding(ProductionBuilding building)
+	public void setDescriptionPanelForBuilding(ProductionBuilding building, List<Integer> searchingUpgrades)
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 1));
+		GridLayout gridLayout = new GridLayout(5, 2);
+		descriptionPanel.setLayout(gridLayout);
+		int caseLayoutCount = gridLayout.getColumns() * gridLayout.getRows();
+		int infoEnd = 4;
 		
-		if(building.getProductionId() > -1)
-		{
-			JButton button = new JButton(new CreateUnit("" + building.getProductionId(), building.getProductionId(), building ));
-			button.setFocusable(false);
-			descriptionPanel.add(button);
-			descriptionPanel.add(new JLabel(building.getDescription()));
+		for(int i = 0; i < infoEnd; i++) {
+			if(i == 0) {
+				descriptionPanel.add(new JLabel("" + building.getDescription()));
+			}
+			else if(i == 1) {
+				if(building.getIsProducing()) {
+					int idProduction = building.getElementCount().get(0);
+					
+					Race race = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace();
+					ForFighter fighter = race.getPatronFighters().get(idProduction);
+					ForUpgrade forgeUpgrade = race.getForgeUpgrades().get(idProduction);
+					ForUpgrade hqUpgrade = race.getHQUpgrades().get(idProduction);
+					ForWorker worker = race.getPatronWorkers().get(idProduction);
+					if(fighter != null) {
+						currentProductionLabel.setText("Prod: " + fighter.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+					}
+					else if(forgeUpgrade != null) {
+						currentProductionLabel.setText("Prod: " + forgeUpgrade.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+					}
+					else if(hqUpgrade != null){
+						currentProductionLabel.setText("Prod: " + hqUpgrade.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+					}
+					else if(worker != null) {
+						currentProductionLabel.setText("Prod: " + worker.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+					}
+				}
+				else {
+					currentProductionLabel.setText("Rien n'est en production");
+				}
+				descriptionPanel.add(currentProductionLabel);
+			}
+			else if(i == 2) {
+				descriptionPanel.add(new JLabel("points de vie :" + building.getHp()));
+			}
+			else if(i == 3) {
+				JButton button1 = new JButton(new UndoProduction("retirer production", building));
+				button1.setFocusable(false);
+				descriptionPanel.add(button1);
+			}
+			else {
+				descriptionPanel.add(new JLabel("" + i));
+			}
 		}
-		else
-		{
-			descriptionPanel.add(new JLabel(building.getDescription()));
+		if(building.getId() == EntityConfiguration.FORGE) {
+			AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
+			AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
+			
+			for(int key : upgradesAvailable.keySet()) {
+				upgradesUse.put(key, upgradesAvailable.get(key));
+			}
+			
+			for(Integer id : searchingUpgrades) {
+				if(upgradesAvailable.containsKey(id)) {
+					upgradesUse.remove(id);
+				}
+			}
+			
+			for(ForUpgrade upgrade : upgradesAvailable.values()) {
+				if(!upgradesUse.containsValue(upgrade)) {
+					descriptionPanel.add(new JLabel());
+				}
+				else {
+					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
+					button.setFocusable(false);
+					button.setToolTipText("Coût : " + upgrade.getCost());
+					if(upgrade.getAge() > this.manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge()) {
+						button.setEnabled(false);
+					}
+					descriptionPanel.add(button);
+				}
+				infoEnd++;
+			}
+		}
+		else if(building.getId() == EntityConfiguration.HQ) {
+			String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronWorkers().get(building.getProductionId()).getDescription();
+			AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
+			AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
+			
+			for(int key : upgradesAvailable.keySet()) {
+				upgradesUse.put(key, upgradesAvailable.get(key));
+			}
+			
+			for(Integer id : searchingUpgrades) {
+				if(upgradesAvailable.containsKey(id)) {
+					upgradesUse.remove(id);
+				}
+			}
+			
+			for(ForUpgrade upgrade : upgradesAvailable.values()) {
+				if(!upgradesUse.containsValue(upgrade)) {
+					descriptionPanel.add(new JLabel());
+				}
+				else {
+					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
+					button.setFocusable(false);
+					button.setToolTipText("Coût : " + upgrade.getCost());
+					if(upgrade.getId() == EntityConfiguration.AGE_UPGRADE_2 && this.manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge() < 2) {
+						button.setEnabled(false);
+					}
+					descriptionPanel.add(button);
+				}
+				infoEnd++;
+			}
+			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
+			button.setFocusable(false);
+			button.setToolTipText("Coût : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(building.getProductionId()).getCost());
+			infoEnd++;
+			
+			descriptionPanel.add(button);
+		}
+		else {
+			String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronFighters().get(building.getProductionId()).getDescription();
+			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
+			button.setFocusable(false);
+			button.setToolTipText("Coût : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronFighters().get(building.getProductionId()).getCost());
+			infoEnd++;
+	
+			descriptionPanel.add(button);
+		}
+		
+		for(int i = infoEnd; i < caseLayoutCount; i++) {
+			descriptionPanel.add(new JLabel());
 		}
 		
 		descriptionPanel.validate();
@@ -489,7 +658,7 @@ public class GameDisplay extends JPanel
 		this.populationLabel.setForeground(Color.WHITE);
 		this.ageLabel =  new JLabel("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
 		this.ageLabel.setForeground(Color.WHITE);
-		JLabel race = new JLabel(" " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
+		JLabel race = new JLabel("FACTION :  " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
 		race.setForeground(Color.WHITE);
 		
 		panel.add(moneyLabel);
@@ -507,29 +676,36 @@ public class GameDisplay extends JPanel
 		JPanel panel = new JPanel();
 		JPanel panelBis = new JPanel();
 		
+		sonSlider.setMinimum(0);
+		sonSlider.setPaintTicks(true);
+		sonSlider.setPaintTrack(true);
+		sonSlider.setPaintLabels(true);
+		sonSlider.setMaximum(100);
+		sonSlider.setMajorTickSpacing(25);
+		
 		scrollingSlider.setMinimum(0);
 		scrollingSlider.setMaximum(100);
 
 		GridLayout gridLayout = new GridLayout(1,3);
-		panelBis.setLayout(new GridLayout(OPTIONSMENUMAXINDEX,1));
+		panelBis.setLayout(new GridLayout(PositionConfiguration.OPTIONSMENUMAXINDEX,1));
 		
-		for(int i = 1; i <= OPTIONSMENUMAXINDEX; i++)
+		for(int i = 1; i <= PositionConfiguration.OPTIONSMENUMAXINDEX; i++)
 		{
 			switch (i)
 			{
-				case SONLABELINDEX:
+				case PositionConfiguration.SONLABELINDEX:
 					panelBis.add(new JLabel("Son:"));
 					break;
-				case SONINDEX:
+				case PositionConfiguration.SONINDEX:
 					panelBis.add(sonSlider);
 					break;
-				case SCROLLINGLABELINDEX:
+				case PositionConfiguration.SCROLLINGLABELINDEX:
 					panelBis.add(new JLabel("Scrolling:"));
 					break;
-				case SCROLLINGINDEX:
+				case PositionConfiguration.SCROLLINGINDEX:
 					panelBis.add(scrollingSlider);
 					break;
-				case BACKINDEX:
+				case PositionConfiguration.BACKINDEX:
 					panelBis.add(new JButton(new BackToOldStateFromOptionButton("RETOUR")));
 					break;
 				default:
@@ -554,19 +730,19 @@ public class GameDisplay extends JPanel
 		JPanel panelBis = new JPanel();
 		
 		GridLayout gridLayaout = new GridLayout(1,3);
-		panelBis.setLayout(new GridLayout(PAUSEMENUMAXINDEX,1));
+		panelBis.setLayout(new GridLayout(PositionConfiguration.PAUSEMENUMAXINDEX,1));
 		
-		for(int i = 1; i <= PAUSEMENUMAXINDEX; i++)
+		for(int i = 1; i <= PositionConfiguration.PAUSEMENUMAXINDEX; i++)
 		{
 			switch(i)
 			{
-				case BACKTOGAMEINDEX:
+				case PositionConfiguration.BACKTOGAMEINDEX:
 					panelBis.add(new JButton(new UnpauseGameButton("RETOUR AU JEU")));
 					break;
-				case OPTIONSINDEX:
+				case PositionConfiguration.OPTIONSINDEX:
 					panelBis.add(new JButton(new GoToOptionFromPauseMenuButton("OPTION")));
 					break;
-				case LEAVEINDEX:
+				case PositionConfiguration.LEAVEINDEX:
 					panelBis.add(new JButton(new GoToMainMenuFromPauseMenu("RETOUR AU MENU PRINCIPAL")));
 					break;
 				default:
@@ -585,6 +761,33 @@ public class GameDisplay extends JPanel
 		return panel;
 	}
 	
+	public void actualiseCurrentProdLabel(ProductionBuilding building) {
+		if(building.getIsProducing()) {
+			int idProduction = building.getElementCount().get(0);
+			
+			Race race = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace();
+			ForFighter fighter = race.getPatronFighters().get(idProduction);
+			ForUpgrade forgeUpgrade = race.getForgeUpgrades().get(idProduction);
+			ForUpgrade hqUpgrade = race.getHQUpgrades().get(idProduction);
+			ForWorker worker = race.getPatronWorkers().get(idProduction);
+			if(fighter != null) {
+				currentProductionLabel.setText("Prod: " + fighter.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
+			}
+			else if(forgeUpgrade != null) {
+				currentProductionLabel.setText("Prod: " + forgeUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
+			}
+			else if(hqUpgrade != null){
+				currentProductionLabel.setText("Prod: " + hqUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
+			}
+			else if(worker != null) {
+				currentProductionLabel.setText("Prod: " + worker.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
+			}
+		}
+		else {
+			currentProductionLabel.setText("Rien n'est en production");
+		}
+	}
+
 	public void update() {
 		if(state == INGAME){
 			int populationCount = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getPopulationCount();
@@ -594,6 +797,41 @@ public class GameDisplay extends JPanel
 			this.timeLabel.setText("TEMPS:" + (int)time);
 			this.populationLabel.setText("POPULATION:" + populationCount + " / " + maxPopulation);
 			this.ageLabel.setText("AGE:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge());
+			
+			if(this.manager.getSelectedProdBuilding() != null) {
+				ProductionBuilding prod = manager.getSelectedProdBuilding();
+				actualiseCurrentProdLabel(prod);
+			}
+			
+			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isUpgradeAge()) {
+				if(this.manager.getSelectedProdBuilding() !=  null) {
+					List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(this.manager.getSelectedProdBuilding().getFaction()).getSearchingUpgrades();
+					setDescriptionPanelForBuilding(this.manager.getSelectedProdBuilding(), searchingUpgrades);
+				}
+				else if(this.manager.getSelectedAttackBuilding() == null && this.manager.getSelectedStorageBuilding() == null && this.manager.getSelectedUnits().isEmpty()) {
+					setDescriptionPanelForConstruction();
+				}
+				manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setUpgradeAge(false);
+			}
+			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isStatUpgrade()) {
+				if(this.manager.getSelectedUnits().size() > 0) {
+					setDescriptionPanelForUnit(this.manager.getSelectedUnits().get(0));
+					manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setStatUpgrade(false);
+				}
+			}
+			if(manager.getSelectedUnits().size() > 0) {
+				if(this.manager.getSelectedUnits().get(0).isHit()) {
+					setDescriptionPanelForUnit(this.manager.getSelectedUnits().get(0));
+				}
+			}
+			
+			for(Entity entity : manager.getPlayerEntities()) {
+				Position p = entity.getPosition();
+				fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange());
+			}
+		}
+		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {
+			audioManager.manageVolume(this.sonSlider.getValue());
 		}
 	}
 	
@@ -604,7 +842,7 @@ public class GameDisplay extends JPanel
 		
 		if(state == INGAME)
 		{
-			this.paintStrategy.paint(this.map, g, this.camera);
+			this.paintStrategy.paint(this.map, g, this.camera, graphicsManager);
 			List<Entity> entities = manager.getDrawingList();
 			List<Unit> units = manager.getSelectedUnits();
 			
@@ -621,7 +859,7 @@ public class GameDisplay extends JPanel
 			
 			for(Entity entity : entities)
 			{
-				this.paintStrategy.paint(entity, g, camera);
+				this.paintStrategy.paint(entity, g, camera, graphicsManager);
 			}
 			
 			for(Unit unit : units) {
@@ -637,11 +875,13 @@ public class GameDisplay extends JPanel
 				this.paintStrategy.paint(selectionRectangle, g, camera);
 			}
 			
-			this.paintStrategy.paintGui(map, entities, g, camera);
+			this.paintStrategy.paint(fog, g, camera);
+			
+			this.paintStrategy.paintGui(map, fog, entities, g, camera);
 		}
 		else if(state == MAINMENU)
 		{
-			//this.paintStrategy.paint(g);
+			//this.paintStrategy.paint(g);		
 		}
 		else if(state == OPTION)
 		{
@@ -653,14 +893,14 @@ public class GameDisplay extends JPanel
 		}
 	}
 	
-	private class CreateUnit extends AbstractAction
+	private class BuildingProduction extends AbstractAction
 	{
 		private static final long serialVersionUID = 1L;
 		
 		private int id;
 		private ProductionBuilding prodBuilding;
 		
-		public CreateUnit(String name, int id, ProductionBuilding building)
+		public BuildingProduction(String name, int id, ProductionBuilding building)
 		{
 			super(name);
 			this.id = id;
@@ -669,10 +909,34 @@ public class GameDisplay extends JPanel
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			prodBuilding.startProd(id);
-
+			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
+			int priceOfProduction = prodBuilding.startProd(id, money);
+			if(priceOfProduction > 0) {
+				manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money - priceOfProduction);
+				if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {
+					manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades().add(id);
+					setDescriptionPanelForBuilding(prodBuilding, manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades());
+				}
+			}
+		}
+	}
+	
+	private class UndoProduction extends AbstractAction{
+		private static final long serialVersionUID = 1L;
+		
+		private ProductionBuilding prodBuilding;
+		
+		public UndoProduction(String name, ProductionBuilding building) {
+			super(name);
+			this.prodBuilding = building;
 		}
 		
+		public void actionPerformed(ActionEvent e) {
+			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
+			List<Integer>searchingUpgrades = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades();
+			manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money + prodBuilding.removeProduction(searchingUpgrades));
+			setDescriptionPanelForBuilding(prodBuilding, searchingUpgrades);
+		}
 	}
 	
 	private class PauseGameMenu extends AbstractAction
@@ -744,6 +1008,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{
 			labelMap.setIcon(map1);
+			setSelectedMap(1);
 		}
 		
 	}
@@ -762,6 +1027,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{
 			labelMap.setIcon(map2);
+			setSelectedMap(2);
 		}
 		
 	}
@@ -780,9 +1046,11 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{
 			labelMap.setIcon(map3);
+			setSelectedMap(3);
 		}
 		
 	}
+	
 	
 	private class ExitGameButton extends AbstractAction
 	{
@@ -835,40 +1103,17 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{	
+			fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
+			audioManager.startFx(0);
 			time = 0;
-			Faction faction1 = new Faction(boxPlayer1.getSelectedIndex() + 1);
-			Faction faction2 = new Faction(boxPlayer2.getSelectedIndex() + 1);
-			Faction gaia = new Faction(4);
-			
-			manager.getFactionManager().addFaction(EntityConfiguration.PLAYER_FACTION, faction1);
-			manager.getFactionManager().addFaction(EntityConfiguration.BOT_FACTION, faction2);
-			manager.getFactionManager().addFaction(EntityConfiguration.GAIA_FACTION, gaia);
-			
-			if(radioButton1.isSelected())
-			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 1, "src/file/map1.txt");
-			}
-			else if(radioButton2.isSelected())
-			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 2, "src/file/map2.txt");
-			}
-			else
-			{
-				map = new Map(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT, 3, "src/file/map3.txt");
-			}
-			manager.addRessource(map.getGoldTiles());
+			map = GameBuilder.buildMap(selectedMap, graphicsManager, manager);
+			GameBuilder.buildFaction(manager, boxPlayer1.getSelectedIndex() + 1, boxPlayer2.getSelectedIndex() + 1, map);
 			
 			gamePanel = createGamePanel();
 			gamePanel.setVisible(false);
 			
 			oldState = state;
 			state = INGAME;
-			
-			//création d'un ennemie pour test
-			Tile tile = map.getTile(15, 15);
-			Tile tile2 = map.getTile(20, 15);
-			manager.createBuilding(EntityConfiguration.ARCHERY, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * 32, tile.getLine() * 32), tile);
-			manager.createBuilding(EntityConfiguration.TOWER, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * 32, tile2.getLine() * 32), tile2);
 			
 			manageState();
 		}
@@ -1001,9 +1246,13 @@ public class GameDisplay extends JPanel
 	 */
 	private class SonModel implements BoundedRangeModel
 	{
+		private int value;
+		
 		public SonModel()
 		{
 			super();
+			this.value = 25;
+			this.setValue(value);
 		}
 
 		@Override
@@ -1021,7 +1270,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public int getMaximum() 
 		{
-			return 0;
+			return 100;
 		}
 
 		@Override
@@ -1033,7 +1282,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public int getValue() 
 		{
-			return 0;
+			return value;
 		}
 
 		@Override
@@ -1075,7 +1324,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public void setValue(int arg0) 
 		{
-			
+			value = arg0;
 		}
 
 		@Override
@@ -1173,6 +1422,7 @@ public class GameDisplay extends JPanel
 					manager.clean();
 					camera.reset();
 				}
+				audioManager.startFx(1);
 				mainMenuPanel.setVisible(true);
 				getMainPanel().add(mainMenuPanel);
 				break;
@@ -1205,6 +1455,7 @@ public class GameDisplay extends JPanel
 					mainMenuPanel.setVisible(false);
 					getMainPanel().remove(mainMenuPanel);
 				}
+				audioManager.startFx(1);
 				optionPanel.setVisible(true);
 				getMainPanel().add(optionPanel);
 				break;
@@ -1212,6 +1463,7 @@ public class GameDisplay extends JPanel
 			case PAUSE:
 				if(oldState == OPTION)
 				{
+					audioManager.startFx(1);
 					optionPanel.setVisible(false);
 					getMainPanel().remove(optionPanel);
 				}
@@ -1220,7 +1472,7 @@ public class GameDisplay extends JPanel
 					gamePanel.setVisible(false);
 					getMainPanel().remove(gamePanel);
 				}
-				
+				audioManager.startFx(1);
 				pauseMenuPanel.setVisible(true);
 				getMainPanel().add(pauseMenuPanel);
 				break;
@@ -1228,6 +1480,7 @@ public class GameDisplay extends JPanel
 			default:
 				break;
 		}
+		audioManager.setState(state);
 	}
 	
 	public Map getMap()
@@ -1273,5 +1526,21 @@ public class GameDisplay extends JPanel
 
 	public void setTimeLabel(JLabel timeLabel) {
 		this.timeLabel = timeLabel;
+	}
+
+	public int getSelectedMap() {
+		return selectedMap;
+	}
+
+	public void setSelectedMap(int selectedMap) {
+		this.selectedMap = selectedMap;
+	}
+
+	public Fog getFog() {
+		return fog;
+	}
+
+	public void setFog(Fog fog) {
+		this.fog = fog;
 	}
 }

@@ -1,18 +1,26 @@
 package factionConfiguration;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public abstract class Patron 
 {
 	private int hp;
 	private int age;
 	private int hpMax;
 	private String description;
+	private int cost;
+	private int sightRange;
 	
-	public Patron(int hp, int age, String description, int hpMax)
+	public Patron(int hp, int age, String description, int hpMax, int sightRange, int cost)
 	{
 		this.hp = hp;
 		this.age = age;
 		this.description = description;
 		this.setHpMax(hpMax);
+		this.setCost(cost);
+		this.sightRange = sightRange;
 	}
 	
 	public int getHp() 
@@ -49,5 +57,21 @@ public abstract class Patron
 
 	public void setHpMax(int hpMax) {
 		this.hpMax = hpMax;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+	public int getSightRange() {
+		return sightRange;
+	}
+
+	public void setSightRange(int sightRange) {
+		this.sightRange = sightRange;
 	}
 }

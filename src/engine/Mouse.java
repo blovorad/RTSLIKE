@@ -1,5 +1,9 @@
 package engine;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class Mouse {
 	
 	private int id = -1;

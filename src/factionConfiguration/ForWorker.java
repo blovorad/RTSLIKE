@@ -1,5 +1,9 @@
 package factionConfiguration;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class ForWorker extends Patron
 {
 	private int range;
@@ -10,26 +14,32 @@ public class ForWorker extends Patron
 	private int ressourceMax;
 	private int harvest;
 
+
 	private int sightRange;
+
+	private int harvestSpeed;
+
 	private int attackSpeed;
 	private int attackRange;
 	private int repair;
 
-	
+	private int repairSpeed;
 
-	public ForWorker(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int ressourceMax, int harvest, int repair)
+	
+	public ForWorker(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int ressourceMax, int harvest, int repair, int harvestSpeed, int repairSpeed, int cost)
 	{
-		super(hp, age, description, hpMax);
+		super(hp, age, description, hpMax, sightRange, cost);
 		
 		this.range = range;
 		this.damage = damage;
 		this.armor = armor;
 		this.maxSpeed = maxSpeed;
 		this.setTimeToBuild(timeToBuild);
-		this.setSightRange(sightRange);
 		this.setRessourceMax(ressourceMax);
 		this.setHarvest(harvest);
 		this.repair = repair;
+		this.setHarvestSpeed(harvestSpeed);
+		this.setRepairSpeed(repairSpeed);
 	}
 
 	public int getRange() 
@@ -98,14 +108,6 @@ public class ForWorker extends Patron
 		this.harvest = harvest;
 	}
 
-	public int getSightRange() {
-		return sightRange;
-	}
-
-	public void setSightRange(int sightRange) {
-		this.sightRange = sightRange;
-	}
-
 	public int getAttackSpeed() {
 		return attackSpeed;
 	}
@@ -128,5 +130,21 @@ public class ForWorker extends Patron
 
 	public void setRepair(int repair) {
 		this.repair = repair;
+	}
+
+	public int getHarvestSpeed() {
+		return harvestSpeed;
+	}
+
+	public void setHarvestSpeed(int harvestSpeed) {
+		this.harvestSpeed = harvestSpeed;
+	}
+
+	public int getRepairSpeed() {
+		return repairSpeed;
+	}
+
+	public void setRepairSpeed(int repairSpeed) {
+		this.repairSpeed = repairSpeed;
 	}
 }

@@ -2,6 +2,12 @@ package configuration;
 
 import java.awt.Color;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class MapConfiguration {
 	
 	public static final int GRASS = 0;

@@ -1,76 +1,88 @@
 package engine;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import configuration.EntityConfiguration;
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
+import factionConfiguration.ForUpgrade;
 import factionConfiguration.Gaia;
 import factionConfiguration.Race;
 import factionConfiguration.Royaume;
-
-public class Faction 
-{
+/**
+ * 
+ * @author gautier
+ *
+ */
+public class Faction {
 	private Race race;
 	private int age;
 	private int buildingCount;
 	private int populationCount;
 	private int maxPopulation;
 	private int moneyCount;
-	private List<Upgrade> upgradesDone;
+	private AbstractMap<Integer, ForUpgrade> upgradesDone;
+	private List<Integer> searchingUpgrades;
+	private boolean upgradeAge;
+	private boolean statUpgrade;
 
-	public Faction(int id) 
-	{
+	public Faction(int id) {
 		age = 1;
 		buildingCount = 0;
 		maxPopulation = 20;
-		moneyCount = 200;
+		moneyCount = 5000;
 		populationCount = 0;
+		upgradesDone = new HashMap<Integer, ForUpgrade>();
+		searchingUpgrades = new ArrayList<Integer>();
+		upgradeAge = false;
+		setStatUpgrade(false);
 		
-		if(id == 1)
-		{
+		if(id == 1){
 			race = new Royaume();
 		}
-		else if(id == 2)
-		{
+		else if(id == 2){
 			race = new Barbare();
 		}
-		else if(id == 3)
-		{
+		else if(id == 3){
 			race = new Empire();
 		}
-		else if(id == 4)
-		{
+		else if(id == 4){
 			race = new Gaia();
 		}
 	}
 	
-	public int getAge() 
-	{
+	public void checkUpgrade(List<Integer> upgrades) {
+		for(Integer id : upgrades) {
+			if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {
+				searchingUpgrades.remove(id);
+			}
+		}
+	}
+	
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(int age) 
-	{
+	public void setAge(int age) {
 		this.age = age;
 	}
 
-	public int getBuildingCount() 
-	{
+	public int getBuildingCount() {
 		return buildingCount;
 	}
 
-	public void setBuildingCount(int buildingCount) 
-	{
+	public void setBuildingCount(int buildingCount) {
 		this.buildingCount = buildingCount;
 	}
 
-	public Race getRace() 
-	{
+	public Race getRace() {
 		return race;
 	}
 
-	public void setRace(Race race) 
-	{
+	public void setRace(Race race) {
 		this.race = race;
 	}
 	
@@ -91,11 +103,11 @@ public class Faction
 		this.moneyCount = moneyCount;
 	}
 
-	public List<Upgrade> getUpgradesDone() {
+	public AbstractMap<Integer, ForUpgrade> getUpgradesDone() {
 		return upgradesDone;
 	}
 
-	public void setUpgradesDone(List<Upgrade> upgradesDone) {
+	public void setUpgradesDone(AbstractMap<Integer, ForUpgrade> upgradesDone) {
 		this.upgradesDone = upgradesDone;
 	}
 
@@ -105,5 +117,29 @@ public class Faction
 
 	public void setPopulationCount(int populationCount) {
 		this.populationCount = populationCount;
+	}
+
+	public List<Integer> getSearchingUpgrades() {
+		return searchingUpgrades;
+	}
+
+	public void setSearchingUpgrades(List<Integer> searchingUpgrades) {
+		this.searchingUpgrades = searchingUpgrades;
+	}
+
+	public boolean isUpgradeAge() {
+		return upgradeAge;
+	}
+
+	public void setUpgradeAge(boolean upgradeAge) {
+		this.upgradeAge = upgradeAge;
+	}
+
+	public boolean isStatUpgrade() {
+		return statUpgrade;
+	}
+
+	public void setStatUpgrade(boolean statUpgrade) {
+		this.statUpgrade = statUpgrade;
 	}
 }

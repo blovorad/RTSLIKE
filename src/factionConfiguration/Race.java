@@ -1,24 +1,22 @@
 package factionConfiguration;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public abstract class Race 
 {
-	/*private ForFighter cavalry;
-	private ForFighter infantry;
-	private ForFighter archer;
-	private ForFighter special;
-	private ForWorker worker;*/
 	private String name;
 	private AbstractMap<Integer, ForFighter>patronFighters;
 	private AbstractMap<Integer, ForWorker>patronWorkers;
 	private AbstractMap<Integer, ForProductionBuilding>productionBuildings;
 	private AbstractMap<Integer, ForAttackBuilding>attackBuildings;
 	private AbstractMap<Integer, ForStorageBuilding>storageBuildings;
-	private List<ForUpgrade> upgrades;
+	private AbstractMap<Integer, ForUpgrade> HQUpgrades;
+	private AbstractMap<Integer, ForUpgrade> ForgeUpgrades;
 	
 	public Race()
 	{
@@ -27,38 +25,10 @@ public abstract class Race
 		this.storageBuildings = new HashMap<Integer, ForStorageBuilding>();
 		this.attackBuildings = new HashMap<Integer, ForAttackBuilding>();
 		this.productionBuildings = new HashMap<Integer, ForProductionBuilding>();
-		this.upgrades = new ArrayList<ForUpgrade>();
+		this.setHQUpgrades(new HashMap<Integer, ForUpgrade>());
+		this.setForgeUpgrades(new HashMap<Integer, ForUpgrade>());
+		
 	}
-	
-	/*public ForFighter getCavalry() 
-	{
-		return cavalry;
-	}
-	
-	public void setCavalry(ForFighter cavalry) 
-	{
-		this.cavalry = cavalry;
-	}
-	
-	public ForFighter getInfantry() 
-	{
-		return infantry;
-	}
-	
-	public void setInfantry(ForFighter infantry) 
-	{
-		this.infantry = infantry;
-	}
-	
-	public ForFighter getArcher() 
-	{
-		return archer;
-	}
-	
-	public void setArcher(ForFighter archer) 
-	{
-		this.archer = archer;
-	}*/
 	
 	public void setName(String name)
 	{
@@ -74,30 +44,6 @@ public abstract class Race
 	{
 		return "" + name;
 	}
-
-	/*public ForFighter getSpecial() {
-		return special;
-	}
-
-	public void setSpecial(ForFighter special) {
-		this.special = special;
-	}*/
-
-	public List<ForUpgrade> getUpgrades() {
-		return upgrades;
-	}
-
-	public void setUpgrades(List<ForUpgrade> upgrades) {
-		this.upgrades = upgrades;
-	}
-
-	/*public ForWorker getWorker() {
-		return worker;
-	}
-
-	public void setWorker(ForWorker worker) {
-		this.worker = worker;
-	}*/
 
 	public AbstractMap<Integer, ForProductionBuilding> getProductionBuildings() {
 		return productionBuildings;
@@ -137,5 +83,21 @@ public abstract class Race
 
 	public void setPatronWorkers(AbstractMap<Integer, ForWorker> patronWorkers) {
 		this.patronWorkers = patronWorkers;
+	}
+
+	public AbstractMap<Integer, ForUpgrade> getHQUpgrades() {
+		return HQUpgrades;
+	}
+
+	public void setHQUpgrades(AbstractMap<Integer, ForUpgrade> hQUpgrades) {
+		HQUpgrades = hQUpgrades;
+	}
+
+	public AbstractMap<Integer, ForUpgrade> getForgeUpgrades() {
+		return ForgeUpgrades;
+	}
+
+	public void setForgeUpgrades(AbstractMap<Integer, ForUpgrade> forgeUpgrades) {
+		ForgeUpgrades = forgeUpgrades;
 	}
 }

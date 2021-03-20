@@ -1,28 +1,23 @@
 package factionConfiguration;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class ForAttackBuilding extends Patron{
 	
-	private int sightRange;
 	private int attackDamage;
 	private int attackRange;
 	private int attackSpeed;
 	
-	public ForAttackBuilding(int hp, int sightRange, int attackDamage, int attackRange, int attackSpeed, int age, String description, int hpMax)
+	public ForAttackBuilding(int hp, int sightRange, int attackDamage, int attackRange, int attackSpeed, int age, String description, int hpMax, int cost)
 	{
-		super(hp, age, description, hpMax);
-		this.sightRange = sightRange;
+		super(hp, age, description, hpMax, sightRange, cost);
 		this.attackRange = attackRange;
 		this.attackDamage = attackDamage;
 		this.attackSpeed = attackSpeed;
 	}	
-	
-	public int getSightRange() {
-		return sightRange;
-	}
-
-	public void setSightRange(int sightRange) {
-		this.sightRange = sightRange;
-	}
 
 	public int getAttackDamage() {
 		return attackDamage;

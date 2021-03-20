@@ -1,9 +1,25 @@
 package factionConfiguration;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class ForStorageBuilding extends Patron{
 	
-	public ForStorageBuilding(int hp, int age, String description, int hpMax)
+	private int ressources;
+	
+	public ForStorageBuilding(int hp, int age, String description, int hpMax, int sightRange, int cost)
 	{
-		super(hp, age, description, hpMax);
+		super(hp, age, description, hpMax, sightRange, cost);
 	}
+
+	public int getRessources() {
+		return ressources;
+	}
+
+	public void setRessources(int ressources) {
+		this.ressources = ressources;
+	}
+	
+	
 }

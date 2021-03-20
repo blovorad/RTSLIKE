@@ -1,5 +1,9 @@
 package engine;
-
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class Position 
 {
 	private int x;
