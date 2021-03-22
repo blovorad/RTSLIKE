@@ -159,13 +159,13 @@ public class PaintStrategy
 		int tileSize = GameConfiguration.TILE_SIZE;
 		int unitSize = EntityConfiguration.UNIT_SIZE;
 		
-		if(entity.getId() >= 5 && entity.getId() <= 12){
+		if(entity.getId() >= EntityConfiguration.FORGE && entity.getId() <= EntityConfiguration.ARCHERY){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
 					graphics.setColor(Color.orange);
 				}
 				else {
-					graphics.setColor(Color.green);
+					graphics.setColor(new Color(0,0,0,0));
 				}
 			}
 			else{
@@ -173,7 +173,7 @@ public class PaintStrategy
 					graphics.setColor(Color.orange);
 				}
 				else {
-					graphics.setColor(Color.red);
+					graphics.setColor(new Color(0,0,0,0));
 				}
 			}
 			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);
@@ -249,7 +249,7 @@ public class PaintStrategy
 				
 				graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
 				graphics.drawImage(graphicsManager.getGraphicsTile(tile.getId()), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
-				graphics.setColor(Color.black);
+				//graphics.setColor(Color.black);
 				//graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
 			}
 		}
