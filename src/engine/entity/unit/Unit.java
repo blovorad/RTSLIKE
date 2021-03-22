@@ -153,11 +153,10 @@ public class Unit extends Entity
 	public void update()
 	{
 		super.update();
-
 		Position p = this.getPosition();
 		
 		if(this.getTarget() != null && (!this.getTarget().getPosition().equals(this.getPosition())))
-		{
+		{	
 			calculateSpeed(this.getTarget().getPosition());
 		}
 		else

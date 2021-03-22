@@ -109,7 +109,7 @@ public class EntitiesManager
 		}
 		
 		for(Worker worker : workers) {
-			worker.update();
+			worker.update(ressources, storageBuildings);
 			if(worker.getHp() < 1) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);
@@ -259,7 +259,7 @@ public class EntitiesManager
 		Worker worker = null;
 		
 		if(id == EntityConfiguration.WORKER) {
-			worker = new Worker(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepair(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 0);
+			worker = new Worker(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepair(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 0, patron.getSightRange());
 		}
 		else {
 			System.out.print("invalid id production worker : " + id);
@@ -420,7 +420,7 @@ public class EntitiesManager
 		StorageBuilding bstorage = null;
 		tile.setSolid(true);
 		
-<<<<<<< HEAD
+
 		if(id == EntityConfiguration.FORGE)
 		{
 			//List<Upgrades> list = faction.getListUpgrade();
@@ -430,9 +430,10 @@ public class EntitiesManager
 			{
 				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
 			}
-=======
+		}
+			
 		if(id == EntityConfiguration.FORGE){
->>>>>>> branch 'blovorad' of https://github.com/blovorad/RTSLIKE.git
+
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, factionManager.getFactions().get(faction).getRace().getForgeUpgrades(), graphicsManager.getGraphicsEntity(EntityConfiguration.FORGE), patronBuilding.getSightRange());
 		}
@@ -506,6 +507,7 @@ public class EntitiesManager
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout building attack");
 		}
+		
 		
 	}
 	

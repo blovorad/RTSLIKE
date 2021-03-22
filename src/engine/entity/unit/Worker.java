@@ -1,8 +1,10 @@
 package engine.entity.unit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
+
 
 import configuration.EntityConfiguration;
 
@@ -33,14 +35,15 @@ public class Worker extends Unit
 	private int timer;
 	
 	
-	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int resourcesMax)
+	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int resourcesMax, int sightRange)
 	{	
-		super(hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction);
+		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, hpMax, faction, sightRange);
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
 		
 		this.timer = harvestSpeed;
 		this.ressourcesMax = resourcesMax;
+		this.quantityRessource = 0;
 		
 		this.storageBuilding = null;
 		System.out.println("maxspeed worker : " + maxSpeed);
@@ -97,13 +100,12 @@ public class Worker extends Unit
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
-		
 		// cherche un batiment de stockage si jamais il en a pas
-		if(this.getTarget() == null && this.quantityRessource == this.ressourcesMax && this.storageBuilding == null)
+		if(this.getTarget() == null && this.quantityRessource == this.ressourcesMax && this.storageBuilding == null && this.ressource != null)
 		{
 			this.storageBuilding = storageBuildings.get(0);
 			int distanceStorageBuilding;
-			
+			System.out.println("Bonjour");
 			for(StorageBuilding valus: storageBuildings)
 			{
 				distanceStorageBuilding = calculate(this.storageBuilding.getPosition());
@@ -115,8 +117,9 @@ public class Worker extends Unit
 			
 		}
 		//cherche une nouvelle ressources si il a finis la sienne 
-		else if(this.ressource.getHp() == 0 && this.getTarget() == null)
+		else if(this.ressource != null && this.ressource.getHp() == 0 && this.getTarget() == null)
 		{
+			System.out.println("Salut");
 			this.ressource = null;
 			
 			this.ressource = ressources.get(0);
@@ -135,6 +138,7 @@ public class Worker extends Unit
 		}
 		else if(this.ressource != null && this.storageBuilding == null)
 		{
+			System.out.println("Au revoir");
 			if(this.timer == 0)
 			{
 				this.timer = calculateTimer();
@@ -143,13 +147,23 @@ public class Worker extends Unit
 		} 
 		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION)
 		{
+			System.out.println("tutu");
 			if(this.timer == 0)
 			{
 				this.timer = this.harvestSpeed;
 			}
 			this.toRepair();
 		}
-		
+		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.RESSOURCE)
+		{
+			System.out.println("test");
+			this.toHarvest();
+			System.out.println("Mes resources sont a: " + this.quantityRessource);
+		}
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getId() >= EntityConfiguration.FORGE && this.getTarget().getId() <= EntityConfiguration.ARCHERY )
+		{
+			this.toRepair();
+		}
 		
 	}
 	
@@ -171,6 +185,11 @@ public class Worker extends Unit
 	public void setHarvestSpeed(int harvestSpeed)
 	{
 		this.harvestSpeed = harvestSpeed;
+	}
+	
+	public int gatQuantityRessource()
+	{
+		return this.quantityRessource;
 	}
 	public int getRepair() 
 	{

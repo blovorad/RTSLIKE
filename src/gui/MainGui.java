@@ -16,13 +16,16 @@ import javax.swing.JTextField;
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Camera;
+import engine.Entity;
 import engine.Mouse;
 import engine.Position;
 import engine.Ressource;
 import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.StorageBuilding;
+import engine.entity.unit.Fighter;
 import engine.entity.unit.Unit;
+import engine.entity.unit.Worker;
 import engine.manager.AudioManager;
 import engine.manager.EntitiesManager;
 import engine.manager.GraphicsManager;
@@ -191,9 +194,94 @@ public class MainGui extends JFrame implements Runnable
 		return this.getContentPane();
 	}
 	
+	//méthode pour vérifier se trouve a l'endroit ou l'on fait click droit
 	private class MouseControls implements MouseListener 
 	{
-		
+		public Entity checkEntity(int mouseX, int mouseY)
+		{
+			int x = mouseX + camera.getX();
+			int y = mouseY + camera.getY();
+			
+			Entity selectEntity = null;
+			
+			List<StorageBuilding> storagesBuilding = manager.getStorageBuildings();
+			List<AttackBuilding> attackBuildings = manager.getAttackBuildings();
+			List<ProductionBuilding> prodBuildings = manager.getProdBuildings();
+			List<Fighter> fighters = manager.getFighters();
+			List<Worker> workers = manager.getWorkers();
+			
+			if(selectEntity == null)
+			{
+				for(StorageBuilding storage : storagesBuilding)
+				{
+					Position storagePosition = new Position(storage.getPosition().getX(),  storage.getPosition().getY());
+					
+					if(x > storagePosition.getX() && x < storagePosition.getX() + EntityConfiguration.UNIT_SIZE && y > storagePosition.getY() && y < storagePosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectEntity = storage;
+						break;
+					}
+				}
+			}
+			
+			if(selectEntity == null)
+			{
+				for(AttackBuilding attack : attackBuildings )
+				{
+					Position  attackPosition = new Position(attack.getPosition().getX(), attack.getPosition().getY());
+					
+					if(x > attackPosition.getX() && x < attackPosition.getX() + EntityConfiguration.UNIT_SIZE && y > attackPosition.getY() && y < attackPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectEntity = attack;
+						break;
+					}
+				}
+			}
+			
+			if(selectEntity == null)
+			{
+				for(ProductionBuilding prod : prodBuildings )
+				{
+					Position prodPosition = new Position(prod.getPosition().getX(), prod.getPosition().getY());
+					
+					if(x > prodPosition.getX() && x < prodPosition.getX() + EntityConfiguration.UNIT_SIZE && y > prodPosition.getY() && y < prodPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectEntity = prod;
+						break;
+					}
+				}
+			}
+			
+			if(selectEntity == null)
+			{
+				for( Fighter fighter: fighters )
+				{
+					Position  fighterPosition = new Position(fighter.getPosition().getX(), fighter.getPosition().getY());
+					
+					if(x > fighterPosition.getX() && x < fighterPosition.getX() + EntityConfiguration.UNIT_SIZE && y > fighterPosition.getY() && y < fighterPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectEntity = fighter;
+						break;
+					}
+				}
+			}
+			
+			if(selectEntity == null)
+			{
+				for( Worker worker: workers )
+				{
+					Position workerPosition  = new Position(worker.getPosition().getX(), worker.getPosition().getY());
+					
+					if(x > workerPosition.getX() && x < workerPosition.getX() + EntityConfiguration.UNIT_SIZE && y > workerPosition.getY() && y < workerPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectEntity = worker;
+						break;
+					}
+				}
+			}
+			
+		return selectEntity;	
+		}
 		public void checkWhatIsSelected(int mouseX, int mouseY)
 		{
 			manager.clearSelectedBuildings();
@@ -412,8 +500,29 @@ public class MainGui extends JFrame implements Runnable
 				else if(e.getButton() == 3)
 				{
 					List<Unit> listSelectedUnit = manager.getSelectedUnits();
+					Position mousePos = new Position(mouseX, mouseY);
 					
-					if(!listSelectedUnit.isEmpty()) {
+					for(Ressource ressources : manager.getRessources())
+					{
+						if(ressources.getPosition().equals(mousePos) && !listSelectedUnit.isEmpty())
+						{
+							for(Unit unit : listSelectedUnit)
+							{
+								unit.setTarget(ressources);
+							}
+						}
+					}
+					
+					Entity targete = checkEntity(mouseX, mouseY);
+					
+					if(!listSelectedUnit.isEmpty() && targete != null)
+					{
+						for(Unit unit : listSelectedUnit)
+						{
+							unit.setTarget(targete);
+						}
+					}
+					else if(!listSelectedUnit.isEmpty()) {
 						for(Unit unit : listSelectedUnit){
 							unit.calculateSpeed(new Position(mouseX, mouseY));
 						}
