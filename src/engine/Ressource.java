@@ -15,7 +15,7 @@ public class Ressource extends Entity
 	
 	public Ressource(int hp, String description, Position position, Tile tile, int faction, BufferedImage texture)
 	{
-		super(2, 2, description, position, EntityConfiguration.RESSOURCE, faction, texture, 0);
+		super(3, 3, description, position, EntityConfiguration.RESSOURCE, faction, texture, 0);
 		tileAttach = tile;
 	}
 
