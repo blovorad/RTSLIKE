@@ -127,6 +127,7 @@ public class GameDisplay extends JPanel
 	private JLabel timeLabel;
 	private JTextArea currentProductionLabel = new JTextArea();
 	private JTextArea unitStatistiquesLabel = new JTextArea();
+	private JTextArea buildingStatistiquesLabel = new JTextArea();
 	private GraphicsManager graphicsManager;
 	
 	private int selectedMap = 1;
@@ -161,6 +162,7 @@ public class GameDisplay extends JPanel
 		
 		currentProductionLabel.setEditable(false);
 		unitStatistiquesLabel.setEditable(false);
+		buildingStatistiquesLabel.setEditable(false);
 		this.add(mainMenuPanel);
 	}
 	
@@ -469,7 +471,8 @@ public class GameDisplay extends JPanel
 		descriptionPanel.setLayout(new GridLayout(2, 2));
 
 		descriptionPanel.add(new JLabel(building.getDescription()));
-		descriptionPanel.add(new JLabel("Points de vie : " + building.getHp()));
+		buildingStatistiquesLabel.setText("points de vie :" + building.getHp());
+		descriptionPanel.add(buildingStatistiquesLabel);
 		descriptionPanel.add(new JLabel("Attaque les unités adverse proche"));
 		
 		descriptionPanel.validate();
@@ -482,7 +485,8 @@ public class GameDisplay extends JPanel
 		descriptionPanel.setLayout(new GridLayout(2, 2));
 	
 		descriptionPanel.add(new JLabel(building.getDescription()));
-		descriptionPanel.add(new JLabel("Points de vie : " + building.getHp()));
+		buildingStatistiquesLabel.setText("points de vie :" + building.getHp());
+		descriptionPanel.add(buildingStatistiquesLabel);
 		descriptionPanel.add(new JLabel("permet de déposer les ressources"));
 		
 		descriptionPanel.validate();
@@ -529,7 +533,8 @@ public class GameDisplay extends JPanel
 				descriptionPanel.add(currentProductionLabel);
 			}
 			else if(i == 2) {
-				descriptionPanel.add(new JLabel("points de vie :" + building.getHp()));
+				buildingStatistiquesLabel.setText("points de vie :" + building.getHp());
+				descriptionPanel.add(buildingStatistiquesLabel);
 			}
 			else if(i == 3) {
 				JButton button1 = new JButton(new UndoProduction("retirer production", building));
@@ -787,6 +792,10 @@ public class GameDisplay extends JPanel
 			currentProductionLabel.setText("Rien n'est en production");
 		}
 	}
+	
+	public void actualiseStatistiquesBuilding(int hp) {
+		this.buildingStatistiquesLabel.setText("Points de vie : " + hp);
+	}
 
 	public void update() {
 		if(state == INGAME){
@@ -801,6 +810,15 @@ public class GameDisplay extends JPanel
 			if(this.manager.getSelectedProdBuilding() != null) {
 				ProductionBuilding prod = manager.getSelectedProdBuilding();
 				actualiseCurrentProdLabel(prod);
+				actualiseStatistiquesBuilding(prod.getHp());
+			}
+			else if(this.manager.getSelectedAttackBuilding() != null) {
+				AttackBuilding attack = manager.getSelectedAttackBuilding();
+				actualiseStatistiquesBuilding(attack.getHp());
+			}
+			else if(this.manager.getSelectedStorageBuilding() != null) {
+				StorageBuilding storage = manager.getSelectedStorageBuilding();
+				actualiseStatistiquesBuilding(storage.getHp());
 			}
 			
 			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isUpgradeAge()) {

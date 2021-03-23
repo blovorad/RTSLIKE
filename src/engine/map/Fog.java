@@ -31,9 +31,11 @@ public class Fog {
 		
 		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
-				double dist =  Math.sqrt(Math.pow(x - columnIndex * GameConfiguration.TILE_SIZE, 2) + Math.pow(y - lineIndex * GameConfiguration.TILE_SIZE, 2));
-				if(dist < sightRange) {
-					fog[lineIndex][columnIndex] = false;
+				if(fog[lineIndex][columnIndex] == true) {
+					double dist =  Math.sqrt(Math.pow(x - columnIndex * GameConfiguration.TILE_SIZE, 2) + Math.pow(y - lineIndex * GameConfiguration.TILE_SIZE, 2));
+					if(dist < sightRange) {
+						fog[lineIndex][columnIndex] = false;
+					}
 				}
 			}
 		}

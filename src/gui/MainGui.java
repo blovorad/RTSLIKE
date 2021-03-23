@@ -548,64 +548,69 @@ public class MainGui extends JFrame implements Runnable
 				}
 				else if(e.getButton() == 3)
 				{
-					List<Unit> listSelectedUnit = manager.getSelectedUnits();				
-					
-					Entity target = checkEntity(mouseX, mouseY);
-					/*if(checkRessource(mouseX, mouseY) != null)
-					{
-						for(Unit unit : listSelectedUnit)
-						{
-							unit.setTarget(targete);
-							unit.setDestination(targete.getPosition());
-							unit.calculateSpeed(targete.getPosition());
-						}
-					}*/
-					if(!listSelectedUnit.isEmpty() && target != null)
-					{
-						for(Unit unit : listSelectedUnit)
-						{
-							unit.setTarget(target);
-							unit.setDestination(target.getPosition());
-							unit.calculateSpeed(target.getPosition());
-							
-							if(unit.getId() == EntityConfiguration.WORKER)
-							{
-							}
-						}
-					}
-					else if(!listSelectedUnit.isEmpty() && target == null) {
-						for(Unit unit : listSelectedUnit){
-							unit.calculateSpeed(new Position(mouseX, mouseY));
-							unit.setTarget(null);
-						}
+					if(mouse.getId() > -1) {
+						mouse.setId(-1);
 					}
 					else {
+						List<Unit> listSelectedUnit = manager.getSelectedUnits();				
 						
-						if(manager.getSelectedAttackBuilding() != null) {
-							List<Unit> units = manager.getUnits();
-							int x = mouseX + camera.getX();
-							int y = mouseY + camera.getY();
-							for(Unit unit : units) {
-								Position unitPosition = unit.getPosition();
-								if(unit.getFaction() == EntityConfiguration.BOT_FACTION) {
-									if (x > unitPosition.getX() && x < unitPosition.getX() + EntityConfiguration.UNIT_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + EntityConfiguration.UNIT_SIZE) {
-										manager.getSelectedAttackBuilding().setTarget(unit);
-										System.out.println("new target : " + manager.getSelectedAttackBuilding().getTarget().getDescription());
-										break;
-									}
+						Entity target = checkEntity(mouseX, mouseY);
+						/*if(checkRessource(mouseX, mouseY) != null)
+						{
+							for(Unit unit : listSelectedUnit)
+							{
+								unit.setTarget(targete);
+								unit.setDestination(targete.getPosition());
+								unit.calculateSpeed(targete.getPosition());
+							}
+						}*/
+						if(!listSelectedUnit.isEmpty() && target != null)
+						{
+							for(Unit unit : listSelectedUnit)
+							{
+								unit.setTarget(target);
+								unit.setDestination(target.getPosition());
+								unit.calculateSpeed(target.getPosition());
+								
+								if(unit.getId() == EntityConfiguration.WORKER)
+								{
 								}
 							}
 						}
-						else {
-							ProductionBuilding building = manager.getSelectedProdBuilding();
-							if(building != null) {
-								building.setDestination(new Position(mouseX, mouseY));
-								System.out.println(building.getDestination().getX());
-								System.out.println(building.getDestination().getY());
+						else if(!listSelectedUnit.isEmpty() && target == null) {
+							for(Unit unit : listSelectedUnit){
+								unit.calculateSpeed(new Position(mouseX, mouseY));
+								unit.setTarget(null);
 							}
 						}
+						else {
+							
+							if(manager.getSelectedAttackBuilding() != null) {
+								List<Unit> units = manager.getUnits();
+								int x = mouseX + camera.getX();
+								int y = mouseY + camera.getY();
+								for(Unit unit : units) {
+									Position unitPosition = unit.getPosition();
+									if(unit.getFaction() == EntityConfiguration.BOT_FACTION) {
+										if (x > unitPosition.getX() && x < unitPosition.getX() + EntityConfiguration.UNIT_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + EntityConfiguration.UNIT_SIZE) {
+											manager.getSelectedAttackBuilding().setTarget(unit);
+											System.out.println("new target : " + manager.getSelectedAttackBuilding().getTarget().getDescription());
+											break;
+										}
+									}
+								}
+							}
+							else {
+								ProductionBuilding building = manager.getSelectedProdBuilding();
+								if(building != null) {
+									building.setDestination(new Position(mouseX, mouseY));
+									System.out.println(building.getDestination().getX());
+									System.out.println(building.getDestination().getY());
+								}
+							}
+						}
+	
 					}
-
 				}
 			}
 		}
