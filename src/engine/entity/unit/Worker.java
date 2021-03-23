@@ -9,6 +9,7 @@ import configuration.EntityConfiguration;
 import engine.Position;
 import engine.Ressource;
 import engine.entity.building.StorageBuilding;
+import engine.math.Collision;
 
 
 /**
@@ -39,8 +40,8 @@ public class Worker extends Unit
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
 		
-		this.timer = harvestSpeed;
-		this.ressourcesMax = resourcesMax;
+		this.timer = 5;
+		this.ressourcesMax = 2;
 		this.quantityRessource = 0;
 		
 		this.storageBuilding = null;
@@ -55,12 +56,13 @@ public class Worker extends Unit
 			{
 				this.ressource.setHp(this.ressource.getHp() -1);
 				this.quantityRessource ++;
+				System.out.println("Mes resources sont a: " + this.quantityRessource);
 				if(this.ressource.getHp() == 0)
 				{
 					this.ressource = null;
 				}
 				
-				timer = 0;
+				timer = this.harvestSpeed;
 			}
 			this.timer--;
 		}
@@ -78,7 +80,7 @@ public class Worker extends Unit
 				{
 					this.setTarget(null);
 				}
-				this.timer = 0;
+				this.timer = this.harvestSpeed;
 			}
 			this.timer--;
 		}
@@ -103,28 +105,44 @@ public class Worker extends Unit
 	{
 		super.update();
 		
-		
-		if(this.getTarget() != null && this.ressource == null && this.getTarget().getId() == EntityConfiguration.RESSOURCE && this.getPosition().equals(this.getTarget()))
+		/*if( this.getDestination() != this.getDestination() != this.ressource.getPosition())
 		{
-			System.out.println("test");
-			this.ressource = ressources.get(0);
-			int distanceRessource;
 			
-			for(Ressource valus: ressources)
+		}*/
+		if(this.getTarget() != null && this.ressource == null && this.getTarget().getId() == EntityConfiguration.RESSOURCE && this.getPosition().inTile(this.getTarget().getPosition()))
+		{
+			if(!ressources.isEmpty())
 			{
-				distanceRessource = calculate(this.ressource.getPosition());
-				if(distanceRessource > calculate(valus.getPosition()))
+				System.out.println("test");
+				this.ressource = ressources.get(0);
+				int distanceRessource;
+				
+				for(Ressource valus: ressources)
 				{
-					this.ressource = valus;
+					distanceRessource = calculate(this.ressource.getPosition());
+					if(distanceRessource > calculate(valus.getPosition()))
+					{
+						this.ressource = valus;
+					}
 				}
 			}
 		}
+		
+		// revien a la ressource quand posse ces ressources
+		else if(this.ressource != null && this.getTarget() == this.storageBuilding && this.quantityRessource != this.ressourcesMax)
+		{
+			System.out.println("3");
+			this.setTarget(ressource);
+		}
+		
 		// cherche un batiment de stockage si jamais il en a pas
-		else if(this.getTarget() == null && this.quantityRessource == this.ressourcesMax && this.storageBuilding == null && this.ressource != null)
+		else if(this.storageBuilding == null)
 		{
 			this.storageBuilding = storageBuildings.get(0);
 			int distanceStorageBuilding;
+			
 			System.out.println("Bonjour");
+			
 			for(StorageBuilding valus: storageBuildings)
 			{
 				distanceStorageBuilding = calculate(this.storageBuilding.getPosition());
@@ -135,8 +153,20 @@ public class Worker extends Unit
 			}
 			
 		}
+		
+		// Va au batiments quand il a les ressources max
+		else if(this.storageBuilding != null && this.quantityRessource == this.ressourcesMax)	
+		{
+			this.setTarget(storageBuilding);
+			if(Collision.collideUnit(this.getTarget().getPosition(), this))
+			{
+				System.out.println("1");
+				this.quantityRessource = 0;
+			}
+		}
+		
 		//cherche une nouvelle ressources si il a finis la sienne 
-		else if(this.ressource != null && this.ressource.getHp() == 0 && this.getTarget() == null)
+		else if(this.ressource != null && this.ressource.getHp() <= 0 && this.getTarget() == null)
 		{
 			System.out.println("Salut");
 			this.ressource = null;
@@ -155,36 +185,21 @@ public class Worker extends Unit
 			
 			//trouver une nouvelle resources
 		}
-		// trouver un batiment de stockages quand on est déja sur une ressources
-		else if(this.ressource != null && this.storageBuilding == null)
+		
+		// récupère ressources
+		else if(this.ressource != null && this.storageBuilding != null && this.ressource.getPosition().inTile(this.getPosition()))
 		{
-			System.out.println("Au revoir");
-			if(this.timer == 0)
-			{
-				this.timer = calculateTimer();
-			}
 			this.toHarvest();
 		} 
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() != this.getTarget().getHpMax())
+		
+		//réparee les batiments
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() != this.getTarget().getHpMax() && this.getTarget().getPosition().inTile(this.getPosition()))
 		{
-			System.out.println("tutu");
-			if(this.timer == 0)
-			{
-				this.timer = this.harvestSpeed;
-			}
+			System.out.println("Le timer est a: " + this.timer);
 			this.toRepair();
+			System.out.println("Ma vi est de :" + this.getTarget().getHp());
 		}
-		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.RESSOURCE && this.getPosition().inTile(this.getTarget().getPosition()))
-		{
-			System.out.println("test");
-			this.toHarvest();
-			System.out.println("Mes resources sont a: " + this.quantityRessource);
-		}
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getId() >= EntityConfiguration.FORGE && this.getTarget().getId() <= EntityConfiguration.ARCHERY  && this.getPosition().inTile(this.getTarget().getPosition()))
-		{
-			System.out.println("Ma vie est à: " + this.getTarget().getHp());
-			this.toRepair();
-		}
+		
 		
 	}
 	
@@ -220,5 +235,25 @@ public class Worker extends Unit
 	public void setRepair(int repairSpeed) 
 	{
 		this.repairSpeed = repairSpeed;
+	}
+	
+	public Ressource getRessource()
+	{
+		return this.ressource;
+	}
+	
+	public void setRessource(Ressource ressource)
+	{
+		this.ressource = ressource;
+	}
+	
+	public StorageBuilding getStorageBuilding()
+	{
+		return this.storageBuilding;
+	}
+	
+	public void setStorageBuilding(StorageBuilding storageBuilding)
+	{
+		this.storageBuilding = storageBuilding;
 	}
 }

@@ -201,6 +201,7 @@ public class MainGui extends JFrame implements Runnable
 		{
 			int x = mouseX + camera.getX();
 			int y = mouseY + camera.getY();
+			
 			Position destination = new Position(x,y);
 			
 			Entity selectEntity = null;
@@ -208,12 +209,14 @@ public class MainGui extends JFrame implements Runnable
 			List<StorageBuilding> storagesBuilding = manager.getStorageBuildings();
 			List<AttackBuilding> attackBuildings = manager.getAttackBuildings();
 			List<ProductionBuilding> prodBuildings = manager.getProdBuildings();
-			List<Ressource> ressources = manager.getRessources();
 			List<Fighter> fighters = manager.getFighters();
 			List<Worker> workers = manager.getWorkers();
 			
+			List<Ressource> ressources = manager.getRessources();
 			
-			if(selectEntity == null)
+			Ressource selectRessource = null;
+			
+			if(selectRessource == null)
 			{
 				for(Ressource ressource : ressources)
 				{
@@ -226,6 +229,7 @@ public class MainGui extends JFrame implements Runnable
 					}
 				}
 			}
+			
 			
 			if(selectEntity == null)
 			{
@@ -298,6 +302,33 @@ public class MainGui extends JFrame implements Runnable
 			}
 			
 		return selectEntity;	
+		}
+		
+		public Ressource checkRessource(int mouseX, int mouseY)
+		{
+			int x = mouseX + camera.getX();
+			int y = mouseY + camera.getY();
+			
+			Position destination = new Position(x,y);
+			
+			List<Ressource> ressources = manager.getRessources();
+			
+			Ressource selectRessource = null;
+			
+			if(selectRessource == null)
+			{
+				for(Ressource ressource : ressources)
+				{
+					Position ressourcePosition = new Position(ressource.getPosition().getX(),  ressource.getPosition().getY());
+					
+					if(destination.inTile(ressourcePosition))
+					{
+						selectRessource = ressource;
+						break;
+					}
+				}
+			}
+			return selectRessource;
 		}
 		
 		public void checkWhatIsSelected(int mouseX, int mouseY)
@@ -517,22 +548,18 @@ public class MainGui extends JFrame implements Runnable
 				}
 				else if(e.getButton() == 3)
 				{
-					List<Unit> listSelectedUnit = manager.getSelectedUnits();
-					Position mousePos = new Position(mouseX, mouseY);
-					
-					for(Ressource ressources : manager.getRessources())
-					{
-						if(ressources.getPosition().equals(mousePos) && !listSelectedUnit.isEmpty())
-						{
-							for(Unit unit : listSelectedUnit)
-							{
-								unit.setTarget(ressources);
-							}
-						}
-					}
+					List<Unit> listSelectedUnit = manager.getSelectedUnits();				
 					
 					Entity targete = checkEntity(mouseX, mouseY);
-					
+					/*if(checkRessource(mouseX, mouseY) != null)
+					{
+						for(Unit unit : listSelectedUnit)
+						{
+							unit.setTarget(targete);
+							unit.setDestination(targete.getPosition());
+							unit.calculateSpeed(targete.getPosition());
+						}
+					}*/
 					if(!listSelectedUnit.isEmpty() && targete != null)
 					{
 						for(Unit unit : listSelectedUnit)
@@ -540,6 +567,10 @@ public class MainGui extends JFrame implements Runnable
 							unit.setTarget(targete);
 							unit.setDestination(targete.getPosition());
 							unit.calculateSpeed(targete.getPosition());
+							
+							if(unit.getId() == EntityConfiguration.WORKER)
+							{
+							}
 						}
 					}
 					else if(!listSelectedUnit.isEmpty() && targete == null) {
