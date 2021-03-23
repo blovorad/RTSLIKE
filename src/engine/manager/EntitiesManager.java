@@ -153,6 +153,10 @@ public class EntitiesManager
 		
 		for(StorageBuilding building : storageBuildings) {
 			building.update();
+			if(building.getRessourceStock() > 0) {
+				int money = factionManager.getFactions().get(building.getFaction()).getMoneyCount();
+				factionManager.getFactions().get(building.getFaction()).setMoneyCount(money + building.takeRessourceStock());
+			}
 			if(building.getHp() < 1) {
 				removeStorageBuildings.add(building);
 			}
