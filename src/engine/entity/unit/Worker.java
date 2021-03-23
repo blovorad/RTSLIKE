@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
-
-
 import configuration.EntityConfiguration;
 
 import engine.Position;
@@ -70,11 +68,11 @@ public class Worker extends Unit
 	
 	public void toRepair()
 	{
-		if(this.getTarget() != null)
+		if(this.getTarget() != null /*&& this.getTarget().getHp() != this.getTarget().getHpMax()*/)
 		{
 			if(this.timer == 0)
 			{
-				this.getTarget().setHp(this.getTarget().getHp() + 1);
+				this.getTarget().setHp(((this.getTarget().getHp()) + 1));
 				
 				if(this.getTarget().getHp() == this.getTarget().getHpMax())
 				{
@@ -83,6 +81,10 @@ public class Worker extends Unit
 				this.timer = 0;
 			}
 			this.timer--;
+		}
+		else
+		{
+			this.setTarget(null);
 		}
 		
 	}
@@ -100,8 +102,25 @@ public class Worker extends Unit
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
+		
+		
+		if(this.getTarget() != null && this.ressource == null && this.getTarget().getId() == EntityConfiguration.RESSOURCE && this.getPosition().equals(this.getTarget()))
+		{
+			System.out.println("test");
+			this.ressource = ressources.get(0);
+			int distanceRessource;
+			
+			for(Ressource valus: ressources)
+			{
+				distanceRessource = calculate(this.ressource.getPosition());
+				if(distanceRessource > calculate(valus.getPosition()))
+				{
+					this.ressource = valus;
+				}
+			}
+		}
 		// cherche un batiment de stockage si jamais il en a pas
-		if(this.getTarget() == null && this.quantityRessource == this.ressourcesMax && this.storageBuilding == null && this.ressource != null)
+		else if(this.getTarget() == null && this.quantityRessource == this.ressourcesMax && this.storageBuilding == null && this.ressource != null)
 		{
 			this.storageBuilding = storageBuildings.get(0);
 			int distanceStorageBuilding;
@@ -136,6 +155,7 @@ public class Worker extends Unit
 			
 			//trouver une nouvelle resources
 		}
+		// trouver un batiment de stockages quand on est déja sur une ressources
 		else if(this.ressource != null && this.storageBuilding == null)
 		{
 			System.out.println("Au revoir");
@@ -145,7 +165,7 @@ public class Worker extends Unit
 			}
 			this.toHarvest();
 		} 
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION)
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() != this.getTarget().getHpMax())
 		{
 			System.out.println("tutu");
 			if(this.timer == 0)
@@ -154,14 +174,15 @@ public class Worker extends Unit
 			}
 			this.toRepair();
 		}
-		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.RESSOURCE)
+		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.RESSOURCE && this.getPosition().inTile(this.getTarget().getPosition()))
 		{
 			System.out.println("test");
 			this.toHarvest();
 			System.out.println("Mes resources sont a: " + this.quantityRessource);
 		}
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getId() >= EntityConfiguration.FORGE && this.getTarget().getId() <= EntityConfiguration.ARCHERY )
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getId() >= EntityConfiguration.FORGE && this.getTarget().getId() <= EntityConfiguration.ARCHERY  && this.getPosition().inTile(this.getTarget().getPosition()))
 		{
+			System.out.println("Ma vie est à: " + this.getTarget().getHp());
 			this.toRepair();
 		}
 		

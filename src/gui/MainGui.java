@@ -201,14 +201,31 @@ public class MainGui extends JFrame implements Runnable
 		{
 			int x = mouseX + camera.getX();
 			int y = mouseY + camera.getY();
+			Position destination = new Position(x,y);
 			
 			Entity selectEntity = null;
 			
 			List<StorageBuilding> storagesBuilding = manager.getStorageBuildings();
 			List<AttackBuilding> attackBuildings = manager.getAttackBuildings();
 			List<ProductionBuilding> prodBuildings = manager.getProdBuildings();
+			List<Ressource> ressources = manager.getRessources();
 			List<Fighter> fighters = manager.getFighters();
 			List<Worker> workers = manager.getWorkers();
+			
+			
+			if(selectEntity == null)
+			{
+				for(Ressource ressource : ressources)
+				{
+					Position ressourcePosition = new Position(ressource.getPosition().getX(),  ressource.getPosition().getY());
+					
+					if(destination.inTile(ressourcePosition))
+					{
+						selectEntity = ressource;
+						break;
+					}
+				}
+			}
 			
 			if(selectEntity == null)
 			{
@@ -216,7 +233,7 @@ public class MainGui extends JFrame implements Runnable
 				{
 					Position storagePosition = new Position(storage.getPosition().getX(),  storage.getPosition().getY());
 					
-					if(x > storagePosition.getX() && x < storagePosition.getX() + EntityConfiguration.UNIT_SIZE && y > storagePosition.getY() && y < storagePosition.getY() + EntityConfiguration.UNIT_SIZE)
+					if(destination.inTile(storagePosition))
 					{
 						selectEntity = storage;
 						break;
@@ -230,7 +247,7 @@ public class MainGui extends JFrame implements Runnable
 				{
 					Position  attackPosition = new Position(attack.getPosition().getX(), attack.getPosition().getY());
 					
-					if(x > attackPosition.getX() && x < attackPosition.getX() + EntityConfiguration.UNIT_SIZE && y > attackPosition.getY() && y < attackPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					if(destination.inTile(attackPosition))
 					{
 						selectEntity = attack;
 						break;
@@ -244,7 +261,7 @@ public class MainGui extends JFrame implements Runnable
 				{
 					Position prodPosition = new Position(prod.getPosition().getX(), prod.getPosition().getY());
 					
-					if(x > prodPosition.getX() && x < prodPosition.getX() + EntityConfiguration.UNIT_SIZE && y > prodPosition.getY() && y < prodPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					if(destination.inTile(prodPosition))
 					{
 						selectEntity = prod;
 						break;
@@ -282,6 +299,7 @@ public class MainGui extends JFrame implements Runnable
 			
 		return selectEntity;	
 		}
+		
 		public void checkWhatIsSelected(int mouseX, int mouseY)
 		{
 			manager.clearSelectedBuildings();
@@ -520,11 +538,14 @@ public class MainGui extends JFrame implements Runnable
 						for(Unit unit : listSelectedUnit)
 						{
 							unit.setTarget(targete);
+							unit.setDestination(targete.getPosition());
+							unit.calculateSpeed(targete.getPosition());
 						}
 					}
-					else if(!listSelectedUnit.isEmpty()) {
+					else if(!listSelectedUnit.isEmpty() && targete == null) {
 						for(Unit unit : listSelectedUnit){
 							unit.calculateSpeed(new Position(mouseX, mouseY));
+							unit.setTarget(null);
 						}
 					}
 					else {

@@ -1,4 +1,7 @@
 package engine;
+
+import configuration.GameConfiguration;
+
 /**
  * 
  * @author gautier
@@ -65,5 +68,13 @@ public class Position
 	return false;
 	}
 	
+	public boolean inTile(Position unit)
+	{
+		if((this.x / GameConfiguration.TILE_SIZE) == (unit.getX() / GameConfiguration.TILE_SIZE) && (this.y/ GameConfiguration.TILE_SIZE) == (unit.getY() / GameConfiguration.TILE_SIZE))
+		{
+			return true;
+		}
+		return false;
+	}
 	
 }
