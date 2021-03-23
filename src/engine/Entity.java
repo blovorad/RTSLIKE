@@ -25,6 +25,7 @@ public class Entity
 	private int sightRange;
 	private boolean selected;
 	private float frame;
+	private int maxFrame;
 	
 	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, BufferedImage texture, int sightRange)
 	{
@@ -40,6 +41,7 @@ public class Entity
 		this.setSightRange(sightRange);
 		this.setSelected(false);
 		this.frame = 0;
+		this.maxFrame = 4;
 	}
 	
 	public Entity(int hp, String description, Position position, Position destination, int id, int faction)
@@ -63,7 +65,7 @@ public class Entity
 		}
 
 		frame += (1f / GameConfiguration.GAME_SPEED) * 4;
-		if(frame > 3) {
+		if(frame >= maxFrame) {
 			frame = 0;
 		}
 	}
@@ -191,5 +193,13 @@ public class Entity
 	
 	public float getFrame() {
 		return this.frame;
+	}
+
+	public int getMaxFrame() {
+		return maxFrame;
+	}
+
+	public void setMaxFrame(int maxFrame) {
+		this.maxFrame = maxFrame;
 	}
 }

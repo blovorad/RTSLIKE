@@ -74,7 +74,7 @@ public class GraphicsManager {
 			
 			List<BufferedImage> image = graphicsUnits.get(EntityConfiguration.WORKER);
 			for(int i = 0; i < 4; i++) {
-				BufferedImage imageBis = workerImage.getSubimage(i * 512, 8 * 512, 512, 512);
+				BufferedImage imageBis = workerImage.getSubimage(i * 512, 5 * 512, 512, 512);
 				int decoupeX = 80;
 				int decoupeY = 80;
 				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
