@@ -23,7 +23,8 @@ public class GraphicsManager {
 	private AbstractMap<Integer, BufferedImage> graphicsEntity;
 	private AbstractMap<Integer, BufferedImage> graphicsPlayer;
 	private AbstractMap<Integer, BufferedImage> graphicsBot;
-	private AbstractMap<Integer, List<BufferedImage>> graphicsUnits;
+	private AbstractMap<Integer, List<BufferedImage>> graphicsUnitPlayer;
+	private AbstractMap<Integer, List<BufferedImage>> graphicsUnitBot;
 	private AbstractMap<Integer, BufferedImage> graphicsTile;
 	private BufferedImage panelGaucheBas;
 	
@@ -32,7 +33,8 @@ public class GraphicsManager {
 		this.setGraphicsTile(new HashMap<Integer, BufferedImage>());
 		this.setGraphicsBot(new HashMap<Integer, BufferedImage>());
 		this.setGraphicsPlayer(new HashMap<Integer, BufferedImage>());
-		this.setGraphicsUnits(new HashMap<Integer, List<BufferedImage>>());
+		this.setGraphicsUnitPlayer(new HashMap<Integer, List<BufferedImage>>());
+		this.setGraphicsUnitBot(new HashMap<Integer, List<BufferedImage>>());
 		
 		try {
 			graphicsTile.put(MapConfiguration.GRASS, ImageIO.read(new File("src/graphics/grass_1.png")));
@@ -59,63 +61,9 @@ public class GraphicsManager {
 			graphicsPlayer.put(EntityConfiguration.CASTLE, ImageIO.read(new File("src/graphics/castlePlayer.png")));
 			graphicsPlayer.put(EntityConfiguration.BARRACK, ImageIO.read(new File("src/graphics/barrackPlayer.png")));
 			graphicsPlayer.put(EntityConfiguration.ARCHER, ImageIO.read(new File("src/graphics/archeriePlayer.png")));
-		
-			BufferedImage workerImage = ImageIO.read(new File("src/graphics/male_engineer.png"));
-			BufferedImage archerImage = ImageIO.read(new File("src/graphics/male_archer.png"));
-			BufferedImage infantryImage = ImageIO.read(new File("src/graphics/male_knight.png"));
-			BufferedImage specialImage = ImageIO.read(new File("src/graphics/male_thief.png"));
-			BufferedImage cavalryImage = ImageIO.read(new File("src/graphics/leCheval.png"));
 			
-			graphicsUnits.put(EntityConfiguration.INFANTRY, new ArrayList<BufferedImage>());
-			graphicsUnits.put(EntityConfiguration.ARCHER, new ArrayList<BufferedImage>());
-			graphicsUnits.put(EntityConfiguration.CAVALRY, new ArrayList<BufferedImage>());
-			graphicsUnits.put(EntityConfiguration.SPECIAL_UNIT, new ArrayList<BufferedImage>());
-			graphicsUnits.put(EntityConfiguration.WORKER, new ArrayList<BufferedImage>());
-			
-			List<BufferedImage> image = graphicsUnits.get(EntityConfiguration.WORKER);
-			for(int i = 0; i < 4; i++) {
-				BufferedImage imageBis = workerImage.getSubimage(i * 512, 5 * 512, 512, 512);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
-			}
-			graphicsUnits.put(EntityConfiguration.WORKER, image);
-			
-			image = graphicsUnits.get(EntityConfiguration.ARCHER);
-			for(int i = 0; i < 4; i++) {
-				BufferedImage imageBis = archerImage.getSubimage(i * 512, 8 * 512, 512, 512);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
-			}
-			graphicsUnits.put(EntityConfiguration.ARCHER, image);
-			
-			image = graphicsUnits.get(EntityConfiguration.SPECIAL_UNIT);
-			for(int i = 0; i < 4; i++) {
-				BufferedImage imageBis = specialImage.getSubimage(i * 512, 8 * 512, 512, 512);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
-			}
-			graphicsUnits.put(EntityConfiguration.SPECIAL_UNIT, image);
-			
-			image = graphicsUnits.get(EntityConfiguration.CAVALRY);
-			for(int i = 0; i < 4; i++) {
-				BufferedImage imageBis = cavalryImage.getSubimage(i * 512, 8 * 512, 512, 512);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
-			}
-			graphicsUnits.put(EntityConfiguration.CAVALRY, image);
-			
-			image = graphicsUnits.get(EntityConfiguration.INFANTRY);
-			for(int i = 0; i < 4; i++) {
-				BufferedImage imageBis = infantryImage.getSubimage(i * 512, 8 * 512, 512, 512);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
-			}
-			graphicsUnits.put(EntityConfiguration.INFANTRY, image);
+			initUnitPlayerGraphics();
+			initUnitBotGraphics();
 			
 			panelGaucheBas = ImageIO.read(new File("src/graphics/panelGaucheBas.png"));
 		} 
@@ -124,9 +72,153 @@ public class GraphicsManager {
 		}
 	}
 	
-	public BufferedImage getGraphicsForUnit(int id, int frame) {
+	public void initUnitPlayerGraphics() {
+		BufferedImage workerImage = null;
+		BufferedImage archerImage = null;
+		BufferedImage infantryImage = null;
+		BufferedImage specialImage = null;
+		BufferedImage cavalryImage = null;
+		try {
+			workerImage = ImageIO.read(new File("src/graphics/engineerPlayer.png"));
+			archerImage = ImageIO.read(new File("src/graphics/archerPlayer.png"));
+			infantryImage = ImageIO.read(new File("src/graphics/knightPlayer.png"));
+			specialImage = ImageIO.read(new File("src/graphics/thiefPlayer.png"));
+			cavalryImage = ImageIO.read(new File("src/graphics/cavalryPlayer.png"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		graphicsUnitPlayer.put(EntityConfiguration.INFANTRY, new ArrayList<BufferedImage>());
+		graphicsUnitPlayer.put(EntityConfiguration.ARCHER, new ArrayList<BufferedImage>());
+		graphicsUnitPlayer.put(EntityConfiguration.CAVALRY, new ArrayList<BufferedImage>());
+		graphicsUnitPlayer.put(EntityConfiguration.SPECIAL_UNIT, new ArrayList<BufferedImage>());
+		graphicsUnitPlayer.put(EntityConfiguration.WORKER, new ArrayList<BufferedImage>());
+		
+		List<BufferedImage> image = graphicsUnitPlayer.get(EntityConfiguration.WORKER);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = workerImage.getSubimage(i * 512, 5 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitPlayer.put(EntityConfiguration.WORKER, image);
+		
+		image = graphicsUnitPlayer.get(EntityConfiguration.ARCHER);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = archerImage.getSubimage(i * 512, 5 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitPlayer.put(EntityConfiguration.ARCHER, image);
+		
+		image = graphicsUnitPlayer.get(EntityConfiguration.SPECIAL_UNIT);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = specialImage.getSubimage(i * 512, 5 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitPlayer.put(EntityConfiguration.SPECIAL_UNIT, image);
+		
+		image = graphicsUnitPlayer.get(EntityConfiguration.CAVALRY);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = cavalryImage.getSubimage(i * 512, 1 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitPlayer.put(EntityConfiguration.CAVALRY, image);
+		
+		image = graphicsUnitPlayer.get(EntityConfiguration.INFANTRY);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = infantryImage.getSubimage(i * 512, 5 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitPlayer.put(EntityConfiguration.INFANTRY, image);
+	}
+	
+	public void initUnitBotGraphics() {
+		BufferedImage workerImage = null;
+		BufferedImage archerImage = null;
+		BufferedImage infantryImage = null;
+		BufferedImage specialImage = null;
+		BufferedImage cavalryImage = null;
+		try {
+			workerImage = ImageIO.read(new File("src/graphics/engineerBot.png"));
+			archerImage = ImageIO.read(new File("src/graphics/archerBot.png"));
+			infantryImage = ImageIO.read(new File("src/graphics/knightBot.png"));
+			specialImage = ImageIO.read(new File("src/graphics/thiefBot.png"));
+			cavalryImage = ImageIO.read(new File("src/graphics/cavalryBot.png"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		graphicsUnitBot.put(EntityConfiguration.INFANTRY, new ArrayList<BufferedImage>());
+		graphicsUnitBot.put(EntityConfiguration.ARCHER, new ArrayList<BufferedImage>());
+		graphicsUnitBot.put(EntityConfiguration.CAVALRY, new ArrayList<BufferedImage>());
+		graphicsUnitBot.put(EntityConfiguration.SPECIAL_UNIT, new ArrayList<BufferedImage>());
+		graphicsUnitBot.put(EntityConfiguration.WORKER, new ArrayList<BufferedImage>());
+		
+		List<BufferedImage> image = graphicsUnitBot.get(EntityConfiguration.WORKER);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = workerImage.getSubimage(i * 512, 5 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitBot.put(EntityConfiguration.WORKER, image);
+		
+		image = graphicsUnitBot.get(EntityConfiguration.ARCHER);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = archerImage.getSubimage(i * 512, 5 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitBot.put(EntityConfiguration.ARCHER, image);
+		
+		image = graphicsUnitBot.get(EntityConfiguration.SPECIAL_UNIT);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = specialImage.getSubimage(i * 512, 5 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitBot.put(EntityConfiguration.SPECIAL_UNIT, image);
+		
+		image = graphicsUnitBot.get(EntityConfiguration.CAVALRY);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = cavalryImage.getSubimage(i * 512, 1 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitBot.put(EntityConfiguration.CAVALRY, image);
+		
+		image = graphicsUnitBot.get(EntityConfiguration.INFANTRY);
+		for(int i = 0; i < 4; i++) {
+			BufferedImage imageBis = infantryImage.getSubimage(i * 512, 5 * 512, 512, 512);
+			int decoupeX = 80;
+			int decoupeY = 80;
+			image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+		}
+		graphicsUnitBot.put(EntityConfiguration.INFANTRY, image);
+	}
+	
+	public BufferedImage getGraphicsForUnit(int id, int frame, int faction) {
 		//System.out.println("entity : " + entity.getId() + ", " + entity.getDescription() + ", " + entity.getFrame());
-		List<BufferedImage> image = graphicsUnits.get(id);
+		List<BufferedImage>image = null;
+		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			image = graphicsUnitPlayer.get(id);
+		}
+		else {
+			image = graphicsUnitBot.get(id);
+		}
 		
 		return image.get(frame);
 	}
@@ -188,11 +280,19 @@ public class GraphicsManager {
 		this.graphicsPlayer = graphicsPlayer;
 	}
 
-	public AbstractMap<Integer, List<BufferedImage>> getGraphicsUnits() {
-		return graphicsUnits;
+	public AbstractMap<Integer, List<BufferedImage>> getGraphicsUnitPlayer() {
+		return graphicsUnitPlayer;
 	}
 
-	public void setGraphicsUnits(AbstractMap<Integer, List<BufferedImage>> graphicsUnits) {
-		this.graphicsUnits = graphicsUnits;
+	public void setGraphicsUnitPlayer(AbstractMap<Integer, List<BufferedImage>> graphicsUnitPlayer) {
+		this.graphicsUnitPlayer = graphicsUnitPlayer;
+	}
+
+	public AbstractMap<Integer, List<BufferedImage>> getGraphicsUnitBot() {
+		return graphicsUnitBot;
+	}
+
+	public void setGraphicsUnitBot(AbstractMap<Integer, List<BufferedImage>> graphicsUnitBot) {
+		this.graphicsUnitBot = graphicsUnitBot;
 	}
 }

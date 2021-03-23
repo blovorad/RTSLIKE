@@ -135,9 +135,15 @@ public class PaintStrategy
 	
 	public void paintRectSelectionUnit(Unit unit, Graphics graphics, Camera camera){
 		int tileSize = EntityConfiguration.UNIT_SIZE;
+		int cavalrySize = EntityConfiguration.CAVALRY_SIZE;
 		
 		graphics.setColor(Color.white);
-		graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
+		if(unit.getId() == EntityConfiguration.CAVALRY) {
+			graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), cavalrySize, cavalrySize);
+		}
+		else {
+			graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
+		}
 	}
 	
 	
@@ -158,6 +164,7 @@ public class PaintStrategy
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
 		int unitSize = EntityConfiguration.UNIT_SIZE;
+		int cavalrySize = EntityConfiguration.CAVALRY_SIZE;
 		
 		/*if(entity.getId() >= EntityConfiguration.INFANTRY && entity.getId() <= EntityConfiguration.SPECIAL_UNIT) { //&& entity.getId() <= EntityConfiguration.WORKER){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
@@ -181,9 +188,11 @@ public class PaintStrategy
 			}
 		}*/
 		
-		
-		if(entity.getId() >= EntityConfiguration.INFANTRY &&  entity.getId() <= EntityConfiguration.WORKER) {
-			graphics.drawImage(graphicsManager.getGraphicsForUnit(entity.getId(), (int)entity.getFrame()), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize, null);
+		if(entity.getId() == EntityConfiguration.CAVALRY) {
+			graphics.drawImage(graphicsManager.getGraphicsForUnit(entity.getId(), (int)entity.getFrame(), entity.getFaction()), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), cavalrySize, cavalrySize, null);
+		}
+		else if(entity.getId() >= EntityConfiguration.INFANTRY &&  entity.getId() <= EntityConfiguration.WORKER) {
+			graphics.drawImage(graphicsManager.getGraphicsForUnit(entity.getId(), (int)entity.getFrame(), entity.getFaction()), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize, null);
 		}
 		else {
 			graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);

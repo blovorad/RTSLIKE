@@ -140,12 +140,12 @@ public class Worker extends Unit
 			
 			System.out.println("Bonjour");
 			
-			for(StorageBuilding valus: storageBuildings)
+			for(StorageBuilding value: storageBuildings)
 			{
 				distanceStorageBuilding = calculate(this.storageBuilding.getPosition());
-				if(distanceStorageBuilding > calculate(valus.getPosition()))
+				if(distanceStorageBuilding > calculate(value.getPosition()))
 				{
-					this.storageBuilding = valus;
+					this.storageBuilding = value;
 				}
 			}
 			
@@ -158,6 +158,7 @@ public class Worker extends Unit
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
 				System.out.println("1");
+				this.storageBuilding.addRessource(this.quantityRessource);
 				this.quantityRessource = 0;
 			}
 		}
@@ -171,12 +172,12 @@ public class Worker extends Unit
 			this.ressource = ressources.get(0);
 			int distanceRessource;
 			
-			for(Ressource valus: ressources)
+			for(Ressource value: ressources)
 			{
 				distanceRessource = calculate(this.ressource.getPosition());
-				if(distanceRessource > calculate(valus.getPosition()))
+				if(distanceRessource > calculate(value.getPosition()))
 				{
-					this.ressource = valus;
+					this.ressource = value;
 				}
 			}
 			

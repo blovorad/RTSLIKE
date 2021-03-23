@@ -9,6 +9,7 @@ package configuration;
 public class EntityConfiguration {
 	
 	public final static int UNIT_SIZE = 32;
+	public final static int CAVALRY_SIZE = 48;
 	
 	public final static int INFANTRY = 0;
 	public final static int ARCHER = 1;
@@ -43,6 +44,11 @@ public class EntityConfiguration {
 	public final static int PASSIF_STATE = 0;
 	public final static int DEFENSIF_STATE = 1;
 	public final static int AGGRESIF_STATE = 2;
+	
+	public final static int IDDLE = 0;
+	public final static int ATTACK = 1;
+	public final static int WALK = 2;
+	public final static int DIE = 3;
 	
 	public final static int MAX_TIME_HIT_ANIMATION = 10;
 }

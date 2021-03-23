@@ -55,7 +55,15 @@ public class GameBuilder {
 		//création d'un ennemie pour test
 		tile = map.getTile(15, 15);
 		tile2 = map.getTile(20, 15);
+		Tile tile3 = map.getTile(15, 16);
+		Tile tile4 = map.getTile(16, 16);
+		Tile tile5 = map.getTile(17, 17);
+		Tile tile6 = map.getTile(18, 18);
+		manager.createBuilding(EntityConfiguration.CASTLE, EntityConfiguration.BOT_FACTION, new Position(tile5.getColumn() * GameConfiguration.TILE_SIZE, tile5.getLine() * GameConfiguration.TILE_SIZE), tile5);
+		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, new Position(tile6.getColumn() * GameConfiguration.TILE_SIZE, tile6.getLine() * GameConfiguration.TILE_SIZE), tile6);
 		manager.createBuilding(EntityConfiguration.ARCHERY, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile);
+		manager.createBuilding(EntityConfiguration.BARRACK, EntityConfiguration.BOT_FACTION, new Position(tile3.getColumn() * GameConfiguration.TILE_SIZE, tile3.getLine() * GameConfiguration.TILE_SIZE), tile3);
+		manager.createBuilding(EntityConfiguration.STABLE, EntityConfiguration.BOT_FACTION, new Position(tile4.getColumn() * GameConfiguration.TILE_SIZE, tile4.getLine() * GameConfiguration.TILE_SIZE), tile4);
 		manager.createBuilding(EntityConfiguration.TOWER, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2);
 	}
 	
