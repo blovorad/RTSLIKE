@@ -145,9 +145,9 @@ public class Unit extends Entity
 		this.setDestination(p);
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
 		this.move((int)(this.maxSpeed * Math.cos(angle)), (int)(this.maxSpeed * Math.sin(angle)));
-		System.out.println("Destination : " + this.getDestination().getX() + "," + this.getDestination().getY());
+		/*System.out.println("Destination : " + this.getDestination().getX() + "," + this.getDestination().getY());
 		System.out.println("vitesse : " + this.getSpeed().getVx() + "," + this.getSpeed().getVy());
-		System.out.println("angle : " + angle);
+		System.out.println("angle : " + angle);*/
 	}
 
 	public void update()

@@ -23,7 +23,6 @@ public class Worker extends Unit
 {	
 	private StorageBuilding storageBuilding;
 	
-
 	private Ressource ressource;
 	
 	private int quantityRessource;
@@ -54,7 +53,7 @@ public class Worker extends Unit
 			if( timer == 0)
 			{
 				this.ressource.setHp(this.ressource.getHp() -1);
-				this.quantityRessource ++;
+				this.quantityRessource++;
 				if(this.ressource.getHp() == 0)
 				{
 					this.ressource = null;

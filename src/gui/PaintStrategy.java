@@ -159,26 +159,7 @@ public class PaintStrategy
 		int tileSize = GameConfiguration.TILE_SIZE;
 		int unitSize = EntityConfiguration.UNIT_SIZE;
 		
-		if(entity.getId() >= EntityConfiguration.FORGE && entity.getId() <= EntityConfiguration.ARCHERY){
-			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
-				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.orange);
-				}
-				else {
-					graphics.setColor(new Color(0,0,0,0));
-				}
-			}
-			else{
-				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.orange);
-				}
-				else {
-					graphics.setColor(new Color(0,0,0,0));
-				}
-			}
-			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize);
-		}
-		else if(entity.getId() >= EntityConfiguration.INFANTRY && entity.getId() <= EntityConfiguration.WORKER){
+		/*if(entity.getId() >= EntityConfiguration.INFANTRY && entity.getId() <= EntityConfiguration.SPECIAL_UNIT) { //&& entity.getId() <= EntityConfiguration.WORKER){
 			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
 				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
 					graphics.setColor(Color.orange);
@@ -195,13 +176,23 @@ public class PaintStrategy
 					graphics.setColor(new Color(145, 40, 59));
 				}
 			}
-			graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize);
-		}
-		else if(entity.getId() == EntityConfiguration.RESSOURCE){
-			graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
-		}	
-		graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+			if(entity.getId() != EntityConfiguration.WORKER) {
+				graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize);
+			}
+		}*/
 		
+		
+		if(entity.getId() >= EntityConfiguration.INFANTRY &&  entity.getId() <= EntityConfiguration.WORKER) {
+			graphics.drawImage(graphicsManager.getGraphicsForUnit(entity.getId(), (int)entity.getFrame()), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize, null);
+		}
+		else {
+			graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		}
+		
+		paintLifeBarre(entity, graphics, camera);
+	}
+	
+	public void paintLifeBarre(Entity entity, Graphics graphics, Camera camera) {
 		if(entity.isSelected()) {
 			Position p = entity.getPosition();
 			int widthLife = EntityConfiguration.UNIT_SIZE - (int)((((float)entity.getHpMax() - (float)entity.getHp()) / (float)entity.getHpMax()) * (float)EntityConfiguration.UNIT_SIZE);

@@ -518,18 +518,6 @@ public class MainGui extends JFrame implements Runnable
 				else if(e.getButton() == 3)
 				{
 					List<Unit> listSelectedUnit = manager.getSelectedUnits();
-					Position mousePos = new Position(mouseX, mouseY);
-					
-					for(Ressource ressources : manager.getRessources())
-					{
-						if(ressources.getPosition().equals(mousePos) && !listSelectedUnit.isEmpty())
-						{
-							for(Unit unit : listSelectedUnit)
-							{
-								unit.setTarget(ressources);
-							}
-						}
-					}
 					
 					Entity targete = checkEntity(mouseX, mouseY);
 					

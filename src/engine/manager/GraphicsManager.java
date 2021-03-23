@@ -4,12 +4,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import configuration.EntityConfiguration;
 import configuration.MapConfiguration;
+import engine.Entity;
 
 /**
  * 
@@ -21,6 +24,7 @@ public class GraphicsManager {
 	private AbstractMap<Integer, BufferedImage> graphicsEntity;
 	private AbstractMap<Integer, BufferedImage> graphicsPlayer;
 	private AbstractMap<Integer, BufferedImage> graphicsBot;
+	private AbstractMap<Integer, List<BufferedImage>> graphicsUnits;
 	private AbstractMap<Integer, BufferedImage> graphicsTile;
 	private BufferedImage panelGaucheBas;
 	
@@ -29,6 +33,7 @@ public class GraphicsManager {
 		this.setGraphicsTile(new HashMap<Integer, BufferedImage>());
 		this.setGraphicsBot(new HashMap<Integer, BufferedImage>());
 		this.setGraphicsPlayer(new HashMap<Integer, BufferedImage>());
+		this.setGraphicsUnits(new HashMap<Integer, List<BufferedImage>>());
 		
 		try {
 			graphicsTile.put(MapConfiguration.GRASS, ImageIO.read(new File("src/graphics/grass_1.png")));
@@ -55,14 +60,76 @@ public class GraphicsManager {
 			graphicsPlayer.put(EntityConfiguration.CASTLE, ImageIO.read(new File("src/graphics/castlePlayer.png")));
 			graphicsPlayer.put(EntityConfiguration.BARRACK, ImageIO.read(new File("src/graphics/barrackPlayer.png")));
 			graphicsPlayer.put(EntityConfiguration.ARCHER, ImageIO.read(new File("src/graphics/archeriePlayer.png")));
+		
+			BufferedImage workerImage = ImageIO.read(new File("src/graphics/male_engineer.png"));
+			BufferedImage archerImage = ImageIO.read(new File("src/graphics/male_archer.png"));
+			BufferedImage infantryImage = ImageIO.read(new File("src/graphics/male_knight.png"));
+			BufferedImage specialImage = ImageIO.read(new File("src/graphics/male_thief.png"));
+			BufferedImage cavalryImage = ImageIO.read(new File("src/graphics/leCheval.png"));
 			
+			graphicsUnits.put(EntityConfiguration.INFANTRY, new ArrayList<BufferedImage>());
+			graphicsUnits.put(EntityConfiguration.ARCHER, new ArrayList<BufferedImage>());
+			graphicsUnits.put(EntityConfiguration.CAVALRY, new ArrayList<BufferedImage>());
+			graphicsUnits.put(EntityConfiguration.SPECIAL_UNIT, new ArrayList<BufferedImage>());
+			graphicsUnits.put(EntityConfiguration.WORKER, new ArrayList<BufferedImage>());
 			
+			List<BufferedImage> image = graphicsUnits.get(EntityConfiguration.WORKER);
+			for(int i = 0; i < 4; i++) {
+				BufferedImage imageBis = workerImage.getSubimage(i * 512, 8 * 512, 512, 512);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+			}
+			graphicsUnits.put(EntityConfiguration.WORKER, image);
+			
+			image = graphicsUnits.get(EntityConfiguration.ARCHER);
+			for(int i = 0; i < 4; i++) {
+				BufferedImage imageBis = archerImage.getSubimage(i * 512, 8 * 512, 512, 512);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+			}
+			graphicsUnits.put(EntityConfiguration.ARCHER, image);
+			
+			image = graphicsUnits.get(EntityConfiguration.SPECIAL_UNIT);
+			for(int i = 0; i < 4; i++) {
+				BufferedImage imageBis = specialImage.getSubimage(i * 512, 8 * 512, 512, 512);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+			}
+			graphicsUnits.put(EntityConfiguration.SPECIAL_UNIT, image);
+			
+			image = graphicsUnits.get(EntityConfiguration.CAVALRY);
+			for(int i = 0; i < 4; i++) {
+				BufferedImage imageBis = cavalryImage.getSubimage(i * 512, 8 * 512, 512, 512);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+			}
+			graphicsUnits.put(EntityConfiguration.CAVALRY, image);
+			
+			image = graphicsUnits.get(EntityConfiguration.INFANTRY);
+			for(int i = 0; i < 4; i++) {
+				BufferedImage imageBis = infantryImage.getSubimage(i * 512, 8 * 512, 512, 512);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				image.add(imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 512 - decoupeY * 2));
+			}
+			graphicsUnits.put(EntityConfiguration.INFANTRY, image);
 			
 			panelGaucheBas = ImageIO.read(new File("src/graphics/panelGaucheBas.png"));
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public BufferedImage getGraphicsForUnit(int id, int frame) {
+		//System.out.println("entity : " + entity.getId() + ", " + entity.getDescription() + ", " + entity.getFrame());
+		List<BufferedImage> image = graphicsUnits.get(id);
+		
+		return image.get(frame);
 	}
 	
 	public BufferedImage getGraphicsForBuilding(int id, int faction) {
@@ -120,5 +187,13 @@ public class GraphicsManager {
 
 	public void setGraphicsPlayer(AbstractMap<Integer, BufferedImage> graphicsPlayer) {
 		this.graphicsPlayer = graphicsPlayer;
+	}
+
+	public AbstractMap<Integer, List<BufferedImage>> getGraphicsUnits() {
+		return graphicsUnits;
+	}
+
+	public void setGraphicsUnits(AbstractMap<Integer, List<BufferedImage>> graphicsUnits) {
+		this.graphicsUnits = graphicsUnits;
 	}
 }

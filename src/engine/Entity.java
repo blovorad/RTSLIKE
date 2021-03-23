@@ -3,6 +3,7 @@ package engine;
 import java.awt.image.BufferedImage;
 
 import configuration.EntityConfiguration;
+import configuration.GameConfiguration;
 /**
  * 
  * @author gautier
@@ -23,6 +24,7 @@ public class Entity
 	private BufferedImage texture;
 	private int sightRange;
 	private boolean selected;
+	private float frame;
 	
 	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, BufferedImage texture, int sightRange)
 	{
@@ -37,6 +39,7 @@ public class Entity
 		this.texture = texture;
 		this.setSightRange(sightRange);
 		this.setSelected(false);
+		this.frame = 0;
 	}
 	
 	public Entity(int hp, String description, Position position, Position destination, int id, int faction)
@@ -57,6 +60,11 @@ public class Entity
 			if(timerHit < 0) {
 				this.setHit(false);
 			}
+		}
+
+		frame += (1f / GameConfiguration.GAME_SPEED) * 4;
+		if(frame > 3) {
+			frame = 0;
 		}
 	}
 	
@@ -179,5 +187,9 @@ public class Entity
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+	
+	public float getFrame() {
+		return this.frame;
 	}
 }
