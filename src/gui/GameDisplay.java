@@ -128,6 +128,7 @@ public class GameDisplay extends JPanel
 	private JTextArea currentProductionLabel = new JTextArea();
 	private JTextArea unitStatistiquesLabel = new JTextArea();
 	private JTextArea buildingStatistiquesLabel = new JTextArea();
+	private JTextArea ressourceStatistiquesLabel = new JTextArea();
 	private GraphicsManager graphicsManager;
 	
 	private int selectedMap = 1;
@@ -163,6 +164,7 @@ public class GameDisplay extends JPanel
 		currentProductionLabel.setEditable(false);
 		unitStatistiquesLabel.setEditable(false);
 		buildingStatistiquesLabel.setEditable(false);
+		ressourceStatistiquesLabel.setEditable(false);
 		this.add(mainMenuPanel);
 	}
 	
@@ -635,7 +637,8 @@ public class GameDisplay extends JPanel
 		
 		descriptionPanel.setLayout(new FlowLayout());
 		
-		descriptionPanel.add(new JLabel("Ressource restante : " + ressource.getHp()));
+		ressourceStatistiquesLabel.setText("Ressource restante : " + ressource.getHp());
+		descriptionPanel.add(ressourceStatistiquesLabel);
 		
 		descriptionPanel.validate();
 	}
@@ -795,6 +798,16 @@ public class GameDisplay extends JPanel
 	
 	public void actualiseStatistiquesBuilding(int hp) {
 		this.buildingStatistiquesLabel.setText("Points de vie : " + hp);
+		if(hp <= 0) {
+			this.setDescriptionPanelStandard();
+		}
+	}
+	
+	public void actualiseStatistiquesRessource(int hp) {
+		ressourceStatistiquesLabel.setText("Ressource restante : " + hp);
+		if(hp <= 0) {
+			this.setDescriptionPanelStandard();
+		}
 	}
 
 	public void update() {
@@ -819,6 +832,10 @@ public class GameDisplay extends JPanel
 			else if(this.manager.getSelectedStorageBuilding() != null) {
 				StorageBuilding storage = manager.getSelectedStorageBuilding();
 				actualiseStatistiquesBuilding(storage.getHp());
+			}
+			else if(this.manager.getSelectedRessource() != null) {
+				Ressource ressource = manager.getSelectedRessource();
+				actualiseStatistiquesRessource(ressource.getHp());
 			}
 			
 			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isUpgradeAge()) {
@@ -865,6 +882,7 @@ public class GameDisplay extends JPanel
 			List<Unit> units = manager.getSelectedUnits();
 			
 			Entity building = null;
+			Entity ressource = null;
 			if(manager.getSelectedAttackBuilding() != null) {
 				building = manager.getSelectedAttackBuilding();
 			}
@@ -873,6 +891,10 @@ public class GameDisplay extends JPanel
 			}
 			else if(manager.getSelectedStorageBuilding() != null) {
 				building = manager.getSelectedStorageBuilding();
+			}
+			
+			if(manager.getSelectedRessource() != null) {
+				ressource = manager.getSelectedRessource();
 			}
 			
 			for(Entity entity : entities)
@@ -886,6 +908,9 @@ public class GameDisplay extends JPanel
 			
 			if(building != null) {
 				this.paintStrategy.paintSelectionRectBuilding(building, g, camera);
+			}
+			else if(ressource != null) {
+				this.paintStrategy.paintSelectionRectRessource(ressource, g, camera);
 			}
 			
 			if(selectionRectangle.isActive())

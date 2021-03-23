@@ -414,6 +414,7 @@ public class MainGui extends JFrame implements Runnable
 								&& (y > ressource.getPosition().getY() && y < ressource.getPosition().getY() + GameConfiguration.TILE_SIZE))
 						{
 							dashboard.setDescriptionPanelForRessource(ressource);
+							manager.setSelectedRessource(ressource);
 							break;
 						}
 					}

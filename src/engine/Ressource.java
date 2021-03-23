@@ -18,6 +18,15 @@ public class Ressource extends Entity
 		super(3, 3, description, position, EntityConfiguration.RESSOURCE, faction, texture, 0);
 		tileAttach = tile;
 	}
+	
+	public void update() {
+		super.update();
+	}
+	
+	public void remove() {
+		this.setSelected(false);
+		this.getTileAttach().setSolid(false);
+	}
 
 	public Tile getTileAttach() {
 		return tileAttach;

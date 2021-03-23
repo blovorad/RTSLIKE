@@ -13,17 +13,23 @@ public class Entity
 {
 	private int hp;
 	private int hpMax;
+	private int sightRange;
 	private String description;
+	
 	private Position position;
 	private Entity target;
 	private Position destination;
+	
 	private int faction;
 	private int id;
+	
 	private boolean isHit;
 	private int timerHit;
-	private BufferedImage texture;
-	private int sightRange;
+	
 	private boolean selected;
+	private boolean remove;
+	
+	private BufferedImage texture;
 	private float frame;
 	private int maxFrame;
 	
@@ -42,6 +48,7 @@ public class Entity
 		this.setSelected(false);
 		this.frame = 0;
 		this.maxFrame = 4;
+		this.setRemove(false);
 	}
 	
 	public Entity(int hp, String description, Position position, Position destination, int id, int faction)
@@ -62,6 +69,9 @@ public class Entity
 			if(timerHit < 0) {
 				this.setHit(false);
 			}
+		}
+		if(hp <= 0) {
+			this.remove = true;
 		}
 
 		frame += (1f / GameConfiguration.GAME_SPEED) * 4;
@@ -201,5 +211,13 @@ public class Entity
 
 	public void setMaxFrame(int maxFrame) {
 		this.maxFrame = maxFrame;
+	}
+
+	public boolean isRemove() {
+		return remove;
+	}
+
+	public void setRemove(boolean remove) {
+		this.remove = remove;
 	}
 }

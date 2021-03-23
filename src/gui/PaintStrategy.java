@@ -160,6 +160,13 @@ public class PaintStrategy
 		}
 	}
 	
+	public void paintSelectionRectRessource(Entity ressource, Graphics graphics, Camera camera) {
+		int tileSize = GameConfiguration.TILE_SIZE;
+		
+		graphics.setColor(Color.white);
+		graphics.drawRect(ressource.getPosition().getX() - camera.getX(), ressource.getPosition().getY() - camera.getY(), tileSize, tileSize);
+	}
+	
 	public void paint(Entity entity, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
