@@ -14,9 +14,6 @@ public class ForWorker extends Patron
 	private int ressourceMax;
 	private int harvest;
 
-
-	private int sightRange;
-
 	private int harvestSpeed;
 
 	private int attackSpeed;

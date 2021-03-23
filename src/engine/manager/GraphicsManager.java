@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 
 import configuration.EntityConfiguration;
 import configuration.MapConfiguration;
-import engine.Entity;
 
 /**
  * 

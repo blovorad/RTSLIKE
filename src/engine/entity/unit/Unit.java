@@ -158,7 +158,7 @@ public class Unit extends Entity
 		
 		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination())))
 		{	
-			this.setDestination(this.getTarget().getPosition());
+			calculateSpeed(this.getTarget().getPosition());
 		}
 		else
 		{	
