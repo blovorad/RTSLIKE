@@ -7,6 +7,7 @@ import configuration.EntityConfiguration;
 import engine.Position;
 import engine.Ressource;
 import engine.entity.building.StorageBuilding;
+import engine.manager.GraphicsManager;
 import engine.math.Collision;
 
 
@@ -31,9 +32,9 @@ public class Worker extends Unit
 	private int timer;
 	
 	
-	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange)
+	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{	
-		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, hpMax, faction, sightRange);
+		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, hpMax, faction, sightRange, maxFrame, graphicsManager);
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
 		
@@ -187,6 +188,7 @@ public class Worker extends Unit
 		// récupère ressources
 		else if(this.ressource != null && this.storageBuilding != null && this.ressource.getPosition().inTile(this.getPosition()))
 		{
+			this.getAnimation().setFrameState(EntityConfiguration.ATTACK);
 			this.toHarvest();
 		} 
 		
@@ -194,6 +196,7 @@ public class Worker extends Unit
 		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() != this.getTarget().getHpMax() && this.getTarget().getPosition().inTile(this.getPosition()))
 		{
 			System.out.println("Le timer est a: " + this.timer);
+			this.getAnimation().setFrameState(EntityConfiguration.ATTACK);
 			this.toRepair();
 			System.out.println("Ma vi est de :" + this.getTarget().getHp());
 		}

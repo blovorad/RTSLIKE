@@ -1,6 +1,5 @@
 package engine.entity.building;
 
-import java.awt.image.BufferedImage;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +9,7 @@ import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
 import engine.Position;
+import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import factionConfiguration.ForUpgrade;
 /**
@@ -26,8 +26,8 @@ public abstract class ProductionBuilding extends Entity{
 	private Tile tile;
 	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
-	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture, int sightRange) {
-		super(100, hpMax, description , position, id, faction, texture, sightRange);
+	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, int sightRange, GraphicsManager graphicsManager) {
+		super(100, hpMax, description , position, id, faction, sightRange, 0, graphicsManager);
 		elementCount = new ArrayList<Integer>();
 		this.setTile(tile);
 		this.setUpgrades(upgrades);

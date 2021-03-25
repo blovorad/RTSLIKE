@@ -31,4 +31,7 @@ public class GameConfiguration
 	public final static int INOPTION = 2;
 	public final static int INPAUSEMENU = 3;
 	
+	public final static int LEFT = 0;
+	public final static int RIGHT = 1;
+	
 }

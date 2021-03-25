@@ -6,7 +6,7 @@ import java.util.List;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
-import configuration.MapConfiguration;
+import engine.Animation;
 import engine.Camera;
 import engine.Entity;
 import engine.Position;
@@ -137,7 +137,7 @@ public class PaintStrategy
 		int tileSize = EntityConfiguration.UNIT_SIZE;
 		int cavalrySize = EntityConfiguration.CAVALRY_SIZE;
 		
-		graphics.setColor(Color.white);
+		graphics.setColor(new Color(255,255,255,100));
 		if(unit.getId() == EntityConfiguration.CAVALRY) {
 			graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), cavalrySize, cavalrySize);
 		}
@@ -173,36 +173,19 @@ public class PaintStrategy
 		int unitSize = EntityConfiguration.UNIT_SIZE;
 		int cavalrySize = EntityConfiguration.CAVALRY_SIZE;
 		
-		/*if(entity.getId() >= EntityConfiguration.INFANTRY && entity.getId() <= EntityConfiguration.SPECIAL_UNIT) { //&& entity.getId() <= EntityConfiguration.WORKER){
-			if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION){
-				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.orange);
-				}
-				else {
-					graphics.setColor(Color.white);
-				}
-			}
-			else {
-				if(entity.isHit() && entity.getTimerHit() % 2 == 1) {
-					graphics.setColor(Color.orange);
-				}
-				else {
-					graphics.setColor(new Color(145, 40, 59));
-				}
-			}
-			if(entity.getId() != EntityConfiguration.WORKER) {
-				graphics.fillRect(entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize);
-			}
-		}*/
+		Animation animation = entity.getAnimation();
 		
 		if(entity.getId() == EntityConfiguration.CAVALRY) {
-			graphics.drawImage(graphicsManager.getGraphicsForUnit(entity.getId(), (int)entity.getFrame(), entity.getFaction()), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), cavalrySize, cavalrySize, null);
+			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), cavalrySize, cavalrySize, null);
 		}
 		else if(entity.getId() >= EntityConfiguration.INFANTRY &&  entity.getId() <= EntityConfiguration.WORKER) {
-			graphics.drawImage(graphicsManager.getGraphicsForUnit(entity.getId(), (int)entity.getFrame(), entity.getFaction()), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize, null);
+			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize, null);
 		}
-		else {
-			graphics.drawImage(entity.getTexture(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		else if(entity.getId() >= EntityConfiguration.FORGE && entity.getId() <= EntityConfiguration.ARCHERY) {
+			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		}
+		else if(entity.getId()  == EntityConfiguration.RESSOURCE) {
+			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 		}
 		
 		paintLifeBarre(entity, graphics, camera);
@@ -253,11 +236,9 @@ public class PaintStrategy
 			for (int columnIndex = 0; columnIndex < map.getColumnCount(); columnIndex++) 
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
-				
-				graphics.drawImage(graphicsManager.getGraphicsTile(MapConfiguration.GRASS), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
-				graphics.drawImage(graphicsManager.getGraphicsTile(tile.getId()), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
-				//graphics.setColor(Color.black);
-				//graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
+				Animation animation = tile.getAnimation();
+				graphics.drawImage(graphicsManager.getGrassTile(), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
+				graphics.drawImage(animation.getFrame(), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
 			}
 		}
 	}

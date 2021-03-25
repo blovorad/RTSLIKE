@@ -1,10 +1,10 @@
 package engine.entity.building;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 import configuration.EntityConfiguration;
 import engine.Position;
+import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import factionConfiguration.ForFighter;
 /**
@@ -16,8 +16,8 @@ public class Stable extends ProductionBuilding{
 	
 	private ForFighter cavalry;
 	
-	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture, int sightRange) {
-		super(position, id, description, hpMax, faction, tile, null, texture, sightRange);
+	public Stable(Position position, ForFighter cavalry, int id, String description, int hpMax, int faction, Tile tile, int sightRange, GraphicsManager graphicsManager) {
+		super(position, id, description, hpMax, faction, tile, null, sightRange, graphicsManager);
 		this.cavalry = cavalry;
 		this.setProductionId(EntityConfiguration.CAVALRY);
 	}

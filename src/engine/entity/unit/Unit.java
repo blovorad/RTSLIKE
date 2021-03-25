@@ -1,9 +1,11 @@
 package engine.entity.unit;
 
+import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
 import engine.Position;
 import engine.Speed;
+import engine.manager.GraphicsManager;
 
 /**
  *
@@ -25,9 +27,9 @@ public class Unit extends Entity
 	
 	private Speed speed;
 	
-	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax, int faction, int sightRange)
+	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{
-		super(hp, hpMax, description, position, id, faction, null, sightRange);
+		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;
@@ -40,9 +42,9 @@ public class Unit extends Entity
 		this.speed = new Speed(0, 0);
 	}
 	
-	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange)
+	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{
-		super(hp, hpMax, description, position, id, faction, null, sightRange);
+		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;
@@ -64,6 +66,18 @@ public class Unit extends Entity
 	{
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);
+		if(vx != 0 || vy != 0) {
+			this.getAnimation().setFrameState(EntityConfiguration.WALK);
+			if(vx < 0) {
+				this.getAnimation().setDirection(GameConfiguration.LEFT);
+			}
+			else {
+				this.getAnimation().setDirection(GameConfiguration.RIGHT);
+			}
+		}
+		else {
+			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
+		}
 	}
 	
 	public void attack(int damage)
@@ -145,9 +159,6 @@ public class Unit extends Entity
 		this.setDestination(p);
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
 		this.move((int)(this.maxSpeed * Math.cos(angle)), (int)(this.maxSpeed * Math.sin(angle)));
-		/*System.out.println("Destination : " + this.getDestination().getX() + "," + this.getDestination().getY());
-		System.out.println("vitesse : " + this.getSpeed().getVx() + "," + this.getSpeed().getVy());
-		System.out.println("angle : " + angle);*/
 	}
 
 	public void update()
@@ -191,6 +202,10 @@ public class Unit extends Entity
 		
 		this.getPosition().setX(this.getPosition().getX() + this.getSpeed().getVx());
 		this.getPosition().setY(this.getPosition().getY() + this.getSpeed().getVy());
+		
+		if((this.getAnimation().getFrameState() == EntityConfiguration.WALK || this.getAnimation().getFrameState() == EntityConfiguration.ATTACK) && this.getSpeed().getVx() == 0 && this.getSpeed().getVy() == 0) {
+			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
+		}
 		
 		//ici 
 		
