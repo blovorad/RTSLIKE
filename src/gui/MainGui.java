@@ -212,7 +212,7 @@ public class MainGui extends JFrame implements Runnable
 			List<Fighter> fighters = manager.getFighters();
 			List<Worker> workers = manager.getWorkers();
 			
-			List<Ressource> ressources = manager.getRessources();
+			/*List<Ressource> ressources = manager.getRessources();
 			
 			Ressource selectRessource = null;
 			
@@ -228,7 +228,7 @@ public class MainGui extends JFrame implements Runnable
 						break;
 					}
 				}
-			}
+			}*/
 			
 			
 			if(selectEntity == null)
@@ -615,12 +615,12 @@ public class MainGui extends JFrame implements Runnable
 						
 						if(goingToHarvest == false) {
 							Entity target = checkEntity(mouseX, mouseY);
+							
 							if(listSelectedUnit.isEmpty() == false && target != null)
 							{
 								for(Unit unit : listSelectedUnit)
 								{
 									unit.setTarget(target);
-									unit.setDestination(target.getPosition());
 									unit.calculateSpeed(target.getPosition());
 								}
 							}
@@ -631,7 +631,7 @@ public class MainGui extends JFrame implements Runnable
 								}
 							}
 							else {
-									
+								//ici on fait en sorte que la tour attaque bien la cible qu'on lui montre	
 								if(manager.getSelectedAttackBuilding() != null) {
 									List<Unit> units = manager.getUnits();
 									int x = mouseX + camera.getX();
@@ -648,11 +648,10 @@ public class MainGui extends JFrame implements Runnable
 									}
 								}
 								else {
+									//ici on met le point de ralliment pour les batiment de production
 									ProductionBuilding building = manager.getSelectedProdBuilding();
 									if(building != null) {
 										building.setDestination(new Position(mouseX, mouseY));
-										System.out.println(building.getDestination().getX());
-										System.out.println(building.getDestination().getY());
 									}
 								}
 							}
