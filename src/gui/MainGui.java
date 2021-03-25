@@ -331,7 +331,7 @@ public class MainGui extends JFrame implements Runnable
 			return selectRessource;
 		}
 		
-		public void checkWhatIsSelected(int mouseX, int mouseY)
+		public void checkWhatIsSelected(int mouseX, int mouseY, int clickCount)
 		{
 			manager.clearSelectedBuildings();
 			manager.clearSelectedUnit();
@@ -352,6 +352,15 @@ public class MainGui extends JFrame implements Runnable
 					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
 						manager.addSelectedUnit(unit);
 						dashboard.setDescriptionPanelForUnit(unit);
+						if(clickCount >= 2) {
+							for(Unit unit2 : listUnits) {
+								if(unit != unit2) {
+									if(unit.getId() == unit2.getId()) {
+										manager.addSelectedUnit(unit2);
+									}
+								}
+							}
+						}
 						noUnitSelected = false;
 					}
 				}
@@ -632,7 +641,7 @@ public class MainGui extends JFrame implements Runnable
 					{
 						if(selectionRectangle.getW() == 0 && selectionRectangle.getH() == 0)
 						{
-							checkWhatIsSelected(e.getX(), e.getY());
+							checkWhatIsSelected(e.getX(), e.getY(), e.getClickCount());
 						}
 						else
 						{
