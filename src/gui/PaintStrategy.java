@@ -245,7 +245,7 @@ public class PaintStrategy
 		}
 	}
 	
-	public void paintGui(Map map, Fog fog, List<Entity> entities, Graphics graphics, Camera camera, JPanel infoTargetPanel, GraphicsManager graphicsManager)
+	public void paintGui(Map map, Fog fog, List<Entity> entities, Graphics graphics, Camera camera, JPanel infoTargetPanel, JPanel infoUpPanel, JPanel minimapPanel, GraphicsManager graphicsManager)
 	{	
 		Tile[][] tiles = map.getTiles();
 		boolean[][] removeFog = fog.getFog();
@@ -281,15 +281,14 @@ public class PaintStrategy
 				}
 			}
 		}
-		
-		graphics.setColor(new Color(168,104,38));
-		graphics.fillRect(0, 0, 550, 50);
 				
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.white);
 		graphics.drawRect(camX + camera.getX() / GameConfiguration.TILE_SIZE, camY + camera.getY() / GameConfiguration.TILE_SIZE, camW, camH);	
 		
 		graphics.drawImage(graphicsManager.getPanelGaucheBas(), infoTargetPanel.getX(), infoTargetPanel.getY(), infoTargetPanel.getWidth(), infoTargetPanel.getHeight(), null);
+		graphics.drawImage(graphicsManager.getPanelGaucheBas(), infoUpPanel.getX(), infoUpPanel.getY(), infoUpPanel.getWidth(), infoUpPanel.getHeight(), null);
+		graphics.drawImage(graphicsManager.getPanelGaucheBas(), minimapPanel.getX(), minimapPanel.getY(), minimapPanel.getWidth(), minimapPanel.getHeight(), null);
 		//graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
 	}
 	

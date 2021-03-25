@@ -116,6 +116,8 @@ public class GameDisplay extends JPanel
 	private JPanel pauseMenuPanel;
 	
 	private JPanel descriptionPanel;
+	private JPanel ressourceInfoPanel;
+	private JPanel minimapPanel;
 	private JLabel populationLabel;
 	private JLabel moneyLabel;
 	private JLabel ageLabel;
@@ -334,10 +336,12 @@ public class GameDisplay extends JPanel
 			{
 				panel.add(createDescriptionPanel());
 			}
+			else if(i == 11) {
+				panel.add(createMinimapPanel());
+			}
 			else
 			{
-				JLabel label = new JLabel();
-				label.setVisible(false);
+				JLabel label = new JLabel("i");
 				panel.add(label);
 			}
 		}
@@ -661,15 +665,20 @@ public class GameDisplay extends JPanel
 	public void setDescriptionPanelStandard()
 	{
 		descriptionPanel.removeAll();
-		
-		descriptionPanel.add(new JLabel("FOR THE EMPIRE"));
+		descriptionPanel.setLayout(new FlowLayout());
+		JTextArea area = new JTextArea();
+		area.setEditable(false);
+		area.setOpaque(false);
+		area.setText("Votre faction est : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
+		descriptionPanel.add(area);
 		
 		descriptionPanel.validate();
 	}
 	
 	private JPanel createRessourceInfo()
 	{	
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 0));
+		JPanel panel = new JPanel(new GridLayout(5, 1));
+		ressourceInfoPanel = new JPanel(new GridLayout(2,5));
 
 		this.moneyLabel =  new JLabel("ARGENT:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoneyCount());
 		this.moneyLabel.setForeground(Color.WHITE);
@@ -682,12 +691,14 @@ public class GameDisplay extends JPanel
 		JLabel race = new JLabel("FACTION :  " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
 		race.setForeground(Color.WHITE);
 		
-		panel.add(moneyLabel);
-		panel.add(timeLabel);
-		panel.add(populationLabel);
-		panel.add(ageLabel);
-		panel.add(race);
+		ressourceInfoPanel.add(moneyLabel);
+		ressourceInfoPanel.add(timeLabel);
+		ressourceInfoPanel.add(populationLabel);
+		ressourceInfoPanel.add(ageLabel);
+		ressourceInfoPanel.add(race);
 		
+		ressourceInfoPanel.setOpaque(false);
+		panel.add(ressourceInfoPanel);
 		panel.setOpaque(false);
 		return panel;
 	}
@@ -778,6 +789,27 @@ public class GameDisplay extends JPanel
 		panel.add(panelBis);
 		panel.add(new JLabel());
 		panel.setOpaque(false);
+		
+		return panel;
+	}
+	
+	public JPanel createMinimapPanel() {
+		GridLayout layout = new GridLayout(1,2);
+		JPanel panel = new JPanel(layout);
+		panel.setOpaque(false);
+		
+		minimapPanel = new JPanel();
+		minimapPanel.setOpaque(false);
+		
+		int gridPlacement = layout.getColumns() * layout.getRows();
+		for(int i = 0; i < gridPlacement; i++) {
+			if(i == 1) {
+				panel.add(minimapPanel);
+			}
+			else {
+				panel.add(new JLabel());
+			}
+		}
 		
 		return panel;
 	}
@@ -933,7 +965,7 @@ public class GameDisplay extends JPanel
 			
 			this.paintStrategy.paint(fog, g, camera);
 			
-			this.paintStrategy.paintGui(map, fog, entities, g, camera, descriptionPanel, graphicsManager);
+			this.paintStrategy.paintGui(map, fog, entities, g, camera, descriptionPanel, ressourceInfoPanel, minimapPanel, graphicsManager);
 		}
 		else if(state == GameConfiguration.INMENU)
 		{
