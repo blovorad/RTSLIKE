@@ -171,6 +171,10 @@ public class Unit extends Entity
 		{	
 			calculateSpeed(this.getTarget().getPosition());
 		}
+		/*else if(this.getTarget() == null && this.getDestination() != null && this.getDestination().equals(this.getPosition()))
+		{
+			this.setDestination(null);
+		}*/
 		else
 		{	
 			
