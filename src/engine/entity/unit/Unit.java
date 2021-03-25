@@ -159,7 +159,12 @@ public class Unit extends Entity
 		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination())))
 		{	
 			calculateSpeed(this.getTarget().getPosition());
+			System.out.println("calcul");
 		}
+		/*else if(this.getTarget() == null && this.getDestination() != null && this.getDestination().equals(this.getPosition()))
+		{
+			this.setDestination(null);
+		}*/
 		else
 		{	
 			
@@ -168,6 +173,7 @@ public class Unit extends Entity
 				//System.out.println("on a une destination");
 				if(!this.getPosition().equals(this.getDestination()))
 				{
+					System.out.println("déplacement");
 					//System.out.println("pas egal on bouge");
 					//System.out.println("speed : " + this.speed.getVx() + "," + this.speed.getVy());
 					if( (this.getPosition().getX() < this.getDestination().getX() && speed.getVx() < 0) || (this.getPosition().getX() > this.getDestination().getX() && speed.getVx() > 0) )

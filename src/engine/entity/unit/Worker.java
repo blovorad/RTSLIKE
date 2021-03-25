@@ -51,15 +51,24 @@ public class Worker extends Unit
 		{
 			if( timer == 0)
 			{
-				this.ressource.setHp(this.ressource.getHp() -1);
-				this.quantityRessource ++;
-				System.out.println("Mes resources sont a: " + this.quantityRessource);
-				if(this.ressource.getHp() == 0)
-				{
-					this.ressource = null;
-				}
 				
-				timer = this.harvestSpeed;
+				if(this.ressource.getHp() > 0)
+				{
+					this.ressource.setHp(this.ressource.getHp() -1);
+					this.quantityRessource ++;
+					System.out.println("Mes resources sont a: " + this.quantityRessource);
+					
+					timer = this.harvestSpeed;
+				}	
+
+					if(this.ressource.getHp() <= 0)
+					{
+						this.ressource = null;
+					}
+				
+				
+				
+				
 			}
 			this.timer--;
 		}
@@ -67,7 +76,7 @@ public class Worker extends Unit
 	
 	public void toRepair()
 	{
-		if(this.getTarget() != null /*&& this.getTarget().getHp() != this.getTarget().getHpMax()*/)
+		if(this.getTarget() != null)
 		{
 			if(this.timer == 0)
 			{
@@ -80,10 +89,6 @@ public class Worker extends Unit
 				this.timer = this.harvestSpeed;
 			}
 			this.timer--;
-		}
-		else
-		{
-			this.setTarget(null);
 		}
 		
 	}
@@ -101,28 +106,23 @@ public class Worker extends Unit
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
-		
 		/*if( this.getDestination() != this.getDestination() != this.ressource.getPosition())
 		{
 			
 		}*/
-		if(this.getTarget() != null && this.ressource == null && this.getTarget().getId() == EntityConfiguration.RESSOURCE && this.getPosition().inTile(this.getTarget().getPosition()))
+		
+		if(this.getTarget() != null && this.ressource == null && this.getTarget().getId() == EntityConfiguration.RESSOURCE && Collision.collideUnit(this.getTarget().getPosition(), this))
 		{
-			if(!ressources.isEmpty())
-			{
-				System.out.println("test");
-				this.ressource = ressources.get(0);
-				int distanceRessource;
-				
-				for(Ressource value: ressources)
-				{
-					distanceRessource = calculate(this.ressource.getPosition());
-					if(distanceRessource > calculate(value.getPosition()))
-					{
-						this.ressource = value;
-					}
-				}
-			}
+			System.out.println("1");
+			nearbyResource(ressources);
+			this.setTarget(ressource);
+		}
+		
+		else if(this.getRessource() != null && this.getRessource().getHp() <= 0)
+		{
+			System.out.println("2");
+			//nearbyResource(ressources);
+			this.ressource = null;
 		}
 		
 		// revien a la ressource quand posse ces ressources
@@ -133,8 +133,85 @@ public class Worker extends Unit
 		}
 		
 		// cherche un batiment de stockage si jamais il en a pas
-		else if(this.storageBuilding == null)
+		else if(this.storageBuilding == null && this.getRessource() != null && Collision.collideUnit(this.ressource.getPosition(), this))
 		{
+			System.out.println("4");
+			nearbyStorage(storageBuildings);
+		}
+		
+		// Va au batiments quand il a les ressources max
+		else if(this.storageBuilding != null && this.quantityRessource == this.ressourcesMax)	
+		{
+			System.out.println("5");
+			this.setTarget(storageBuilding);
+			if(Collision.collideUnit(this.getTarget().getPosition(), this))
+			{
+				System.out.println("1");
+				this.storageBuilding.addRessource(this.quantityRessource);
+				this.quantityRessource = 0;
+			}
+		}
+		
+		//cherche une nouvelle ressources si il a finis la sienne 
+		else if(this.ressource == null && this.getCurrentAction() == 1 && !ressources.isEmpty())
+		{
+			System.out.println("6");
+			System.out.println("Salut");
+			this.ressource = null;
+			nearbyResource(ressources);
+		}
+		
+		// récupère ressources
+		else if(this.ressource != null && this.storageBuilding != null && Collision.collideUnit(this.ressource.getPosition(), this))
+		{
+			System.out.println("7");
+			this.toHarvest();
+			this.setCurrentAction(1);
+			System.out.println(this.ressource);
+		} 
+		
+		//réparee les batiments
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax() && Collision.collideUnit(this.getTarget().getPosition(), this))
+		{
+			System.out.println("8");
+			this.toRepair();	
+		}
+		else if(this.getCurrentAction() == 1 && storageBuilding != null && this.ressource == null && this.quantityRessource > 0)
+		{
+			this.setTarget(storageBuilding);
+			if(Collision.collideUnit(this.getTarget().getPosition(), this))
+			{
+				System.out.println("1");
+				this.storageBuilding.addRessource(this.quantityRessource);
+				this.quantityRessource = 0;
+			}
+		}
+		
+	}
+	
+	public void nearbyResource(List<Ressource> ressources)
+	{
+		if(!ressources.isEmpty())
+		{
+			this.ressource = ressources.get(0);
+			int distanceRessource;
+			
+			for(Ressource value: ressources)
+			{
+				distanceRessource = calculate(this.ressource.getPosition());
+				if(distanceRessource > calculate(value.getPosition()))
+				{
+					this.ressource = value;
+				}
+			}
+		}
+	}
+	
+	public void nearbyStorage(List<StorageBuilding> storageBuildings)
+	{
+		if(!storageBuildings.isEmpty())
+		{
+		
 			this.storageBuilding = storageBuildings.get(0);
 			int distanceStorageBuilding;
 			
@@ -148,57 +225,7 @@ public class Worker extends Unit
 					this.storageBuilding = value;
 				}
 			}
-			
 		}
-		
-		// Va au batiments quand il a les ressources max
-		else if(this.storageBuilding != null && this.quantityRessource == this.ressourcesMax)	
-		{
-			this.setTarget(storageBuilding);
-			if(Collision.collideUnit(this.getTarget().getPosition(), this))
-			{
-				System.out.println("1");
-				this.storageBuilding.addRessource(this.quantityRessource);
-				this.quantityRessource = 0;
-			}
-		}
-		
-		//cherche une nouvelle ressources si il a finis la sienne 
-		else if(this.ressource != null && this.ressource.getHp() <= 0 && this.getTarget() == null)
-		{
-			System.out.println("Salut");
-			this.ressource = null;
-			
-			this.ressource = ressources.get(0);
-			int distanceRessource;
-			
-			for(Ressource value: ressources)
-			{
-				distanceRessource = calculate(this.ressource.getPosition());
-				if(distanceRessource > calculate(value.getPosition()))
-				{
-					this.ressource = value;
-				}
-			}
-			
-			//trouver une nouvelle resources
-		}
-		
-		// récupère ressources
-		else if(this.ressource != null && this.storageBuilding != null && this.ressource.getPosition().inTile(this.getPosition()))
-		{
-			this.toHarvest();
-		} 
-		
-		//réparee les batiments
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() != this.getTarget().getHpMax() && this.getTarget().getPosition().inTile(this.getPosition()))
-		{
-			System.out.println("Le timer est a: " + this.timer);
-			this.toRepair();
-			System.out.println("Ma vi est de :" + this.getTarget().getHp());
-		}
-		
-		
 	}
 	
 	public int calculateTimer()
