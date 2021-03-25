@@ -351,7 +351,7 @@ public class MainGui extends JFrame implements Runnable
 			for(Worker worker : listWorkers) {
 				Position pos = worker.getPosition();
 				if(x > pos.getX() && x < pos.getX() + EntityConfiguration.UNIT_SIZE && y > pos.getY() && y < pos.getY() + EntityConfiguration.UNIT_SIZE) {
-					dashboard.setDescriptionPanelForUnit(worker);
+					dashboard.setDescriptionPanelForWorker(worker);
 					noUnitSelected = false;
 					workerSelected = true;
 					if(clickCount > 1) {
@@ -474,7 +474,7 @@ public class MainGui extends JFrame implements Runnable
 				if(Collision.collideUnit(worker.getPosition(), rect, camera) == true)
 				{
 					manager.addSelectedUnit(worker);
-					dashboard.setDescriptionPanelForUnit(worker);
+					dashboard.setDescriptionPanelForWorker(worker);
 					noUnitSelected = false;
 				}
 			}

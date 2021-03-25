@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -377,11 +378,20 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 2));
+		descriptionPanel.setLayout(new GridLayout(2, 1));
 		
 		descriptionPanel.add(constructionButton);
-
-		descriptionPanel.add(new JLabel("" + worker.getDescription()));
+		
+		unitStatistiquesLabel.setText("\nPoints de vie : " + worker.getHp() +
+				"\nDégâts : " + worker.getDamage() + 
+				"\nArmure : " + worker.getArmor());
+		
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+		panel.setOpaque(false);
+		panel.add(new JLabel(worker.getDescription()));
+		panel.add(unitStatistiquesLabel);
+		
+		descriptionPanel.add(panel);
 		
 		descriptionPanel.validate();
 	}
@@ -436,7 +446,12 @@ public class GameDisplay extends JPanel
 		buttonTower.setFocusable(false);
 		buttonTower.setToolTipText("Coût : " + faction.getRace().getAttackBuildings().get(EntityConfiguration.TOWER).getCost());
 		
-		descriptionPanel.add(new JLabel("	Liste des constructions"));
+		JTextArea area = new JTextArea();
+		area.setEditable(false);
+		area.setOpaque(false);
+		area.setText("\n          Liste des constructions");
+		
+		descriptionPanel.add(area);
 		descriptionPanel.add(new JLabel());
 		descriptionPanel.add(buttonHq);
 		descriptionPanel.add(buttonStockage);
@@ -484,12 +499,12 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 2));
-	
-		descriptionPanel.add(new JLabel(building.getDescription()));
-		buildingStatistiquesLabel.setText("\npoints de vie :" + building.getHp());
-		descriptionPanel.add(buildingStatistiquesLabel);
-		descriptionPanel.add(new JLabel("permet de déposer les ressources"));
+		descriptionPanel.setLayout(new FlowLayout());
+		JTextArea area = new JTextArea();
+		area.setOpaque(false);
+		area.setEditable(false);
+		area.setText("\n\n                     " + building.getDescription() + ", permet de déposer les ressource" + "\n                     points de vie :" + building.getHp());
+		descriptionPanel.add(area);
 		
 		descriptionPanel.validate();
 	}
@@ -647,9 +662,7 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 2));
-		
-		descriptionPanel.add(constructionButton);
+		descriptionPanel.add(new JLabel("FOR THE EMPIRE"));
 		
 		descriptionPanel.validate();
 	}

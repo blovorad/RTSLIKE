@@ -52,7 +52,6 @@ public class Worker extends Unit
 		{
 			if( timer == 0)
 			{
-				
 				if(this.ressource.getHp() > 0)
 				{
 					this.ressource.setHp(this.ressource.getHp() -1);
@@ -61,15 +60,10 @@ public class Worker extends Unit
 					
 					timer = this.harvestSpeed;
 				}	
-
 					if(this.ressource.getHp() <= 0)
 					{
 						this.ressource = null;
 					}
-				
-				
-				
-				
 			}
 			this.timer--;
 		}
