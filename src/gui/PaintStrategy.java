@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 
+import javax.swing.JPanel;
+
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Animation;
@@ -243,7 +245,7 @@ public class PaintStrategy
 		}
 	}
 	
-	public void paintGui(Map map, Fog fog, List<Entity> entities, Graphics graphics, Camera camera)
+	public void paintGui(Map map, Fog fog, List<Entity> entities, Graphics graphics, Camera camera, JPanel infoTargetPanel, GraphicsManager graphicsManager)
 	{	
 		Tile[][] tiles = map.getTiles();
 		boolean[][] removeFog = fog.getFog();
@@ -286,7 +288,8 @@ public class PaintStrategy
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.white);
 		graphics.drawRect(camX + camera.getX() / GameConfiguration.TILE_SIZE, camY + camera.getY() / GameConfiguration.TILE_SIZE, camW, camH);	
-				
+		
+		graphics.drawImage(graphicsManager.getPanelGaucheBas(), infoTargetPanel.getX(), infoTargetPanel.getY(), infoTargetPanel.getWidth(), infoTargetPanel.getHeight(), null);
 		//graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
 	}
 	
