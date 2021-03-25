@@ -1,10 +1,10 @@
 package engine.entity.building;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 import configuration.EntityConfiguration;
 import engine.Position;
+import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import factionConfiguration.ForFighter;
 /**
@@ -16,8 +16,8 @@ public class Castle extends ProductionBuilding{
 
 	private ForFighter special;
 	
-	public Castle(Position position, ForFighter special, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture, int sightRange) {
-		super(position, id, description, hpMax, faction, tile, null, texture, sightRange);
+	public Castle(Position position, ForFighter special, int id, String description, int hpMax, int faction, Tile tile, int sightRange, GraphicsManager graphicsManager) {
+		super(position, id, description, hpMax, faction, tile, null, sightRange, graphicsManager);
 		this.special = special;
 		this.setProductionId(EntityConfiguration.SPECIAL_UNIT);
 		/*this.setCanAttak(false);

@@ -7,6 +7,7 @@ import configuration.EntityConfiguration;
 import engine.Position;
 import engine.Ressource;
 import engine.entity.building.StorageBuilding;
+import engine.manager.GraphicsManager;
 import engine.math.Collision;
 
 
@@ -31,9 +32,9 @@ public class Worker extends Unit
 	private int timer;
 	
 	
-	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange)
+	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{	
-		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, hpMax, faction, sightRange);
+		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, hpMax, faction, sightRange, maxFrame, graphicsManager);
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
 		

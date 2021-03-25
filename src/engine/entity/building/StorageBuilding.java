@@ -1,9 +1,8 @@
 package engine.entity.building;
 
-import java.awt.image.BufferedImage;
-
 import engine.Entity;
 import engine.Position;
+import engine.manager.GraphicsManager;
 import engine.map.Tile;
 /**
  * 
@@ -15,9 +14,9 @@ public class StorageBuilding extends Entity{
 	private Tile tile;
 	private int ressourceStock;
 	
-	public StorageBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, BufferedImage texture, int sightRange) 
+	public StorageBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, int sightRange, GraphicsManager graphicsManager) 
 	{
-		super(50, hpMax, description, position, id, faction, texture, sightRange);
+		super(50, hpMax, description, position, id, faction, sightRange, 0, graphicsManager);
 		this.setTile(tile);
 	}
 	

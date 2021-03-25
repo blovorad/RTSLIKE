@@ -1,11 +1,11 @@
 package engine.entity.building;
 
-import java.awt.image.BufferedImage;
 import java.util.AbstractMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
 import engine.Position;
+import engine.manager.GraphicsManager;
 import engine.map.Tile;
 import factionConfiguration.ForUpgrade;
 import factionConfiguration.ForWorker;
@@ -19,8 +19,8 @@ public class Hq extends ProductionBuilding{
 	private ForWorker worker;
 	private AbstractMap<Integer, ForUpgrade> upgradesOfHq;
 	
-	public Hq(Position position, ForWorker worker, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, BufferedImage texture, int sightRange) {
-		super(position, id, description, hpMax, faction, tile, upgrades, texture, sightRange);
+	public Hq(Position position, ForWorker worker, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, int sightRange, GraphicsManager graphicsManager) {
+		super(position, id, description, hpMax, faction, tile, upgrades, sightRange, graphicsManager);
 		this.worker = worker;
 		this.setUpgradesOfHq(upgrades);
 		this.setProductionId(EntityConfiguration.WORKER);

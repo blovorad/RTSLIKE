@@ -1,9 +1,7 @@
 package engine;
 
-import java.awt.image.BufferedImage;
-
 import configuration.EntityConfiguration;
-import configuration.GameConfiguration;
+import engine.manager.GraphicsManager;
 /**
  * 
  * @author gautier
@@ -29,11 +27,9 @@ public class Entity
 	private boolean selected;
 	private boolean remove;
 	
-	private BufferedImage texture;
-	private float frame;
-	private int maxFrame;
+	private Animation animation;
 	
-	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, BufferedImage texture, int sightRange)
+	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{
 		this.hp = hp;
 		this.hpMax = hpMax;
@@ -43,11 +39,14 @@ public class Entity
 		this.target = null;
 		this.destination = null;
 		this.setFaction(faction);
-		this.texture = texture;
 		this.setSightRange(sightRange);
 		this.setSelected(false);
-		this.frame = 0;
-		this.maxFrame = 4;
+		if(maxFrame == 0) {
+			this.animation = new Animation(maxFrame, false, graphicsManager, id, faction);
+		}
+		else {
+			this.animation = new Animation(maxFrame, true, graphicsManager, id, faction);
+		}
 		this.setRemove(false);
 	}
 	
@@ -74,10 +73,7 @@ public class Entity
 			this.remove = true;
 		}
 
-		frame += (1f / GameConfiguration.GAME_SPEED) * 4;
-		if(frame >= maxFrame) {
-			frame = 0;
-		}
+		animation.update();
 	}
 	
 	public void damage(int damage)
@@ -177,14 +173,6 @@ public class Entity
 		this.timerHit = timerHit;
 	}
 
-	public BufferedImage getTexture() {
-		return texture;
-	}
-
-	public void setTexture(BufferedImage texture) {
-		this.texture = texture;
-	}
-
 	public int getSightRange() {
 		return sightRange;
 	}
@@ -200,18 +188,6 @@ public class Entity
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
-	
-	public float getFrame() {
-		return this.frame;
-	}
-
-	public int getMaxFrame() {
-		return maxFrame;
-	}
-
-	public void setMaxFrame(int maxFrame) {
-		this.maxFrame = maxFrame;
-	}
 
 	public boolean isRemove() {
 		return remove;
@@ -219,5 +195,13 @@ public class Entity
 
 	public void setRemove(boolean remove) {
 		this.remove = remove;
+	}
+
+	public Animation getAnimation() {
+		return animation;
+	}
+
+	public void setAnimation(Animation animation) {
+		this.animation = animation;
 	}
 }

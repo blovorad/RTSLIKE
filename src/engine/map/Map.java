@@ -47,7 +47,7 @@ public class Map {
 				}
 				int index = scan.nextInt();
 				
-				Tile tile = new Tile(lineIndex, columnIndex, index, graphicsManager.getGraphicsTile(index));
+				Tile tile = new Tile(lineIndex, columnIndex, index, graphicsManager);
 				tiles[columnIndex][lineIndex] = tile;
 				
 				if(index == MapConfiguration.GOLD){

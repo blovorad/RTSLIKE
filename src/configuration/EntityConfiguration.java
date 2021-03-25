@@ -45,10 +45,11 @@ public class EntityConfiguration {
 	public final static int DEFENSIF_STATE = 1;
 	public final static int AGGRESIF_STATE = 2;
 	
-	public final static int IDDLE = 0;
-	public final static int ATTACK = 1;
-	public final static int WALK = 2;
-	public final static int DIE = 3;
+	public final static int IDDLE = 2;
+	public final static int ATTACK = 0;
+	public final static int WALK = 3;
+	public final static int DIE = 1;
+	public final static int HARVEST = 4;
 	
 	public final static int MAX_TIME_HIT_ANIMATION = 10;
 }

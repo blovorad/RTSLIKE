@@ -83,12 +83,6 @@ public class GameDisplay extends JPanel
 	
 	private AudioManager audioManager;
 	
-	//state constant
-	private final int MAINMENU = 0;
-	private final int INGAME = 1;
-	private final int OPTION = 2;
-	private final int PAUSE = 3;
-	
 	//for Main menuGui
 	private JComboBox<String> boxPlayer1;
 	private JComboBox<String> boxPlayer2;
@@ -142,7 +136,7 @@ public class GameDisplay extends JPanel
 		this.manager = manager;
 		this.mouse = mouse;
 		this.selectionRectangle = selectionRectangle;
-		this.state = MAINMENU;
+		this.state = GameConfiguration.INMENU;
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
 		
@@ -811,7 +805,7 @@ public class GameDisplay extends JPanel
 	}
 
 	public void update() {
-		if(state == INGAME){
+		if(state == GameConfiguration.INGAME){
 			int populationCount = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getPopulationCount();
 			int maxPopulation = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMaxPopulation();
 			time += 1.0 / GameConfiguration.GAME_SPEED;
@@ -875,7 +869,7 @@ public class GameDisplay extends JPanel
 	{
 		super.paintComponent(g);
 		
-		if(state == INGAME)
+		if(state == GameConfiguration.INGAME)
 		{
 			this.paintStrategy.paint(this.map, g, this.camera, graphicsManager);
 			List<Entity> entities = manager.getDrawingList();
@@ -922,15 +916,15 @@ public class GameDisplay extends JPanel
 			
 			this.paintStrategy.paintGui(map, fog, entities, g, camera);
 		}
-		else if(state == MAINMENU)
+		else if(state == GameConfiguration.INMENU)
 		{
 			//this.paintStrategy.paint(g);		
 		}
-		else if(state == OPTION)
+		else if(state == GameConfiguration.INOPTION)
 		{
 			
 		}
-		else if(state == PAUSE)
+		else if(state == GameConfiguration.INPAUSEMENU)
 		{
 			
 		}
@@ -995,7 +989,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e)
 		{
 			oldState = state;
-			state = PAUSE;
+			state = GameConfiguration.INPAUSEMENU;
 			manageState();
 		}
 	}
@@ -1127,7 +1121,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{
 			oldState = state;
-			state = OPTION;
+			state = GameConfiguration.INOPTION;
 			manageState();
 		}
 		
@@ -1156,7 +1150,7 @@ public class GameDisplay extends JPanel
 			gamePanel.setVisible(false);
 			
 			oldState = state;
-			state = INGAME;
+			state = GameConfiguration.INGAME;
 			
 			manageState();
 		}
@@ -1395,7 +1389,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e)
 		{
 			oldState = state;
-			state = INGAME;
+			state = GameConfiguration.INGAME;
 			manageState();
 		}
 	}
@@ -1419,7 +1413,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e)
 		{
 			oldState = state;
-			state = OPTION;
+			state = GameConfiguration.INOPTION;
 			manageState();
 		}
 	}
@@ -1442,7 +1436,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e)
 		{
 			oldState = state;
-			state = MAINMENU;
+			state = GameConfiguration.INMENU;
 			manageState();
 			mouse.reset();
 		}
@@ -1452,13 +1446,13 @@ public class GameDisplay extends JPanel
 	{
 		switch(state)
 		{
-			case MAINMENU:
-				if(oldState == OPTION)
+			case GameConfiguration.INMENU:
+				if(oldState == GameConfiguration.INOPTION)
 				{
 					optionPanel.setVisible(false);
 					getMainPanel().remove(optionPanel);
 				}
-				else if(oldState == PAUSE)
+				else if(oldState == GameConfiguration.INPAUSEMENU)
 				{
 					pauseMenuPanel.setVisible(false);
 					getMainPanel().remove(pauseMenuPanel);
@@ -1470,13 +1464,13 @@ public class GameDisplay extends JPanel
 				getMainPanel().add(mainMenuPanel);
 				break;
 				
-			case INGAME:
-				if(oldState == PAUSE)
+			case GameConfiguration.INGAME:
+				if(oldState == GameConfiguration.INPAUSEMENU)
 				{
 					pauseMenuPanel.setVisible(false);
 					getMainPanel().remove(pauseMenuPanel);
 				}
-				else if(oldState == MAINMENU)
+				else if(oldState == GameConfiguration.INMENU)
 				{
 					mainMenuPanel.setVisible(false);
 					getMainPanel().remove(mainMenuPanel);
@@ -1485,15 +1479,15 @@ public class GameDisplay extends JPanel
 				getMainPanel().add(gamePanel);
 				break;
 				
-			case OPTION:
-				if(oldState == PAUSE)
+			case GameConfiguration.INOPTION:
+				if(oldState == GameConfiguration.INPAUSEMENU)
 				{
 					gamePanel.setVisible(false);
 					pauseMenuPanel.setVisible(false);
 					getMainPanel().remove(gamePanel);
 					getMainPanel().remove(pauseMenuPanel);
 				}
-				else if(oldState == MAINMENU)
+				else if(oldState == GameConfiguration.INMENU)
 				{
 					mainMenuPanel.setVisible(false);
 					getMainPanel().remove(mainMenuPanel);
@@ -1503,14 +1497,14 @@ public class GameDisplay extends JPanel
 				getMainPanel().add(optionPanel);
 				break;
 				
-			case PAUSE:
-				if(oldState == OPTION)
+			case GameConfiguration.INPAUSEMENU:
+				if(oldState == GameConfiguration.INOPTION)
 				{
 					audioManager.startFx(1);
 					optionPanel.setVisible(false);
 					getMainPanel().remove(optionPanel);
 				}
-				else if(oldState == INGAME)
+				else if(oldState == GameConfiguration.INGAME)
 				{
 					gamePanel.setVisible(false);
 					getMainPanel().remove(gamePanel);

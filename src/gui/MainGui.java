@@ -331,10 +331,11 @@ public class MainGui extends JFrame implements Runnable
 			return selectRessource;
 		}
 		
-		public void checkWhatIsSelected(int mouseX, int mouseY)
+		public void checkWhatIsSelected(int mouseX, int mouseY, int clickCount)
 		{
 			manager.clearSelectedBuildings();
 			manager.clearSelectedUnit();
+			manager.clearSelectedRessource();
 			dashboard.setDescriptionPanelStandard();
 
 			int x = mouseX + camera.getX();
@@ -351,6 +352,15 @@ public class MainGui extends JFrame implements Runnable
 					if(unit.getFaction() == EntityConfiguration.PLAYER_FACTION) {
 						manager.addSelectedUnit(unit);
 						dashboard.setDescriptionPanelForUnit(unit);
+						if(clickCount >= 2) {
+							for(Unit unit2 : listUnits) {
+								if(unit != unit2) {
+									if(unit.getId() == unit2.getId()) {
+										manager.addSelectedUnit(unit2);
+									}
+								}
+							}
+						}
 						noUnitSelected = false;
 					}
 				}
@@ -414,6 +424,7 @@ public class MainGui extends JFrame implements Runnable
 								&& (y > ressource.getPosition().getY() && y < ressource.getPosition().getY() + GameConfiguration.TILE_SIZE))
 						{
 							dashboard.setDescriptionPanelForRessource(ressource);
+							ressource.setSelected(true);
 							manager.setSelectedRessource(ressource);
 							break;
 						}
@@ -426,6 +437,7 @@ public class MainGui extends JFrame implements Runnable
 		{
 			manager.clearSelectedBuildings();
 			manager.clearSelectedUnit();
+			manager.clearSelectedRessource();
 			dashboard.setDescriptionPanelStandard();
 			
 			SelectionRect rect = new SelectionRect(x, y, w, h);
@@ -495,6 +507,8 @@ public class MainGui extends JFrame implements Runnable
 						if(Collision.collide(ressource.getPosition(), rect, camera))
 						{
 							dashboard.setDescriptionPanelForRessource(ressource);
+							ressource.setSelected(true);
+							manager.setSelectedRessource(ressource);
 							break;
 						}
 					}
@@ -512,7 +526,7 @@ public class MainGui extends JFrame implements Runnable
 		@Override
 		public void mousePressed(MouseEvent e) 
 		{
-			if(dashboard.getState() == 1)
+			if(dashboard.getState() == GameConfiguration.INGAME)
 			{
 				int mouseX = e.getX() + camera.getX();
 				int mouseY = e.getY() + camera.getY();
@@ -621,18 +635,20 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(e.getButton() == 1)
 			{
-				//System.out.println("released");
-				if(selectionRectangle.isActive() == true)
-				{
-					if(selectionRectangle.getW() == 0 && selectionRectangle.getH() == 0)
+				if(dashboard.getState() == GameConfiguration.INGAME) {
+					//System.out.println("released");
+					if(selectionRectangle.isActive() == true)
 					{
-						checkWhatIsSelected(e.getX(), e.getY());
+						if(selectionRectangle.getW() == 0 && selectionRectangle.getH() == 0)
+						{
+							checkWhatIsSelected(e.getX(), e.getY(), e.getClickCount());
+						}
+						else
+						{
+							checkWhatIsSelected(selectionRectangle.getX(), selectionRectangle.getY(), selectionRectangle.getW(), selectionRectangle.getH());
+						}
+						selectionRectangle.setActive(false);
 					}
-					else
-					{
-						checkWhatIsSelected(selectionRectangle.getX(), selectionRectangle.getY(), selectionRectangle.getW(), selectionRectangle.getH());
-					}
-					selectionRectangle.setActive(false);
 				}
 			}
 			else if(e.getButton() == 3)
@@ -658,7 +674,7 @@ public class MainGui extends JFrame implements Runnable
 	{
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			if(dashboard.getState() == 1)
+			if(dashboard.getState() == GameConfiguration.INGAME)
 			{
 				int x = e.getX();
 				int y = e.getY();
@@ -669,7 +685,7 @@ public class MainGui extends JFrame implements Runnable
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			if(dashboard.getState() == 1)
+			if(dashboard.getState() == GameConfiguration.INGAME)
 			{
 				int x = e.getX();
 				int y = e.getY();
