@@ -319,9 +319,9 @@ public class MainGui extends JFrame implements Runnable
 			{
 				for(Ressource ressource : ressources)
 				{
-					Position ressourcePosition = new Position(ressource.getPosition().getX(),  ressource.getPosition().getY());
+					Position ressourcePosition = ressource.getPosition();
 					
-					if(destination.inTile(ressourcePosition))
+					if(Collision.collideRessource(destination, ressourcePosition))
 					{
 						selectRessource = ressource;
 						break;
