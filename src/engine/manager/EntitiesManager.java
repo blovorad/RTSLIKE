@@ -47,6 +47,11 @@ public class EntitiesManager
 	private List<Entity> playerEntities = new ArrayList<Entity>();
 	
 	private List<Unit> selectedUnits = new ArrayList<Unit>();
+	private List<Fighter>selectedFighters = new ArrayList<Fighter>();
+	private List<Worker>selectedWorkers = new ArrayList<Worker>();
+
+	private List<Worker> playerWorkers = new ArrayList<Worker>();
+	private List<Fighter> playerFighters = new ArrayList<Fighter>();
 	
 	private ProductionBuilding selectedProdBuilding;
 	private AttackBuilding selectedAttackBuilding;
@@ -215,6 +220,8 @@ public class EntitiesManager
 		units.removeAll(removeWorkers);
 		selectedUnits.removeAll(removeWorkers);
 		playerEntities.removeAll(removeWorkers);
+		selectedWorkers.removeAll(removeWorkers);
+		playerWorkers.removeAll(removeWorkers);
 		removeWorkers.clear();
 		
 		//removing fighter
@@ -224,6 +231,8 @@ public class EntitiesManager
 		units.removeAll(removeFighters);
 		selectedUnits.removeAll(removeFighters);
 		playerEntities.removeAll(removeFighters);
+		selectedFighters.removeAll(removeFighters);
+		playerFighters.removeAll(removeFighters);
 		removeFighters.clear();
 	}
 	
@@ -253,6 +262,7 @@ public class EntitiesManager
 		else {
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(fighter);
+				playerFighters.add(fighter);
 			}
 			this.collisionList.add(fighter);
 			this.drawingList.add(fighter);
@@ -279,6 +289,7 @@ public class EntitiesManager
 		else {
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(worker);
+				playerWorkers.add(worker);
 			}
 			this.collisionList.add(worker);
 			this.drawingList.add(worker);
@@ -524,6 +535,14 @@ public class EntitiesManager
 		this.selectedUnits.add(unit);
 	}
 	
+	public void addSelectedFighter(Fighter fighter) {
+		this.selectedFighters.add(fighter);
+	}
+	
+	public void addSelectedWorker(Worker worker) {
+		this.selectedWorkers.add(worker);
+	}
+	
 	public void addRessource(List<Tile> listPositionRessources){
 		for(Tile t : listPositionRessources){
 			Ressource r = new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION, graphicsManager);
@@ -713,6 +732,14 @@ public class EntitiesManager
 		this.selectedUnits.clear();
 	}
 	
+	public void clearSelectedFighter() {
+		this.selectedFighters.clear();
+	}
+	
+	public void clearSelectedWorker() {
+		this.selectedWorkers.clear();
+	}
+	
 	public void clearSelectedProdBuilding() {
 		if(this.selectedProdBuilding != null) {
 			this.selectedProdBuilding.setSelected(false);
@@ -748,5 +775,21 @@ public class EntitiesManager
 
 	public void setSelectedRessource(Ressource selectedRessource) {
 		this.selectedRessource = selectedRessource;
+	}
+
+	public List<Fighter> getPlayerFighters() {
+		return playerFighters;
+	}
+
+	public List<Worker> getPlayerWorkers() {
+		return playerWorkers;
+	}
+	
+	public List<Fighter> getSelectedFighters() {
+		return selectedFighters;
+	}
+
+	public List<Worker> getSelectedWorkers() {
+		return selectedWorkers;
 	}
 }

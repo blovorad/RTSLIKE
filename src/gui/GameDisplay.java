@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -115,6 +116,8 @@ public class GameDisplay extends JPanel
 	private JPanel pauseMenuPanel;
 	
 	private JPanel descriptionPanel;
+	private JPanel ressourceInfoPanel;
+	private JPanel minimapPanel;
 	private JLabel populationLabel;
 	private JLabel moneyLabel;
 	private JLabel ageLabel;
@@ -159,6 +162,12 @@ public class GameDisplay extends JPanel
 		unitStatistiquesLabel.setEditable(false);
 		buildingStatistiquesLabel.setEditable(false);
 		ressourceStatistiquesLabel.setEditable(false);
+		constructionButton.setOpaque(false);
+		currentProductionLabel.setOpaque(false);
+		unitStatistiquesLabel.setOpaque(false);
+		buildingStatistiquesLabel.setOpaque(false);
+		ressourceStatistiquesLabel.setOpaque(false);
+		
 		this.add(mainMenuPanel);
 	}
 	
@@ -327,10 +336,12 @@ public class GameDisplay extends JPanel
 			{
 				panel.add(createDescriptionPanel());
 			}
+			else if(i == 11) {
+				panel.add(createMinimapPanel());
+			}
 			else
 			{
-				JLabel label = new JLabel();
-				label.setVisible(false);
+				JLabel label = new JLabel("i");
 				panel.add(label);
 			}
 		}
@@ -361,7 +372,7 @@ public class GameDisplay extends JPanel
 	private JPanel createDescriptionPanel()
 	{
 		descriptionPanel = new JPanel(new GridLayout(2, 2));
-		
+		descriptionPanel.setOpaque(false);
 		setDescriptionPanelStandard();
 		
 		return descriptionPanel;
@@ -371,11 +382,20 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 2));
+		descriptionPanel.setLayout(new GridLayout(2, 1));
 		
 		descriptionPanel.add(constructionButton);
-
-		descriptionPanel.add(new JLabel("" + worker.getDescription()));
+		
+		unitStatistiquesLabel.setText("\nPoints de vie : " + worker.getHp() +
+				"\nDégâts : " + worker.getDamage() + 
+				"\nArmure : " + worker.getArmor());
+		
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+		panel.setOpaque(false);
+		panel.add(new JLabel(worker.getDescription()));
+		panel.add(unitStatistiquesLabel);
+		
+		descriptionPanel.add(panel);
 		
 		descriptionPanel.validate();
 	}
@@ -430,7 +450,12 @@ public class GameDisplay extends JPanel
 		buttonTower.setFocusable(false);
 		buttonTower.setToolTipText("Coût : " + faction.getRace().getAttackBuildings().get(EntityConfiguration.TOWER).getCost());
 		
-		descriptionPanel.add(new JLabel("Liste des constructions"));
+		JTextArea area = new JTextArea();
+		area.setEditable(false);
+		area.setOpaque(false);
+		area.setText("\n          Liste des constructions");
+		
+		descriptionPanel.add(area);
 		descriptionPanel.add(new JLabel());
 		descriptionPanel.add(buttonHq);
 		descriptionPanel.add(buttonStockage);
@@ -449,7 +474,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(1, 3));
 		
-		unitStatistiquesLabel.setText("Points de vie : " + unit.getHp() +
+		unitStatistiquesLabel.setText("\nPoints de vie : " + unit.getHp() +
 										"\nDégâts : " + unit.getDamage() + 
 										"\nArmure : " + unit.getArmor());
 		
@@ -467,7 +492,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.setLayout(new GridLayout(2, 2));
 
 		descriptionPanel.add(new JLabel(building.getDescription()));
-		buildingStatistiquesLabel.setText("points de vie :" + building.getHp());
+		buildingStatistiquesLabel.setText("\npoints de vie :" + building.getHp());
 		descriptionPanel.add(buildingStatistiquesLabel);
 		descriptionPanel.add(new JLabel("Attaque les unités adverse proche"));
 		
@@ -478,12 +503,12 @@ public class GameDisplay extends JPanel
 	{
 		descriptionPanel.removeAll();
 		
-		descriptionPanel.setLayout(new GridLayout(2, 2));
-	
-		descriptionPanel.add(new JLabel(building.getDescription()));
-		buildingStatistiquesLabel.setText("points de vie :" + building.getHp());
-		descriptionPanel.add(buildingStatistiquesLabel);
-		descriptionPanel.add(new JLabel("permet de déposer les ressources"));
+		descriptionPanel.setLayout(new FlowLayout());
+		JTextArea area = new JTextArea();
+		area.setOpaque(false);
+		area.setEditable(false);
+		area.setText("\n\n                     " + building.getDescription() + ", permet de déposer les ressource" + "\n                     points de vie :" + building.getHp());
+		descriptionPanel.add(area);
 		
 		descriptionPanel.validate();
 	}
@@ -511,25 +536,25 @@ public class GameDisplay extends JPanel
 					ForUpgrade hqUpgrade = race.getHQUpgrades().get(idProduction);
 					ForWorker worker = race.getPatronWorkers().get(idProduction);
 					if(fighter != null) {
-						currentProductionLabel.setText("Prod: " + fighter.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+						currentProductionLabel.setText("\nProd: " + fighter.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
 					}
 					else if(forgeUpgrade != null) {
-						currentProductionLabel.setText("Prod: " + forgeUpgrade.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+						currentProductionLabel.setText("\nProd: " + forgeUpgrade.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
 					}
 					else if(hqUpgrade != null){
-						currentProductionLabel.setText("Prod: " + hqUpgrade.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+						currentProductionLabel.setText("\nProd: " + hqUpgrade.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
 					}
 					else if(worker != null) {
-						currentProductionLabel.setText("Prod: " + worker.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
+						currentProductionLabel.setText("\nProd: " + worker.getDescription()+ ", temps restant : " + (int)building.getTimer() + "\n file d'attente : " + building.getElementCount().size());
 					}
 				}
 				else {
-					currentProductionLabel.setText("Rien n'est en production");
+					currentProductionLabel.setText("\nRien n'est en production");
 				}
 				descriptionPanel.add(currentProductionLabel);
 			}
 			else if(i == 2) {
-				buildingStatistiquesLabel.setText("points de vie :" + building.getHp());
+				buildingStatistiquesLabel.setText("  points de vie :" + building.getHp());
 				descriptionPanel.add(buildingStatistiquesLabel);
 			}
 			else if(i == 3) {
@@ -631,7 +656,7 @@ public class GameDisplay extends JPanel
 		
 		descriptionPanel.setLayout(new FlowLayout());
 		
-		ressourceStatistiquesLabel.setText("Ressource restante : " + ressource.getHp());
+		ressourceStatistiquesLabel.setText("\nRessource restante : " + ressource.getHp());
 		descriptionPanel.add(ressourceStatistiquesLabel);
 		
 		descriptionPanel.validate();
@@ -640,17 +665,20 @@ public class GameDisplay extends JPanel
 	public void setDescriptionPanelStandard()
 	{
 		descriptionPanel.removeAll();
-		
-		descriptionPanel.setLayout(new GridLayout(2, 2));
-		
-		descriptionPanel.add(constructionButton);
+		descriptionPanel.setLayout(new FlowLayout());
+		JTextArea area = new JTextArea();
+		area.setEditable(false);
+		area.setOpaque(false);
+		area.setText("Votre faction est : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
+		descriptionPanel.add(area);
 		
 		descriptionPanel.validate();
 	}
 	
 	private JPanel createRessourceInfo()
 	{	
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 0));
+		JPanel panel = new JPanel(new GridLayout(5, 1));
+		ressourceInfoPanel = new JPanel(new GridLayout(2,5));
 
 		this.moneyLabel =  new JLabel("ARGENT:" + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoneyCount());
 		this.moneyLabel.setForeground(Color.WHITE);
@@ -663,12 +691,14 @@ public class GameDisplay extends JPanel
 		JLabel race = new JLabel("FACTION :  " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getName());
 		race.setForeground(Color.WHITE);
 		
-		panel.add(moneyLabel);
-		panel.add(timeLabel);
-		panel.add(populationLabel);
-		panel.add(ageLabel);
-		panel.add(race);
+		ressourceInfoPanel.add(moneyLabel);
+		ressourceInfoPanel.add(timeLabel);
+		ressourceInfoPanel.add(populationLabel);
+		ressourceInfoPanel.add(ageLabel);
+		ressourceInfoPanel.add(race);
 		
+		ressourceInfoPanel.setOpaque(false);
+		panel.add(ressourceInfoPanel);
 		panel.setOpaque(false);
 		return panel;
 	}
@@ -763,6 +793,27 @@ public class GameDisplay extends JPanel
 		return panel;
 	}
 	
+	public JPanel createMinimapPanel() {
+		GridLayout layout = new GridLayout(1,2);
+		JPanel panel = new JPanel(layout);
+		panel.setOpaque(false);
+		
+		minimapPanel = new JPanel();
+		minimapPanel.setOpaque(false);
+		
+		int gridPlacement = layout.getColumns() * layout.getRows();
+		for(int i = 0; i < gridPlacement; i++) {
+			if(i == 1) {
+				panel.add(minimapPanel);
+			}
+			else {
+				panel.add(new JLabel());
+			}
+		}
+		
+		return panel;
+	}
+	
 	public void actualiseCurrentProdLabel(ProductionBuilding building) {
 		if(building.getIsProducing()) {
 			int idProduction = building.getElementCount().get(0);
@@ -773,32 +824,32 @@ public class GameDisplay extends JPanel
 			ForUpgrade hqUpgrade = race.getHQUpgrades().get(idProduction);
 			ForWorker worker = race.getPatronWorkers().get(idProduction);
 			if(fighter != null) {
-				currentProductionLabel.setText("Prod: " + fighter.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
+				currentProductionLabel.setText("\nProd: " + fighter.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
 			}
 			else if(forgeUpgrade != null) {
-				currentProductionLabel.setText("Prod: " + forgeUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
+				currentProductionLabel.setText("\nProd: " + forgeUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
 			}
 			else if(hqUpgrade != null){
-				currentProductionLabel.setText("Prod: " + hqUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
+				currentProductionLabel.setText("\nProd: " + hqUpgrade.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
 			}
 			else if(worker != null) {
-				currentProductionLabel.setText("Prod: " + worker.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
+				currentProductionLabel.setText("\nProd: " + worker.getDescription()+ "\n temps restant : " + (int)building.getTimer() + ", file d'attente : " + building.getElementCount().size());
 			}
 		}
 		else {
-			currentProductionLabel.setText("Rien n'est en production");
+			currentProductionLabel.setText("\nRien n'est en production");
 		}
 	}
 	
 	public void actualiseStatistiquesBuilding(int hp) {
-		this.buildingStatistiquesLabel.setText("Points de vie : " + hp);
+		this.buildingStatistiquesLabel.setText("  Points de vie : " + hp);
 		if(hp <= 0) {
 			this.setDescriptionPanelStandard();
 		}
 	}
 	
 	public void actualiseStatistiquesRessource(int hp) {
-		ressourceStatistiquesLabel.setText("Ressource restante : " + hp);
+		ressourceStatistiquesLabel.setText("\nRessource restante : " + hp);
 		if(hp <= 0) {
 			this.setDescriptionPanelStandard();
 		}
@@ -914,7 +965,7 @@ public class GameDisplay extends JPanel
 			
 			this.paintStrategy.paint(fog, g, camera);
 			
-			this.paintStrategy.paintGui(map, fog, entities, g, camera);
+			this.paintStrategy.paintGui(map, fog, entities, g, camera, descriptionPanel, ressourceInfoPanel, minimapPanel, graphicsManager);
 		}
 		else if(state == GameConfiguration.INMENU)
 		{
