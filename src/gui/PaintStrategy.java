@@ -27,12 +27,7 @@ import engine.math.SelectionRect;
 
 public class PaintStrategy 
 {
-	//variable for generate Minimap
-	private int rectXOfMinimap;
-	private int rectYOfMinimap;
-	private int rectWOfMinimap;
-	private int rectHOfMinimap;
-	
+	//variable for generate Minimap	
 	private int firstGridXOfMap;
 	private int firstGridYOfMap;
 	private int gridMapWidth;
@@ -46,84 +41,26 @@ public class PaintStrategy
 	private int lifeBarreY;
 	private SelectionRect flagDestinationRect;
 	
-	public PaintStrategy(int width, int height)
+	public PaintStrategy(int width, int height, JPanel minimapPanel)
 	{
-		//if(width == 800 && height == 600) {
-			rectXOfMinimap = (int)(650f * GameConfiguration.SCALE_X);
-			rectYOfMinimap = (int)(475f * GameConfiguration.SCALE_Y);
-			rectWOfMinimap = (int)(650f * GameConfiguration.SCALE_X);
-			rectHOfMinimap = (int)(475f * GameConfiguration.SCALE_Y);
+		int panelOffset = 10;
+		int flagWidthAndHeight = 10;
+		int panelWidth = minimapPanel.getWidth();
+		int panelHeight = minimapPanel.getHeight();
+		int panelX = minimapPanel.getX() + panelWidth / 2;
+		int panelY = minimapPanel.getY();
+		
+		firstGridXOfMap = panelX + panelOffset;
+		firstGridYOfMap = panelY + panelOffset;
+		gridMapWidth = (panelWidth / 2) / GameConfiguration.COLUMN_COUNT;
+		gridMapHeight = panelHeight / GameConfiguration.LINE_COUNT;
 			
-			firstGridXOfMap = (int)(675f * GameConfiguration.SCALE_X);
-			firstGridYOfMap = (int)(490f * GameConfiguration.SCALE_Y);
-			gridMapWidth = 1;
-			gridMapHeight = 1;
-			
-			camX = (int)(675f * GameConfiguration.SCALE_X);
-			camY = (int)(490f * GameConfiguration.SCALE_Y);
-			camW = (width / GameConfiguration.TILE_SIZE);
-			camH = (height / GameConfiguration.TILE_SIZE);
-			lifeBarreY = 10;
-			flagDestinationRect = new SelectionRect(0, 0, 10, 10);
-		//}
-		/*if(width == 1920 && height == 1080)
-		{
-			rectXOfMinimap = 1625;
-			rectYOfMinimap = 775;
-			rectWOfMinimap = width - 1625;
-			rectHOfMinimap = height - 775;
-			
-			firstGridXOfMap = 1650;
-			firstGridYOfMap = 800;
-			gridMapWidth = 1;
-			gridMapHeight = 1;
-			
-			camX = 1650;
-			camY = 800;
-			camW = (width / GameConfiguration.TILE_SIZE);
-			camH = (height / GameConfiguration.TILE_SIZE);
-		}
-		else if(width == 1366 && height == 768)
-		{
-			rectXOfMinimap = 1225;
-			rectYOfMinimap = 625;
-			rectWOfMinimap = width - 1225;
-			rectHOfMinimap = height - 625;
-			
-			System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
-			
-			firstGridXOfMap = 1250;
-			firstGridYOfMap = 650;
-			gridMapWidth = 1;
-			gridMapHeight = 1;
-			
-			camX = 1250;
-			camY = 650;
-			camW = (width / GameConfiguration.TILE_SIZE);
-			camH = (height / GameConfiguration.TILE_SIZE);
-		}
-		else if(width == 1280 && height == 720)
-		{
-			rectXOfMinimap = 1000;
-			rectYOfMinimap = 500;
-			rectWOfMinimap = width - 1000;
-			rectHOfMinimap = height - 500;
-			
-			System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
-			
-			firstGridXOfMap = 1025;
-			firstGridYOfMap = 515;
-			gridMapWidth = 1;
-			gridMapHeight = 1;
-			
-			camX = 1025;
-			camY = 515;
-			camW = (width / GameConfiguration.TILE_SIZE);
-			camH = (height / GameConfiguration.TILE_SIZE);
-		}*/
-		/*System.out.println("on construit dans : " + width + "x" + height);
-		System.out.println("rect map " + rectXOfMinimap + "," + rectYOfMinimap + "," + rectWOfMinimap + "," + rectHOfMinimap);
-		System.out.println("camera dimension : " + camW + "," + camH);*/
+		camX = panelX + panelOffset;
+		camY = panelY + panelOffset;
+		camW = gridMapWidth * (width / GameConfiguration.TILE_SIZE);
+		camH = gridMapHeight * (height / GameConfiguration.TILE_SIZE);
+		lifeBarreY = 10;
+		flagDestinationRect = new SelectionRect(0, 0, flagWidthAndHeight, flagWidthAndHeight);
 	}
 	
 	public void paint(SelectionRect rectangle, Graphics graphics, Camera camera)
@@ -251,8 +188,7 @@ public class PaintStrategy
 		boolean[][] removeFog = fog.getFog();
 		
 		//draw the rect of the minimap
-		graphics.setColor(new Color(168,104,38));
-		graphics.fillRect(rectXOfMinimap, rectYOfMinimap, rectWOfMinimap, rectHOfMinimap);
+		graphics.drawImage(graphicsManager.getPanelGaucheBas(), minimapPanel.getX() + minimapPanel.getWidth() / 2, minimapPanel.getY(), minimapPanel.getWidth() / 2, minimapPanel.getHeight(), null);
 				
 		//draw the minimap
 		for (int lineIndex = 0; lineIndex < map.getLineCount(); lineIndex++) 
@@ -284,12 +220,10 @@ public class PaintStrategy
 				
 		//draw rect of the camera on the minimap
 		graphics.setColor(Color.white);
-		graphics.drawRect(camX + camera.getX() / GameConfiguration.TILE_SIZE, camY + camera.getY() / GameConfiguration.TILE_SIZE, camW, camH);	
+		graphics.drawRect(camX + (camera.getX() * gridMapWidth) / GameConfiguration.TILE_SIZE, camY + (camera.getY() * gridMapHeight) / GameConfiguration.TILE_SIZE, camW, camH);	
 		
 		graphics.drawImage(graphicsManager.getPanelGaucheBas(), infoTargetPanel.getX(), infoTargetPanel.getY(), infoTargetPanel.getWidth(), infoTargetPanel.getHeight(), null);
 		graphics.drawImage(graphicsManager.getPanelGaucheBas(), infoUpPanel.getX(), infoUpPanel.getY(), infoUpPanel.getWidth(), infoUpPanel.getHeight(), null);
-		graphics.drawImage(graphicsManager.getPanelGaucheBas(), minimapPanel.getX(), minimapPanel.getY(), minimapPanel.getWidth(), minimapPanel.getHeight(), null);
-		//graphics.drawRect(camera.getRectX(), camera.getRectY(), camera.getRectW(), camera.getRectH());
 	}
 	
 	public void paintEntityGui(Entity entity, Graphics graphics, Camera camera)
