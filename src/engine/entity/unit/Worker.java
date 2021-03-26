@@ -39,7 +39,7 @@ public class Worker extends Unit
 		this.harvestSpeed = harvestSpeed;
 		
 		this.timer = harvestSpeed;
-		this.ressourcesMax = ressourceMax;
+		this.ressourcesMax = 3;
 		this.quantityRessource = 0;
 		
 		this.storageBuilding = null;
@@ -60,10 +60,11 @@ public class Worker extends Unit
 					
 					timer = this.harvestSpeed;
 				}	
-					if(this.ressource.getHp() <= 0)
-					{
-						this.ressource = null;
-					}
+
+				if(this.ressource.getHp() <= 0)
+				{
+					this.ressource = null;
+				}
 			}
 			this.timer--;
 		}
@@ -113,6 +114,19 @@ public class Worker extends Unit
 			this.setTarget(ressource);
 		}
 		
+		// Va au batiments quand il a les ressources max
+		else if(this.storageBuilding != null && this.quantityRessource == this.ressourcesMax)	
+		{
+			//System.out.println("5");
+			this.setTarget(storageBuilding);
+			if(Collision.collideUnit(this.getTarget().getPosition(), this))
+			{
+				System.out.println("10");
+				this.storageBuilding.addRessource(this.quantityRessource);
+				this.quantityRessource = 0;
+			}
+		}
+		
 		else if(this.getRessource() != null && this.getRessource().getHp() <= 0)
 		{
 			System.out.println("2");
@@ -134,24 +148,12 @@ public class Worker extends Unit
 			nearbyStorage(storageBuildings);
 		}
 		
-		// Va au batiments quand il a les ressources max
-		else if(this.storageBuilding != null && this.quantityRessource == this.ressourcesMax)	
-		{
-			System.out.println("5");
-			this.setTarget(storageBuilding);
-			if(Collision.collideUnit(this.getTarget().getPosition(), this))
-			{
-				System.out.println("1");
-				this.storageBuilding.addRessource(this.quantityRessource);
-				this.quantityRessource = 0;
-			}
-		}
+		
 		
 		//cherche une nouvelle ressources si il a finis la sienne 
 		else if(this.ressource == null && this.getCurrentAction() == 1 && !ressources.isEmpty())
 		{
 			System.out.println("6");
-			System.out.println("Salut");
 			this.ressource = null;
 			nearbyResource(ressources);
 		}
@@ -171,16 +173,21 @@ public class Worker extends Unit
 			System.out.println("8");
 			this.toRepair();	
 		}
+				
+		
+		
 		else if(this.getCurrentAction() == 1 && storageBuilding != null && this.ressource == null && this.quantityRessource > 0)
 		{
 			this.setTarget(storageBuilding);
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
-				System.out.println("1");
+				System.out.println("12");
 				this.storageBuilding.addRessource(this.quantityRessource);
 				this.quantityRessource = 0;
 			}
 		}
+		
+		//System.out.println(this.ressource);
 		
 	}
 	
