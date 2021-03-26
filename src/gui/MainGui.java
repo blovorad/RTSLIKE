@@ -60,6 +60,8 @@ public class MainGui extends JFrame implements Runnable
 	public MainGui()
 	{
 		super("Game");
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		this.setUndecorated(true);
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
@@ -86,7 +88,7 @@ public class MainGui extends JFrame implements Runnable
 		dashboard.setPreferredSize(preferredSize);
 		contentPane.add(dashboard, BorderLayout.CENTER);
 		
-		pack();
+		//pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		setResizable(false);

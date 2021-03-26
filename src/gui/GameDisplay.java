@@ -62,7 +62,9 @@ public class GameDisplay extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private PaintStrategy paintStrategy = null;
+	private PaintStrategyGame paintStrategyGame = null;
+	private PaintStrategyMainMenu paintStrategyMainMenu = null;
+	private PaintStrategyOption paintStrategyOption = null;
 	
 	private Map map;
 	private Fog fog;
@@ -142,6 +144,7 @@ public class GameDisplay extends JPanel
 		this.state = GameConfiguration.INMENU;
 		this.oldState = this.state;
 		this.setLayout(new GridLayout(1,1));
+		this.setOpaque(false);
 		
 		audioManager.setState(state);
 		this.audioManager = audioManager;
@@ -183,7 +186,7 @@ public class GameDisplay extends JPanel
 		panel.add(createMainMenuLeftPanel());
 		panel.add(createMainMenuCenterPanel());
 		panel.add(createMainMenuRightPanel());
-		
+		panel.setOpaque(false);
 		return panel;
 	}
 	
@@ -204,7 +207,7 @@ public class GameDisplay extends JPanel
         		panel.add(new JLabel());
         	}
         }
-    
+		panel.setOpaque(false);
 		return panel;
 	}
 	
@@ -219,17 +222,25 @@ public class GameDisplay extends JPanel
         	if(i == 3)
         	{
         		JPanel panel2 = new JPanel(new GridLayout(2,0));
-        		panel2.add(new JLabel("Player 1"));
+        		JLabel p1 = new JLabel("Joueur 1");
+        		p1.setOpaque(false);
+        		panel2.add(p1);
         		boxPlayer1 = new JComboBox<String>(races);
+        		boxPlayer1.setOpaque(false);
+        		panel2.setOpaque(false);
         		panel2.add(boxPlayer1);
                 panel.add(panel2);
         	}
         	else if(i == 5)
         	{
         		JPanel panel2 = new JPanel(new GridLayout(2,0));
-        		panel2.add(new JLabel("Player 2"));
+        		JLabel p2 = new JLabel("Joueur 2");
+        		p2.setOpaque(false);
+        		panel2.add(p2);
         		boxPlayer2 = new JComboBox<String>(races);
+        		boxPlayer2.setOpaque(false);
         		boxPlayer2.setSelectedIndex(1);
+        		panel2.setOpaque(false);
         		panel2.add(boxPlayer2);
                 panel.add(panel2);
         	}
@@ -244,7 +255,7 @@ public class GameDisplay extends JPanel
         		panel.add(label);
         	}
         }
-        
+        panel.setOpaque(false);
         return panel;
 	}
 	
@@ -275,6 +286,7 @@ public class GameDisplay extends JPanel
 	        		if(j == 1)
 	        		{
 	        	    		 radioButton1 = new JRadioButton(new RadioButton1("map1"));
+	        	    		 radioButton1.setOpaque(false);
 	        	    	     radioButton1.setSelected(true);
 	        	    	     groupButton.add(radioButton1);
 	        	    	     panel2.add(radioButton1);
@@ -282,12 +294,14 @@ public class GameDisplay extends JPanel
 	        		else if(j == 3)
 	        		{
 	        	    	radioButton2 = new JRadioButton(new RadioButton2("map2"));
+	        	    	radioButton2.setOpaque(false);
 	        	    	groupButton.add(radioButton2);
 	        	    	panel2.add(radioButton2);
 	        		}
 	        	    else if(j == 5)
 	        	    {
 	        	    	radioButton3 = new JRadioButton(new RadioButton3("map3"));
+	        	    	radioButton3.setOpaque(false);
 	        	    	groupButton.add(radioButton3);
 	        	    	panel2.add(radioButton3); 
 	        	    }
@@ -302,6 +316,7 @@ public class GameDisplay extends JPanel
 	        	    	panel2.add(label);
 	        	    }
 	        	}
+	        		panel2.setOpaque(false);
 	        	     panel.add(panel2);
 	        }
 	        else
@@ -311,7 +326,7 @@ public class GameDisplay extends JPanel
 	        	panel.add(label);
 	        }
 	    }
-	    
+	    panel.setOpaque(false);
 	    return panel;
 	}
 	
@@ -920,10 +935,10 @@ public class GameDisplay extends JPanel
 		
 		if(state == GameConfiguration.INGAME)
 		{
-			if(this.paintStrategy == null) {
-				paintStrategy = new PaintStrategy(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT, minimapPanel);
+			if(this.paintStrategyGame == null) {
+				paintStrategyGame = new PaintStrategyGame(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT, minimapPanel);
 			}
-			this.paintStrategy.paint(this.map, g, this.camera, graphicsManager);
+			this.paintStrategyGame.paint(this.map, g, this.camera, graphicsManager);
 			List<Entity> entities = manager.getDrawingList();
 			List<Unit> units = manager.getSelectedUnits();
 			
@@ -945,36 +960,42 @@ public class GameDisplay extends JPanel
 			
 			for(Entity entity : entities)
 			{
-				this.paintStrategy.paint(entity, g, camera, graphicsManager);
+				this.paintStrategyGame.paint(entity, g, camera, graphicsManager);
 			}
 			
 			for(Unit unit : units) {
-				this.paintStrategy.paintRectSelectionUnit(unit, g, camera);
+				this.paintStrategyGame.paintRectSelectionUnit(unit, g, camera);
 			}
 			
 			if(building != null) {
-				this.paintStrategy.paintSelectionRectBuilding(building, g, camera);
+				this.paintStrategyGame.paintSelectionRectBuilding(building, g, camera);
 			}
 			else if(ressource != null) {
-				this.paintStrategy.paintSelectionRectRessource(ressource, g, camera);
+				this.paintStrategyGame.paintSelectionRectRessource(ressource, g, camera);
 			}
 			
 			if(selectionRectangle.isActive())
 			{
-				this.paintStrategy.paint(selectionRectangle, g, camera);
+				this.paintStrategyGame.paint(selectionRectangle, g, camera);
 			}
 			
-			this.paintStrategy.paint(fog, g, camera);
+			this.paintStrategyGame.paint(fog, g, camera);
 			
-			this.paintStrategy.paintGui(map, fog, entities, g, camera, descriptionPanel, ressourceInfoPanel, minimapPanel, graphicsManager);
+			this.paintStrategyGame.paintGui(map, fog, entities, g, camera, descriptionPanel, ressourceInfoPanel, minimapPanel, graphicsManager);
 		}
 		else if(state == GameConfiguration.INMENU)
 		{
-			//this.paintStrategy.paint(g);		
+			if(this.paintStrategyMainMenu == null) {
+				paintStrategyMainMenu = new PaintStrategyMainMenu();
+			}
+			this.paintStrategyMainMenu.paint(g, graphicsManager);		
 		}
 		else if(state == GameConfiguration.INOPTION)
 		{
-			
+			if(this.paintStrategyOption == null) {
+				paintStrategyOption = new PaintStrategyOption();
+			}
+			this.paintStrategyOption.paint(g, graphicsManager);
 		}
 		else if(state == GameConfiguration.INPAUSEMENU)
 		{

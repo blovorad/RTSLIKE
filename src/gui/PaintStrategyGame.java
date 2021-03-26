@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -25,7 +26,7 @@ import engine.math.SelectionRect;
  *
  */
 
-public class PaintStrategy 
+public class PaintStrategyGame 
 {
 	//variable for generate Minimap	
 	private int firstGridXOfMap;
@@ -40,9 +41,8 @@ public class PaintStrategy
 	
 	private int lifeBarreY;
 	private SelectionRect flagDestinationRect;
-	
-	public PaintStrategy(int width, int height, JPanel minimapPanel)
-	{
+
+	public PaintStrategyGame(int width, int height, JPanel minimapPanel){
 		int panelOffset = 10;
 		int flagWidthAndHeight = 10;
 		int panelWidth = minimapPanel.getWidth();
@@ -63,10 +63,8 @@ public class PaintStrategy
 		flagDestinationRect = new SelectionRect(0, 0, flagWidthAndHeight, flagWidthAndHeight);
 	}
 	
-	public void paint(SelectionRect rectangle, Graphics graphics, Camera camera)
-	{
-		if(rectangle.isActive())
-		{
+	public void paint(SelectionRect rectangle, Graphics graphics, Camera camera){
+		if(rectangle.isActive()){
 			graphics.setColor(Color.green);
 			graphics.drawRect(rectangle.getX(), rectangle.getY(), rectangle.getW(), rectangle.getH());
 		}
@@ -166,6 +164,7 @@ public class PaintStrategy
 	
 	public void paint(Map map, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
 	{
+		graphics.drawImage(graphicsManager.getPanelGaucheBas(), 0, 0, GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT, null);
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
 		Tile[][] tiles = map.getTiles();

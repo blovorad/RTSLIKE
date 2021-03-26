@@ -213,7 +213,6 @@ public class Worker extends Unit
 	{
 		if(!storageBuildings.isEmpty())
 		{
-		
 			this.storageBuilding = storageBuildings.get(0);
 			int distanceStorageBuilding;
 			
