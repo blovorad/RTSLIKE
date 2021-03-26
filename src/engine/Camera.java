@@ -1,6 +1,8 @@
 package engine;
 
 
+import java.awt.Toolkit;
+
 import configuration.GameConfiguration;
 
 /**
@@ -28,31 +30,14 @@ public class Camera
 		this.speed = new Speed();
 		rectX = 10;
 		rectY = 10;
-		rectW = GameConfiguration.WINDOW_WIDTH - rectX - 20;
-		rectH = GameConfiguration.WINDOW_HEIGHT - rectY - 40;
-		
-		/*if(width == 1920 && height == 1080)
-		{
-			rectX = 10;
-			rectY = 10;
-			rectW = 1890;
-			rectH = 1000;
+		if(GameConfiguration.launchInFullScreen) {
+			rectW = Toolkit.getDefaultToolkit().getScreenSize().width - rectX - 20;
+			rectH = Toolkit.getDefaultToolkit().getScreenSize().height - rectY - 40;
 		}
-		else if(width == 1366 && height == 768)
-		{
-			rectX = 10;
-			rectY = 10;
-			rectW = 1336;
-			rectH = 740;
+		else {
+			rectW = width - rectX - 20;
+			rectH = height - rectY - 40;
 		}
-		else if(width == 1280 && height == 720)
-		{
-			rectX = 10;
-			rectY = 10;
-			rectW = 1250;
-			rectH = 700;
-		}*/
-
 	}
 	
 	public int getX()
@@ -74,9 +59,9 @@ public class Camera
 			x = 0;
 			speed.setVx(0);
 		}
-		else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - GameConfiguration.WINDOW_WIDTH)
+		else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - Toolkit.getDefaultToolkit().getScreenSize().width)
 		{
-			x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - GameConfiguration.WINDOW_WIDTH;
+			x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - Toolkit.getDefaultToolkit().getScreenSize().width;
 			speed.setVx(0);
 		}
 		
@@ -85,9 +70,9 @@ public class Camera
 			y = 0;
 			speed.setVy(0);
 		}
-		else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - GameConfiguration.WINDOW_HEIGHT)
+		else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - Toolkit.getDefaultToolkit().getScreenSize().height)
 		{
-			y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - GameConfiguration.WINDOW_HEIGHT;
+			y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - Toolkit.getDefaultToolkit().getScreenSize().height;
 			speed.setVy(0);
 		}
 	}

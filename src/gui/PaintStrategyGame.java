@@ -57,8 +57,14 @@ public class PaintStrategyGame
 			
 		camX = panelX + panelOffset;
 		camY = panelY + panelOffset;
-		camW = gridMapWidth * (width / GameConfiguration.TILE_SIZE);
-		camH = gridMapHeight * (height / GameConfiguration.TILE_SIZE);
+		if(GameConfiguration.launchInFullScreen) {
+			camW = gridMapWidth * (Toolkit.getDefaultToolkit().getScreenSize().width / GameConfiguration.TILE_SIZE);
+			camH = gridMapHeight * (Toolkit.getDefaultToolkit().getScreenSize().height / GameConfiguration.TILE_SIZE);
+		}
+		else {
+			camW = gridMapWidth * (width / GameConfiguration.TILE_SIZE);
+			camH = gridMapHeight * (height / GameConfiguration.TILE_SIZE);
+		}
 		lifeBarreY = 10;
 		flagDestinationRect = new SelectionRect(0, 0, flagWidthAndHeight, flagWidthAndHeight);
 	}

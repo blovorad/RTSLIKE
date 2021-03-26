@@ -5,6 +5,11 @@ import java.awt.Toolkit;
 
 import engine.manager.GraphicsManager;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
 public class PaintStrategyOption {
 	
 	public void paint(Graphics graphics, GraphicsManager graphicsManager) {

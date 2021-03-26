@@ -15,7 +15,8 @@ public class GameConfiguration
 	public final static int WINDOW_WIDTH = 1366;//Toolkit.getDefaultToolkit().getScreenSize().width;
 
 	public final static int WINDOW_HEIGHT = 768;//Toolkit.getDefaultToolkit().getScreenSize().height;
-
+	
+	public final static boolean launchInFullScreen = true;
 	
 	public final static int COLUMN_COUNT = 100;
 	

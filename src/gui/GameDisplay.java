@@ -65,6 +65,7 @@ public class GameDisplay extends JPanel
 	private PaintStrategyGame paintStrategyGame = null;
 	private PaintStrategyMainMenu paintStrategyMainMenu = null;
 	private PaintStrategyOption paintStrategyOption = null;
+	private PaintStrategyPauseMenu paintStrategyPauseMenu = null;
 	
 	private Map map;
 	private Fog fog;
@@ -246,7 +247,8 @@ public class GameDisplay extends JPanel
         	}
         	else if(i == 9)
         	{
-        		panel.add(new JButton(new ExitGameButton("QUITTER")));
+        		JButton button = new JButton(new ExitGameButton("QUITTER"));
+        		panel.add(button);
         	}
         	else
         	{
@@ -359,7 +361,6 @@ public class GameDisplay extends JPanel
 				panel.add(label);
 			}
 		}
-		
 		return panel;
 	}
 
@@ -765,6 +766,10 @@ public class GameDisplay extends JPanel
 		panel.add(new JLabel());
 		panel.add(panelBis);
 		panel.add(new JLabel());
+		panel.setOpaque(false);
+		panelBis.setOpaque(false);
+		sonSlider.setOpaque(false);
+		scrollingSlider.setOpaque(false);
 		
 		return panel;
 	}
@@ -801,6 +806,7 @@ public class GameDisplay extends JPanel
 		panel.add(new JLabel());
 		panel.add(panelBis);
 		panel.add(new JLabel());
+		panelBis.setOpaque(false);
 		panel.setOpaque(false);
 		
 		return panel;
@@ -999,7 +1005,10 @@ public class GameDisplay extends JPanel
 		}
 		else if(state == GameConfiguration.INPAUSEMENU)
 		{
-			
+			if(this.paintStrategyPauseMenu == null) {
+				paintStrategyPauseMenu = new PaintStrategyPauseMenu();
+			}
+			this.paintStrategyPauseMenu.paint(g, graphicsManager);
 		}
 	}
 	
