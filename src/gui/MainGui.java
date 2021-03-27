@@ -57,6 +57,8 @@ public class MainGui extends JFrame implements Runnable
 	private SelectionRect selectionRectangle;
 	
 	private AudioManager audioManager;
+	
+	private boolean moveMinimap;
 
 	public MainGui()
 	{
@@ -99,6 +101,7 @@ public class MainGui extends JFrame implements Runnable
 		setResizable(false);
 		setPreferredSize(preferredSize);
 		System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
+		moveMinimap = false;
 	}
 
 	@Override
@@ -337,18 +340,15 @@ public class MainGui extends JFrame implements Runnable
 					dashboard.setDescriptionPanelForWorker(worker);
 					noUnitSelected = false;
 					workerSelected = true;
+					manager.addSelectedWorker(worker);
+					manager.addSelectedUnit(worker);
 					if(clickCount > 1) {
 						for(Worker worker2 : listWorkers) {
 							manager.addSelectedWorker(worker2);
 							manager.addSelectedUnit(worker2);
 						}
-						break;
 					}
-					else {
-						manager.addSelectedWorker(worker);
-						manager.addSelectedUnit(worker);
-						break;
-					}
+					break;
 				}
 			}
 			
@@ -548,12 +548,7 @@ public class MainGui extends JFrame implements Runnable
 			{
 				int mouseX = e.getX() + camera.getX();
 				int mouseY = e.getY() + camera.getY();
-				/**
-				 * 	private int firstGridXOfMap;
-					private int firstGridYOfMap;
-					private int gridMapWidth;
-					private int gridMapHeight;
-				 */
+
 				if(e.getButton() == 1)
 				{
 					Minimap minimap = dashboard.getMinimap();
@@ -570,34 +565,29 @@ public class MainGui extends JFrame implements Runnable
 						x -= camera.getScreenWidth() / 2;
 						y -= camera.getScreenHeight() / 2;
 						
-						if(x < 0)
-						{
+						if(x < 0){
 							x = 0;
 						}
-						else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth())
-						{
+						else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth()){
 							x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
 						}
 						
-						if(y < 0)
-						{
+						if(y < 0){
 							y = 0;
 						}
-						else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight())
-						{
+						else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight()){
 							y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
 						}
 						
 						Position p = new Position(x, y);
 						camera.setX(p.getX());
 						camera.setY(p.getY());
+						moveMinimap = true;
 					}
-					else if(mouse.getId() > -1)
-					{
+					else if(mouse.getId() > -1){
 						Tile tile = dashboard.getMap().getTile((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE, (e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE);
 						System.out.println("tuile solide : " + tile.isSolid());
-						if(tile.isSolid() == false)
-						{
+						if(tile.isSolid() == false){
 							int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
 							int y = ((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
 							
@@ -608,18 +598,15 @@ public class MainGui extends JFrame implements Runnable
 						}
 						selectionRectangle.setActive(false);
 					}
-					else if(selectionRectangle.isActive() == false)
-					{
+					else if(selectionRectangle.isActive() == false){
 						selectionRectangle.setActive(true);
 						selectionRectangle.setX(e.getX());
 						selectionRectangle.setY(e.getY());
 						selectionRectangle.setW(0);
 						selectionRectangle.setH(0);
-						//System.out.println("on a presser");
 					}
 				}
-				else if(e.getButton() == 3)
-				{
+				else if(e.getButton() == 3){
 					if(mouse.getId() > -1) {
 						mouse.setId(-1);
 					}
@@ -647,13 +634,15 @@ public class MainGui extends JFrame implements Runnable
 							{
 								for(Unit unit : listSelectedUnit)
 								{
-									unit.setTarget(target);
 									unit.calculateSpeed(target.getPosition());
+									unit.setCurrentAction(EntityConfiguration.WALK);
+									unit.setTarget(target);
 								}
 							}
 							else if(listSelectedUnit.isEmpty() == false && target == null) {
 								for(Unit unit : listSelectedUnit){
 									unit.calculateSpeed(new Position(mouseX, mouseY));
+									unit.setCurrentAction(EntityConfiguration.WALK);
 									unit.setTarget(null);
 								}
 							}
@@ -707,6 +696,7 @@ public class MainGui extends JFrame implements Runnable
 						}
 						selectionRectangle.setActive(false);
 					}
+					moveMinimap = false;
 				}
 			}
 			else if(e.getButton() == 3)
@@ -734,10 +724,45 @@ public class MainGui extends JFrame implements Runnable
 		public void mouseDragged(MouseEvent e) {
 			if(dashboard.getState() == GameConfiguration.INGAME)
 			{
-				int x = e.getX();
-				int y = e.getY();
-				
-				selectionRectangle.moveSelectionRect(x, y);
+				if(moveMinimap) {
+					Minimap minimap = dashboard.getMinimap();
+
+					if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
+						int x = e.getX() - minimap.getFirstGridXOfMap();
+						int y = e.getY() - minimap.getFirstGridYOfMap();
+						x /= minimap.getGridMapWidth();
+						y /= minimap.getGridMapHeight();
+	
+						x *= GameConfiguration.TILE_SIZE;
+						y *= GameConfiguration.TILE_SIZE;
+								
+						x -= camera.getScreenWidth() / 2;
+						y -= camera.getScreenHeight() / 2;
+								
+						if(x < 0){
+							x = 0;
+						}
+						else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth()){
+							x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
+						}
+								
+						if(y < 0){
+							y = 0;
+						}
+						else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight()){
+							y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
+						}
+								
+						Position p = new Position(x, y);
+						camera.setX(p.getX());
+						camera.setY(p.getY());
+					}
+				}
+				else {
+					int x = e.getX();
+					int y = e.getY();
+					selectionRectangle.moveSelectionRect(x, y);
+				}
 			}
 		}
 

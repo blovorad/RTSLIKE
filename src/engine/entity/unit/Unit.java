@@ -211,12 +211,9 @@ public class Unit extends Entity
 				}
 			}
 		}
-		//sauvegarder l'ancienne position
 		
 		this.getPosition().setX(this.getPosition().getX() + (int)this.getSpeed().getVx());
 		this.getPosition().setY(this.getPosition().getY() + (int)this.getSpeed().getVy());
-		
-		//ici 
 		
 		if(p.getX() < 0)
 		{
@@ -245,18 +242,15 @@ public class Unit extends Entity
 	
 	public void manageState() {
 
-		if(speed.getVx() == 0f && speed.getVy() == 0f && (currentAction != EntityConfiguration.ATTACK)) {
-			this.currentAction = EntityConfiguration.IDDLE;
-			System.out.println("ici");
+		if(speed.getVx() == 0f && speed.getVy() == 0f && currentAction != EntityConfiguration.ATTACK && currentAction != EntityConfiguration.HARVEST && currentAction != EntityConfiguration.REPAIR) {
+			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
 		}
-		else if(currentAction == EntityConfiguration.ATTACK || currentAction == EntityConfiguration.HARVEST) {
-			this.currentAction = EntityConfiguration.ATTACK;
+		else if(speed.getVx() != 0f || speed.getVy() != 0f) {
+			this.getAnimation().setFrameState(EntityConfiguration.WALK);
 		}
-		else if(speed.getVx() != 0 || speed.getVy() != 0) {
-			this.currentAction = EntityConfiguration.WALK;
+		else if(currentAction == EntityConfiguration.ATTACK || currentAction == EntityConfiguration.HARVEST || currentAction == EntityConfiguration.REPAIR) {
+			this.getAnimation().setFrameState(EntityConfiguration.ATTACK);
 		}
-
-		this.getAnimation().setFrameState(this.currentAction);
 	}
 
 	public int getAttackSpeed() {

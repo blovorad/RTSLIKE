@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.util.AbstractMap;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -968,9 +969,9 @@ public class GameDisplay extends JPanel
 				ressource = manager.getSelectedRessource();
 			}
 			
-			for(Entity entity : entities)
-			{
-				this.paintStrategyGame.paint(entity, g, camera, graphicsManager);
+			Iterator<Entity> iterateur = entities.iterator();
+			while(iterateur.hasNext()) {
+				this.paintStrategyGame.paint(iterateur.next(), g, camera, graphicsManager);
 			}
 			
 			for(Unit unit : units) {
