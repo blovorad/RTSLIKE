@@ -29,6 +29,7 @@ import engine.entity.unit.Worker;
 import engine.manager.AudioManager;
 import engine.manager.EntitiesManager;
 import engine.manager.GraphicsManager;
+import engine.map.Minimap;
 import engine.map.Tile;
 import engine.math.Collision;
 import engine.math.SelectionRect;
@@ -193,11 +194,6 @@ public class MainGui extends JFrame implements Runnable
 					break;
 			}
 		}
-	}
-	
-	public Container getContent() {
-		// TODO Auto-generated method stub
-		return this.getContentPane();
 	}
 	
 	//méthode pour vérifier se trouve a l'endroit ou l'on fait click droit
@@ -552,21 +548,51 @@ public class MainGui extends JFrame implements Runnable
 			{
 				int mouseX = e.getX() + camera.getX();
 				int mouseY = e.getY() + camera.getY();
-				
+				/**
+				 * 	private int firstGridXOfMap;
+					private int firstGridYOfMap;
+					private int gridMapWidth;
+					private int gridMapHeight;
+				 */
 				if(e.getButton() == 1)
 				{
+					Minimap minimap = dashboard.getMinimap();
 
-					if(selectionRectangle.isActive() == false)
-					{
-						selectionRectangle.setActive(true);
-						selectionRectangle.setX(e.getX());
-						selectionRectangle.setY(e.getY());
-						selectionRectangle.setW(0);
-						selectionRectangle.setH(0);
-						//System.out.println("on a presser");
+					if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
+						int x = e.getX() - minimap.getFirstGridXOfMap();
+						int y = e.getY() - minimap.getFirstGridYOfMap();
+						x /= minimap.getGridMapWidth();
+						y /= minimap.getGridMapHeight();
+
+						x *= GameConfiguration.TILE_SIZE;
+						y *= GameConfiguration.TILE_SIZE;
+						
+						x -= camera.getScreenWidth() / 2;
+						y -= camera.getScreenHeight() / 2;
+						
+						if(x < 0)
+						{
+							x = 0;
+						}
+						else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth())
+						{
+							x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
+						}
+						
+						if(y < 0)
+						{
+							y = 0;
+						}
+						else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight())
+						{
+							y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
+						}
+						
+						Position p = new Position(x, y);
+						camera.setX(p.getX());
+						camera.setY(p.getY());
 					}
-					
-					if(mouse.getId() > -1)
+					else if(mouse.getId() > -1)
 					{
 						Tile tile = dashboard.getMap().getTile((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE, (e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE);
 						System.out.println("tuile solide : " + tile.isSolid());
@@ -582,6 +608,15 @@ public class MainGui extends JFrame implements Runnable
 						}
 						selectionRectangle.setActive(false);
 					}
+					else if(selectionRectangle.isActive() == false)
+					{
+						selectionRectangle.setActive(true);
+						selectionRectangle.setX(e.getX());
+						selectionRectangle.setY(e.getY());
+						selectionRectangle.setW(0);
+						selectionRectangle.setH(0);
+						//System.out.println("on a presser");
+					}
 				}
 				else if(e.getButton() == 3)
 				{
@@ -595,15 +630,11 @@ public class MainGui extends JFrame implements Runnable
 						
 						if(listWorkers.isEmpty() == false) {
 							Ressource ressource  = checkRessource(mouseX, mouseY);
-							System.out.println("NOOOOOOOn");
 							if(ressource != null) {
-								System.out.println("RESSOURCE FOUND");
-								System.out.println("en vrai oui");
 								goingToHarvest = true;
 								for(Worker worker : listWorkers) 
 								{
 									worker.initRessource(ressource);
-									System.out.println("test");
 								}
 							}
 						}

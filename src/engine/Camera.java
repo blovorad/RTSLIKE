@@ -22,6 +22,8 @@ public class Camera
 	private int rectH;
 	
 	private Speed speed;
+	private int screenWidth;
+	private int screenHeight;
 	
 	public Camera(int width, int height)
 	{
@@ -33,10 +35,14 @@ public class Camera
 		if(GameConfiguration.launchInFullScreen) {
 			rectW = Toolkit.getDefaultToolkit().getScreenSize().width - rectX - 20;
 			rectH = Toolkit.getDefaultToolkit().getScreenSize().height - rectY - 40;
+			this.screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+			this.screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 		}
 		else {
 			rectW = width - rectX - 20;
 			rectH = height - rectY - 40;
+			this.screenWidth = width;
+			this.screenHeight = height;
 		}
 	}
 	
@@ -59,9 +65,9 @@ public class Camera
 			x = 0;
 			speed.setVx(0);
 		}
-		else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - Toolkit.getDefaultToolkit().getScreenSize().width)
+		else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - screenWidth)
 		{
-			x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - Toolkit.getDefaultToolkit().getScreenSize().width;
+			x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - screenWidth;
 			speed.setVx(0);
 		}
 		
@@ -70,9 +76,9 @@ public class Camera
 			y = 0;
 			speed.setVy(0);
 		}
-		else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - Toolkit.getDefaultToolkit().getScreenSize().height)
+		else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - screenHeight)
 		{
-			y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - Toolkit.getDefaultToolkit().getScreenSize().height;
+			y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - screenHeight;
 			speed.setVy(0);
 		}
 	}
@@ -98,6 +104,14 @@ public class Camera
 		x = 0;
 		y = 0;
 		speed.reset();
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
 	}
 
 	public int getRectX() {
@@ -130,5 +144,13 @@ public class Camera
 
 	public void setRectH(int rectH) {
 		this.rectH = rectH;
+	}
+	
+	public int getScreenWidth() {
+		return this.screenWidth;
+	}
+	
+	public int getScreenHeight() {
+		return this.screenHeight;
 	}
 }

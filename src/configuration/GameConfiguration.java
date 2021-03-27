@@ -1,6 +1,6 @@
 package configuration;
 
-import java.awt.Toolkit;
+//import java.awt.Toolkit;
 
 /**
  * 

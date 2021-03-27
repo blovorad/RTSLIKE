@@ -43,6 +43,7 @@ import engine.manager.GameBuilder;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
 import engine.map.Map;
+import engine.map.Minimap;
 import engine.math.SelectionRect;
 import factionConfiguration.ForFighter;
 import factionConfiguration.ForUpgrade;
@@ -66,6 +67,8 @@ public class GameDisplay extends JPanel
 	private PaintStrategyMainMenu paintStrategyMainMenu = null;
 	private PaintStrategyOption paintStrategyOption = null;
 	private PaintStrategyPauseMenu paintStrategyPauseMenu = null;
+	
+	private Minimap minimap;
 	
 	private Map map;
 	private Fog fog;
@@ -924,7 +927,7 @@ public class GameDisplay extends JPanel
 				}
 			}
 			
-			for(Entity entity : manager.getPlayerEntities()) {
+			for(Entity entity : manager.getDrawingList()) {
 				Position p = entity.getPosition();
 				fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange());
 			}
@@ -942,7 +945,8 @@ public class GameDisplay extends JPanel
 		if(state == GameConfiguration.INGAME)
 		{
 			if(this.paintStrategyGame == null) {
-				paintStrategyGame = new PaintStrategyGame(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT, minimapPanel);
+				minimap = new Minimap(minimapPanel);
+				paintStrategyGame = new PaintStrategyGame(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT, minimapPanel, minimap);
 			}
 			this.paintStrategyGame.paint(this.map, g, this.camera, graphicsManager);
 			List<Entity> entities = manager.getDrawingList();
@@ -987,7 +991,7 @@ public class GameDisplay extends JPanel
 			
 			this.paintStrategyGame.paint(fog, g, camera);
 			
-			this.paintStrategyGame.paintGui(map, fog, entities, g, camera, descriptionPanel, ressourceInfoPanel, minimapPanel, graphicsManager);
+			this.paintStrategyGame.paintGui(map, fog, entities, g, camera, descriptionPanel, ressourceInfoPanel, minimapPanel, minimap, graphicsManager);
 		}
 		else if(state == GameConfiguration.INMENU)
 		{
@@ -1661,5 +1665,9 @@ public class GameDisplay extends JPanel
 
 	public void setFog(Fog fog) {
 		this.fog = fog;
+	}
+
+	public Minimap getMinimap() {
+		return minimap;
 	}
 }

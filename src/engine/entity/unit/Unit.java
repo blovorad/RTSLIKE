@@ -31,7 +31,7 @@ public class Unit extends Entity
 	{
 		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
 		
-		this.currentAction = currentAction;
+		this.currentAction = EntityConfiguration.IDDLE;
 		this.attackRange = attackRange;
 		this.maxSpeed = maxSpeed;
 		this.damage = damage;
@@ -46,7 +46,7 @@ public class Unit extends Entity
 	{
 		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
 		
-		this.currentAction = currentAction;
+		this.currentAction = EntityConfiguration.IDDLE;
 		this.attackRange = attackRange;
 		this.setAttackSpeed(attackSpeed);
 		this.maxSpeed = maxSpeed;
@@ -81,16 +81,12 @@ public class Unit extends Entity
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);
 		if(vx != 0 || vy != 0) {
-			this.getAnimation().setFrameState(EntityConfiguration.WALK);
 			if(vx < 0) {
 				this.getAnimation().setDirection(GameConfiguration.LEFT);
 			}
 			else {
 				this.getAnimation().setDirection(GameConfiguration.RIGHT);
 			}
-		}
-		else {
-			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
 		}
 	}
 	
@@ -220,10 +216,6 @@ public class Unit extends Entity
 		this.getPosition().setX(this.getPosition().getX() + (int)this.getSpeed().getVx());
 		this.getPosition().setY(this.getPosition().getY() + (int)this.getSpeed().getVy());
 		
-		if((this.getAnimation().getFrameState() == EntityConfiguration.WALK || this.getAnimation().getFrameState() == EntityConfiguration.ATTACK) && this.getSpeed().getVx() == 0 && this.getSpeed().getVy() == 0) {
-			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
-		}
-		
 		//ici 
 		
 		if(p.getX() < 0)
@@ -247,6 +239,24 @@ public class Unit extends Entity
 			p.setY(GameConfiguration.LINE_COUNT * GameConfiguration.TILE_SIZE - GameConfiguration.TILE_SIZE);
 			this.getSpeed().setVy(0);
 		}
+		
+		manageState();
+	}
+	
+	public void manageState() {
+
+		if(speed.getVx() == 0f && speed.getVy() == 0f && (currentAction != EntityConfiguration.ATTACK)) {
+			this.currentAction = EntityConfiguration.IDDLE;
+			System.out.println("ici");
+		}
+		else if(currentAction == EntityConfiguration.ATTACK || currentAction == EntityConfiguration.HARVEST) {
+			this.currentAction = EntityConfiguration.ATTACK;
+		}
+		else if(speed.getVx() != 0 || speed.getVy() != 0) {
+			this.currentAction = EntityConfiguration.WALK;
+		}
+
+		this.getAnimation().setFrameState(this.currentAction);
 	}
 
 	public int getAttackSpeed() {
