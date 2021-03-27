@@ -60,6 +60,10 @@ public class MainGui extends JFrame implements Runnable
 	public MainGui()
 	{
 		super("Game");
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		if(GameConfiguration.launchInFullScreen) {
+			this.setUndecorated(true);
+		}
 		
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
@@ -86,7 +90,9 @@ public class MainGui extends JFrame implements Runnable
 		dashboard.setPreferredSize(preferredSize);
 		contentPane.add(dashboard, BorderLayout.CENTER);
 		
-		pack();
+		if(!GameConfiguration.launchInFullScreen) {
+			pack();
+		}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		setResizable(false);
@@ -199,8 +205,8 @@ public class MainGui extends JFrame implements Runnable
 	{
 		public Entity checkEntity(int mouseX, int mouseY)
 		{
-			int x = mouseX + camera.getX();
-			int y = mouseY + camera.getY();
+			int x = mouseX;
+			int y = mouseY;
 			
 			Position destination = new Position(x,y);
 			
@@ -306,8 +312,8 @@ public class MainGui extends JFrame implements Runnable
 		
 		public Ressource checkRessource(int mouseX, int mouseY)
 		{
-			int x = mouseX + camera.getX();
-			int y = mouseY + camera.getY();
+			int x = mouseX;
+			int y = mouseY;
 			
 			Position destination = new Position(x,y);
 			
@@ -610,6 +616,8 @@ public class MainGui extends JFrame implements Runnable
 							Ressource ressource  = checkRessource(mouseX, mouseY);
 							System.out.println("NOOOOOOOn");
 							if(ressource != null) {
+								System.out.println("RESSOURCE FOUND");
+								System.out.println("en vrai oui");
 								goingToHarvest = true;
 								for(Worker worker : listWorkers) 
 								{
