@@ -6,36 +6,36 @@ package engine;
  */
 public class Speed 
 {
-	private int vx;
-	private int vy;
+	private float vx;
+	private float vy;
 	
 	public Speed()
 	{
 		this(0,0);
 	}
 	
-	public Speed(int vx, int vy)
+	public Speed(float vx, float vy)
 	{
 		this.vx = vx;
 		this.vy = vy;
 	}
 
-	public int getVx() 
+	public float getVx() 
 	{
 		return vx;
 	}
 
-	public void setVx(int vx) 
+	public void setVx(float vx) 
 	{
 		this.vx = vx;
 	}
 
-	public int getVy() 
+	public float getVy() 
 	{
 		return vy;
 	}
 
-	public void setVy(int vy) 
+	public void setVy(float vy) 
 	{
 		this.vy = vy;
 	}

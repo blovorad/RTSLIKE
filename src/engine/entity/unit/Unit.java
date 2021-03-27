@@ -62,8 +62,22 @@ public class Unit extends Entity
 		}
 	}
 	
-	public void move(int vx, int vy)
+	public void move(float vx, float vy)
 	{
+		if(vx > 0.0 && vx < 1.0) {
+			vx = 1;
+		}
+		else if(vx < 0.0 && vx > -1.0) {
+			vx = -1;
+		}
+		
+		if(vy > 0.0 && vy < 1.0) {
+			vy = 1;
+		}
+		else if(vy < 0.0 && vy > -1.0) {
+			vy = -1;
+		}
+		
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);
 		if(vx != 0 || vy != 0) {
@@ -158,7 +172,7 @@ public class Unit extends Entity
 	{
 		this.setDestination(p);
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
-		this.move((int)(this.maxSpeed * Math.cos(angle)), (int)(this.maxSpeed * Math.sin(angle)));
+		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
 
 	public void update()
@@ -203,8 +217,8 @@ public class Unit extends Entity
 		}
 		//sauvegarder l'ancienne position
 		
-		this.getPosition().setX(this.getPosition().getX() + this.getSpeed().getVx());
-		this.getPosition().setY(this.getPosition().getY() + this.getSpeed().getVy());
+		this.getPosition().setX(this.getPosition().getX() + (int)this.getSpeed().getVx());
+		this.getPosition().setY(this.getPosition().getY() + (int)this.getSpeed().getVy());
 		
 		if((this.getAnimation().getFrameState() == EntityConfiguration.WALK || this.getAnimation().getFrameState() == EntityConfiguration.ATTACK) && this.getSpeed().getVx() == 0 && this.getSpeed().getVy() == 0) {
 			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);

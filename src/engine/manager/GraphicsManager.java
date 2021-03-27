@@ -3,10 +3,12 @@ package engine.manager;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import configuration.EntityConfiguration;
+import configuration.MapConfiguration;
 
 /**
  * 
@@ -59,6 +61,7 @@ public class GraphicsManager {
 	private BufferedImage[][] rock;
 	private BufferedImage[][] tree;
 	private BufferedImage[][] water;
+	private BufferedImage[][] sand;
 	private BufferedImage[][] gold;
 	
 	private BufferedImage panelGaucheBas;
@@ -99,14 +102,22 @@ public class GraphicsManager {
 			
 			grass = new BufferedImage[1][1];
 			grass[0][0] = ImageIO.read(new File("src/graphics/grass_1.png"));
+			
 			rock = new BufferedImage[1][1];
 			rock[0][0] = ImageIO.read(new File("src/graphics/stone_1.png"));
+			BufferedImage imageBis = rock[0][0].getSubimage(10, 10, 40, 40);
+			rock[0][0] = imageBis;
+			
 			tree = new BufferedImage[1][1];
-			tree[0][0] = ImageIO.read(new File("src/graphics/plant_3.png"));
-			water = new BufferedImage[1][1];
-			water[0][0] = ImageIO.read(new File("src/graphics/water_1.png"));
+			tree[0][0] = ImageIO.read(new File("src/graphics/tree.png"));
+			
 			gold = new BufferedImage[1][1];
 			gold[0][0] = ImageIO.read(new File("src/graphics/gold_1.png"));
+			imageBis = gold[0][0].getSubimage(10, 10, 40, 40);
+			gold[0][0] = imageBis;
+			
+			sand = new BufferedImage[1][1];
+			sand[0][0] = ImageIO.read(new File("src/graphics/sand_1.png"));
 			
 			panelGaucheBas = ImageIO.read(new File("src/graphics/panelGaucheBas.png"));
 		} 
@@ -114,8 +125,42 @@ public class GraphicsManager {
 			e.printStackTrace();
 		}
 		
+		initTreeGraphics();
+		initWaterGraphics();
 		initPlayerGraphics();
 		initBotGraphics();
+	}
+	
+	private void initWaterGraphics() {
+		water = new BufferedImage[1][9];
+		try {
+			water[0][0] = ImageIO.read(new File("src/graphics/water_1.png"));
+			water[0][1] = ImageIO.read(new File("src/graphics/water_bord_up.png"));
+			water[0][2] = ImageIO.read(new File("src/graphics/water_bord_down.png"));
+			water[0][3] = ImageIO.read(new File("src/graphics/water_bord_left.png"));
+			water[0][4] = ImageIO.read(new File("src/graphics/water_bord_right.png"));
+			water[0][5] = ImageIO.read(new File("src/graphics/water_turn_up_left.png"));
+			water[0][6] = ImageIO.read(new File("src/graphics/water_turn_up_right.png"));
+			water[0][7] = ImageIO.read(new File("src/graphics/water_turn_down_left.png"));
+			water[0][8] = ImageIO.read(new File("src/graphics/water_turn_down_right.png"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void initTreeGraphics() {
+		tree = new BufferedImage[1][3];
+
+		try {
+			BufferedImage image = ImageIO.read(new File("src/graphics/tree.png"));
+			for(int i = 0; i < 3; i++) {
+				tree[0][i] = image.getSubimage(i * 32, 0, 32, 32);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void initBotGraphics() {
@@ -619,11 +664,26 @@ public class GraphicsManager {
 	}
 
 	public BufferedImage[][] getTree() {
-		return tree;
+		BufferedImage[][] image = new BufferedImage[1][1];
+		Random rand = new Random();
+		int random = rand.nextInt(3);
+		
+		image[0][0] = tree[0][random];
+		return image;
 	}
 
-	public BufferedImage[][] getWater() {
-		return water;
+	public BufferedImage[][] getWater(int id) {
+		BufferedImage[][] image = new BufferedImage[1][1];
+		
+		if(id == MapConfiguration.WATER) {
+			image[0][0] = water[0][0];
+			return image;
+		}
+		else {
+			id = id - (MapConfiguration.WATER_BORD_UP - 1);
+			image[0][0] = water[0][id];
+			return image;
+		}
 	}
 
 	public BufferedImage[][] getGold() {
@@ -636,5 +696,9 @@ public class GraphicsManager {
 
 	public BufferedImage getPanelGaucheBas() {
 		return panelGaucheBas;
+	}
+
+	public BufferedImage[][] getSand() {
+		return sand;
 	}
 }

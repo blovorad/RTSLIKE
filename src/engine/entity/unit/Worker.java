@@ -39,11 +39,10 @@ public class Worker extends Unit
 		this.harvestSpeed = harvestSpeed;
 		
 		this.timer = harvestSpeed;
-		this.ressourcesMax = 3;
+		this.ressourcesMax = ressourceMax;
 		this.quantityRessource = 0;
 		
 		this.storageBuilding = null;
-		System.out.println("maxspeed worker : " + maxSpeed);
 	}
 	
 	public void toHarvest()
@@ -93,23 +92,13 @@ public class Worker extends Unit
 	{
 		
 	}
-	
-	/*public int distance(Position a, Position b)
-	{
-		return Math.pow(a.getX(), 2);
-	}
-	*/
+
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
-		/*if( this.getDestination() != this.getDestination() != this.ressource.getPosition())
-		{
-			
-		}*/
-		
+
 		if(this.getTarget() != null && this.ressource == null && this.getTarget().getId() == EntityConfiguration.RESSOURCE && Collision.collideUnit(this.getTarget().getPosition(), this))
 		{
-			System.out.println("1");
 			nearbyResource(ressources);
 			this.setTarget(ressource);
 		}
@@ -117,7 +106,6 @@ public class Worker extends Unit
 		// Va au batiments quand il a les ressources max
 		else if(this.quantityRessource == this.ressourcesMax && this.getCurrentAction() == EntityConfiguration.HARVEST)	
 		{
-			//System.out.println("5");
 			this.nearbyStorage(storageBuildings);
 			this.setTarget(storageBuilding);
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
@@ -130,7 +118,6 @@ public class Worker extends Unit
 		
 		else if(this.getRessource() != null && this.getRessource().getHp() <= 0)
 		{
-			System.out.println("2");
 			//nearbyResource(ressources);
 			this.ressource = null;
 		}
@@ -138,58 +125,41 @@ public class Worker extends Unit
 		// revien a la ressource quand posse ces ressources
 		else if(this.ressource != null && this.getTarget() == this.storageBuilding && this.quantityRessource != this.ressourcesMax)
 		{
-			System.out.println("3");
 			this.setTarget(ressource);
 		}
-		
-		// cherche un batiment de stockage si jamais il en a pas
-		else if(this.storageBuilding == null && this.getRessource() != null && Collision.collideUnit(this.ressource.getPosition(), this))
-		{
-			System.out.println("4");
-			nearbyStorage(storageBuildings);
-		}
-		
-		
 		
 		//cherche une nouvelle ressources si il a finis la sienne 
 		else if(this.ressource == null && this.getCurrentAction() == EntityConfiguration.HARVEST && !ressources.isEmpty())
 		{
-			System.out.println("6");
 			this.ressource = null;
 			nearbyResource(ressources);
 		}
 		
-		// rÃ©cupÃ¨re ressources
-		else if(this.ressource != null && this.storageBuilding != null && Collision.collideUnit(this.ressource.getPosition(), this))
+		// récupère ressources
+		else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this))
 		{
-			System.out.println("7");
+			this.getSpeed().reset();
 			this.toHarvest();
 			this.setCurrentAction(EntityConfiguration.HARVEST);
 			System.out.println(this.ressource);
 		} 
 		
-		//rÃ©paree les batiments
+		//répare les batiments
 		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax() && Collision.collideUnit(this.getTarget().getPosition(), this))
 		{
-			System.out.println("8");
+			this.getSpeed().reset();
 			this.toRepair();	
 		}
 				
-		
-		
-		else if(this.getCurrentAction() == EntityConfiguration.HARVEST && storageBuilding != null && this.ressource == null && this.quantityRessource > 0)
+		else if(this.getCurrentAction() == EntityConfiguration.HARVEST && storageBuilding != null && this.quantityRessource > 0)
 		{
 			this.setTarget(storageBuilding);
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
-				System.out.println("12");
 				this.storageBuilding.addRessource(this.quantityRessource);
 				this.quantityRessource = 0;
 			}
 		}
-		
-		//System.out.println(this.ressource);
-		
 	}
 	
 	public void nearbyResource(List<Ressource> ressources)
@@ -233,6 +203,7 @@ public class Worker extends Unit
 	public void initRessource(Ressource ressource)
 	{
 		this.ressource = ressource;
+		this.calculateSpeed(ressource.getPosition());
 		this.setTarget(ressource);
 	}
 	

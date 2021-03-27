@@ -50,7 +50,7 @@ public class Collision {
 		return false;
 	}
 	
-	public static boolean collideRessource(Position mouse, Position ressource) {
+	public static boolean collideEntity(Position mouse, Position ressource) {
 		Rectangle r1 = new Rectangle(mouse.getX(), mouse.getY(), 1, 1);
 		Rectangle r2 = new Rectangle(ressource.getX(), ressource.getY(), GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE);
 		

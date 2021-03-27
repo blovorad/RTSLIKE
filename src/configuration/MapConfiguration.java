@@ -20,13 +20,31 @@ public class MapConfiguration {
 	
 	public static final int GOLD = 4;
 	
+	public final static int WATER_BORD_UP = 5;
+	
+	public final static int WATER_BORD_DOWN = 6;
+	
+	public final static int WATER_BORD_LEFT = 7;
+	
+	public final static int WATER_BORD_RIGHT = 8;
+	
+	public final static int WATER_TURN_UP_LEFT = 9;
+	
+	public final static int WATER_TURN_UP_RIGHT = 10;
+	
+	public final static int WATER_TURN_DOWN_LEFT = 11;
+	
+	public final static int WATER_TURN_DOWN_RIGHT = 12;
+	
+	public final static int SAND = 25;
+	
 	public static final boolean getTileSolid(int id)
 	{
 		/*if(id == WATER || id == ROCK || id == WOOD || id == GOLD)
 		{
 			return true;
 		}*/
-		if(id == GRASS)
+		if(id == GRASS || id == SAND)
 		{
 			return false;
 		}
