@@ -606,17 +606,24 @@ public class MainGui extends JFrame implements Runnable
 						mouse.setId(-1);
 					}
 					else {
+						System.out.print("Coucou");
+						
 						List<Unit> listSelectedUnit = manager.getSelectedUnits();	
 						List<Worker> listWorkers = manager.getSelectedWorkers();
 						boolean goingToHarvest = false;// utilise pour dire aller on recolte ducoup le reste est inutile car le clic est productif
+						
 						if(listWorkers.isEmpty() == false) {
 							Ressource ressource  = checkRessource(mouseX, mouseY);
+							System.out.println("NOOOOOOOn");
 							if(ressource != null) {
 								System.out.println("RESSOURCE FOUND");
 								System.out.println("en vrai oui");
 								goingToHarvest = true;
-								for(Worker worker : listWorkers) {
+								for(Worker worker : listWorkers) 
+								{
 									//TU METS ICI LE TRUC QUI TE PERMET DE LEUR DIRE QUON A CLIQUER SUR LA RESSOURCE
+									worker.initRessource(ressource);
+									System.out.println("test");
 								}
 							}
 						}
