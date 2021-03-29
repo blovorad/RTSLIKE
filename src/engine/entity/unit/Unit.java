@@ -36,7 +36,7 @@ public class Unit extends Entity
 		
 		this.currentAction = currentAction;
 		this.attackRange = attackRange;
-		this.setAttackSpeed(attackSpeed);
+		this.setAttackSpeed(5);
 		this.maxSpeed = maxSpeed;
 		this.damage = damage;
 		this.range = range;
@@ -87,8 +87,14 @@ public class Unit extends Entity
 	{
 		if(this.getTarget() != null)
 		{
-			if(timer > this.attackSpeed)
-			this.getTarget().damage(damage);
+			if(this.timer > 0)
+			{
+				if(this.getTarget().getHp() > 0)
+				{
+					this.getTarget().damage(damage);
+					this.timer --;
+				}
+			}
 		}
 	}
 	
@@ -243,6 +249,7 @@ public class Unit extends Entity
 		
 		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget()))
 		{
+			System.out.println();
 			this.attack(5);
 		}
 	}

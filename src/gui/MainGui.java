@@ -619,12 +619,14 @@ public class MainGui extends JFrame implements Runnable
 								{
 									unit.setTarget(target);
 									unit.calculateSpeed(target.getPosition());
+									unit.setCurrentAction(EntityConfiguration.WALK);
 								}
 							}
 							else if(listSelectedUnit.isEmpty() == false && target == null) {
 								for(Unit unit : listSelectedUnit){
 									unit.calculateSpeed(new Position(mouseX, mouseY));
 									unit.setTarget(null);
+									unit.setCurrentAction(EntityConfiguration.WALK);
 								}
 							}
 							else {
