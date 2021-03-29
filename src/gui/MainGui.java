@@ -199,10 +199,10 @@ public class MainGui extends JFrame implements Runnable
 			}
 		}
 	}
-	
-	//méthode pour vérifier se trouve a l'endroit ou l'on fait click droit
+
 	private class MouseControls implements MouseListener 
 	{
+		
 		public Entity checkEntity(int mouseX, int mouseY)
 		{
 			int x = mouseX;

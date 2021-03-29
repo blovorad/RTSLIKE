@@ -6,10 +6,11 @@ import engine.Entity;
 import engine.Position;
 import engine.Speed;
 import engine.manager.GraphicsManager;
+import engine.math.Collision;
 
 /**
  *
- * création:16/02/2021
+ * crÃ©ation:16/02/2021
  * @author Girard 
  * @version:16/02/2021
  * 
@@ -24,23 +25,9 @@ public class Unit extends Entity
 	private int damage;
 	private int range;
 	private int armor;
+	private int timer;
 	
 	private Speed speed;
-	
-	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
-	{
-		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
-		
-		this.currentAction = EntityConfiguration.IDDLE;
-		this.attackRange = attackRange;
-		this.maxSpeed = maxSpeed;
-		this.damage = damage;
-		this.range = range;
-		this.armor = armor;
-		this.setAttackSpeed(attackSpeed);
-		
-		this.speed = new Speed(0, 0);
-	}
 	
 	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{
@@ -55,6 +42,7 @@ public class Unit extends Entity
 		this.armor = armor;
 		this.setDestination(destination);
 		this.speed = new Speed(0, 0);
+		this.timer = this.attackSpeed;
 		
 		if(destination != null) {
 			System.out.println("calcul");
@@ -92,7 +80,11 @@ public class Unit extends Entity
 	
 	public void attack(int damage)
 	{
-		this.getTarget().damage(damage);
+		if(this.getTarget() != null)
+		{
+			if(timer > this.attackSpeed)
+			this.getTarget().damage(damage);
+		}
 	}
 	
 	
@@ -190,7 +182,7 @@ public class Unit extends Entity
 			if(this.getDestination() != null)
 			{
 				//System.out.println("on a une destination");
-				if(!this.getPosition().equals(this.getDestination()))
+				if(!this.getPosition().equals(this.getDestination()))   //!this.getPosition().equals(this.getDestination()) Collision.collideEntity(this, this.getDestination())
 				{
 					//System.out.println("pas egal on bouge");
 					//System.out.println("speed : " + this.speed.getVx() + "," + this.speed.getVy());
@@ -214,6 +206,11 @@ public class Unit extends Entity
 		
 		this.getPosition().setX(this.getPosition().getX() + (int)this.getSpeed().getVx());
 		this.getPosition().setY(this.getPosition().getY() + (int)this.getSpeed().getVy());
+		
+		if((this.getAnimation().getFrameState() == EntityConfiguration.WALK || this.getAnimation().getFrameState() == EntityConfiguration.ATTACK) && this.getSpeed().getVx() == 0 && this.getSpeed().getVy() == 0) {
+			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
+		}
+		
 		
 		if(p.getX() < 0)
 		{
@@ -251,6 +248,10 @@ public class Unit extends Entity
 		else if(currentAction == EntityConfiguration.ATTACK || currentAction == EntityConfiguration.HARVEST || currentAction == EntityConfiguration.REPAIR) {
 			this.getAnimation().setFrameState(EntityConfiguration.ATTACK);
 		}
+		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget()))
+		{
+			this.attack(this.getDamage());
+		}
 	}
 
 	public int getAttackSpeed() {
@@ -259,5 +260,15 @@ public class Unit extends Entity
 
 	public void setAttackSpeed(int attackSpeed) {
 		this.attackSpeed = attackSpeed;
+	}
+	
+	public int getTimer()
+	{
+		return this.timer;
+	}
+	
+	public void setTimer(int timer)
+	{
+		this.timer = timer;
 	}
 }

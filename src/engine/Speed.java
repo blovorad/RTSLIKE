@@ -20,30 +20,29 @@ public class Speed
 		this.vy = vy;
 	}
 
-	public float getVx() 
-	{
-		return vx;
-	}
-
-	public void setVx(float vx) 
-	{
-		this.vx = vx;
-	}
-
 	public float getVy() 
 	{
 		return vy;
 	}
+    public float getVx() 
+    {
+        return vx;
+    }
 
 	public void setVy(float vy) 
 	{
 		this.vy = vy;
 	}
 
-	public void reset()
-	{
-		vx = 0;
-		vy = 0;
-	}
-	
+    public void setVx(float vx) 
+    {
+        this.vx = vx;
+    }
+
+    public void reset()
+    {
+        vx = 0;
+        vy = 0;
+    }
+
 }
