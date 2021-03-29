@@ -402,7 +402,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.add(constructionButton);
 		
 		unitStatistiquesLabel.setText("\nPoints de vie : " + worker.getHp() +
-				"\nDégâts : " + worker.getDamage() + 
+				"\nDï¿½gï¿½ts : " + worker.getDamage() + 
 				"\nArmure : " + worker.getArmor());
 		JTextArea area = new JTextArea();
 		area.setEditable(false);
@@ -430,44 +430,44 @@ public class GameDisplay extends JPanel
 		if(faction.getAge() <= 1) {
 			buttonForge.setEnabled(false);
 		}
-		buttonForge.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getAge());
+		buttonForge.setToolTipText("Coï¿½t : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getAge());
 		
 		JButton buttonBarrack = new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACK));
 		buttonBarrack.setFocusable(false);
-		buttonBarrack.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.BARRACK).getCost());
+		buttonBarrack.setToolTipText("Coï¿½t : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.BARRACK).getCost());
 		
 		JButton buttonStable = new JButton(new ConstructBuilding("Ecurie", EntityConfiguration.STABLE));
 		buttonStable.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonStable.setEnabled(false);
 		}
-		buttonStable.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getAge());
+		buttonStable.setToolTipText("Coï¿½t : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getAge());
 		
 		JButton buttonHq = new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ));
 		buttonHq.setFocusable(false);
-		buttonHq.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getCost());
+		buttonHq.setToolTipText("Coï¿½t : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getCost());
 		
 		JButton buttonStockage = new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE));
 		buttonStockage.setFocusable(false);
-		buttonStockage.setToolTipText("Coût : " + faction.getRace().getStorageBuildings().get(EntityConfiguration.STORAGE).getCost());
+		buttonStockage.setToolTipText("Coï¿½t : " + faction.getRace().getStorageBuildings().get(EntityConfiguration.STORAGE).getCost());
 		
 		JButton buttonCastle = new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE));
 		buttonCastle.setFocusable(false);
 		if(faction.getAge() <= 2) {
 			buttonCastle.setEnabled(false);
 		}
-		buttonCastle.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getAge());
+		buttonCastle.setToolTipText("Coï¿½t : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getAge());
 		
 		JButton buttonArchery = new JButton(new ConstructBuilding("Acherie", EntityConfiguration.ARCHERY));
 		buttonArchery.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonArchery.setEnabled(false);
 		}
-		buttonArchery.setToolTipText("Coût : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getAge());
+		buttonArchery.setToolTipText("Coï¿½t : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getAge());
 		
 		JButton buttonTower = new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER));
 		buttonTower.setFocusable(false);
-		buttonTower.setToolTipText("Coût : " + faction.getRace().getAttackBuildings().get(EntityConfiguration.TOWER).getCost());
+		buttonTower.setToolTipText("Coï¿½t : " + faction.getRace().getAttackBuildings().get(EntityConfiguration.TOWER).getCost());
 		
 		JTextArea area = new JTextArea();
 		area.setEditable(false);
@@ -494,7 +494,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.setLayout(new GridLayout(1, 3));
 		
 		unitStatistiquesLabel.setText("\nPoints de vie : " + unit.getHp() +
-										"\nDégâts : " + unit.getDamage() + 
+										"\nDï¿½gï¿½ts : " + unit.getDamage() + 
 										"\nArmure : " + unit.getArmor());
 		
 		descriptionPanel.add(new JLabel("etat"));
@@ -510,7 +510,7 @@ public class GameDisplay extends JPanel
 		
 		descriptionPanel.setLayout(new FlowLayout());
 
-		buildingStatistiquesLabel.setText("\n\n" + building.getDescription() + ", attaque les unités adverse aux alentours\nPoints de vie : " + building.getHp());
+		buildingStatistiquesLabel.setText("\n\n" + building.getDescription() + ", attaque les unitï¿½s adverse aux alentours\nPoints de vie : " + building.getHp());
 		descriptionPanel.add(buildingStatistiquesLabel);
 		
 		descriptionPanel.validate();
@@ -521,7 +521,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.removeAll();
 		
 		descriptionPanel.setLayout(new FlowLayout());
-		buildingStatistiquesLabel.setText("\n\n" + building.getDescription() + ", permet de déposer les ressource\nPoints de vie : " + building.getHp());
+		buildingStatistiquesLabel.setText("\n\n" + building.getDescription() + ", permet de dï¿½poser les ressource\nPoints de vie : " + building.getHp());
 		descriptionPanel.add(buildingStatistiquesLabel);
 		
 		descriptionPanel.validate();
@@ -599,7 +599,7 @@ public class GameDisplay extends JPanel
 				else {
 					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
-					button.setToolTipText("Coût : " + upgrade.getCost());
+					button.setToolTipText("Coï¿½t : " + upgrade.getCost());
 					if(upgrade.getAge() > this.manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge()) {
 						button.setEnabled(false);
 					}
@@ -630,7 +630,7 @@ public class GameDisplay extends JPanel
 				else {
 					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
-					button.setToolTipText("Coût : " + upgrade.getCost());
+					button.setToolTipText("Coï¿½t : " + upgrade.getCost());
 					if(upgrade.getId() == EntityConfiguration.AGE_UPGRADE_2 && this.manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge() < 2) {
 						button.setEnabled(false);
 					}
@@ -640,7 +640,7 @@ public class GameDisplay extends JPanel
 			}
 			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
 			button.setFocusable(false);
-			button.setToolTipText("Coût : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(building.getProductionId()).getCost());
+			button.setToolTipText("Coï¿½t : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(building.getProductionId()).getCost());
 			infoEnd++;
 			
 			panel.add(button);
@@ -649,7 +649,7 @@ public class GameDisplay extends JPanel
 			String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronFighters().get(building.getProductionId()).getDescription();
 			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
 			button.setFocusable(false);
-			button.setToolTipText("Coût : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronFighters().get(building.getProductionId()).getCost());
+			button.setToolTipText("Coï¿½t : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronFighters().get(building.getProductionId()).getCost());
 			infoEnd++;
 	
 			panel.add(button);
@@ -854,14 +854,14 @@ public class GameDisplay extends JPanel
 	}
 	
 	public void actualiseStatistiquesBuilding(AttackBuilding building) {
-		buildingStatistiquesLabel.setText("\n\n" + building.getDescription() + ", attaque les unités adverse aux alentours\nPoints de vie : " + building.getHp());
+		buildingStatistiquesLabel.setText("\n\n" + building.getDescription() + ", attaque les unitï¿½s adverse aux alentours\nPoints de vie : " + building.getHp());
 		if(building.getHp() <= 0) {
 			this.setDescriptionPanelStandard();
 		}
 	}
 	
 	public void actualiseStatistiquesBuilding(StorageBuilding building) {
-		buildingStatistiquesLabel.setText("\n\n" + building.getDescription() + ", permet de déposer les ressource\nPoints de vie : " + building.getHp());
+		buildingStatistiquesLabel.setText("\n\n" + building.getDescription() + ", permet de dï¿½poser les ressource\nPoints de vie : " + building.getHp());
 		if(building.getHp() <= 0) {
 			this.setDescriptionPanelStandard();
 		}
@@ -873,7 +873,7 @@ public class GameDisplay extends JPanel
 			this.setDescriptionPanelStandard();
 		}
 	}
-
+	
 	public void update() {
 		if(state == GameConfiguration.INGAME){
 			int populationCount = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getPopulationCount();

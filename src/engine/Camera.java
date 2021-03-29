@@ -77,7 +77,7 @@ public class Camera
 		}
 	}
 	
-	public void move(int vx, int vy)
+	public void move(float vx, float vy)
 	{
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);

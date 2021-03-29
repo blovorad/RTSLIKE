@@ -22,10 +22,12 @@ public abstract class AttackBuilding extends Entity{
 	private int damage;
 	private int attackCooldown;
 	private Tile tile;
+	private boolean isBuild;
 	
 	public AttackBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, int sightRange, GraphicsManager graphicsManager) {
 		super(100, hpMax, description, position, id, faction, sightRange, 0, graphicsManager);
 		this.setTile(tile);
+		this.setIsBuild(false);
 	}
 	
 	public void update(List<Unit> units) {
@@ -145,6 +147,14 @@ public abstract class AttackBuilding extends Entity{
 
 	public void setTile(Tile tile) {
 		this.tile = tile;
+	}
+
+	public boolean getIsBuild() {
+		return isBuild;
+	}
+
+	public void setIsBuild(boolean isBuild) {
+		this.isBuild = isBuild;
 	}
 	
 }

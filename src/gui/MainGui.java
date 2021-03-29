@@ -200,9 +200,10 @@ public class MainGui extends JFrame implements Runnable
 		return this.getContentPane();
 	}
 	
-	//méthode pour vérifier se trouve a l'endroit ou l'on fait click droit
+	//mÃ©thode pour vÃ©rifier se trouve a l'endroit ou l'on fait click droit
 	private class MouseControls implements MouseListener 
 	{
+		
 		public Entity checkEntity(int mouseX, int mouseY)
 		{
 			int x = mouseX;
@@ -218,32 +219,13 @@ public class MainGui extends JFrame implements Runnable
 			List<Fighter> fighters = manager.getFighters();
 			List<Worker> workers = manager.getWorkers();
 			
-			/*List<Ressource> ressources = manager.getRessources();
-			
-			Ressource selectRessource = null;
-			
-			if(selectRessource == null)
-			{
-				for(Ressource ressource : ressources)
-				{
-					Position ressourcePosition = new Position(ressource.getPosition().getX(),  ressource.getPosition().getY());
-					
-					if(destination.inTile(ressourcePosition))
-					{
-						selectEntity = ressource;
-						break;
-					}
-				}
-			}*/
-			
-			
 			if(selectEntity == null)
 			{
 				for(StorageBuilding storage : storagesBuilding)
 				{
 					Position storagePosition = new Position(storage.getPosition().getX(),  storage.getPosition().getY());
 					
-					if(destination.inTile(storagePosition))
+					if(Collision.collideEntity(destination, storagePosition))
 					{
 						selectEntity = storage;
 						break;
@@ -257,7 +239,7 @@ public class MainGui extends JFrame implements Runnable
 				{
 					Position  attackPosition = new Position(attack.getPosition().getX(), attack.getPosition().getY());
 					
-					if(destination.inTile(attackPosition))
+					if(Collision.collideEntity(destination, attackPosition))
 					{
 						selectEntity = attack;
 						break;
@@ -271,7 +253,7 @@ public class MainGui extends JFrame implements Runnable
 				{
 					Position prodPosition = new Position(prod.getPosition().getX(), prod.getPosition().getY());
 					
-					if(destination.inTile(prodPosition))
+					if(Collision.collideEntity(destination, prodPosition))
 					{
 						selectEntity = prod;
 						break;
@@ -327,7 +309,7 @@ public class MainGui extends JFrame implements Runnable
 				{
 					Position ressourcePosition = ressource.getPosition();
 					
-					if(Collision.collideRessource(destination, ressourcePosition))
+					if(Collision.collideEntity(destination, ressourcePosition))
 					{
 						selectRessource = ressource;
 						break;
@@ -480,6 +462,7 @@ public class MainGui extends JFrame implements Runnable
 				if(Collision.collideUnit(worker.getPosition(), rect, camera) == true)
 				{
 					manager.addSelectedUnit(worker);
+					manager.addSelectedWorker(worker);
 					dashboard.setDescriptionPanelForWorker(worker);
 					noUnitSelected = false;
 				}
@@ -489,6 +472,7 @@ public class MainGui extends JFrame implements Runnable
 				if(Collision.collideUnit(fighter.getPosition(), rect, camera) == true)
 				{
 					manager.addSelectedUnit(fighter);
+					manager.addSelectedFighter(fighter);
 					dashboard.setDescriptionPanelForUnit(fighter);
 					noUnitSelected = false;
 				}
@@ -606,11 +590,9 @@ public class MainGui extends JFrame implements Runnable
 						mouse.setId(-1);
 					}
 					else {
-						System.out.print("Coucou");
-						
 						List<Unit> listSelectedUnit = manager.getSelectedUnits();	
 						List<Worker> listWorkers = manager.getSelectedWorkers();
-						boolean goingToHarvest = false;// utilise pour dire aller on recolte ducoup le reste est inutile car le clic est productif
+						boolean goingToHarvest = false;
 						
 						if(listWorkers.isEmpty() == false) {
 							Ressource ressource  = checkRessource(mouseX, mouseY);
@@ -621,12 +603,12 @@ public class MainGui extends JFrame implements Runnable
 								goingToHarvest = true;
 								for(Worker worker : listWorkers) 
 								{
-									//TU METS ICI LE TRUC QUI TE PERMET DE LEUR DIRE QUON A CLIQUER SUR LA RESSOURCE
 									worker.initRessource(ressource);
 									System.out.println("test");
 								}
 							}
 						}
+
 						
 						if(goingToHarvest == false) {
 							Entity target = checkEntity(mouseX, mouseY);

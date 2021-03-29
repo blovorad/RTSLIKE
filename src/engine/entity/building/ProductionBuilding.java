@@ -25,6 +25,7 @@ public abstract class ProductionBuilding extends Entity{
 	private boolean isProducing;
 	private Tile tile;
 	private AbstractMap<Integer, ForUpgrade> upgrades;
+	private boolean isBuild;
 	
 	public ProductionBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, AbstractMap<Integer, ForUpgrade> upgrades, int sightRange, GraphicsManager graphicsManager) {
 		super(100, hpMax, description , position, id, faction, sightRange, 0, graphicsManager);
@@ -34,6 +35,8 @@ public abstract class ProductionBuilding extends Entity{
 		if(upgrades == null) {
 			this.upgrades = new HashMap<Integer, ForUpgrade>();
 		}
+		
+		this.setIsBuild(false);
 	}
 	
 	public void update(int popCount, int maxPop) {
@@ -125,6 +128,14 @@ public abstract class ProductionBuilding extends Entity{
 
 	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) {
 		this.upgrades = upgrades;
+	}
+
+	public boolean getIsBuild() {
+		return isBuild;
+	}
+
+	public void setIsBuild(boolean isBuild) {
+		this.isBuild = isBuild;
 	}
 	
 }
