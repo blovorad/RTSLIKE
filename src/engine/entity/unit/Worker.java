@@ -127,12 +127,6 @@ public class Worker extends Unit
 				this.ressource = null;
 			}
 			
-			else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
-			{
-				this.storageBuilding.addRessource(this.quantityRessource);
-				this.quantityRessource = 0;
-				this.setTarget(null);
-			}
 			
 			//cherche une nouvelle ressources si il a finis la sienne 
 			else if(this.ressource == null && !ressources.isEmpty())
@@ -160,7 +154,13 @@ public class Worker extends Unit
 			
 					
 			}
-		
+			
+			else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
+			{
+				this.storageBuilding.addRessource(this.quantityRessource);
+				this.quantityRessource = 0;
+				this.setTarget(null);
+			}
 			//réparee les batiments
 			else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax())
 			{
@@ -170,6 +170,8 @@ public class Worker extends Unit
 					this.getSpeed().reset();
 				}
 			}
+			
+			
 		
 		
 	}
@@ -188,6 +190,12 @@ public class Worker extends Unit
 				{
 					this.ressource = value;
 				}
+			}
+			
+			if(!Collision.collideRessource(this, this.ressource))
+			{
+				this.setCurrentAction(EntityConfiguration.IDDLE);
+				this.ressource = null;
 			}
 		}
 	}
@@ -209,6 +217,7 @@ public class Worker extends Unit
 					this.storageBuilding = value;
 				}
 			}
+			
 		}
 	}
 	
