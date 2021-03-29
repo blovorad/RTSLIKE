@@ -25,23 +25,10 @@ public class Unit extends Entity
 	private int damage;
 	private int range;
 	private int armor;
+	private int timer;
 	
 	private Speed speed;
 	
-	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
-	{
-		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
-		
-		this.currentAction = currentAction;
-		this.attackRange = attackRange;
-		this.maxSpeed = maxSpeed;
-		this.damage = damage;
-		this.range = range;
-		this.armor = armor;
-		this.setAttackSpeed(attackSpeed);
-		
-		this.speed = new Speed(0, 0);
-	}
 	
 	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{
@@ -56,6 +43,7 @@ public class Unit extends Entity
 		this.armor = armor;
 		this.setDestination(destination);
 		this.speed = new Speed(0, 0);
+		this.timer = this.attackSpeed;
 		
 		if(destination != null) {
 			System.out.println("calcul");
@@ -97,7 +85,11 @@ public class Unit extends Entity
 	
 	public void attack(int damage)
 	{
-		this.getTarget().damage(damage);
+		if(this.getTarget() != null)
+		{
+			if(timer > this.attackSpeed)
+			this.getTarget().damage(damage);
+		}
 	}
 	
 	
@@ -248,6 +240,11 @@ public class Unit extends Entity
 			p.setY(GameConfiguration.LINE_COUNT * GameConfiguration.TILE_SIZE - GameConfiguration.TILE_SIZE);
 			this.getSpeed().setVy(0);
 		}
+		
+		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget()))
+		{
+			this.attack(5);
+		}
 	}
 
 	public int getAttackSpeed() {
@@ -256,5 +253,15 @@ public class Unit extends Entity
 
 	public void setAttackSpeed(int attackSpeed) {
 		this.attackSpeed = attackSpeed;
+	}
+	
+	public int getTimer()
+	{
+		return this.timer;
+	}
+	
+	public void setTimer(int timer)
+	{
+		this.timer = timer;
 	}
 }

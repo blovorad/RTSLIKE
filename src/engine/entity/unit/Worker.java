@@ -29,16 +29,14 @@ public class Worker extends Unit
 	private int ressourcesMax;
 	private int harvestSpeed;
 	private int repairSpeed;
-	private int timer;
 	
 	
 	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{	
-		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, hpMax, faction, sightRange, maxFrame, graphicsManager);
+		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction, sightRange, maxFrame, graphicsManager);
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
 		
-		this.timer = harvestSpeed;
 		this.ressourcesMax = 3;
 		this.quantityRessource = 0;
 		
@@ -50,15 +48,15 @@ public class Worker extends Unit
 	{
 		if(this.ressource != null)
 		{
-			if( timer == 0)
+			if( this.getTimer() > 0)
 			{
+				this.setTimer(harvestSpeed);
 				if(this.ressource.getHp() > 0)
 				{
 					this.ressource.setHp(this.ressource.getHp() -1);
 					this.quantityRessource ++;
 					System.out.println("Mes resources sont a: " + this.quantityRessource);
 					
-					timer = this.harvestSpeed;
 				}	
 
 				if(this.ressource.getHp() <= 0)
@@ -66,7 +64,7 @@ public class Worker extends Unit
 					this.ressource = null;
 				}
 			}
-			this.timer--;
+			this.setTimer(this.getTimer() - 1);
 		}
 	}
 	
@@ -74,7 +72,7 @@ public class Worker extends Unit
 	{
 		if(this.getTarget() != null)
 		{
-			if(this.timer == 0)
+			if(this.getTimer() > 0)
 			{
 				this.getTarget().setHp(((this.getTarget().getHp()) + 1));
 				
@@ -82,9 +80,9 @@ public class Worker extends Unit
 				{
 					this.setTarget(null);
 				}
-				this.timer = this.harvestSpeed;
+				this.setTimer(this.harvestSpeed);
 			}
-			this.timer--;
+			this.setTimer(this.getTimer() - 1);
 		}
 		
 	}

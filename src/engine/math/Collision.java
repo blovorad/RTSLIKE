@@ -73,4 +73,15 @@ public class Collision {
 		
 		return false;
 	}
+	
+	public static boolean collideEntity(Unit unit, Entity  target) {
+		Rectangle r1 = new Rectangle(unit.getPosition().getX(), unit.getPosition().getY(), EntityConfiguration.UNIT_SIZE, EntityConfiguration.UNIT_SIZE);
+		Rectangle r2 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE);
+		
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
 }
