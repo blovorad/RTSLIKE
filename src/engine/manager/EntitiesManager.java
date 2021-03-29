@@ -15,6 +15,7 @@ import engine.entity.building.Castle;
 import engine.entity.building.Forge;
 import engine.entity.building.Hq;
 import engine.entity.building.ProductionBuilding;
+import engine.entity.building.SiteConstruction;
 import engine.entity.building.Stable;
 import engine.entity.building.StorageBuilding;
 import engine.entity.building.Tower;
@@ -57,6 +58,7 @@ public class EntitiesManager
 	private AttackBuilding selectedAttackBuilding;
 	private StorageBuilding selectedStorageBuilding;
 	private Ressource selectedRessource;
+	private SiteConstruction selectedSiteConstruction;
 	
 	private List<Fighter> fighters;
 	private List<Fighter> removeFighters = new ArrayList<Fighter>();
@@ -79,6 +81,9 @@ public class EntitiesManager
 	
 	private List<Ressource> ressources;
 	private List<Ressource> removeRessources = new ArrayList<Ressource>();
+	
+	private List<SiteConstruction> siteConstructions;
+	private List<SiteConstruction> removeSiteConstructions = new ArrayList<SiteConstruction>();
 
 	
 	public EntitiesManager(AudioManager audioManager) 
@@ -96,10 +101,12 @@ public class EntitiesManager
 		this.storageBuildings = new ArrayList<StorageBuilding>();
 		this.playerStorageBuildings = new ArrayList<StorageBuilding>();
 		this.botStorageBuildings = new ArrayList<StorageBuilding>();
+		this.siteConstructions = new ArrayList<SiteConstruction>();
 		
 		this.selectedAttackBuilding = null;
 		this.selectedProdBuilding = null;
 		this.selectedStorageBuilding = null;
+		this.selectedSiteConstruction = null;
 	}
 	
 	public void update() 
@@ -179,61 +186,163 @@ public class EntitiesManager
 			}
 		}
 		
+		for(SiteConstruction siteConstruction : siteConstructions) {
+			siteConstruction.update();
+			if(siteConstruction.isRemove()) {
+				createBuilding(siteConstruction.getBuildingId(), siteConstruction.getFaction(), siteConstruction.getPosition(), siteConstruction.getTile());
+				removeSiteConstructions.add(siteConstruction);
+			}
+		}
+		
 		cleanList();	
 	}
 	
 	public void cleanList() {
 		
 		//removing ressource
-		ressources.removeAll(removeRessources);
-		collisionList.removeAll(removeRessources);
-		drawingList.removeAll(removeRessources);
-		removeRessources.clear();
+		if(removeRessources.isEmpty() == false) {
+			if(removeRessources.contains(selectedRessource)) {
+				clearSelectedRessource();
+			}
+			ressources.removeAll(removeRessources);
+			collisionList.removeAll(removeRessources);
+			drawingList.removeAll(removeRessources);
+			removeRessources.clear();
+		}
 		
 		//removing storage building
-		storageBuildings.removeAll(removeStorageBuildings);
-		collisionList.removeAll(removeStorageBuildings);
-		drawingList.removeAll(removeStorageBuildings);
-		playerStorageBuildings.removeAll(removeStorageBuildings);
-		botStorageBuildings.removeAll(removeStorageBuildings);
-		playerEntities.removeAll(removeStorageBuildings);
-		removeStorageBuildings.clear();
+		if(removeStorageBuildings.isEmpty() == false) {
+			if(removeStorageBuildings.contains(selectedStorageBuilding)) {
+				clearSelectedStorageBuilding();
+			}
+			storageBuildings.removeAll(removeStorageBuildings);
+			collisionList.removeAll(removeStorageBuildings);
+			drawingList.removeAll(removeStorageBuildings);
+			playerStorageBuildings.removeAll(removeStorageBuildings);
+			botStorageBuildings.removeAll(removeStorageBuildings);
+			playerEntities.removeAll(removeStorageBuildings);
+			removeStorageBuildings.clear();
+		}
 		
 		//removing attack building
-		attackBuildings.removeAll(removeAttackBuildings);
-		collisionList.removeAll(removeAttackBuildings);
-		drawingList.removeAll(removeAttackBuildings);
-		playerEntities.removeAll(removeAttackBuildings);
-		removeAttackBuildings.clear();
+		if(removeAttackBuildings.isEmpty() == false) {
+			if(removeAttackBuildings.contains(selectedAttackBuilding)) {
+				clearSelectedAttackBuilding();
+			}
+			attackBuildings.removeAll(removeAttackBuildings);
+			collisionList.removeAll(removeAttackBuildings);
+			drawingList.removeAll(removeAttackBuildings);
+			playerEntities.removeAll(removeAttackBuildings);
+			removeAttackBuildings.clear();
+		}
 		
 		//removing production building
-		prodBuildings.removeAll(removeProdBuildings);
-		collisionList.removeAll(removeProdBuildings);
-		drawingList.removeAll(removeProdBuildings);
-		playerEntities.removeAll(removeProdBuildings);
-		removeProdBuildings.clear();
+		if(removeProdBuildings.isEmpty() == false) {
+			if(removeProdBuildings.contains(selectedProdBuilding)) {
+				clearSelectedProdBuilding();
+			}
+			prodBuildings.removeAll(removeProdBuildings);
+			collisionList.removeAll(removeProdBuildings);
+			drawingList.removeAll(removeProdBuildings);
+			playerEntities.removeAll(removeProdBuildings);
+			removeProdBuildings.clear();
+		}
 		
 		//removing worker
-		workers.removeAll(removeWorkers);
-		collisionList.removeAll(removeWorkers);
-		drawingList.removeAll(removeWorkers);
-		units.removeAll(removeWorkers);
-		selectedUnits.removeAll(removeWorkers);
-		playerEntities.removeAll(removeWorkers);
-		selectedWorkers.removeAll(removeWorkers);
-		playerWorkers.removeAll(removeWorkers);
-		removeWorkers.clear();
+		if(removeWorkers.isEmpty() == false) {
+			for(Worker worker : selectedWorkers) {
+				if(removeWorkers.contains(worker)) {
+					selectedWorkers.remove(worker);
+				}
+			}
+			workers.removeAll(removeWorkers);
+			collisionList.removeAll(removeWorkers);
+			drawingList.removeAll(removeWorkers);
+			units.removeAll(removeWorkers);
+			selectedUnits.removeAll(removeWorkers);
+			playerEntities.removeAll(removeWorkers);
+			selectedWorkers.removeAll(removeWorkers);
+			playerWorkers.removeAll(removeWorkers);
+			removeWorkers.clear();
+		}
 		
 		//removing fighter
-		fighters.removeAll(removeFighters);
-		collisionList.removeAll(removeFighters);
-		drawingList.removeAll(removeFighters);
-		units.removeAll(removeFighters);
-		selectedUnits.removeAll(removeFighters);
-		playerEntities.removeAll(removeFighters);
-		selectedFighters.removeAll(removeFighters);
-		playerFighters.removeAll(removeFighters);
-		removeFighters.clear();
+		if(removeFighters.isEmpty() == false) {
+			for(Fighter fighter : selectedFighters) {
+				if(removeFighters.contains(fighter)) {
+					selectedFighters.remove(fighter);
+				}
+			}
+			fighters.removeAll(removeFighters);
+			collisionList.removeAll(removeFighters);
+			drawingList.removeAll(removeFighters);
+			units.removeAll(removeFighters);
+			selectedUnits.removeAll(removeFighters);
+			playerEntities.removeAll(removeFighters);
+			selectedFighters.removeAll(removeFighters);
+			playerFighters.removeAll(removeFighters);
+			removeFighters.clear();
+		}
+		
+		//removing constructionSite
+		if(removeSiteConstructions.isEmpty() == false) {
+			if(removeSiteConstructions.contains(selectedSiteConstruction)) {
+				clearSelectedSiteConstruction();
+			}
+			siteConstructions.removeAll(removeSiteConstructions);
+			drawingList.removeAll(removeSiteConstructions);
+			playerEntities.removeAll(removeSiteConstructions);
+			removeSiteConstructions.clear();
+		}
+	}
+	
+	public void createConstructionSite(int id, int faction, Position position, Tile tile) {
+		SiteConstruction sc = null;
+		
+		if(id == EntityConfiguration.FORGE){
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
+		}
+		else if(id == EntityConfiguration.STABLE){
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
+		}
+		else if(id == EntityConfiguration.BARRACK){
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
+		}
+		else if(id == EntityConfiguration.ARCHERY){
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
+		}
+		else if(id == EntityConfiguration.HQ){
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
+		}
+		else if(id == EntityConfiguration.CASTLE){
+			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
+			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
+		}
+		else if(id == EntityConfiguration.STORAGE){
+			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getStorageBuildings().get(id);
+			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
+		}
+		else if(id == EntityConfiguration.TOWER){
+			ForAttackBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getAttackBuildings().get(id);
+			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
+		}
+		else{
+			System.out.println("invalide ID");
+		}
+		
+		if(sc != null) {
+			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(sc);
+			}
+			this.drawingList.add(sc);
+			this.siteConstructions.add(sc);
+			System.out.println("ajout d'un site de construction");
+		}
 	}
 	
 	public void createFighter(int id, int faction, ForFighter patron, Position position, Position destination)
@@ -562,6 +671,7 @@ public class EntitiesManager
 		this.clearSelectedAttackBuilding();
 		this.clearSelectedStorageBuilding();
 		this.clearSelectedProdBuilding();
+		this.clearSelectedSiteConstruction();
 	}
 	
 	public void clean(){
@@ -650,14 +760,6 @@ public class EntitiesManager
 		this.factionManager = factionManager;
 	}
 
-	public List<ProductionBuilding> getRemoveProdBuildings() {
-		return removeProdBuildings;
-	}
-
-	public void setRemoveProdBuildings(List<ProductionBuilding> removeProdBuildings) {
-		this.removeProdBuildings = removeProdBuildings;
-	}
-
 	public List<ProductionBuilding> getProdBuildings() {
 		return prodBuildings;
 	}
@@ -671,7 +773,6 @@ public class EntitiesManager
 	}
 
 	public void setSelectedProdBuilding(ProductionBuilding selectedProdBuilding) {
-		selectedProdBuilding.setSelected(true);
 		this.selectedProdBuilding = selectedProdBuilding;
 	}
 
@@ -680,7 +781,6 @@ public class EntitiesManager
 	}
 
 	public void setSelectedAttackBuilding(AttackBuilding selectedAttackBuilding) {
-		selectedAttackBuilding.setSelected(true);
 		this.selectedAttackBuilding = selectedAttackBuilding;
 	}
 
@@ -689,8 +789,11 @@ public class EntitiesManager
 	}
 
 	public void setSelectedStorageBuilding(StorageBuilding selectedStorageBuilding) {
-		selectedStorageBuilding.setSelected(true);
 		this.selectedStorageBuilding = selectedStorageBuilding;
+	}
+	
+	public void setSelectedSiteConstruction(SiteConstruction sc) {
+		this.selectedSiteConstruction = sc;
 	}
 
 	public List<AttackBuilding> getAttackBuildings() {
@@ -760,6 +863,13 @@ public class EntitiesManager
 		}
 		this.selectedStorageBuilding = null;
 	}
+	
+	public void clearSelectedSiteConstruction() {
+		if(this.selectedSiteConstruction != null) {
+			this.selectedSiteConstruction.setSelected(false);
+		}
+		this.selectedSiteConstruction = null;
+	}
 
 	public List<Entity> getPlayerEntities() {
 		return playerEntities;
@@ -791,5 +901,13 @@ public class EntitiesManager
 
 	public List<Worker> getSelectedWorkers() {
 		return selectedWorkers;
+	}
+	
+	public List<SiteConstruction> getSiteConstructions(){
+		return this.siteConstructions;
+	}
+
+	public SiteConstruction getSelectedSiteConstruction() {
+		return selectedSiteConstruction;
 	}
 }

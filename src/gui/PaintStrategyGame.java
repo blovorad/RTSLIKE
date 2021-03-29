@@ -116,7 +116,10 @@ public class PaintStrategyGame
 		else if(entity.getId() >= EntityConfiguration.FORGE && entity.getId() <= EntityConfiguration.ARCHERY) {
 			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 		}
-		else if(entity.getId()  == EntityConfiguration.RESSOURCE) {
+		else if(entity.getId() == EntityConfiguration.SITE_CONSTRUCTION) {
+			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		}
+		else if(entity.getId() == EntityConfiguration.RESSOURCE) {
 			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 		}
 		

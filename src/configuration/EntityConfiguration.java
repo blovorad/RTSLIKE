@@ -41,6 +41,8 @@ public class EntityConfiguration {
 	public final static int AGE_UPGRADE = 23;
 	public final static int AGE_UPGRADE_2 = 24;
 	
+	public final static int SITE_CONSTRUCTION = 40;
+	
 	public final static int PASSIF_STATE = 0;
 	public final static int DEFENSIF_STATE = 1;
 	public final static int AGGRESIF_STATE = 2;

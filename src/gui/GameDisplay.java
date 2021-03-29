@@ -32,11 +32,13 @@ import engine.Entity;
 import engine.Faction;
 import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
+import engine.entity.building.SiteConstruction;
 import engine.entity.building.StorageBuilding;
-import engine.entity.unit.Unit;
 
 import engine.manager.AudioManager;
 
+import engine.entity.unit.Unit;
+import engine.entity.unit.Fighter;
 import engine.entity.unit.Worker;
 
 import engine.manager.EntitiesManager;
@@ -133,6 +135,7 @@ public class GameDisplay extends JPanel
 	private JTextArea unitStatistiquesLabel = new JTextArea();
 	private JTextArea buildingStatistiquesLabel = new JTextArea();
 	private JTextArea ressourceStatistiquesLabel = new JTextArea();
+	private JTextArea workerRessourceLabel = new JTextArea();
 	private GraphicsManager graphicsManager;
 	
 	private int selectedMap = 1;
@@ -170,11 +173,13 @@ public class GameDisplay extends JPanel
 		unitStatistiquesLabel.setEditable(false);
 		buildingStatistiquesLabel.setEditable(false);
 		ressourceStatistiquesLabel.setEditable(false);
+		workerRessourceLabel.setEditable(false);
 		constructionButton.setOpaque(false);
 		currentProductionLabel.setOpaque(false);
 		unitStatistiquesLabel.setOpaque(false);
 		buildingStatistiquesLabel.setOpaque(false);
 		ressourceStatistiquesLabel.setOpaque(false);
+		workerRessourceLabel.setOpaque(false);
 		
 		this.add(mainMenuPanel);
 	}
@@ -408,14 +413,12 @@ public class GameDisplay extends JPanel
 		unitStatistiquesLabel.setText("\nPoints de vie : " + worker.getHp() +
 				"\nDégâts : " + worker.getDamage() + 
 				"\nArmure : " + worker.getArmor());
-		JTextArea area = new JTextArea();
-		area.setEditable(false);
-		area.setOpaque(false);
-		area.setText("      " + worker.getDescription());
+		workerRessourceLabel.setText("      " + worker.getDescription() +
+				"\n      Ressources : " + worker.getQuantityRessource());
 		
 		JPanel panel = new JPanel(new GridLayout(1, 2));
 		panel.setOpaque(false);
-		panel.add(area);
+		panel.add(workerRessourceLabel);
 		panel.add(unitStatistiquesLabel);
 		
 		descriptionPanel.add(panel);
@@ -680,6 +683,17 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	public void setDescriptionPanelForSiteConstruction(SiteConstruction siteConstruction) {
+		descriptionPanel.removeAll();
+		
+		descriptionPanel.setLayout(new FlowLayout());
+		buildingStatistiquesLabel.setText("\n\nC'est un site de construction de : " + siteConstruction.getDescription() + 
+											"\nPoints de vie : " + siteConstruction.getHp());
+		descriptionPanel.add(buildingStatistiquesLabel);
+		
+		descriptionPanel.validate();
+	}
+	
 	public void setDescriptionPanelStandard()
 	{
 		descriptionPanel.removeAll();
@@ -877,6 +891,22 @@ public class GameDisplay extends JPanel
 			this.setDescriptionPanelStandard();
 		}
 	}
+	
+	public void actualiseStatistiquesWorker(Worker worker) {
+		workerRessourceLabel.setText("      " + worker.getDescription() +
+				"\n      Ressources : " + worker.getQuantityRessource());
+	}
+	
+	public void actualiseStatistiquesFighter(Fighter fighter) {
+		unitStatistiquesLabel.setText("\nPoints de vie : " + fighter.getHp() +
+				"\nDégâts : " + fighter.getDamage() + 
+				"\nArmure : " + fighter.getArmor());
+	}
+	
+	public void actualiseStatistiquesSiteConstruction(SiteConstruction siteConstruction) {
+		buildingStatistiquesLabel.setText("\n\nC'est un site de construction de : " + siteConstruction.getDescription() + 
+										"\nPoints de vie : " + siteConstruction.getHp());
+	}
 
 	public void update() {
 		if(state == GameConfiguration.INGAME){
@@ -905,6 +935,18 @@ public class GameDisplay extends JPanel
 				Ressource ressource = manager.getSelectedRessource();
 				actualiseStatistiquesRessource(ressource.getHp());
 			}
+			else if(this.manager.getSelectedSiteConstruction() != null) {
+				SiteConstruction sc = manager.getSelectedSiteConstruction();
+				actualiseStatistiquesSiteConstruction(sc);
+			}
+			else if(this.manager.getSelectedUnits().isEmpty() == false) {
+				if(this.manager.getSelectedWorkers().isEmpty() == false) {
+					actualiseStatistiquesWorker(this.manager.getSelectedWorkers().get(0));
+				}
+				else {
+					actualiseStatistiquesFighter(this.manager.getSelectedFighters().get(0));
+				}
+			}
 			
 			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isUpgradeAge()) {
 				if(this.manager.getSelectedProdBuilding() !=  null) {
@@ -916,19 +958,10 @@ public class GameDisplay extends JPanel
 				}
 				manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setUpgradeAge(false);
 			}
-			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isStatUpgrade()) {
-				if(this.manager.getSelectedUnits().size() > 0) {
-					setDescriptionPanelForUnit(this.manager.getSelectedUnits().get(0));
-					manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setStatUpgrade(false);
-				}
-			}
-			if(manager.getSelectedUnits().size() > 0) {
-				if(this.manager.getSelectedUnits().get(0).isHit()) {
-					setDescriptionPanelForUnit(this.manager.getSelectedUnits().get(0));
-				}
-			}
 			
-			for(Entity entity : manager.getDrawingList()) {
+			Iterator<Entity> iterateur = manager.getDrawingList().iterator();
+			while(iterateur.hasNext()) {
+				Entity entity = iterateur.next();
 				Position p = entity.getPosition();
 				fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange());
 			}
@@ -963,6 +996,9 @@ public class GameDisplay extends JPanel
 			}
 			else if(manager.getSelectedStorageBuilding() != null) {
 				building = manager.getSelectedStorageBuilding();
+			}
+			else if(manager.getSelectedSiteConstruction() != null) {
+				building = manager.getSelectedSiteConstruction();
 			}
 			
 			if(manager.getSelectedRessource() != null) {

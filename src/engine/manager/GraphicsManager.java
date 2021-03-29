@@ -64,10 +64,18 @@ public class GraphicsManager {
 	private BufferedImage[][] sand;
 	private BufferedImage[][] gold;
 	
+	private BufferedImage[][] siteConstruction;
+	
 	private BufferedImage panelGaucheBas;
 	
 	public GraphicsManager() {		
 		try {
+			
+			siteConstruction = new BufferedImage[1][1];
+			siteConstruction[0][0] = ImageIO.read(new File("src/graphics/site_construction.png"));
+			BufferedImage imageBis = siteConstruction[0][0].getSubimage(10, 10, 45, 45);
+			siteConstruction[0][0] = imageBis;
+			
 			forge = new BufferedImage[1][2];
 			forge[0][0] = ImageIO.read(new File("src/graphics/forgePlayer.png"));
 			forge[0][1] = ImageIO.read(new File("src/graphics/forgeBot.png"));
@@ -105,7 +113,7 @@ public class GraphicsManager {
 			
 			rock = new BufferedImage[1][1];
 			rock[0][0] = ImageIO.read(new File("src/graphics/stone_1.png"));
-			BufferedImage imageBis = rock[0][0].getSubimage(10, 10, 40, 40);
+			imageBis = rock[0][0].getSubimage(10, 10, 40, 40);
 			rock[0][0] = imageBis;
 			
 			tree = new BufferedImage[1][1];
@@ -670,6 +678,10 @@ public class GraphicsManager {
 		
 		image[0][0] = tree[0][random];
 		return image;
+	}
+	
+	public BufferedImage[][] getSiteConstruction(){
+		return siteConstruction;
 	}
 
 	public BufferedImage[][] getWater(int id) {
