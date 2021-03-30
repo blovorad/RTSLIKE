@@ -25,7 +25,7 @@ public abstract class AttackBuilding extends Entity{
 	private boolean isBuild;
 	
 	public AttackBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, int sightRange, GraphicsManager graphicsManager) {
-		super(100, hpMax, description, position, id, faction, sightRange, 0, graphicsManager);
+		super(hpMax, hpMax, description, position, id, faction, sightRange, 0, graphicsManager);
 		this.setTile(tile);
 		this.setIsBuild(false);
 	}

@@ -16,7 +16,7 @@ public class StorageBuilding extends Entity{
 	
 	public StorageBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, int sightRange, GraphicsManager graphicsManager) 
 	{
-		super(50, hpMax, description, position, id, faction, sightRange, 0, graphicsManager);
+		super(hpMax, hpMax, description, position, id, faction, sightRange, 0, graphicsManager);
 		this.setTile(tile);
 	}
 	

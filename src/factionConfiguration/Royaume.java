@@ -102,7 +102,7 @@ public class Royaume extends Race
 	
 	public void initHq()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, this.getHQUpgrades(), "Quartier general Royaume", 100, 400, 25));
+		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 2, this.getHQUpgrades(), "Quartier general Royaume", 100, 400, 25));
 	}
 	
 	public void initCastle()

@@ -37,11 +37,10 @@ public class Worker extends Unit
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
 		
-		this.ressourcesMax = 3;
+		this.ressourcesMax = ressourceMax;
 		this.quantityRessource = 0;
 		
 		this.storageBuilding = null;
-		System.out.println("maxspeed worker : " + maxSpeed);
 	}
 	
 	public void toHarvest()
@@ -55,8 +54,6 @@ public class Worker extends Unit
 				{
 					this.ressource.setHp(this.ressource.getHp() -1);
 					this.quantityRessource ++;
-					System.out.println("Mes resources sont a: " + this.quantityRessource);
-					
 				}	
 
 				if(this.ressource.getHp() <= 0)
@@ -74,17 +71,19 @@ public class Worker extends Unit
 		{
 			if(this.getTimer() <= 0)
 			{
-				this.getTarget().setHp(((this.getTarget().getHp()) + 1));
+				if(this.getTarget().getHp() < this.getTarget().getHpMax()) {
+					this.getTarget().setHp(((this.getTarget().getHp()) + 1));
+				}
 				
-				if(this.getTarget().getHp() == this.getTarget().getHpMax())
+				if(this.getTarget().getHp() >= this.getTarget().getHpMax())
 				{
 					this.setTarget(null);
+					this.setCurrentAction(EntityConfiguration.IDDLE);
 				}
-				this.setTimer(this.harvestSpeed);
+				this.setTimer(this.repairSpeed);
 			}
 			this.setTimer(this.getTimer() - 1);
 		}
-		
 	}
 	
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
@@ -93,7 +92,6 @@ public class Worker extends Unit
 		
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST)
 		{
-		
 			// Va au batiments quand il a les ressources max
 			if(this.quantityRessource == this.ressourcesMax)	
 			{
@@ -102,10 +100,11 @@ public class Worker extends Unit
 					this.nearbyStorage(storageBuildings);
 					this.setTarget(storageBuilding);
 				}
-						
-				if(Collision.collideUnit(this.getTarget().getPosition(), this))
+				
+				if(this.storageBuilding != null && Collision.collideUnit(this.getTarget().getPosition(), this))
 				{
 					this.storageBuilding.addRessource(this.quantityRessource);
+					this.storageBuilding = null;
 					this.quantityRessource = 0;
 				}
 			}
@@ -122,10 +121,15 @@ public class Worker extends Unit
 			{
 				this.ressource = null;
 				nearbyResource(ressources);
-				this.setTarget(this.ressource);
+				if(this.ressource == null) {
+					this.setCurrentAction(EntityConfiguration.IDDLE);
+				}
+				else {
+					this.setTarget(this.ressource);
+				}
 			}
 					
-			// récupère ressources
+			// r�cup�re ressources
 			 else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this) && this.ressource.getHp() > 0)
 			{
 				this.getSpeed().reset();
@@ -134,14 +138,10 @@ public class Worker extends Unit
 			
 			
 			// revien a la ressource quand posse ces ressources
-			else if(this.ressource != null && this.getTarget() == this.storageBuilding && this.quantityRessource != this.ressourcesMax)
+			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax)
 			{
-				System.out.println("3");
 				this.setTarget(ressource);
-			}
-			
-			
-					
+			}		
 		}
 		
 		// Pose ces ressources si il en a et si on click sur un batiment de stockage
@@ -152,12 +152,12 @@ public class Worker extends Unit
 			this.setTarget(null);
 		}	
 		
-		//réparee les batiments
-		else if(this.getTarget() != null && this.getTarget().getFaction() == this.getFaction() && this.getTarget().getHp() < this.getTarget().getHpMax())
+		//reparee les batiments
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION)
 		{
-			System.out.println("je vais réparer");
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
+				this.setCurrentAction(EntityConfiguration.REPAIR);
 				this.toRepair();
 				this.getSpeed().reset();
 			}
@@ -196,8 +196,6 @@ public class Worker extends Unit
 			this.storageBuilding = storageBuildings.get(0);
 			int distanceStorageBuilding;
 			
-			System.out.println("Bonjour");
-			
 			for(StorageBuilding value: storageBuildings)
 			{
 				distanceStorageBuilding = calculate(this.storageBuilding.getPosition());
@@ -206,7 +204,9 @@ public class Worker extends Unit
 					this.storageBuilding = value;
 				}
 			}
-			
+		}
+		else {
+			this.setCurrentAction(EntityConfiguration.IDDLE);
 		}
 	}
 	

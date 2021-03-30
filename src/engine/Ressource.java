@@ -14,7 +14,7 @@ public class Ressource extends Entity
 	
 	public Ressource(int hp, String description, Position position, Tile tile, int faction, GraphicsManager graphicsManager)
 	{
-		super(3, 3, description, position, EntityConfiguration.RESSOURCE, faction, 0, 0, graphicsManager);
+		super(EntityConfiguration.RESSOURCE_HP, EntityConfiguration.RESSOURCE_HP, description, position, EntityConfiguration.RESSOURCE, faction, 0, 0, graphicsManager);
 		tileAttach = tile;
 	}
 	

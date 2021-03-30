@@ -21,7 +21,6 @@ public class Forge extends ProductionBuilding{
 
 	@Override
 	public int produce() {
-		// TODO empecher meme upgrade pour les bolosse a deux forge
 		int id = this.getElementCount().get(0);
 		this.getElementCount().remove(0);
 		if(this.getElementCount().isEmpty()) {
@@ -29,7 +28,8 @@ public class Forge extends ProductionBuilding{
 		}
 		else
 		{
-			this.setTimer(getUpgrades().get(id).getTimeToProduce());
+			int nextIdToProduce = this.getElementCount().get(0);
+			this.setTimer(getUpgrades().get(nextIdToProduce).getTimeToProduce());
 		}
 		System.out.println("producing upgrade final");
 		

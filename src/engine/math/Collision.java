@@ -88,7 +88,7 @@ public class Collision {
 	
 	public static boolean collideRessource(Worker worker, Ressource  ressource) {
 		Rectangle r1 = new Rectangle(worker.getPosition().getX(), worker.getPosition().getY(), EntityConfiguration.UNIT_SIZE, EntityConfiguration.UNIT_SIZE);
-		Rectangle r2 = new Rectangle(ressource.getPosition().getX(), ressource.getPosition().getY(), 15*GameConfiguration.TILE_SIZE, 15*GameConfiguration.TILE_SIZE);
+		Rectangle r2 = new Rectangle(ressource.getPosition().getX() - 7*GameConfiguration.TILE_SIZE, ressource.getPosition().getY() - 7*GameConfiguration.TILE_SIZE, 14*GameConfiguration.TILE_SIZE, 14*GameConfiguration.TILE_SIZE);
 		
 		if(r1.intersects(r2)) {
 			return true;

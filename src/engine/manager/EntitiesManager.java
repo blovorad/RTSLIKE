@@ -84,6 +84,8 @@ public class EntitiesManager
 	
 	private List<SiteConstruction> siteConstructions;
 	private List<SiteConstruction> removeSiteConstructions = new ArrayList<SiteConstruction>();
+	
+	private List<Entity> waitingToAdd = new ArrayList<Entity>();
 
 	
 	public EntitiesManager(AudioManager audioManager) 
@@ -111,6 +113,11 @@ public class EntitiesManager
 	
 	public void update() 
 	{
+		if(waitingToAdd.isEmpty() == false) {
+			drawingList.addAll(waitingToAdd);
+			waitingToAdd.clear();
+		}
+		
 		for(Fighter fighter : fighters) 
 		{
 			fighter.update();
@@ -122,7 +129,7 @@ public class EntitiesManager
 		}
 		
 		for(Worker worker : workers) {
-			worker.update(ressources, storageBuildings);
+			worker.update(ressources, playerStorageBuildings);
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);
@@ -339,7 +346,7 @@ public class EntitiesManager
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(sc);
 			}
-			this.drawingList.add(sc);
+			this.waitingToAdd.add(sc);
 			this.siteConstructions.add(sc);
 			System.out.println("ajout d'un site de construction");
 		}
@@ -387,7 +394,7 @@ public class EntitiesManager
 		Worker worker = null;
 		
 		if(id == EntityConfiguration.WORKER) {
-			worker = new Worker(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepair(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getHarvestSpeed(), patron.getRessourceMax(), patron.getSightRange(), 4, graphicsManager);
+			worker = new Worker(patron.getHp(), EntityConfiguration.IDDLE, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepairSpeed(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getHarvestSpeed(), patron.getRessourceMax(), patron.getSightRange(), 4, graphicsManager);
 		}
 		else {
 			System.out.print("invalid id production worker : " + id);
@@ -763,6 +770,7 @@ public class EntitiesManager
 
 	public void setSelectedProdBuilding(ProductionBuilding selectedProdBuilding) {
 		this.selectedProdBuilding = selectedProdBuilding;
+		this.selectedProdBuilding.setSelected(true);
 	}
 
 	public AttackBuilding getSelectedAttackBuilding() {
@@ -771,6 +779,7 @@ public class EntitiesManager
 
 	public void setSelectedAttackBuilding(AttackBuilding selectedAttackBuilding) {
 		this.selectedAttackBuilding = selectedAttackBuilding;
+		this.selectedAttackBuilding.setSelected(true);
 	}
 
 	public StorageBuilding getSelectedStorageBuilding() {
@@ -779,6 +788,7 @@ public class EntitiesManager
 
 	public void setSelectedStorageBuilding(StorageBuilding selectedStorageBuilding) {
 		this.selectedStorageBuilding = selectedStorageBuilding;
+		this.selectedStorageBuilding.setSelected(true);
 	}
 	
 	public void setSelectedSiteConstruction(SiteConstruction sc) {
