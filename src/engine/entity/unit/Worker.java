@@ -122,6 +122,10 @@ public class Worker extends Unit
 				this.ressource = null;
 				nearbyResource(ressources);
 				if(this.ressource == null) {
+					if(this.quantityRessource > 0) {
+						nearbyStorage(storageBuildings);
+						this.setTarget(this.storageBuilding);
+					}
 					this.setCurrentAction(EntityConfiguration.IDDLE);
 				}
 				else {
@@ -130,26 +134,26 @@ public class Worker extends Unit
 			}
 					
 			// récupère ressources
-			 else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this) && this.ressource.getHp() > 0)
-			{
+			 else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this) && this.ressource.getHp() > 0){
 				this.getSpeed().reset();
 				this.toHarvest();
 			} 
 			
 			
 			// revien a la ressource quand posse ces ressources
-			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax)
-			{
+			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax){
 				this.setTarget(ressource);
 			}		
 		}
 		
 		// Pose ces ressources si il en a et si on click sur un batiment de stockage
-		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
-		{
+		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this)){
+			nearbyStorage(storageBuildings);
 			this.storageBuilding.addRessource(this.quantityRessource);
 			this.quantityRessource = 0;
+			storageBuilding = null;
 			this.setTarget(null);
+			this.setCurrentAction(EntityConfiguration.IDDLE);
 		}	
 		
 		//réparee les batiments

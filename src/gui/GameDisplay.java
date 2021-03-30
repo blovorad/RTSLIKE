@@ -895,6 +895,9 @@ public class GameDisplay extends JPanel
 	}
 	
 	public void actualiseStatistiquesWorker(Worker worker) {
+		unitStatistiquesLabel.setText("\nPoints de vie : " + worker.getHp() +
+				"\nDégâts : " + worker.getDamage() + 
+				"\nArmure : " + worker.getArmor());
 		workerRessourceLabel.setText("      " + worker.getDescription() +
 				"\n      Ressources : " + worker.getQuantityRessource());
 	}

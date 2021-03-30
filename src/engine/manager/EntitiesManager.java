@@ -257,11 +257,6 @@ public class EntitiesManager
 		
 		//removing worker
 		if(removeWorkers.isEmpty() == false) {
-			for(Worker worker : selectedWorkers) {
-				if(removeWorkers.contains(worker)) {
-					selectedWorkers.remove(worker);
-				}
-			}
 			workers.removeAll(removeWorkers);
 			collisionList.removeAll(removeWorkers);
 			drawingList.removeAll(removeWorkers);
@@ -275,11 +270,6 @@ public class EntitiesManager
 		
 		//removing fighter
 		if(removeFighters.isEmpty() == false) {
-			for(Fighter fighter : selectedFighters) {
-				if(removeFighters.contains(fighter)) {
-					selectedFighters.remove(fighter);
-				}
-			}
 			fighters.removeAll(removeFighters);
 			collisionList.removeAll(removeFighters);
 			drawingList.removeAll(removeFighters);
@@ -671,20 +661,46 @@ public class EntitiesManager
 	}
 	
 	public void clean(){
-		this.playerEntities.clear();
-		this.collisionList.clear();
-		this.drawingList.clear();
-		this.fighters.clear();
-		this.attackBuildings.clear();
-		this.storageBuildings.clear();
-		this.prodBuildings.clear();
-		this.workers.clear();
-		this.ressources.clear();
-		this.selectedUnits.clear();
-		this.units.clear();
+		ressources.clear();
+		collisionList.clear();
+		drawingList.clear();
+		
+		removeRessources.clear();
+		storageBuildings.clear();
+		
+		playerStorageBuildings.clear();
+		botStorageBuildings.clear();
+		
+		playerEntities.clear();
+		removeStorageBuildings.clear();
+	
+		attackBuildings.clear();
+		removeAttackBuildings.clear();
+		
+		prodBuildings.clear();
+		removeProdBuildings.clear();
+	
+		workers.clear();
+		units.clear();
+		
+		selectedUnits.clear();
+		selectedWorkers.clear();
+		
+		playerWorkers.clear();
+		removeWorkers.clear();
+		
+		fighters.clear();
+		
+		selectedUnits.clear();
+		selectedFighters.clear();
+		playerFighters.clear();
+		removeFighters.clear();
+		
+		clearSelectedSiteConstruction();
 		clearSelectedBuildings();
+		
+		removeSiteConstructions.clear();
 		factionManager.clean();
-		this.units.clear();
 	}
 
 	public List<Entity> getDrawingList() {
