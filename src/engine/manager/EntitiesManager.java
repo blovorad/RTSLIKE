@@ -548,18 +548,6 @@ public class EntitiesManager
 		AttackBuilding battack = null;
 		StorageBuilding bstorage = null;
 		tile.setSolid(true);
-		
-
-		if(id == EntityConfiguration.FORGE)
-		{
-			//List<Upgrades> list = faction.getListUpgrade();
-			//tu dois cr�er les upgrades a la main ici
-			//exemple Upgrades epe = new Upgrades();
-			for(int i =0; i < 1; i++)
-			{
-				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
-			}
-		}
 			
 		if(id == EntityConfiguration.FORGE){
 

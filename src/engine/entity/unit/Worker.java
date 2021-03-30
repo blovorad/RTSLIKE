@@ -72,7 +72,7 @@ public class Worker extends Unit
 	{
 		if(this.getTarget() != null)
 		{
-			if(this.getTimer() > 0)
+			if(this.getTimer() <= 0)
 			{
 				this.getTarget().setHp(((this.getTarget().getHp()) + 1));
 				
@@ -87,21 +87,6 @@ public class Worker extends Unit
 		
 	}
 	
-	public void build()
-	{
-		
-	}
-	
-	public void vision()
-	{
-		
-	}
-	
-	/*public int distance(Position a, Position b)
-	{
-		return Math.pow(a.getX(), 2);
-	}
-	*/
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
@@ -168,7 +153,7 @@ public class Worker extends Unit
 		}	
 		
 		//réparee les batiments
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax())
+		else if(this.getTarget() != null && this.getTarget().getFaction() == this.getFaction() && this.getTarget().getHp() < this.getTarget().getHpMax())
 		{
 			System.out.println("je vais réparer");
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
@@ -195,11 +180,11 @@ public class Worker extends Unit
 				{
 					this.ressource = value;
 				}
-				
-				if(!Collision.collideRessource(this, this.ressource))
-				{
-					this.ressource = null;
-				}
+			}
+			
+			if(!Collision.collideRessource(this, this.ressource))
+			{
+				this.ressource = null;
 			}
 		}
 	}
