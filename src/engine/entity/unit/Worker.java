@@ -170,6 +170,7 @@ public class Worker extends Unit
 		{
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
+				this.setCurrentAction(EntityConfiguration.REPAIR);
 				this.toRepair();
 				this.getSpeed().reset();
 			}
@@ -192,11 +193,10 @@ public class Worker extends Unit
 				{
 					this.ressource = value;
 				}
-				
-				if(!Collision.collideRessource(this, this.ressource))
-				{
-					this.ressource = null;
-				}
+			}
+			if(!Collision.collideRessource(this, this.ressource))
+			{
+				this.ressource = null;
 			}
 		}
 	}
