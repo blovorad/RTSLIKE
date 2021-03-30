@@ -56,12 +56,12 @@ public class GameBuilder {
 		tile = map.getTile(84, 84);
 		tile2 = map.getTile(82, 88);
 		patron = manager.getFactionManager().getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
-		
+	
 		p1 = new Position(83 * GameConfiguration.TILE_SIZE, 83 * GameConfiguration.TILE_SIZE);
 		p2 = new Position(83 * GameConfiguration.TILE_SIZE, 85 * GameConfiguration.TILE_SIZE);
 		p3 = new Position(85 * GameConfiguration.TILE_SIZE, 83 * GameConfiguration.TILE_SIZE);
 		p4 = new Position(85 * GameConfiguration.TILE_SIZE, 85 * GameConfiguration.TILE_SIZE);
-		
+
 		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile);
 		manager.createBuilding(EntityConfiguration.STORAGE, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p1, null);

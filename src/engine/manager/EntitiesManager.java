@@ -77,7 +77,15 @@ public class EntitiesManager
 	
 	private List<StorageBuilding> storageBuildings;
 	private List<StorageBuilding> playerStorageBuildings;
+	
 	private List<StorageBuilding> botStorageBuildings;
+	private List<ProductionBuilding> botProdBuildings;
+	private List<AttackBuilding> botAttackBuildings;
+	private List<Fighter> botFighters;
+	private List<Worker> botWorkers;
+	private List<SiteConstruction> botSiteConstructions;
+	private List<Entity> botEntities;
+	
 	private List<StorageBuilding> removeStorageBuildings = new ArrayList<StorageBuilding>();
 	
 	private List<Ressource> ressources;
@@ -103,8 +111,18 @@ public class EntitiesManager
 		this.attackBuildings = new ArrayList<AttackBuilding>();
 		this.storageBuildings = new ArrayList<StorageBuilding>();
 		this.playerStorageBuildings = new ArrayList<StorageBuilding>();
-		this.botStorageBuildings = new ArrayList<StorageBuilding>();
 		this.siteConstructions = new ArrayList<SiteConstruction>();
+		
+		this.botStorageBuildings = new ArrayList<StorageBuilding>();
+		this.botProdBuildings = new ArrayList<ProductionBuilding>();
+		this.botAttackBuildings = new ArrayList<AttackBuilding>();
+		this.botSiteConstructions = new ArrayList<SiteConstruction>();
+		this.botFighters = new ArrayList<Fighter>();
+		this.botWorkers = new ArrayList<Worker>();
+		this.botEntities = new ArrayList<Entity>();
+		
+		this.botManager = new BotManager();
+		
 		
 		this.selectedAttackBuilding = null;
 		this.selectedProdBuilding = null;
@@ -117,6 +135,10 @@ public class EntitiesManager
 		if(waitingToAdd.isEmpty() == false) {
 			drawingList.addAll(waitingToAdd);
 			waitingToAdd.clear();
+		}
+		
+		if(botManager != null) {
+			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources);
 		}
 		
 		for(Fighter fighter : fighters) 
@@ -157,7 +179,6 @@ public class EntitiesManager
 				}
 			}
 			if(building.isRemove()) {
-				//System.out.println("We removing a building cause : " + building.getHp());
 				this.factionManager.getFactions().get(building.getFaction()).checkUpgrade(building.getElementCount());
 				building.remove();
 				removeProdBuildings.add(building);
@@ -167,7 +188,6 @@ public class EntitiesManager
 		for(AttackBuilding building : attackBuildings) {
 			building.update(units);
 			if(building.isRemove()) {
-				//System.out.println("We removing a building cause : " + building.getHp());
 				removeAttackBuildings.add(building);
 			}
 		}
@@ -223,6 +243,8 @@ public class EntitiesManager
 			if(removeStorageBuildings.contains(selectedStorageBuilding)) {
 				clearSelectedStorageBuilding();
 			}
+			botEntities.removeAll(removeStorageBuildings);
+			botStorageBuildings.removeAll(removeStorageBuildings);
 			storageBuildings.removeAll(removeStorageBuildings);
 			collisionList.removeAll(removeStorageBuildings);
 			drawingList.removeAll(removeStorageBuildings);
@@ -237,6 +259,8 @@ public class EntitiesManager
 			if(removeAttackBuildings.contains(selectedAttackBuilding)) {
 				clearSelectedAttackBuilding();
 			}
+			botEntities.removeAll(removeAttackBuildings);
+			botAttackBuildings.removeAll(removeAttackBuildings);
 			attackBuildings.removeAll(removeAttackBuildings);
 			collisionList.removeAll(removeAttackBuildings);
 			drawingList.removeAll(removeAttackBuildings);
@@ -249,6 +273,8 @@ public class EntitiesManager
 			if(removeProdBuildings.contains(selectedProdBuilding)) {
 				clearSelectedProdBuilding();
 			}
+			botEntities.removeAll(removeProdBuildings);
+			botProdBuildings.removeAll(removeProdBuildings);
 			prodBuildings.removeAll(removeProdBuildings);
 			collisionList.removeAll(removeProdBuildings);
 			drawingList.removeAll(removeProdBuildings);
@@ -263,6 +289,8 @@ public class EntitiesManager
 					selectedWorkers.remove(worker);
 				}
 			}
+			botEntities.removeAll(removeWorkers);
+			botWorkers.removeAll(removeWorkers);
 			workers.removeAll(removeWorkers);
 			collisionList.removeAll(removeWorkers);
 			drawingList.removeAll(removeWorkers);
@@ -281,6 +309,8 @@ public class EntitiesManager
 					selectedFighters.remove(fighter);
 				}
 			}
+			botEntities.removeAll(removeFighters);
+			botFighters.removeAll(removeFighters);
 			fighters.removeAll(removeFighters);
 			collisionList.removeAll(removeFighters);
 			drawingList.removeAll(removeFighters);
@@ -297,6 +327,8 @@ public class EntitiesManager
 			if(removeSiteConstructions.contains(selectedSiteConstruction)) {
 				clearSelectedSiteConstruction();
 			}
+			botEntities.removeAll(removeSiteConstructions);
+			botSiteConstructions.removeAll(removeSiteConstructions);
 			siteConstructions.removeAll(removeSiteConstructions);
 			drawingList.removeAll(removeSiteConstructions);
 			playerEntities.removeAll(removeSiteConstructions);
@@ -347,6 +379,9 @@ public class EntitiesManager
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(sc);
 			}
+			else {
+				botSiteConstructions.add(sc);
+			}
 			this.waitingToAdd.add(sc);
 			this.siteConstructions.add(sc);
 			System.out.println("ajout d'un site de construction");
@@ -382,6 +417,9 @@ public class EntitiesManager
 				playerEntities.add(fighter);
 				playerFighters.add(fighter);
 			}
+			else {
+				botFighters.add(fighter);
+			}
 			this.collisionList.add(fighter);
 			this.drawingList.add(fighter);
 			this.units.add(fighter);
@@ -408,6 +446,9 @@ public class EntitiesManager
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(worker);
 				playerWorkers.add(worker);
+			}
+			else {
+				botWorkers.add(worker);
 			}
 			this.collisionList.add(worker);
 			this.drawingList.add(worker);
@@ -672,6 +713,14 @@ public class EntitiesManager
 	}
 	
 	public void clean(){
+		this.botAttackBuildings.clear();
+		this.botFighters.clear();
+		this.botManager = null;
+		this.botProdBuildings.clear();
+		this.botStorageBuildings.clear();
+		this.botWorkers.clear();
+		this.botEntities.clear();
+		
 		this.playerEntities.clear();
 		this.collisionList.clear();
 		this.drawingList.clear();
