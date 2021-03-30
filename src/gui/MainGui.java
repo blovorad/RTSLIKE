@@ -628,9 +628,17 @@ public class MainGui extends JFrame implements Runnable
 							int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
 							int y = ((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
 							
+							List<Worker> listWorkers = manager.getSelectedWorkers();
+							
 							Position p = new Position(x, y);
 							
-							manager.createConstructionSite(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p, tile);
+							SiteConstruction constructionSite = manager.createConstructionSite(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p, tile);
+							
+							for(Worker worker : listWorkers) 
+							{
+								worker.setTarget(constructionSite);
+								worker.calculateSpeed(constructionSite.getPosition());
+							}
 							mouse.setId(-1);
 						}
 						selectionRectangle.setActive(false);

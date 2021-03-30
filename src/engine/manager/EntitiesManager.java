@@ -296,7 +296,7 @@ public class EntitiesManager
 		}
 	}
 	
-	public void createConstructionSite(int id, int faction, Position position, Tile tile) {
+	public SiteConstruction createConstructionSite(int id, int faction, Position position, Tile tile) {
 		SiteConstruction sc = null;
 		
 		if(id == EntityConfiguration.FORGE){
@@ -343,6 +343,7 @@ public class EntitiesManager
 			this.siteConstructions.add(sc);
 			System.out.println("ajout d'un site de construction");
 		}
+	return sc;
 	}
 	
 	public void createFighter(int id, int faction, ForFighter patron, Position position, Position destination)
