@@ -35,11 +35,12 @@ public class Hq extends ProductionBuilding{
 		}
 		else
 		{
-			if(id == EntityConfiguration.AGE_UPGRADE) {
-				this.setTimer(upgradesOfHq.get(id).getTimeToProduce());
+			int nextIdToProduce = this.getElementCount().get(0);
+			if(nextIdToProduce == EntityConfiguration.AGE_UPGRADE) {
+				this.setTimer(upgradesOfHq.get(nextIdToProduce).getTimeToProduce());
 			}
-			else if(id == EntityConfiguration.AGE_UPGRADE_2) {
-				this.setTimer(upgradesOfHq.get(id).getTimeToProduce());
+			else if(nextIdToProduce == EntityConfiguration.AGE_UPGRADE_2) {
+				this.setTimer(upgradesOfHq.get(nextIdToProduce).getTimeToProduce());
 			}
 			else {
 				this.setTimer(worker.getTimeToBuild());

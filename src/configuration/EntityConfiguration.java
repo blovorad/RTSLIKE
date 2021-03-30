@@ -54,5 +54,7 @@ public class EntityConfiguration {
 	public final static int HARVEST = 4;
 	public final static int REPAIR = 5;
 	
+	public final static int RESSOURCE_HP = 200;
+	
 	public final static int MAX_TIME_HIT_ANIMATION = 10;
 }

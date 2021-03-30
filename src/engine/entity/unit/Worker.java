@@ -37,7 +37,7 @@ public class Worker extends Unit
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
 		
-		this.ressourcesMax = 3;
+		this.ressourcesMax = ressourceMax;
 		this.quantityRessource = 0;
 		
 		this.storageBuilding = null;
@@ -54,7 +54,6 @@ public class Worker extends Unit
 				{
 					this.ressource.setHp(this.ressource.getHp() -1);
 					this.quantityRessource ++;
-					
 				}	
 
 				if(this.ressource.getHp() <= 0)
@@ -70,69 +69,64 @@ public class Worker extends Unit
 	{
 		if(this.getTarget() != null)
 		{
-			if(this.getTimer() > 0)
+			if(this.getTimer() <= 0)
 			{
-				this.getTarget().setHp(((this.getTarget().getHp()) + 1));
+				if(this.getTarget().getHp() < this.getTarget().getHpMax()) {
+					this.getTarget().setHp(((this.getTarget().getHp()) + 1));
+				}
 				
-				if(this.getTarget().getHp() == this.getTarget().getHpMax())
+				if(this.getTarget().getHp() >= this.getTarget().getHpMax())
 				{
 					this.setTarget(null);
+					this.setCurrentAction(EntityConfiguration.IDDLE);
 				}
-				this.setTimer(this.harvestSpeed);
+				this.setTimer(this.repairSpeed);
 			}
 			this.setTimer(this.getTimer() - 1);
 		}
-		
 	}
 	
-	public void build()
-	{
-		
-	}
-	
-	public void vision()
-	{
-		
-	}
-
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
 		
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST)
 		{
-		
 			// Va au batiments quand il a les ressources max
 			if(this.quantityRessource == this.ressourcesMax)	
 			{
-				this.nearbyStorage(storageBuildings);
-				this.setTarget(storageBuilding);
-						
-				if(Collision.collideUnit(this.getTarget().getPosition(), this))
+				if(this.storageBuilding == null)
+				{
+					this.nearbyStorage(storageBuildings);
+					this.setTarget(storageBuilding);
+				}
+				
+				if(this.storageBuilding != null && Collision.collideUnit(this.getTarget().getPosition(), this))
 				{
 					this.storageBuilding.addRessource(this.quantityRessource);
+					this.storageBuilding = null;
 					this.quantityRessource = 0;
 				}
 			}
-					
+			
+			// met la ressource a null quand fini
 			else if(this.getRessource() != null && this.getRessource().getHp() <= 0)
 			{
 				this.ressource = null;
 			}
 			
-			else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
-			{
-				this.storageBuilding.addRessource(this.quantityRessource);
-				this.quantityRessource = 0;
-				this.setTarget(null);
-			}
 			
 			//cherche une nouvelle ressources si il a finis la sienne 
 			else if(this.ressource == null && !ressources.isEmpty())
 			{
 				this.ressource = null;
 				nearbyResource(ressources);
-				this.setTarget(this.ressource);
+				if(this.ressource == null) {
+					this.setCurrentAction(EntityConfiguration.IDDLE);
+				}
+				else {
+					this.setTarget(this.ressource);
+				}
 			}
 					
 			// récupère ressources
@@ -144,24 +138,30 @@ public class Worker extends Unit
 			
 			
 			// revien a la ressource quand posse ces ressources
-			else if(this.ressource != null && this.getTarget() == this.storageBuilding && this.quantityRessource != this.ressourcesMax)
+			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax)
 			{
 				this.setTarget(ressource);
-			}
-			
-			
-					
-			}
+			}		
+		}
 		
-			//réparee les batiments
-			else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax())
+		// Pose ces ressources si il en a et si on click sur un batiment de stockage
+		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
+		{
+			this.storageBuilding.addRessource(this.quantityRessource);
+			this.quantityRessource = 0;
+			this.setTarget(null);
+		}	
+		
+		//réparee les batiments
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION)
+		{
+			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
-				if(Collision.collideUnit(this.getTarget().getPosition(), this))
-				{
-					this.toRepair();
-					this.getSpeed().reset();
-				}
+				this.setCurrentAction(EntityConfiguration.REPAIR);
+				this.toRepair();
+				this.getSpeed().reset();
 			}
+		}
 		
 		
 	}
@@ -181,6 +181,11 @@ public class Worker extends Unit
 					this.ressource = value;
 				}
 			}
+			
+			if(!Collision.collideRessource(this, this.ressource))
+			{
+				this.ressource = null;
+			}
 		}
 	}
 	
@@ -191,8 +196,6 @@ public class Worker extends Unit
 			this.storageBuilding = storageBuildings.get(0);
 			int distanceStorageBuilding;
 			
-			System.out.println("Bonjour");
-			
 			for(StorageBuilding value: storageBuildings)
 			{
 				distanceStorageBuilding = calculate(this.storageBuilding.getPosition());
@@ -201,6 +204,9 @@ public class Worker extends Unit
 					this.storageBuilding = value;
 				}
 			}
+		}
+		else {
+			this.setCurrentAction(EntityConfiguration.IDDLE);
 		}
 	}
 	

@@ -129,7 +129,7 @@ public class EntitiesManager
 		}
 		
 		for(Worker worker : workers) {
-			worker.update(ressources, storageBuildings);
+			worker.update(ressources, playerStorageBuildings);
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);
@@ -394,7 +394,7 @@ public class EntitiesManager
 		Worker worker = null;
 		
 		if(id == EntityConfiguration.WORKER) {
-			worker = new Worker(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepair(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getHarvestSpeed(), patron.getRessourceMax(), patron.getSightRange(), 4, graphicsManager);
+			worker = new Worker(patron.getHp(), EntityConfiguration.IDDLE, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepairSpeed(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getHarvestSpeed(), patron.getRessourceMax(), patron.getSightRange(), 4, graphicsManager);
 		}
 		else {
 			System.out.print("invalid id production worker : " + id);
@@ -555,18 +555,6 @@ public class EntitiesManager
 		AttackBuilding battack = null;
 		StorageBuilding bstorage = null;
 		tile.setSolid(true);
-		
-
-		if(id == EntityConfiguration.FORGE)
-		{
-			//List<Upgrades> list = faction.getListUpgrade();
-			//tu dois cr�er les upgrades a la main ici
-			//exemple Upgrades epe = new Upgrades();
-			for(int i =0; i < 1; i++)
-			{
-				//ici tu regarde si les upgrades sont deja faite et les remove  a la list ou celle des autres batiments
-			}
-		}
 			
 		if(id == EntityConfiguration.FORGE){
 
@@ -782,6 +770,7 @@ public class EntitiesManager
 
 	public void setSelectedProdBuilding(ProductionBuilding selectedProdBuilding) {
 		this.selectedProdBuilding = selectedProdBuilding;
+		this.selectedProdBuilding.setSelected(true);
 	}
 
 	public AttackBuilding getSelectedAttackBuilding() {
@@ -790,6 +779,7 @@ public class EntitiesManager
 
 	public void setSelectedAttackBuilding(AttackBuilding selectedAttackBuilding) {
 		this.selectedAttackBuilding = selectedAttackBuilding;
+		this.selectedAttackBuilding.setSelected(true);
 	}
 
 	public StorageBuilding getSelectedStorageBuilding() {
@@ -798,6 +788,7 @@ public class EntitiesManager
 
 	public void setSelectedStorageBuilding(StorageBuilding selectedStorageBuilding) {
 		this.selectedStorageBuilding = selectedStorageBuilding;
+		this.selectedStorageBuilding.setSelected(true);
 	}
 	
 	public void setSelectedSiteConstruction(SiteConstruction sc) {
