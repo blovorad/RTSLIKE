@@ -112,8 +112,11 @@ public class Worker extends Unit
 			// Va au batiments quand il a les ressources max
 			if(this.quantityRessource == this.ressourcesMax)	
 			{
-				this.nearbyStorage(storageBuildings);
-				this.setTarget(storageBuilding);
+				if(this.storageBuilding == null)
+				{
+					this.nearbyStorage(storageBuildings);
+					this.setTarget(storageBuilding);
+				}
 						
 				if(Collision.collideUnit(this.getTarget().getPosition(), this))
 				{
@@ -192,6 +195,11 @@ public class Worker extends Unit
 				{
 					this.ressource = value;
 				}
+				
+				if(!Collision.collideRessource(this, this.ressource))
+				{
+					this.ressource = null;
+				}
 			}
 		}
 	}
@@ -213,6 +221,7 @@ public class Worker extends Unit
 					this.storageBuilding = value;
 				}
 			}
+			
 		}
 	}
 	
