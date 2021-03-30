@@ -29,12 +29,11 @@ public class Unit extends Entity
 	
 	private Speed speed;
 	
-	
 	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{
 		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
 		
-		this.currentAction = currentAction;
+		this.currentAction = EntityConfiguration.IDDLE;
 		this.attackRange = attackRange;
 		this.setAttackSpeed(5);
 		this.maxSpeed = maxSpeed;
@@ -70,16 +69,12 @@ public class Unit extends Entity
 		this.getSpeed().setVx(vx);
 		this.getSpeed().setVy(vy);
 		if(vx != 0 || vy != 0) {
-			this.getAnimation().setFrameState(EntityConfiguration.WALK);
 			if(vx < 0) {
 				this.getAnimation().setDirection(GameConfiguration.LEFT);
 			}
 			else {
 				this.getAnimation().setDirection(GameConfiguration.RIGHT);
 			}
-		}
-		else {
-			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
 		}
 	}
 	
@@ -214,7 +209,6 @@ public class Unit extends Entity
 				}
 			}
 		}
-		//sauvegarder l'ancienne position
 		
 		this.getPosition().setX(this.getPosition().getX() + (int)this.getSpeed().getVx());
 		this.getPosition().setY(this.getPosition().getY() + (int)this.getSpeed().getVy());
@@ -223,7 +217,6 @@ public class Unit extends Entity
 			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
 		}
 		
-		//ici 
 		
 		if(p.getX() < 0)
 		{
@@ -247,10 +240,25 @@ public class Unit extends Entity
 			this.getSpeed().setVy(0);
 		}
 		
+		manageState();
+	}
+	
+	public void manageState() {
+
+		if(speed.getVx() == 0f && speed.getVy() == 0f && currentAction != EntityConfiguration.ATTACK && currentAction != EntityConfiguration.HARVEST && currentAction != EntityConfiguration.REPAIR) {
+			this.getAnimation().setFrameState(EntityConfiguration.IDDLE);
+		}
+		else if(speed.getVx() != 0f || speed.getVy() != 0f) {
+			this.getAnimation().setFrameState(EntityConfiguration.WALK);
+		}
+		else if(currentAction == EntityConfiguration.ATTACK || currentAction == EntityConfiguration.HARVEST || currentAction == EntityConfiguration.REPAIR) {
+			this.getAnimation().setFrameState(EntityConfiguration.ATTACK);
+		}
 		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget()))
 		{
 			System.out.println();
 			this.attack(5);
+			this.attack(this.getDamage());
 		}
 	}
 

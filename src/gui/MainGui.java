@@ -22,6 +22,7 @@ import engine.Position;
 import engine.Ressource;
 import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
+import engine.entity.building.SiteConstruction;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Fighter;
 import engine.entity.unit.Unit;
@@ -29,6 +30,7 @@ import engine.entity.unit.Worker;
 import engine.manager.AudioManager;
 import engine.manager.EntitiesManager;
 import engine.manager.GraphicsManager;
+import engine.map.Minimap;
 import engine.map.Tile;
 import engine.math.Collision;
 import engine.math.SelectionRect;
@@ -56,6 +58,8 @@ public class MainGui extends JFrame implements Runnable
 	private SelectionRect selectionRectangle;
 	
 	private AudioManager audioManager;
+	
+	private boolean moveMinimap;
 
 	public MainGui()
 	{
@@ -98,6 +102,7 @@ public class MainGui extends JFrame implements Runnable
 		setResizable(false);
 		setPreferredSize(preferredSize);
 		System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
+		moveMinimap = false;
 	}
 
 	@Override
@@ -194,13 +199,7 @@ public class MainGui extends JFrame implements Runnable
 			}
 		}
 	}
-	
-	public Container getContent() {
-		// TODO Auto-generated method stub
-		return this.getContentPane();
-	}
-	
-	//mÃ©thode pour vÃ©rifier se trouve a l'endroit ou l'on fait click droit
+
 	private class MouseControls implements MouseListener 
 	{
 		
@@ -218,6 +217,7 @@ public class MainGui extends JFrame implements Runnable
 			List<ProductionBuilding> prodBuildings = manager.getProdBuildings();
 			List<Fighter> fighters = manager.getFighters();
 			List<Worker> workers = manager.getWorkers();
+			List<SiteConstruction> siteConstructions = manager.getSiteConstructions();
 			
 			if(selectEntity == null)
 			{
@@ -289,6 +289,18 @@ public class MainGui extends JFrame implements Runnable
 				}
 			}
 			
+			if(selectEntity == null) {
+				for( SiteConstruction siteConstruction : siteConstructions) {
+					Position siteConstructionPosition = new Position(siteConstruction.getPosition().getX(), siteConstruction.getPosition().getY());
+					
+					if(Collision.collideEntity(destination, siteConstructionPosition))
+					{
+						selectEntity = siteConstruction;
+						break;
+					}
+				}
+			}
+			
 		return selectEntity;	
 		}
 		
@@ -326,6 +338,7 @@ public class MainGui extends JFrame implements Runnable
 			manager.clearSelectedRessource();
 			manager.clearSelectedWorker();
 			manager.clearSelectedFighter();
+			manager.clearSelectedSiteConstruction();
 			dashboard.setDescriptionPanelStandard();
 
 			int x = mouseX + camera.getX();
@@ -342,18 +355,15 @@ public class MainGui extends JFrame implements Runnable
 					dashboard.setDescriptionPanelForWorker(worker);
 					noUnitSelected = false;
 					workerSelected = true;
+					manager.addSelectedWorker(worker);
+					manager.addSelectedUnit(worker);
 					if(clickCount > 1) {
 						for(Worker worker2 : listWorkers) {
 							manager.addSelectedWorker(worker2);
 							manager.addSelectedUnit(worker2);
 						}
-						break;
 					}
-					else {
-						manager.addSelectedWorker(worker);
-						manager.addSelectedUnit(worker);
-						break;
-					}
+					break;
 				}
 			}
 			
@@ -376,17 +386,14 @@ public class MainGui extends JFrame implements Runnable
 				}
 			}
 	
-			if(noUnitSelected == true)
-			{
+			if(noUnitSelected == true){
 				boolean noBuildingSelected = true;
 				List<ProductionBuilding> listProdBuildings = manager.getProdBuildings();
 				
-				for(ProductionBuilding building : listProdBuildings)
-				{
+				for(ProductionBuilding building : listProdBuildings){
 
 					if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
-											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
-					{
+											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE)){
 						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						manager.setSelectedProdBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
@@ -396,12 +403,10 @@ public class MainGui extends JFrame implements Runnable
 				}
 				if(noBuildingSelected == true){
 					List<AttackBuilding> listAttackBuildings = manager.getAttackBuildings();
-					for(AttackBuilding building : listAttackBuildings)
-					{
+					for(AttackBuilding building : listAttackBuildings){
 
 						if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
-												&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
-						{
+												&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE)){
 							manager.setSelectedAttackBuilding(building);
 							dashboard.setDescriptionPanelForBuilding(building);
 							noBuildingSelected = false;
@@ -411,12 +416,10 @@ public class MainGui extends JFrame implements Runnable
 				}
 				if(noBuildingSelected == true){
 					List<StorageBuilding> listStorageBuildings = manager.getStorageBuildings();
-					for(StorageBuilding building : listStorageBuildings)
-					{
+					for(StorageBuilding building : listStorageBuildings){
 
 						if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
-												&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE))
-						{
+												&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE)){
 							manager.setSelectedStorageBuilding(building);
 							dashboard.setDescriptionPanelForBuilding(building);
 							noBuildingSelected = false;
@@ -425,17 +428,29 @@ public class MainGui extends JFrame implements Runnable
 					}
 				}
 				
-				if(noBuildingSelected == true)
-				{
+				if(noBuildingSelected == true){
 					List<Ressource> listRessources = manager.getRessources();
-					for(Ressource ressource : listRessources)
-					{
+					for(Ressource ressource : listRessources){
 						if((x > ressource.getPosition().getX() && x < ressource.getPosition().getX() + GameConfiguration.TILE_SIZE)
-								&& (y > ressource.getPosition().getY() && y < ressource.getPosition().getY() + GameConfiguration.TILE_SIZE))
-						{
+								&& (y > ressource.getPosition().getY() && y < ressource.getPosition().getY() + GameConfiguration.TILE_SIZE)){
 							dashboard.setDescriptionPanelForRessource(ressource);
 							ressource.setSelected(true);
 							manager.setSelectedRessource(ressource);
+							noBuildingSelected = false;
+							break;
+						}
+					}
+				}
+				
+				if(noBuildingSelected == true) {
+					List<SiteConstruction> listSiteConstructions = manager.getSiteConstructions();
+					for(SiteConstruction sc : listSiteConstructions) {
+						if((x > sc.getPosition().getX() && x < sc.getPosition().getX() + GameConfiguration.TILE_SIZE)
+								&& (y > sc.getPosition().getY() && y < sc.getPosition().getY() + GameConfiguration.TILE_SIZE)) {
+							dashboard.setDescriptionPanelForSiteConstruction(sc);
+							sc.setSelected(true);
+							manager.setSelectedSiteConstruction(sc);
+							noBuildingSelected = false;
 							break;
 						}
 					}
@@ -448,8 +463,9 @@ public class MainGui extends JFrame implements Runnable
 			manager.clearSelectedBuildings();
 			manager.clearSelectedUnit();
 			manager.clearSelectedRessource();
-			manager.clearSelectedFighter();
 			manager.clearSelectedWorker();
+			manager.clearSelectedFighter();
+			manager.clearSelectedSiteConstruction();
 			dashboard.setDescriptionPanelStandard();
 			
 			SelectionRect rect = new SelectionRect(x, y, w, h);
@@ -489,6 +505,7 @@ public class MainGui extends JFrame implements Runnable
 					if(Collision.collide(building.getPosition(), rect, camera))
 					{
 						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
+						building.setSelected(true);
 						manager.setSelectedProdBuilding(building);
 						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
 						noBuildingSelected = false;
@@ -501,6 +518,7 @@ public class MainGui extends JFrame implements Runnable
 					{
 
 						if(Collision.collide(building.getPosition(), rect, camera)){
+							building.setSelected(true);
 							manager.setSelectedAttackBuilding(building);
 							dashboard.setDescriptionPanelForBuilding(building);
 							noBuildingSelected = false;
@@ -514,6 +532,7 @@ public class MainGui extends JFrame implements Runnable
 					{
 
 						if(Collision.collide(building.getPosition(), rect, camera)){
+							building.setSelected(true);
 							manager.setSelectedStorageBuilding(building);
 							dashboard.setDescriptionPanelForBuilding(building);
 							noBuildingSelected = false;
@@ -532,6 +551,20 @@ public class MainGui extends JFrame implements Runnable
 							dashboard.setDescriptionPanelForRessource(ressource);
 							ressource.setSelected(true);
 							manager.setSelectedRessource(ressource);
+							noBuildingSelected = false;
+							break;
+						}
+					}
+				}
+				
+				if(noBuildingSelected == true) {
+					List<SiteConstruction> listSiteConstructions = manager.getSiteConstructions();
+					for(SiteConstruction sc : listSiteConstructions) {
+						if(Collision.collide(sc.getPosition(), rect, camera)) {
+							dashboard.setDescriptionPanelForSiteConstruction(sc);
+							sc.setSelected(true);
+							manager.setSelectedSiteConstruction(sc);
+							noBuildingSelected = false;
 							break;
 						}
 					}
@@ -553,39 +586,64 @@ public class MainGui extends JFrame implements Runnable
 			{
 				int mouseX = e.getX() + camera.getX();
 				int mouseY = e.getY() + camera.getY();
-				
+
 				if(e.getButton() == 1)
 				{
+					Minimap minimap = dashboard.getMinimap();
 
-					if(selectionRectangle.isActive() == false)
-					{
-						selectionRectangle.setActive(true);
-						selectionRectangle.setX(e.getX());
-						selectionRectangle.setY(e.getY());
-						selectionRectangle.setW(0);
-						selectionRectangle.setH(0);
-						//System.out.println("on a presser");
+					if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
+						int x = e.getX() - minimap.getFirstGridXOfMap();
+						int y = e.getY() - minimap.getFirstGridYOfMap();
+						x /= minimap.getGridMapWidth();
+						y /= minimap.getGridMapHeight();
+
+						x *= GameConfiguration.TILE_SIZE;
+						y *= GameConfiguration.TILE_SIZE;
+						
+						x -= camera.getScreenWidth() / 2;
+						y -= camera.getScreenHeight() / 2;
+						
+						if(x < 0){
+							x = 0;
+						}
+						else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth()){
+							x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
+						}
+						
+						if(y < 0){
+							y = 0;
+						}
+						else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight()){
+							y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
+						}
+						
+						Position p = new Position(x, y);
+						camera.setX(p.getX());
+						camera.setY(p.getY());
+						moveMinimap = true;
 					}
-					
-					if(mouse.getId() > -1)
-					{
+					else if(mouse.getId() > -1){
 						Tile tile = dashboard.getMap().getTile((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE, (e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE);
-						System.out.println("tuile solide : " + tile.isSolid());
-						if(tile.isSolid() == false)
-						{
+						if(tile.isSolid() == false){
 							int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
 							int y = ((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
 							
 							Position p = new Position(x, y);
 							
-							manager.createBuilding(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p, tile);
+							manager.createConstructionSite(mouse.getId(), EntityConfiguration.PLAYER_FACTION, p, tile);
 							mouse.setId(-1);
 						}
 						selectionRectangle.setActive(false);
 					}
+					else if(selectionRectangle.isActive() == false){
+						selectionRectangle.setActive(true);
+						selectionRectangle.setX(e.getX());
+						selectionRectangle.setY(e.getY());
+						selectionRectangle.setW(0);
+						selectionRectangle.setH(0);
+					}
 				}
-				else if(e.getButton() == 3)
-				{
+				else if(e.getButton() == 3){
 					if(mouse.getId() > -1) {
 						mouse.setId(-1);
 					}
@@ -596,15 +654,11 @@ public class MainGui extends JFrame implements Runnable
 						
 						if(listWorkers.isEmpty() == false) {
 							Ressource ressource  = checkRessource(mouseX, mouseY);
-							System.out.println("NOOOOOOOn");
 							if(ressource != null) {
-								System.out.println("RESSOURCE FOUND");
-								System.out.println("en vrai oui");
 								goingToHarvest = true;
 								for(Worker worker : listWorkers) 
 								{
 									worker.initRessource(ressource);
-									System.out.println("test");
 								}
 							}
 						}
@@ -617,14 +671,15 @@ public class MainGui extends JFrame implements Runnable
 							{
 								for(Unit unit : listSelectedUnit)
 								{
-									unit.setTarget(target);
 									unit.calculateSpeed(target.getPosition());
 									unit.setCurrentAction(EntityConfiguration.WALK);
+									unit.setTarget(target);
 								}
 							}
 							else if(listSelectedUnit.isEmpty() == false && target == null) {
 								for(Unit unit : listSelectedUnit){
 									unit.calculateSpeed(new Position(mouseX, mouseY));
+									unit.setCurrentAction(EntityConfiguration.WALK);
 									unit.setTarget(null);
 									unit.setCurrentAction(EntityConfiguration.WALK);
 								}
@@ -679,6 +734,7 @@ public class MainGui extends JFrame implements Runnable
 						}
 						selectionRectangle.setActive(false);
 					}
+					moveMinimap = false;
 				}
 			}
 			else if(e.getButton() == 3)
@@ -706,10 +762,45 @@ public class MainGui extends JFrame implements Runnable
 		public void mouseDragged(MouseEvent e) {
 			if(dashboard.getState() == GameConfiguration.INGAME)
 			{
-				int x = e.getX();
-				int y = e.getY();
-				
-				selectionRectangle.moveSelectionRect(x, y);
+				if(moveMinimap) {
+					Minimap minimap = dashboard.getMinimap();
+
+					if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
+						int x = e.getX() - minimap.getFirstGridXOfMap();
+						int y = e.getY() - minimap.getFirstGridYOfMap();
+						x /= minimap.getGridMapWidth();
+						y /= minimap.getGridMapHeight();
+	
+						x *= GameConfiguration.TILE_SIZE;
+						y *= GameConfiguration.TILE_SIZE;
+								
+						x -= camera.getScreenWidth() / 2;
+						y -= camera.getScreenHeight() / 2;
+								
+						if(x < 0){
+							x = 0;
+						}
+						else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth()){
+							x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
+						}
+								
+						if(y < 0){
+							y = 0;
+						}
+						else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight()){
+							y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
+						}
+								
+						Position p = new Position(x, y);
+						camera.setX(p.getX());
+						camera.setY(p.getY());
+					}
+				}
+				else {
+					int x = e.getX();
+					int y = e.getY();
+					selectionRectangle.moveSelectionRect(x, y);
+				}
 			}
 		}
 

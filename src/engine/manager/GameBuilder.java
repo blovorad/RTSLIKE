@@ -52,19 +52,22 @@ public class GameBuilder {
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p3, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p4, null);
 		
-		//création d'un ennemie pour test
-		tile = map.getTile(15, 15);
-		tile2 = map.getTile(20, 15);
-		Tile tile3 = map.getTile(15, 16);
-		Tile tile4 = map.getTile(16, 16);
-		Tile tile5 = map.getTile(17, 17);
-		Tile tile6 = map.getTile(18, 18);
-		manager.createBuilding(EntityConfiguration.CASTLE, EntityConfiguration.BOT_FACTION, new Position(tile5.getColumn() * GameConfiguration.TILE_SIZE, tile5.getLine() * GameConfiguration.TILE_SIZE), tile5);
-		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, new Position(tile6.getColumn() * GameConfiguration.TILE_SIZE, tile6.getLine() * GameConfiguration.TILE_SIZE), tile6);
-		manager.createBuilding(EntityConfiguration.ARCHERY, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile);
-		manager.createBuilding(EntityConfiguration.BARRACK, EntityConfiguration.BOT_FACTION, new Position(tile3.getColumn() * GameConfiguration.TILE_SIZE, tile3.getLine() * GameConfiguration.TILE_SIZE), tile3);
-		manager.createBuilding(EntityConfiguration.STABLE, EntityConfiguration.BOT_FACTION, new Position(tile4.getColumn() * GameConfiguration.TILE_SIZE, tile4.getLine() * GameConfiguration.TILE_SIZE), tile4);
-		manager.createBuilding(EntityConfiguration.TOWER, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2);
+		//création d'un ennemie
+		tile = map.getTile(84, 84);
+		tile2 = map.getTile(82, 88);
+		patron = manager.getFactionManager().getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
+		
+		p1 = new Position(83 * GameConfiguration.TILE_SIZE, 83 * GameConfiguration.TILE_SIZE);
+		p2 = new Position(83 * GameConfiguration.TILE_SIZE, 85 * GameConfiguration.TILE_SIZE);
+		p3 = new Position(85 * GameConfiguration.TILE_SIZE, 83 * GameConfiguration.TILE_SIZE);
+		p4 = new Position(85 * GameConfiguration.TILE_SIZE, 85 * GameConfiguration.TILE_SIZE);
+		
+		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile);
+		manager.createBuilding(EntityConfiguration.STORAGE, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2);
+		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p1, null);
+		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p2, null);
+		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p3, null);
+		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p4, null);
 	}
 	
 }

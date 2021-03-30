@@ -1,6 +1,6 @@
 package configuration;
 
-import java.awt.Toolkit;
+//import java.awt.Toolkit;
 
 /**
  * 
@@ -12,11 +12,11 @@ public class GameConfiguration
 {
 	public final static int GAME_SPEED = 1000/30;
 	
-	public final static int WINDOW_WIDTH = 1366;//Toolkit.getDefaultToolkit().getScreenSize().width;
+	public final static int WINDOW_WIDTH = 800;//Toolkit.getDefaultToolkit().getScreenSize().width;
 
-	public final static int WINDOW_HEIGHT = 768;//Toolkit.getDefaultToolkit().getScreenSize().height;
+	public final static int WINDOW_HEIGHT = 600;//Toolkit.getDefaultToolkit().getScreenSize().height;
 	
-	public final static boolean launchInFullScreen = true;
+	public final static boolean launchInFullScreen = false;
 	
 	public final static int COLUMN_COUNT = 100;
 	

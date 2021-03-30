@@ -34,13 +34,19 @@ public class Tile {
 			animation = new Animation(0, false, graphicsManager.getRock());
 		}
 		else if(this.id == MapConfiguration.WATER) {
-			animation = new Animation(0, false, graphicsManager.getWater());
+			animation = new Animation(0, false, graphicsManager.getWater(id));
+		}
+		else if(this.id >= MapConfiguration.WATER_BORD_UP && this.id <= MapConfiguration.WATER_TURN_DOWN_RIGHT) {
+			animation = new Animation(0, false, graphicsManager.getWater(id));
 		}
 		else if(this.id == MapConfiguration.WOOD) {
 			animation = new Animation(0, false, graphicsManager.getTree());
 		}
 		else if(this.id == MapConfiguration.GOLD) {
 			animation = new Animation(0, false, graphicsManager.getGrass());
+		}
+		else if(this.id == MapConfiguration.SAND) {
+			animation = new Animation(0, false, graphicsManager.getSand());
 		}
 	}
 	

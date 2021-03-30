@@ -120,6 +120,9 @@ public class Animation {
 		else if(id == EntityConfiguration.STORAGE) {
 			leftImages = graphicsManager.getStorage(faction);
 		}
+		else if(id == EntityConfiguration.SITE_CONSTRUCTION) {
+			leftImages = graphicsManager.getSiteConstruction();
+		}
 	}
 	
 	public boolean isHasAnimation() {

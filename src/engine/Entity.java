@@ -50,17 +50,6 @@ public class Entity
 		this.setRemove(false);
 	}
 	
-	public Entity(int hp, String description, Position position, Position destination, int id, int faction)
-	{
-		this.hp = hp;
-		this.description = description;
-		this.position = position;
-		this.id = id;
-		this.destination = destination;
-		this.target = null;
-		this.setFaction(faction);
-	}
-	
 	public void update()
 	{
 		if(this.isHit) {
@@ -70,6 +59,7 @@ public class Entity
 			}
 		}
 		if(hp <= 0) {
+			this.setSelected(false);
 			this.remove = true;
 		}
 

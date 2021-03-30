@@ -97,11 +97,6 @@ public class Worker extends Unit
 		
 	}
 	
-	/*public int distance(Position a, Position b)
-	{
-		return Math.pow(a.getX(), 2);
-	}
-	*/
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
@@ -110,8 +105,16 @@ public class Worker extends Unit
 		{
 		
 			// Va au batiments quand il a les ressources max
-			if(this.quantityRessource == this.ressourcesMax)	
+			if(this.quantityRessource == this.ressourcesMax)
 			{
+				this.nearbyStorage(storageBuildings);
+				this.setTarget(storageBuilding);
+			}
+				
+			// Poser les ressources dans le bâtiments
+			if(Collision.collideUnit(this.getTarget().getPosition(), this))
+			{
+
 				this.nearbyStorage(storageBuildings);
 				this.setTarget(storageBuilding);
 						
@@ -121,7 +124,8 @@ public class Worker extends Unit
 					this.quantityRessource = 0;
 				}
 			}
-					
+			
+			// met ressource a null si elle est terminer
 			else if(this.getRessource() != null && this.getRessource().getHp() <= 0)
 			{
 				this.ressource = null;
@@ -151,29 +155,26 @@ public class Worker extends Unit
 				this.setTarget(ressource);
 			}
 			
-			
-					
-			}
-			
-			else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
-			{
-				this.storageBuilding.addRessource(this.quantityRessource);
-				this.quantityRessource = 0;
-				this.setTarget(null);
-			}
-			//réparee les batiments
-			else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax())
-			{
+		}
+		
+		// pose ressource si il en a et qu'onclick sur un batiments de stockage
+		
+		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
+		{
+			this.storageBuilding.addRessource(this.quantityRessource);
+			this.quantityRessource = 0;
+			this.setTarget(null);
+		}
+		
+		//réparee les batiments
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax())
+		{
 				if(Collision.collideUnit(this.getTarget().getPosition(), this))
 				{
 					this.toRepair();
 					this.getSpeed().reset();
 				}
-			}
-			
-			
-		
-		
+		}
 	}
 	
 	public void nearbyResource(List<Ressource> ressources)
@@ -285,4 +286,5 @@ public class Worker extends Unit
 	public int getQuantityRessource() {
 		return this.quantityRessource;
 	}
+
 }
