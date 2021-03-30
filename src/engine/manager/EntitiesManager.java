@@ -121,7 +121,7 @@ public class EntitiesManager
 		this.botWorkers = new ArrayList<Worker>();
 		this.botEntities = new ArrayList<Entity>();
 		
-		this.botManager = new BotManager();
+		this.botManager = new BotManager(factionManager);
 		
 		
 		this.selectedAttackBuilding = null;

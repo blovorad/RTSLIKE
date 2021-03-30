@@ -6,6 +6,7 @@ import java.util.List;
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
+import engine.Faction;
 import engine.Position;
 import engine.Ressource;
 import engine.entity.building.AttackBuilding;
@@ -25,26 +26,29 @@ public class BotManager {
 	private boolean forgeBuild;
 	private boolean hqBuild;
 	private Fog fog;
+	private FactionManager factionManager;
 	
-	public BotManager() {
+	public BotManager(FactionManager factionManager) {
 		barrackBuild = false;
 		archeryBuild = false;
 		stableBuild = false;
 		castleBuild = false;
 		forgeBuild = false;
 		hqBuild = false;
-		
+		setFactionManager(factionManager);
 		fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
 	}
 	
 	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources) {
 		updateFog(botEntities);
+		int money = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getMoneyCount();
+		System.out.println("money : " + money);
 		List<Ressource> visibleRessources = getVisibleRessources(ressources, fog);
 		//System.out.println("nb ressource : " + visibleRessources.size());
 		List<Worker> IdleWorker = getIdleWorker(botWorkers);
 		//System.out.println("nb idle : " + IdleWorker.size());
 		recolte(IdleWorker, visibleRessources);
-		
+		prodWorker(botWorkers, money, botProdBuildings, factionManager);
 	}
 	
 	public void updateFog(List<Entity> botEntities) {
@@ -110,7 +114,23 @@ public class BotManager {
 			}
 		}
 	}
-
+	
+	public void prodWorker(List<Worker> botWorkers, int money, List<ProductionBuilding> botProdBuildings, FactionManager factionManager) {
+		if(botWorkers.size()<10) {
+			if(money>25) {
+				for(ProductionBuilding building : botProdBuildings) {
+					if(building.getId() == EntityConfiguration.HQ) {
+						if(!building.getIsProducing()) {
+							int price = building.startProd(EntityConfiguration.WORKER, money);
+							factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - price);
+							System.out.println("start prod");
+						}
+					}
+				}
+			}
+		}
+	}
+	//getter & setter
 	public void setBarrackBuild(boolean barrackBuild) {
 		this.barrackBuild = barrackBuild;
 	}
@@ -133,5 +153,13 @@ public class BotManager {
 
 	public void setHqBuild(boolean hqBuild) {
 		this.hqBuild = hqBuild;
+	}
+
+	public FactionManager getFactionManager() {
+		return factionManager;
+	}
+
+	public void setFactionManager(FactionManager factionManager) {
+		this.factionManager = factionManager;
 	}
 }
