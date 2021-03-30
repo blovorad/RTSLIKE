@@ -1,7 +1,9 @@
 package engine.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
 import engine.Position;
@@ -12,6 +14,7 @@ import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Fighter;
 import engine.entity.unit.Worker;
 import engine.map.Fog;
+import engine.math.Collision;
 
 public class BotManager {
 	
@@ -36,6 +39,11 @@ public class BotManager {
 	
 	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources) {
 		updateFog(botEntities);
+		List<Ressource> visibleRessources = getVisibleRessources(ressources, fog);
+		//System.out.println("nb ressource : " + visibleRessources.size());
+		List<Worker> IdleWorker = getIdleWorker(botWorkers);
+		//System.out.println("nb idle : " + IdleWorker.size());
+		recolte(IdleWorker, visibleRessources);
 		
 	}
 	
@@ -43,6 +51,63 @@ public class BotManager {
 		for(Entity entity : botEntities) {
 			Position p = entity.getPosition();
 			fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange());
+		}
+	}
+	
+	//tools
+	public List<Worker> getIdleWorker(List<Worker> botWorkers){
+		List<Worker> idleWorker = new ArrayList<Worker>();
+		for(Worker worker : botWorkers) {
+			if(worker.getCurrentAction() == EntityConfiguration.IDDLE) {
+				idleWorker.add(worker);
+			}
+		}
+		return idleWorker;
+	}
+	
+	public List<Ressource> getVisibleRessources(List<Ressource> ressources, Fog fog){
+		List<Ressource> visibleRessources = new ArrayList<Ressource>();
+		boolean[][] tabFog = fog.getFog();
+		for(int i=0; i<GameConfiguration.LINE_COUNT; i++) {
+			for(int j=0; j<GameConfiguration.COLUMN_COUNT; j++) {
+			}
+		}
+		for(Ressource ressource : ressources) {
+			int x = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
+            int y = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
+			if(tabFog[y][x] == false) {
+				visibleRessources.add(ressource);
+			}
+		}
+		return visibleRessources;
+	}
+	
+	public int calculate(Position position, Worker worker)
+	{
+		return (int) Math.sqrt(Math.pow(position.getX() - worker.getPosition().getX(), 2) + Math.pow(position.getY() - worker.getPosition().getY(), 2));
+	}
+	
+	
+	//states
+	public void explore() {
+		
+	}
+	
+	public void recolte(List<Worker> IdleWorker, List<Ressource> visibleRessources) {
+		for(Worker worker : IdleWorker) {
+			if(visibleRessources.isEmpty() == false) {
+				Ressource ressource = visibleRessources.get(0);
+				for(Ressource visibleRessource : visibleRessources) {
+					int distanceRessource;
+					distanceRessource = calculate(ressource.getPosition(), worker);
+					if(distanceRessource > calculate(visibleRessource.getPosition(), worker) && visibleRessource.getHp() > 0 )
+					{
+						ressource = visibleRessource;
+					}
+				}
+				worker.initRessource(visibleRessources.get(0));
+				System.out.println("au travail fdp !");
+			}
 		}
 	}
 

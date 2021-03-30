@@ -152,7 +152,12 @@ public class EntitiesManager
 		}
 		
 		for(Worker worker : workers) {
-			worker.update(ressources, playerStorageBuildings);
+			if(worker.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+                worker.update(ressources, playerStorageBuildings);
+            }
+            else {
+                worker.update(ressources, botStorageBuildings);
+            }
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);
@@ -381,6 +386,7 @@ public class EntitiesManager
 			}
 			else {
 				botSiteConstructions.add(sc);
+				botEntities.add(sc);
 			}
 			this.waitingToAdd.add(sc);
 			this.siteConstructions.add(sc);
@@ -449,6 +455,7 @@ public class EntitiesManager
 			}
 			else {
 				botWorkers.add(worker);
+				botEntities.add(worker);
 			}
 			this.collisionList.add(worker);
 			this.drawingList.add(worker);
@@ -644,6 +651,10 @@ public class EntitiesManager
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(bprod);
 			}
+			else {
+				botProdBuildings.add(bprod);
+				botEntities.add(bprod);
+			}
 			this.drawingList.add(bprod);
 			this.prodBuildings.add(bprod);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
@@ -660,6 +671,7 @@ public class EntitiesManager
 			}
 			else if(faction == EntityConfiguration.BOT_FACTION) {
 				this.botStorageBuildings.add(bstorage);
+				botEntities.add(bstorage);
 			}
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout building storage");
@@ -667,6 +679,10 @@ public class EntitiesManager
 		else if(battack != null) {
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(battack);
+			}
+			else {
+				botAttackBuildings.add(battack);
+				botEntities.add(battack);
 			}
 			this.drawingList.add(battack);
 			this.attackBuildings.add(battack);
