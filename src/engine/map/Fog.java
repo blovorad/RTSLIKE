@@ -28,7 +28,6 @@ public class Fog {
 	}
 	
 	public void clearFog(int x, int y, int sightRange) {
-		
 		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
 				if(fog[lineIndex][columnIndex] == true) {

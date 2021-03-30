@@ -117,8 +117,10 @@ public class MainGui extends JFrame implements Runnable
 			{
 				System.out.println(e.getMessage());
 			}
-			manager.update();
-			camera.update();
+			if(dashboard.getState() == GameConfiguration.INGAME) {
+				manager.update();
+				camera.update();
+			}
 			audioManager.update();
 			dashboard.update();
 			dashboard.repaint();

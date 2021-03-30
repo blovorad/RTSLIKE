@@ -1,5 +1,6 @@
 package engine.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import configuration.GameConfiguration;
@@ -36,7 +37,6 @@ public class BotManager {
 	
 	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources) {
 		updateFog(botEntities);
-		
 	}
 	
 	public void updateFog(List<Entity> botEntities) {
@@ -45,6 +45,19 @@ public class BotManager {
 			fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange());
 		}
 	}
+	
+	public List<Ressource> getVisibleRessources(List<Ressource> ressources, Fog fog){
+        List<Ressource> visibleRessources = new ArrayList<Ressource>();
+        boolean[][] tabFog = fog.getFog();
+        for(Ressource ressource : ressources) {
+            int x = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
+            int y = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
+            if(tabFog[y][x] == false) {
+                visibleRessources.add(ressource);
+            }
+        }
+        return visibleRessources;
+    }
 
 	public void setBarrackBuild(boolean barrackBuild) {
 		this.barrackBuild = barrackBuild;

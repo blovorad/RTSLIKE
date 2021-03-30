@@ -147,13 +147,15 @@ public class Worker extends Unit
 		// Pose ces ressources si il en a et si on click sur un batiment de stockage
 		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
 		{
+			nearbyStorage(storageBuildings);
 			this.storageBuilding.addRessource(this.quantityRessource);
+			storageBuildings = null;
 			this.quantityRessource = 0;
 			this.setTarget(null);
 		}	
 		
 		//réparee les batiments
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION)
+		else if(this.getTarget() != null && this.getTarget().getFaction() == this.getFaction())
 		{
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{

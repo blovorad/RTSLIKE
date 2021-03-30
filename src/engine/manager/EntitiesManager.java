@@ -76,7 +76,10 @@ public class EntitiesManager
 	private List<ProductionBuilding> removeProdBuildings = new ArrayList<ProductionBuilding>();
 	
 	private List<StorageBuilding> storageBuildings;
+	
 	private List<StorageBuilding> playerStorageBuildings;
+	private List<ProductionBuilding> playerProdBuildings;
+	private List<AttackBuilding> playerAttackBuildings;
 	
 	private List<StorageBuilding> botStorageBuildings;
 	private List<ProductionBuilding> botProdBuildings;
@@ -112,6 +115,8 @@ public class EntitiesManager
 		this.storageBuildings = new ArrayList<StorageBuilding>();
 		this.playerStorageBuildings = new ArrayList<StorageBuilding>();
 		this.siteConstructions = new ArrayList<SiteConstruction>();
+		this.playerAttackBuildings = new ArrayList<AttackBuilding>();
+		this.playerProdBuildings = new ArrayList<ProductionBuilding>();
 		
 		this.botStorageBuildings = new ArrayList<StorageBuilding>();
 		this.botProdBuildings = new ArrayList<ProductionBuilding>();
@@ -152,7 +157,12 @@ public class EntitiesManager
 		}
 		
 		for(Worker worker : workers) {
-			worker.update(ressources, playerStorageBuildings);
+			if(worker.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+				worker.update(ressources, playerStorageBuildings);
+			}
+			else {
+				worker.update(ressources, botStorageBuildings);
+			}
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);
@@ -259,6 +269,7 @@ public class EntitiesManager
 			if(removeAttackBuildings.contains(selectedAttackBuilding)) {
 				clearSelectedAttackBuilding();
 			}
+			playerAttackBuildings.removeAll(removeAttackBuildings);
 			botEntities.removeAll(removeAttackBuildings);
 			botAttackBuildings.removeAll(removeAttackBuildings);
 			attackBuildings.removeAll(removeAttackBuildings);
@@ -273,6 +284,7 @@ public class EntitiesManager
 			if(removeProdBuildings.contains(selectedProdBuilding)) {
 				clearSelectedProdBuilding();
 			}
+			playerProdBuildings.removeAll(removeProdBuildings);
 			botEntities.removeAll(removeProdBuildings);
 			botProdBuildings.removeAll(removeProdBuildings);
 			prodBuildings.removeAll(removeProdBuildings);
@@ -380,6 +392,7 @@ public class EntitiesManager
 				playerEntities.add(sc);
 			}
 			else {
+				botEntities.add(sc);
 				botSiteConstructions.add(sc);
 			}
 			this.waitingToAdd.add(sc);
@@ -418,6 +431,7 @@ public class EntitiesManager
 				playerFighters.add(fighter);
 			}
 			else {
+				botEntities.add(fighter);
 				botFighters.add(fighter);
 			}
 			this.collisionList.add(fighter);
@@ -448,6 +462,7 @@ public class EntitiesManager
 				playerWorkers.add(worker);
 			}
 			else {
+				botEntities.add(worker);
 				botWorkers.add(worker);
 			}
 			this.collisionList.add(worker);
@@ -643,6 +658,11 @@ public class EntitiesManager
 		if(bprod != null) {
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(bprod);
+				playerProdBuildings.add(bprod);
+			}
+			else {
+				botEntities.add(bprod);
+				botProdBuildings.add(bprod);
 			}
 			this.drawingList.add(bprod);
 			this.prodBuildings.add(bprod);
@@ -660,6 +680,7 @@ public class EntitiesManager
 			}
 			else if(faction == EntityConfiguration.BOT_FACTION) {
 				this.botStorageBuildings.add(bstorage);
+				botEntities.add(bstorage);
 			}
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
 			System.out.println("ajout building storage");
@@ -667,6 +688,11 @@ public class EntitiesManager
 		else if(battack != null) {
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(battack);
+				playerAttackBuildings.add(battack);
+			}
+			else {
+				botEntities.add(battack);
+				botAttackBuildings.add(battack);
 			}
 			this.drawingList.add(battack);
 			this.attackBuildings.add(battack);
@@ -720,6 +746,9 @@ public class EntitiesManager
 		this.botStorageBuildings.clear();
 		this.botWorkers.clear();
 		this.botEntities.clear();
+		
+		this.playerAttackBuildings.clear();
+		this.playerProdBuildings.clear();
 		
 		this.playerEntities.clear();
 		this.collisionList.clear();
@@ -962,5 +991,13 @@ public class EntitiesManager
 
 	public BotManager getBotManager() {
 		return botManager;
+	}
+
+	public List<ProductionBuilding> getPlayerProdBuildings() {
+		return playerProdBuildings;
+	}
+
+	public List<AttackBuilding> getPlayerAttackBuildings() {
+		return playerAttackBuildings;
 	}
 }
