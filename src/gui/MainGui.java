@@ -681,6 +681,7 @@ public class MainGui extends JFrame implements Runnable
 									unit.calculateSpeed(new Position(mouseX, mouseY));
 									unit.setCurrentAction(EntityConfiguration.WALK);
 									unit.setTarget(null);
+									unit.setCurrentAction(EntityConfiguration.WALK);
 								}
 							}
 							else {

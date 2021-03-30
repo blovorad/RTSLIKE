@@ -958,10 +958,9 @@ public class GameDisplay extends JPanel
 				}
 				manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setUpgradeAge(false);
 			}
-			
-			Iterator<Entity> iterateur = manager.getDrawingList().iterator();
-			while(iterateur.hasNext()) {
-				Entity entity = iterateur.next();
+
+			List<Entity> entities = manager.getDrawingList();
+			for(Entity entity : entities) {
 				Position p = entity.getPosition();
 				fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange());
 			}
@@ -1005,9 +1004,8 @@ public class GameDisplay extends JPanel
 				ressource = manager.getSelectedRessource();
 			}
 			
-			Iterator<Entity> iterateur = entities.iterator();
-			while(iterateur.hasNext()) {
-				this.paintStrategyGame.paint(iterateur.next(), g, camera, graphicsManager);
+			for(Entity entity : entities) {
+				this.paintStrategyGame.paint(entity, g, camera, graphicsManager);
 			}
 			
 			for(Unit unit : units) {

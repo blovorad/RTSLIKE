@@ -84,6 +84,8 @@ public class EntitiesManager
 	
 	private List<SiteConstruction> siteConstructions;
 	private List<SiteConstruction> removeSiteConstructions = new ArrayList<SiteConstruction>();
+	
+	private List<Entity> waitingToAdd = new ArrayList<Entity>();
 
 	
 	public EntitiesManager(AudioManager audioManager) 
@@ -111,6 +113,11 @@ public class EntitiesManager
 	
 	public void update() 
 	{
+		if(waitingToAdd.isEmpty() == false) {
+			drawingList.addAll(waitingToAdd);
+			waitingToAdd.clear();
+		}
+		
 		for(Fighter fighter : fighters) 
 		{
 			fighter.update();
@@ -339,7 +346,7 @@ public class EntitiesManager
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(sc);
 			}
-			this.drawingList.add(sc);
+			this.waitingToAdd.add(sc);
 			this.siteConstructions.add(sc);
 			System.out.println("ajout d'un site de construction");
 		}
