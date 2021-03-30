@@ -254,9 +254,7 @@ public class Unit extends Entity
 		else if(currentAction == EntityConfiguration.ATTACK || currentAction == EntityConfiguration.HARVEST || currentAction == EntityConfiguration.REPAIR) {
 			this.getAnimation().setFrameState(EntityConfiguration.ATTACK);
 		}
-		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget()))
-		{
-			this.attack(this.getDamage());
+		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget())) {
 			this.attack(5);
 		}
 	}

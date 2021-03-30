@@ -94,7 +94,7 @@ public class Worker extends Unit
 	{
 		
 	}
-
+	
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
@@ -114,12 +114,13 @@ public class Worker extends Unit
 					this.quantityRessource = 0;
 				}
 			}
-					
+			
+			// met la ressource a null quand fini
 			else if(this.getRessource() != null && this.getRessource().getHp() <= 0)
 			{
 				this.ressource = null;
 			}
-			
+
 			else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
 				this.storageBuilding.addRessource(this.quantityRessource);
@@ -131,7 +132,7 @@ public class Worker extends Unit
 			else if(this.ressource == null && !ressources.isEmpty())
 			{
 				this.ressource = null;
-				nearbyResource(ressources);
+				nearbyRessource(ressources);
 				this.setTarget(this.ressource);
 			}
 					
@@ -151,22 +152,30 @@ public class Worker extends Unit
 			
 			
 					
-			}
+		}
 		
-			//réparee les batiments
-			else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax())
+		// Pose ces ressources si il en a et si on click sur un batiment de stockage
+		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
+		{
+			this.storageBuilding.addRessource(this.quantityRessource);
+			this.quantityRessource = 0;
+			this.setTarget(null);
+		}	
+		
+		//rÃ©paree les batiments
+		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION && this.getTarget().getHp() < this.getTarget().getHpMax())
+		{
+			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
-				if(Collision.collideUnit(this.getTarget().getPosition(), this))
-				{
-					this.toRepair();
-					this.getSpeed().reset();
-				}
+				this.toRepair();
+				this.getSpeed().reset();
 			}
+		}
 		
 		
 	}
 	
-	public void nearbyResource(List<Ressource> ressources)
+	public void nearbyRessource(List<Ressource> ressources)
 	{
 		if(!ressources.isEmpty())
 		{
