@@ -42,6 +42,7 @@ public class EntitiesManager
 	private FactionManager factionManager;
 	private GraphicsManager graphicsManager;
 	private AudioManager audioManager;
+	private BotManager botManager;
 	
 	private List<Entity> collisionList = new ArrayList<Entity>();
 	private List<Entity> drawingList = new ArrayList<Entity>();
@@ -908,5 +909,9 @@ public class EntitiesManager
 
 	public SiteConstruction getSelectedSiteConstruction() {
 		return selectedSiteConstruction;
+	}
+
+	public BotManager getBotManager() {
+		return botManager;
 	}
 }
