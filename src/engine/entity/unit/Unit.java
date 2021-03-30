@@ -84,14 +84,14 @@ public class Unit extends Entity
 		{
 			if(this.timer <= 0)
 			{
-				if(this.getTarget().getHp() > 0)
+				if(this.getTarget().getHp() >= 0)
 				{
 					this.getTarget().damage(damage);
 					
 					this.timer = this.attackSpeed;
+					this.checkTarget();
 				}
 			}
-			
 			this.timer --;
 		}
 	}
@@ -239,6 +239,26 @@ public class Unit extends Entity
 			this.getSpeed().setVy(0);
 		}
 		
+
+		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideattack(this.getTarget(), this) ) //Collision.collideEntity(this, this.getTarget()) Collision.collideattack(this, this.getTarget())
+		{
+			this.checkTarget();
+			System.out.println(this.getTarget());
+			this.getSpeed().reset();
+			this.attack(this.getDamage());
+			System .out.println("timer: " + this.timer);
+			
+			if(this.getTarget() == null)
+			{
+				this.setCurrentAction(EntityConfiguration.IDDLE);
+				this.timer = this.attackSpeed;
+			}
+			else
+			{
+				this.setCurrentAction(EntityConfiguration.ATTACK);
+			}
+		}
+		
 		manageState();
 	}
 	
@@ -255,13 +275,6 @@ public class Unit extends Entity
 		}
 		
 		
-		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget()))
-		{
-			System.out.println();
-			this.attack(5);
-			this.attack(this.getDamage());
-			System .out.println(this.timer);
-		}
 	}
 
 	public int getAttackSpeed() {

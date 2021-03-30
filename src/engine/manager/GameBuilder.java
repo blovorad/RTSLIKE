@@ -35,7 +35,7 @@ public class GameBuilder {
 		manager.getFactionManager().addFaction(EntityConfiguration.BOT_FACTION, faction2);
 		manager.getFactionManager().addFaction(EntityConfiguration.GAIA_FACTION, gaia);
 		
-		//création du joueur
+		//crï¿½ation du joueur
 		Tile tile2 = map.getTile(5, 5);
 		Tile tile = map.getTile(9, 5);
 		ForWorker patron = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
@@ -52,7 +52,7 @@ public class GameBuilder {
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p3, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p4, null);
 		
-		//création d'un ennemie
+		//crï¿½ation d'un ennemie
 		tile = map.getTile(84, 84);
 		tile2 = map.getTile(82, 88);
 		patron = manager.getFactionManager().getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
@@ -68,6 +68,15 @@ public class GameBuilder {
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p2, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p3, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p4, null);
+		
+		//rajout a effacer
+		Tile tile3 = map.getTile(12, 12);
+        Position p5 = new Position(9 * GameConfiguration.TILE_SIZE, 9 * GameConfiguration.TILE_SIZE);
+        manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, p5, tile3);
+        
+        Tile tile4 = map.getTile(9, 9);
+        Position p6 = new Position(12 * GameConfiguration.TILE_SIZE, 12 * GameConfiguration.TILE_SIZE);
+        manager.createBuilding(EntityConfiguration.BARRACK, EntityConfiguration.PLAYER_FACTION, p6, tile4);
 	}
 	
 }

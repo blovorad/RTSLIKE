@@ -97,4 +97,44 @@ public class Collision {
 		return false;
 	}
 	
+	public static boolean collideattack(Entity target , Unit attacker) 
+	{
+		int sizeAttacker;
+		int sizeTarget;
+		
+		if(target.getId() >= EntityConfiguration.FORGE && target.getId() <= EntityConfiguration.ARCHERY)
+		{
+			sizeTarget = GameConfiguration.TILE_SIZE;
+		}
+		else
+		{
+			if(target.getId() == EntityConfiguration.CAVALRY)
+			{
+				sizeTarget = EntityConfiguration.CAVALRY_SIZE;
+			}
+			else
+			{
+				sizeTarget = EntityConfiguration.UNIT_SIZE;
+			}
+		}
+		
+		if(target.getId() == EntityConfiguration.CAVALRY)
+		{
+			sizeAttacker = EntityConfiguration.CAVALRY_SIZE;
+		}
+		else
+		{
+			sizeAttacker = EntityConfiguration.UNIT_SIZE;
+		}
+		
+		Rectangle r1 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), sizeTarget, sizeTarget);
+		Rectangle r2 = new Rectangle(attacker.getPosition().getX() - attacker.getAttackRange()/2*sizeAttacker, attacker.getPosition().getY() - attacker.getAttackRange()/2*sizeAttacker, attacker.getAttackRange()*2*sizeAttacker, attacker.getAttackRange()*2*sizeAttacker);
+		
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 }
