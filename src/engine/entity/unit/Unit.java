@@ -256,7 +256,7 @@ public class Unit extends Entity
 		}
 		
 		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget())) {
-			this.attack(5);
+			//this.attack(5);
 		}
 	}
 
