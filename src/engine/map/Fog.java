@@ -1,6 +1,9 @@
 package engine.map;
 
+import java.util.List;
+
 import configuration.GameConfiguration;
+import engine.Entity;
 
 /**
  * 
@@ -11,6 +14,7 @@ import configuration.GameConfiguration;
 public class Fog {
 	
 	private boolean[][]fog;
+	private FogCase[][] dynamicFog;
 	private int lineCount;
 	private int columnCount;
 	
@@ -19,21 +23,46 @@ public class Fog {
 		this.setColumnCount(columnCount);
 		
 		fog = new boolean[lineCount][columnCount];
+		dynamicFog = new FogCase[lineCount][columnCount];
 		
 		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
 				fog[lineIndex][columnIndex] = true;
+				dynamicFog[lineIndex][columnIndex] = new FogCase();
 			}
 		}
 	}
 	
-	public void clearFog(int x, int y, int sightRange) {
+	public void resetDynamicFog() {
 		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
-				if(fog[lineIndex][columnIndex] == true) {
-					double dist =  Math.sqrt(Math.pow(x - columnIndex * GameConfiguration.TILE_SIZE, 2) + Math.pow(y - lineIndex * GameConfiguration.TILE_SIZE, 2));
-					if(dist < sightRange) {
-						fog[lineIndex][columnIndex] = false;
+				dynamicFog[lineIndex][columnIndex].setLocked(false);
+			}
+		}
+	}
+	
+	public void clearFog(int x, int y, int sightRange, Entity entity, List<Entity>drawingList) {
+		for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
+			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
+				double dist =  Math.sqrt(Math.pow(x - columnIndex * GameConfiguration.TILE_SIZE, 2) + Math.pow(y - lineIndex * GameConfiguration.TILE_SIZE, 2));
+				if(dist < sightRange) {
+					fog[lineIndex][columnIndex] = false;
+					if(drawingList != null) {
+						if(!drawingList.contains(entity)) {
+							//drawingList.add(entity);
+						}
+					}
+					dynamicFog[lineIndex][columnIndex].setVisible(false);
+					dynamicFog[lineIndex][columnIndex].setLocked(true);
+				}
+				else {
+					if(dynamicFog[lineIndex][columnIndex].getLocked() == false) {
+						dynamicFog[lineIndex][columnIndex].setVisible(true);
+						if(drawingList != null) {
+							if(drawingList.contains(entity)) {
+								//drawingList.remove(entity);
+							}
+						}
 					}
 				}
 			}
@@ -42,6 +71,10 @@ public class Fog {
 
 	public boolean[][] getFog() {
 		return fog;
+	}
+	
+	public FogCase[][] getDynamicFog(){
+		return dynamicFog;
 	}
 
 	public void setFog(boolean[][] fog) {

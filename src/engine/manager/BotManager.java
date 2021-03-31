@@ -67,7 +67,7 @@ public class BotManager {
 	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources) {
 		updateFog(botEntities);
 		int money = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getMoneyCount();
-		System.out.println("money : " + money);
+		//System.out.println("money : " + money);
 		List<Ressource> visibleRessources = getVisibleRessources(ressources, fog);
 		//System.out.println("nb ressource : " + visibleRessources.size());
 		List<Worker> IdleWorker = getIdleWorker(botWorkers);
@@ -79,7 +79,7 @@ public class BotManager {
 	public void updateFog(List<Entity> botEntities) {
 		for(Entity entity : botEntities) {
 			Position p = entity.getPosition();
-			fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange());
+			fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange(), entity, null);
 		}
 	}
 	//tools
