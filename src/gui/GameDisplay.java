@@ -1706,8 +1706,16 @@ public class GameDisplay extends JPanel
 	public void setFog(Fog fog) {
 		this.fog = fog;
 	}
+	
+	public JPanel getMinimapPanel() {
+		return minimapPanel;
+	}
 
 	public Minimap getMinimap() {
 		return minimap;
+	}
+
+	public JPanel getDescriptionPanel() {
+		return descriptionPanel;
 	}
 }

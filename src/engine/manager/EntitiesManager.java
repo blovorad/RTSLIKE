@@ -126,7 +126,7 @@ public class EntitiesManager
 		this.botWorkers = new ArrayList<Worker>();
 		this.botEntities = new ArrayList<Entity>();
 		
-		this.botManager = new BotManager();
+		this.botManager = new BotManager(factionManager);
 		
 		
 		this.selectedAttackBuilding = null;
@@ -163,6 +163,7 @@ public class EntitiesManager
 			else {
 				worker.update(ressources, botStorageBuildings);
 			}
+
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);
@@ -394,6 +395,7 @@ public class EntitiesManager
 			else {
 				botEntities.add(sc);
 				botSiteConstructions.add(sc);
+				botEntities.add(sc);
 			}
 			this.waitingToAdd.add(sc);
 			this.siteConstructions.add(sc);
@@ -464,6 +466,7 @@ public class EntitiesManager
 			else {
 				botEntities.add(worker);
 				botWorkers.add(worker);
+				botEntities.add(worker);
 			}
 			this.collisionList.add(worker);
 			this.drawingList.add(worker);
