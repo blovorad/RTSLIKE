@@ -122,7 +122,6 @@ public class MainGui extends JFrame implements Runnable
 				manager.update();
 				camera.update();
 			}
-
 			audioManager.update();
 			dashboard.update();
 			dashboard.repaint();
@@ -588,48 +587,47 @@ public class MainGui extends JFrame implements Runnable
 		{
 			if(dashboard.getState() == GameConfiguration.INGAME)
 			{
+				int mouseX = e.getX() + camera.getX();
+				int mouseY = e.getY() + camera.getY();
 				JPanel leftDownPanel = dashboard.getDescriptionPanel();
 				JPanel rightDownPanel = dashboard.getMinimapPanel();
-				if(!Collision.collidePanel(leftDownPanel, e.getX(), e.getY()) && !Collision.collidePanelMinimap(rightDownPanel, e.getX(), e.getY())) {
-					int mouseX = e.getX() + camera.getX();
-					int mouseY = e.getY() + camera.getY();
-	
-					if(e.getButton() == 1)
-					{
-						Minimap minimap = dashboard.getMinimap();
-	
-						if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
-							int x = e.getX() - minimap.getFirstGridXOfMap();
-							int y = e.getY() - minimap.getFirstGridYOfMap();
-							x /= minimap.getGridMapWidth();
-							y /= minimap.getGridMapHeight();
-	
-							x *= GameConfiguration.TILE_SIZE;
-							y *= GameConfiguration.TILE_SIZE;
-							
-							x -= camera.getScreenWidth() / 2;
-							y -= camera.getScreenHeight() / 2;
-							
-							if(x < 0){
-								x = 0;
-							}
-							else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth()){
-								x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
-							}
-							
-							if(y < 0){
-								y = 0;
-							}
-							else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight()){
-								y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
-							}
-							
-							Position p = new Position(x, y);
-							camera.setX(p.getX());
-							camera.setY(p.getY());
-							moveMinimap = true;
+				if(e.getButton() == 1)
+				{
+					Minimap minimap = dashboard.getMinimap();
+
+					if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
+						int x = e.getX() - minimap.getFirstGridXOfMap();
+						int y = e.getY() - minimap.getFirstGridYOfMap();
+						x /= minimap.getGridMapWidth();
+						y /= minimap.getGridMapHeight();
+
+						x *= GameConfiguration.TILE_SIZE;
+						y *= GameConfiguration.TILE_SIZE;
+						
+						x -= camera.getScreenWidth() / 2;
+						y -= camera.getScreenHeight() / 2;
+						
+						if(x < 0){
+							x = 0;
 						}
-						else if(mouse.getId() > -1){
+						else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth()){
+							x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
+						}
+						
+						if(y < 0){
+							y = 0;
+						}
+						else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight()){
+							y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
+						}
+						
+						Position p = new Position(x, y);
+						camera.setX(p.getX());
+						camera.setY(p.getY());
+						moveMinimap = true;
+					}
+					if(!Collision.collidePanel(leftDownPanel, e.getX(), e.getY()) && !Collision.collidePanelMinimap(rightDownPanel, e.getX(), e.getY())) {
+						if(mouse.getId() > -1){
 							Tile tile = dashboard.getMap().getTile((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE, (e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE);
 							if(tile.isSolid() == false){
 								int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
@@ -658,7 +656,9 @@ public class MainGui extends JFrame implements Runnable
 							selectionRectangle.setH(0);
 						}
 					}
-					else if(e.getButton() == 3){
+				}
+				else if(e.getButton() == 3){
+					if(!Collision.collidePanel(leftDownPanel, e.getX(), e.getY()) && !Collision.collidePanelMinimap(rightDownPanel, e.getX(), e.getY())) {
 						if(mouse.getId() > -1) {
 							mouse.setId(-1);
 						}

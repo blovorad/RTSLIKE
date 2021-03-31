@@ -126,13 +126,14 @@ public class EntitiesManager
 		this.botWorkers = new ArrayList<Worker>();
 		this.botEntities = new ArrayList<Entity>();
 		
-		this.botManager = new BotManager(factionManager);
-		
-		
 		this.selectedAttackBuilding = null;
 		this.selectedProdBuilding = null;
 		this.selectedStorageBuilding = null;
 		this.selectedSiteConstruction = null;
+	}
+	
+	public void createBotManager() {
+		this.botManager = new BotManager(factionManager);
 	}
 	
 	public void update() 
@@ -163,7 +164,6 @@ public class EntitiesManager
 			else {
 				worker.update(ressources, botStorageBuildings);
 			}
-
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);

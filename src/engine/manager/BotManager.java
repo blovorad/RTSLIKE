@@ -1,6 +1,8 @@
 package engine.manager;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
@@ -16,6 +18,7 @@ import engine.entity.unit.Fighter;
 import engine.entity.unit.Worker;
 import engine.map.Fog;
 import engine.math.Collision;
+import factionConfiguration.Race;
 
 public class BotManager {
 	
@@ -27,6 +30,7 @@ public class BotManager {
 	private boolean hqBuild;
 	private Fog fog;
 	private FactionManager factionManager;
+	private AbstractMap<Integer, Integer> priceOfEntity;
 	
 	public BotManager(FactionManager factionManager) {
 		barrackBuild = false;
@@ -37,6 +41,27 @@ public class BotManager {
 		hqBuild = false;
 		setFactionManager(factionManager);
 		fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
+		Race race = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace();
+		
+		priceOfEntity = new HashMap<Integer, Integer>();
+		
+		for(int i = EntityConfiguration.INFANTRY; i < EntityConfiguration.ARCHERY + 1; i++) {
+			if(i >= EntityConfiguration.INFANTRY && i <= EntityConfiguration.SPECIAL_UNIT) {
+				priceOfEntity.put(i, race.getPatronFighters().get(i).getCost());
+			}
+			else if(i == EntityConfiguration.WORKER) {
+				priceOfEntity.put(i, race.getPatronWorkers().get(i).getCost());
+			}
+			else if(i == EntityConfiguration.STORAGE) {
+				priceOfEntity.put(i, race.getStorageBuildings().get(i).getCost());
+			}
+			else if(i == EntityConfiguration.TOWER) {
+				priceOfEntity.put(i, race.getAttackBuildings().get(i).getCost());
+			}
+			else {
+				priceOfEntity.put(i, race.getProductionBuildings().get(i).getCost());
+			}
+		}
 	}
 	
 	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources) {
@@ -115,8 +140,8 @@ public class BotManager {
 	}
 	
 	public void prodWorker(List<Worker> botWorkers, int money, List<ProductionBuilding> botProdBuildings, FactionManager factionManager) {
-		if(botWorkers.size()<10) {
-			if(money>25) {
+		if(botWorkers.size() < 10) {
+			if(money > priceOfEntity.get(EntityConfiguration.WORKER)) {
 				for(ProductionBuilding building : botProdBuildings) {
 					if(building.getId() == EntityConfiguration.HQ) {
 						if(!building.getIsProducing()) {
