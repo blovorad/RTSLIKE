@@ -34,7 +34,7 @@ public class GameBuilder {
 		manager.getFactionManager().addFaction(EntityConfiguration.PLAYER_FACTION, faction1);
 		manager.getFactionManager().addFaction(EntityConfiguration.BOT_FACTION, faction2);
 		manager.getFactionManager().addFaction(EntityConfiguration.GAIA_FACTION, gaia);
-		manager.createBotManager();
+		manager.createBotManager(manager.getGraphicsManager(), map);
 		
 		//création du joueur
 		Tile tile2 = map.getTile(5, 5);

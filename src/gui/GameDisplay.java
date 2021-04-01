@@ -985,7 +985,7 @@ public class GameDisplay extends JPanel
 				manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setUpgradeAge(false);
 			}
 
-			List<Entity> entities = manager.getPlayerEntities();
+			List<Entity> entities =  manager.getDrawingList();
 
 			fog.resetDynamicFog();
 			for(Entity entity : entities) {

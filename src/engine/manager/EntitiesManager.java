@@ -22,6 +22,7 @@ import engine.entity.building.Tower;
 import engine.entity.unit.Fighter;
 import engine.entity.unit.Unit;
 import engine.entity.unit.Worker;
+import engine.map.Map;
 import engine.map.Tile;
 import factionConfiguration.ForAttackBuilding;
 import factionConfiguration.ForFighter;
@@ -132,8 +133,8 @@ public class EntitiesManager
 		this.selectedSiteConstruction = null;
 	}
 	
-	public void createBotManager() {
-		this.botManager = new BotManager(factionManager);
+	public void createBotManager(GraphicsManager graphicsManager, Map map) {
+		this.botManager = new BotManager(factionManager, graphicsManager, map);
 	}
 	
 	public void update() 
@@ -144,7 +145,15 @@ public class EntitiesManager
 		}
 		
 		if(botManager != null) {
-			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources);
+			SiteConstruction sc = botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions);
+			if(sc != null) {
+				botEntities.add(sc);
+				botSiteConstructions.add(sc);
+				botEntities.add(sc);
+				this.waitingToAdd.add(sc);
+				this.siteConstructions.add(sc);
+				System.out.println("ajout d'un site de construction");
+			}
 		}
 		
 		for(Fighter fighter : fighters) 
@@ -1002,5 +1011,13 @@ public class EntitiesManager
 
 	public List<AttackBuilding> getPlayerAttackBuildings() {
 		return playerAttackBuildings;
+	}
+
+	public GraphicsManager getGraphicsManager() {
+		return graphicsManager;
+	}
+
+	public void setGraphicsManager(GraphicsManager graphicsManager) {
+		this.graphicsManager = graphicsManager;
 	}
 }
