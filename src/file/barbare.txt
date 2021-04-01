@@ -1,10 +1,10 @@
 infantry
-attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 7;description : infantry barbare;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 512;range : 10;damage : 5; armor : 5;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 7;description : infantry barbare;hpMax : 20;cost : 25;
 archer
-attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 15;description : archer barbare;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 512;range : 10;damage : 5; armor : 5;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 15;description : archer barbare;hpMax : 20;cost : 25;
 cavalry
-attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 10;hp : 20;age : 1;timeToBuild : 10;description : cavalry barbare;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 512;range : 10;damage : 5; armor : 5;maxSpeed : 10;hp : 20;age : 1;timeToBuild : 10;description : cavalry barbare;hpMax : 20;cost : 25;
 special
-attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 7;hp : 20;age : 1;timeToBuild : 10;description : special barbare;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 512;range : 10;damage : 5; armor : 5;maxSpeed : 7;hp : 20;age : 1;timeToBuild : 10;description : special barbare;hpMax : 20;cost : 25;
 worker
-attackRange : 5;attackSpeed : 10;sightRange : 300;range : 20;damage : 5;armor : 3;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 15;description : travailleur barbare;hpMax : 20;ressourceMax : 3;harvest : 1;repair : 10;harvestSpeed : 10;repairSpeed : 15;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 512;range : 20;damage : 5;armor : 3;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 15;description : travailleur barbare;hpMax : 20;ressourceMax : 10;harvest : 1;repair : 10;harvestSpeed : 20;repairSpeed : 15;cost : 25;

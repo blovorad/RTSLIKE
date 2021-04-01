@@ -118,4 +118,24 @@ public class Collision {
 		
 		return false;
 	}
+
+	public static boolean collideFogEntity(int xTab, int yTab, int widthTab, int heightTab, Entity botEntity) {
+		int tileSize = GameConfiguration.TILE_SIZE;
+		int entitySize = GameConfiguration.TILE_SIZE;
+		if(botEntity.getId() == EntityConfiguration.CAVALRY) {
+			entitySize = EntityConfiguration.CAVALRY_SIZE;
+		}
+		else if(botEntity.getId() <= EntityConfiguration.WORKER) {
+			entitySize = EntityConfiguration.UNIT_SIZE;
+		}
+		
+		Rectangle r1 = new Rectangle(xTab * tileSize, yTab * tileSize, widthTab * tileSize - xTab * tileSize, heightTab * tileSize - yTab * tileSize);
+		Rectangle r2 = new Rectangle(botEntity.getPosition().getX(), botEntity.getPosition().getY(), entitySize, entitySize);
+		
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
 }

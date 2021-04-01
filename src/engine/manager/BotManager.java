@@ -79,7 +79,7 @@ public class BotManager {
 	public void updateFog(List<Entity> botEntities) {
 		for(Entity entity : botEntities) {
 			Position p = entity.getPosition();
-			fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange(), entity, null);
+			fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
 		}
 	}
 	//tools

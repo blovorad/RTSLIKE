@@ -155,9 +155,11 @@ public class PaintStrategyGame
 		{
 			for (int columnIndex = 0; columnIndex < fog.getColumnCount(); columnIndex++) 
 			{
-				if(dynamicFog[lineIndex][columnIndex].getVisible() == true) {
-					graphics.setColor(new Color(0,0,0, 100));
-					graphics.fillRect(columnIndex * tileSize - camera.getX(), lineIndex * tileSize - camera.getY(), tileSize, tileSize);
+				if(!GameConfiguration.debug_mod) {
+					if(dynamicFog[lineIndex][columnIndex].getVisible() == true) {
+						graphics.setColor(new Color(0,0,0, 100));
+						graphics.fillRect(columnIndex * tileSize - camera.getX(), lineIndex * tileSize - camera.getY(), tileSize, tileSize);
+					}
 				}
 				if(removeFog[lineIndex][columnIndex] == true) {
 					graphics.setColor(Color.black);

@@ -985,13 +985,24 @@ public class GameDisplay extends JPanel
 				manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setUpgradeAge(false);
 			}
 
-			List<Entity> entities = manager.getPlayerEntities();
 
-			fog.resetDynamicFog();
-			for(Entity entity : entities) {
-				Position p = entity.getPosition();
-				fog.clearFog(p.getX() - entity.getSightRange() / 6, p.getY() - entity.getSightRange() / 6, entity.getSightRange(), entity, manager.getDrawingList());
-				//dynamicFog.clearFog(entity);
+			if(!GameConfiguration.debug_mod) {
+				List<Entity> entities = manager.getPlayerEntities();
+				List<Entity> botEntities = manager.getBotEntities();
+				fog.resetDynamicFog();
+				for(Entity entity : entities) {
+					Position p = entity.getPosition();
+					fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, manager.getDrawingList(), manager.getWaitingList(), manager.getRemoveList(), botEntities);
+	
+				}
+				fog.checkingBotTargetInFog(manager.getDrawingList(), manager.getWaitingList(), manager.getRemoveList());
+			}
+			else {
+				List<Entity> entities = manager.getDrawingList();
+				for(Entity entity : entities) {
+					Position p = entity.getPosition();
+					fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
+				}
 			}
 		}
 		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {
