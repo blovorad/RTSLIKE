@@ -99,6 +99,7 @@ public class EntitiesManager
 	private List<SiteConstruction> removeSiteConstructions = new ArrayList<SiteConstruction>();
 	
 	private List<Entity> waitingToAdd = new ArrayList<Entity>();
+	private List<Entity> removeList = new ArrayList<Entity>();
 
 	
 	public EntitiesManager(AudioManager audioManager) 
@@ -142,6 +143,10 @@ public class EntitiesManager
 		if(waitingToAdd.isEmpty() == false) {
 			drawingList.addAll(waitingToAdd);
 			waitingToAdd.clear();
+		}
+		if(removeList.isEmpty() == false) {
+			drawingList.removeAll(removeList);
+			removeList.clear();
 		}
 		
 		if(botManager != null) {
@@ -759,6 +764,9 @@ public class EntitiesManager
 		this.botWorkers.clear();
 		this.botEntities.clear();
 		
+		removeList.clear();
+		
+		
 		this.playerAttackBuildings.clear();
 		this.playerProdBuildings.clear();
 		
@@ -1016,8 +1024,20 @@ public class EntitiesManager
 	public GraphicsManager getGraphicsManager() {
 		return graphicsManager;
 	}
+	
+	public List<Entity> getWaitingList(){
+		return waitingToAdd;
+	}
+	
+	public List<Entity> getRemoveList(){
+		return removeList;
+	}
 
 	public void setGraphicsManager(GraphicsManager graphicsManager) {
 		this.graphicsManager = graphicsManager;
+	}
+	
+	public List<Entity> getBotEntities(){
+		return this.botEntities;
 	}
 }
