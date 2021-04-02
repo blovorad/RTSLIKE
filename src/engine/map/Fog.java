@@ -70,25 +70,27 @@ public class Fog {
 		
 		for (int lineIndex = yTab; lineIndex < heightTab; lineIndex++) {
 			for (int columnIndex = xTab; columnIndex < widthTab; columnIndex++) {
-				fog[lineIndex][columnIndex] = false;
-				if(!GameConfiguration.debug_mod) {
-					if(botEntities != null) {
-						for(Entity botEntity : botEntities) {
-							if(Collision.collideFogEntity(xTab, yTab, widthTab, heightTab, botEntity)) {
-								if(!waitingList.contains(botEntity)) {
-									waitingList.add(botEntity);
+				if(lineIndex < GameConfiguration.LINE_COUNT && columnIndex < GameConfiguration.COLUMN_COUNT) {
+					fog[lineIndex][columnIndex] = false;
+					if(!GameConfiguration.debug_mod) {
+						if(botEntities != null) {
+							for(Entity botEntity : botEntities) {
+								if(Collision.collideFogEntity(xTab, yTab, widthTab, heightTab, botEntity)) {
+									if(!waitingList.contains(botEntity)) {
+										waitingList.add(botEntity);
+									}
 								}
-							}
-							else {
-								if(!removeList.contains(botEntity)) {
-									removeList.add(botEntity);
+								else {
+									if(!removeList.contains(botEntity)) {
+										removeList.add(botEntity);
+									}
 								}
 							}
 						}
+						dynamicFog[lineIndex][columnIndex].setVisible(false);
+						dynamicFog[lineIndex][columnIndex].setLocked(true);
+						lockedList.add(dynamicFog[lineIndex][columnIndex]);
 					}
-					dynamicFog[lineIndex][columnIndex].setVisible(false);
-					dynamicFog[lineIndex][columnIndex].setLocked(true);
-					lockedList.add(dynamicFog[lineIndex][columnIndex]);
 				}
 			}
 		}

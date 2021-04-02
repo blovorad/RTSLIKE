@@ -13,6 +13,7 @@ import engine.Faction;
 import engine.Position;
 import engine.Ressource;
 import engine.entity.building.AttackBuilding;
+import engine.entity.building.Hq;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.SiteConstruction;
 import engine.entity.building.StorageBuilding;
@@ -74,6 +75,7 @@ public class BotManager {
 	}
 	
 	public SiteConstruction update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions) {
+		explore(botFighters, botProdBuildings);
 		updateFog(botEntities);
 		int money = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getMoneyCount();
 		//System.out.println("money : " + money);
@@ -127,8 +129,45 @@ public class BotManager {
 	
 	
 	//states
-	public void explore() {
-		
+	public void explore(List<Fighter> botFighters, List<ProductionBuilding> botProdBuildings) {
+		for(ProductionBuilding building : botProdBuildings) {
+			if(building.getId() == EntityConfiguration.HQ) {
+				for(Fighter fighter : botFighters) {
+					if(fighter.getId() == EntityConfiguration.CAVALRY) {
+						if(fighter.getDestination() == null) {
+							int x = building.getPosition().getX() / GameConfiguration.TILE_SIZE;
+							int y = building.getPosition().getY() / GameConfiguration.TILE_SIZE;
+							boolean[][] tabFog = fog.getFog();
+							int targetX = 0;
+							int targetY = 0;
+							while(targetX == 0 && targetY == 0) {
+								for(int i = 0; i < GameConfiguration.LINE_COUNT; i++) {
+									for(int j = 0; j < GameConfiguration.COLUMN_COUNT; j++) {
+										if(tabFog[j][i] == true) {
+											if(targetX == 0 && targetY == 0) {
+												targetX = i * GameConfiguration.TILE_SIZE;
+												targetY = j * GameConfiguration.TILE_SIZE;
+											}
+											else {
+												if(calculate(building.getPosition(), new Position(i * GameConfiguration.TILE_SIZE, j * GameConfiguration.TILE_SIZE)) <  calculate(building.getPosition(), new Position(targetX, targetY))) {
+													targetX = i * GameConfiguration.TILE_SIZE;
+													targetY = j * GameConfiguration.TILE_SIZE;
+												}
+											}
+										}
+									}
+								}
+							}
+							fighter.setDestination(new Position(targetX, targetY));
+							fighter.calculateSpeed(new Position(targetX, targetY));
+							fighter.setState(EntityConfiguration.WALK);
+							System.out.println("cavalier exploring");
+							System.out.println("cavalier dest" + fighter.getDestination().getX() + "," + fighter.getDestination().getY());
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public SiteConstruction recolte(List<Worker> IdleWorker, List<Ressource> visibleRessources, List<StorageBuilding>botStorageBuildings, int money, List<SiteConstruction> siteConstructions) {
