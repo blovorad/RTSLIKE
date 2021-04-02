@@ -162,29 +162,21 @@ public class Unit extends Entity
 		this.speed = speed;
 	}
 	
-	public void calculateSpeed(Position p)
-	{
+	public void calculateSpeed(Position p){	
 		this.setDestination(p);
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
 
-	public void update()
-	{
+	public void update(){
 		super.update();
 		Position p = this.getPosition();
 		
-		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination())))
-		{	
+		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination()))){	
 			calculateSpeed(this.getTarget().getPosition());
 		}
-		/*else if(this.getTarget() == null && this.getDestination() != null && this.getDestination().equals(this.getPosition()))
-		{
-			this.setDestination(null);
-		}*/
 		else
 		{	
-			
 			if(this.getDestination() != null)
 			{
 				//System.out.println("on a une destination");

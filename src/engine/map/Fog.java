@@ -50,8 +50,6 @@ public class Fog {
 	public void clearFog(int x, int y, int sightRange, Entity entity, List<Entity>drawingList, List<Entity> waitingList, List<Entity> removeList, List<Entity> botEntities) {
 		int xTab = x / GameConfiguration.TILE_SIZE;
 		int yTab = y / GameConfiguration.TILE_SIZE;
-		int widthTab = (x + sightRange) / GameConfiguration.TILE_SIZE;
-		int heightTab = (y + sightRange) / GameConfiguration.TILE_SIZE;
 		if(xTab < 0) {
 			xTab = 0;
 		}
@@ -64,6 +62,16 @@ public class Fog {
 		}
 		else if(yTab >= GameConfiguration.LINE_COUNT) {
 			yTab = GameConfiguration.LINE_COUNT - 1;
+		}
+		
+		int widthTab = (x + sightRange) / GameConfiguration.TILE_SIZE;
+		int heightTab = (y + sightRange) / GameConfiguration.TILE_SIZE;
+		
+		if(widthTab > GameConfiguration.COLUMN_COUNT) {
+			widthTab = GameConfiguration.COLUMN_COUNT;
+		}
+		if(heightTab > GameConfiguration.LINE_COUNT) {
+			heightTab = GameConfiguration.LINE_COUNT;
 		}
 		
 		//System.out.println("TAB : " + xTab + "," + yTab + ", et " + widthTab + "," +heightTab);

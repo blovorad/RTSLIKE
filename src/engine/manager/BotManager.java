@@ -39,6 +39,10 @@ public class BotManager {
 	private GraphicsManager graphicsManager;
 	private Map map;
 	
+	private boolean buildingInAttempt;
+	private Tile tileToBuild;
+	private int idToBuild;
+	
 	public BotManager(FactionManager factionManager, GraphicsManager graphicsManager, Map map) {
 		barrackBuild = false;
 		archeryBuild = false;
@@ -71,19 +75,23 @@ public class BotManager {
 				priceOfEntity.put(i, race.getProductionBuildings().get(i).getCost());
 			}
 		}
+		
+		buildingInAttempt = false;
+		tileToBuild = null;
+		idToBuild = -1;
 	}
 	
-	public SiteConstruction update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions) {
+	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions) {
 		updateFog(botEntities);
 		int money = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getMoneyCount();
-		//System.out.println("money : " + money);
 		List<Ressource> visibleRessources = getVisibleRessources(ressources, fog);
-		//System.out.println("nb ressource : " + visibleRessources.size());
 		List<Worker> IdleWorker = getIdleWorker(botWorkers);
-		//System.out.println("nb idle : " + IdleWorker.size());
-		SiteConstruction sc = recolte(IdleWorker, visibleRessources, botStorageBuildings, money, siteConstructions);
+		
+		//action of unit
+		recolte(IdleWorker, visibleRessources, botStorageBuildings, money, siteConstructions);
+		
+		//action of building
 		prodWorker(botWorkers, money, botProdBuildings, factionManager);
-		return sc;
 	}
 	
 	public void updateFog(List<Entity> botEntities) {
@@ -100,6 +108,7 @@ public class BotManager {
 				idleWorker.add(worker);
 			}
 		}
+
 		return idleWorker;
 	}
 	
@@ -131,36 +140,28 @@ public class BotManager {
 		
 	}
 	
-	public SiteConstruction recolte(List<Worker> IdleWorker, List<Ressource> visibleRessources, List<StorageBuilding>botStorageBuildings, int money, List<SiteConstruction> siteConstructions) {
-		SiteConstruction sc = null;
+	public void recolte(List<Worker> IdleWorker, List<Ressource> visibleRessources, List<StorageBuilding>botStorageBuildings, int money, List<SiteConstruction> siteConstructions) {
 		for(Worker worker : IdleWorker) {
 			if(visibleRessources.isEmpty() == false) {
-				Ressource ressource = visibleRessources.get(0);
-				for(Ressource visibleRessource : visibleRessources) { //choisi la ressource la plus proche du worker
-					int distanceRessource;
-					distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
-					if(distanceRessource > calculate(visibleRessource.getPosition(), worker.getPosition()) && visibleRessource.getHp() > 0 )
-					{
-						ressource = visibleRessource;
-					}
-				}
+				Ressource ressource = getClosestRessource(visibleRessources, worker);
 				boolean storageInRange = false;
 				for(StorageBuilding storage : botStorageBuildings) { // check si storage in range
-					System.out.println("range ressource : " + calculate(storage.getPosition(), ressource.getPosition()) /  GameConfiguration.TILE_SIZE);
+					//System.out.println("range ressource : " + calculate(storage.getPosition(), ressource.getPosition()) /  GameConfiguration.TILE_SIZE);
 					if(calculate(storage.getPosition(), ressource.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
 						storageInRange = true;
-						System.out.println("bat storage in range ! storagerang = " + storageInRange);
+						//System.out.println("bat storage in range ! storagerang = " + storageInRange);
 					}
 				}
 				for(SiteConstruction sitec : siteConstructions) { // check si a site de constru de storage in range
 					if(sitec.getFaction() == EntityConfiguration.BOT_FACTION) {
 						if(sitec.getBuildingId() == EntityConfiguration.STORAGE) {
-							System.out.println("SIZE : " + siteConstructions.size());
+							ressource = getClosestRessource(visibleRessources, sitec);
+							
 							if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
 								worker.setTarget(sitec);
 								worker.calculateSpeed(sitec.getPosition());
 								worker.setCurrentAction(EntityConfiguration.WALK);
-								System.out.println("va constru fdp !");
+								//System.out.println("va constru fdp !");
 								storageInRange = true;
 							}
 						}
@@ -173,8 +174,7 @@ public class BotManager {
 						int tileRessourceX = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
 						int tileRessourceY = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
 						//System.out.println("pos ressource : " + tileRessourceX + " " + tileRessourceY);
-						//int tileStorageX = 0;
-						//int tileStorageY = 0;
+
 						int storagePosX = 0;
 						int storagePosY = 0;
 						boolean foundPlace = false;
@@ -182,34 +182,33 @@ public class BotManager {
 						int y = tileRessourceY - 1;
 						int width = tileRessourceX + 1;
 						int height = tileRessourceY + 1;
-						//while(foundPlace == false) {
-							for(int i = y; i<= height; i++) {
-								for(int j = x; j <= width; j++) {
-									if(map.getTile(j, i).isSolid() == false) {
-										storagePosX = j;
-										storagePosY = i;
-										map.getTile(j, i).setSolid(true);
-										foundPlace = true;
-										//System.out.println("pos libre : " + j + " " + i);
-									}
+						
+						for(int i = y; i<= height; i++) {
+							for(int j = x; j <= width; j++) {
+								if(map.getTile(j, i).isSolid() == false) {
+									storagePosX = j;
+									storagePosY = i;
+									map.getTile(j, i).setSolid(true);
+									foundPlace = true;
+									//System.out.println("pos libre : " + j + " " + i);
 								}
 							}
-						//}
+						}
 						if(foundPlace) {
-							ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getStorageBuildings().get(EntityConfiguration.STORAGE);
-							sc = new SiteConstruction(EntityConfiguration.STORAGE, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), new Position(storagePosX * 64, storagePosY * 64) , EntityConfiguration.SITE_CONSTRUCTION, EntityConfiguration.BOT_FACTION, GameConfiguration.TILE_SIZE, 0, graphicsManager, map.getTile(storagePosY, storagePosX));
+							buildingInAttempt = true;
+							tileToBuild = map.getTile(storagePosX, storagePosY);
+							idToBuild = EntityConfiguration.STORAGE;
 						}
 					}
 				}
 				else {
 					if(worker.getCurrentAction() != EntityConfiguration.REPAIR && worker.getCurrentAction() != EntityConfiguration.WALK) {
 						worker.initRessource(ressource);
-						System.out.println("au travail fdp !");
+						//System.out.println("au travail fdp !");
 					}
 				}
 			}
 		}
-		return sc;
 	}
 	
 	public void prodWorker(List<Worker> botWorkers, int money, List<ProductionBuilding> botProdBuildings, FactionManager factionManager) {
@@ -227,6 +226,81 @@ public class BotManager {
 			}
 		}
 	}
+	
+	public Ressource getClosestRessource(List<Ressource> visibleRessources, Worker worker) {
+		Ressource ressource = visibleRessources.get(0);
+		for(Ressource visibleRessource : visibleRessources) { //choisi la ressource la plus proche du worker
+			int distanceRessource;
+			distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
+			if(distanceRessource > calculate(visibleRessource.getPosition(), worker.getPosition()) && visibleRessource.getHp() > 0 )
+			{
+				ressource = visibleRessource;
+			}
+		}
+		
+		return ressource;
+	}
+	
+	public Ressource getClosestRessource(List<Ressource> visibleRessources, SiteConstruction sc) {
+		Ressource ressource = visibleRessources.get(0);
+		for(Ressource visibleRessource : visibleRessources) { //choisi la ressource la plus proche du worker
+			int distanceRessource;
+			distanceRessource = calculate(ressource.getPosition(), sc.getPosition());
+			if(distanceRessource > calculate(visibleRessource.getPosition(), sc.getPosition()) && visibleRessource.getHp() > 0 )
+			{
+				ressource = visibleRessource;
+			}
+		}
+		
+		return ressource;
+	}
+	
+	public void buildBuilding() {
+		buildingInAttempt = false;
+		tileToBuild = null;
+		if(idToBuild == EntityConfiguration.BARRACK) {
+			barrackBuild = true;
+		}
+		else if(idToBuild == EntityConfiguration.ARCHERY) {
+			archeryBuild = true;
+		}
+		else if(idToBuild == EntityConfiguration.STABLE) {
+			stableBuild = true;
+		}
+		else if(idToBuild == EntityConfiguration.CASTLE) {
+			castleBuild = true;
+		}
+		else if(idToBuild == EntityConfiguration.FORGE) {
+			forgeBuild = true;
+		}
+		else if(idToBuild == EntityConfiguration.HQ) {
+			hqBuild = true;
+		}
+		
+		idToBuild = -1;
+	}
+	
+	public void removeBuilding(int id) {
+		if(idToBuild == EntityConfiguration.BARRACK) {
+			barrackBuild = false;
+		}
+		else if(idToBuild == EntityConfiguration.ARCHERY) {
+			archeryBuild = false;
+		}
+		else if(idToBuild == EntityConfiguration.STABLE) {
+			stableBuild = false;
+		}
+		else if(idToBuild == EntityConfiguration.CASTLE) {
+			castleBuild = false;
+		}
+		else if(idToBuild == EntityConfiguration.FORGE) {
+			forgeBuild = false;
+		}
+		else if(idToBuild == EntityConfiguration.HQ) {
+			hqBuild = false;
+		}
+	}
+	
 	//getter & setter
 	public void setBarrackBuild(boolean barrackBuild) {
 		this.barrackBuild = barrackBuild;
@@ -274,5 +348,17 @@ public class BotManager {
 
 	public void setMap(Map map) {
 		this.map = map;
+	}
+	
+	public boolean getBuildingInAttempt() {
+		return buildingInAttempt;
+	}
+	
+	public Tile getTileToBuild() {
+		return tileToBuild;
+	}
+	
+	public int getIdToBuild() {
+		return idToBuild;
 	}
 }

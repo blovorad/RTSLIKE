@@ -150,14 +150,12 @@ public class EntitiesManager
 		}
 		
 		if(botManager != null) {
-			SiteConstruction sc = botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions);
-			if(sc != null) {
-				botEntities.add(sc);
-				botSiteConstructions.add(sc);
-				botEntities.add(sc);
-				this.waitingToAdd.add(sc);
-				this.siteConstructions.add(sc);
-				System.out.println("ajout d'un site de construction");
+			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions);
+			if(botManager.getBuildingInAttempt() == true) {
+				Tile tile = botManager.getTileToBuild();
+				Position p = new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE);
+				createConstructionSite(botManager.getIdToBuild(), EntityConfiguration.BOT_FACTION, p, botManager.getTileToBuild());
+				botManager.buildBuilding();
 			}
 		}
 		
@@ -207,6 +205,9 @@ public class EntitiesManager
 				this.factionManager.getFactions().get(building.getFaction()).checkUpgrade(building.getElementCount());
 				building.remove();
 				removeProdBuildings.add(building);
+				if(building.getFaction() == EntityConfiguration.BOT_FACTION) {
+					botManager.removeBuilding(building.getId());
+				}
 			}
 		}
 		
