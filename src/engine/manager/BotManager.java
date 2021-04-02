@@ -154,7 +154,8 @@ public class BotManager {
 				}
 				for(SiteConstruction sitec : siteConstructions) { // check si a site de constru de storage in range
 					if(sitec.getFaction() == EntityConfiguration.BOT_FACTION) {
-						if(sitec.getId() == EntityConfiguration.STORAGE) {
+						if(sitec.getBuildingId() == EntityConfiguration.STORAGE) {
+							System.out.println("SIZE : " + siteConstructions.size());
 							if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
 								worker.setTarget(sitec);
 								worker.calculateSpeed(sitec.getPosition());
@@ -165,37 +166,46 @@ public class BotManager {
 						}
 					}
 				}
-				System.out.println(storageInRange);
+				//System.out.println(storageInRange);
 				if(storageInRange == false) { // si pas storage ni site constru in range, construit site constru
 					if(priceOfEntity.get(EntityConfiguration.STORAGE)< money) {
 						factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - priceOfEntity.get(EntityConfiguration.STORAGE));
-						int tileRessourceX = ressource.getPosition().getX() /64;
-						int tileRessourceY = ressource.getPosition().getY() /64;
-						System.out.println("pos ressource : " + tileRessourceX + " " + tileRessourceY);
-						int tileStorageX = 0;
-						int tileStorageY = 0;
-						int x = 1;
-						int y = 1;
-						while(tileStorageX == 0 && tileStorageY == 0) {
-							for(int i = tileRessourceY-y; i<=tileRessourceY+y; i++) {
-								for(int j = tileRessourceX-x; j<=tileRessourceX+x; j++) {
+						int tileRessourceX = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
+						int tileRessourceY = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
+						//System.out.println("pos ressource : " + tileRessourceX + " " + tileRessourceY);
+						//int tileStorageX = 0;
+						//int tileStorageY = 0;
+						int storagePosX = 0;
+						int storagePosY = 0;
+						boolean foundPlace = false;
+						int x = tileRessourceX - 1;
+						int y = tileRessourceY - 1;
+						int width = tileRessourceX + 1;
+						int height = tileRessourceY + 1;
+						//while(foundPlace == false) {
+							for(int i = y; i<= height; i++) {
+								for(int j = x; j <= width; j++) {
 									if(map.getTile(j, i).isSolid() == false) {
-										tileStorageX = j;
-										tileStorageY = i;
-										System.out.println("pos libre : " + j + " " + i);
+										storagePosX = j;
+										storagePosY = i;
+										map.getTile(j, i).setSolid(true);
+										foundPlace = true;
+										//System.out.println("pos libre : " + j + " " + i);
 									}
 								}
 							}
-							x++;
-							y++;
+						//}
+						if(foundPlace) {
+							ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getStorageBuildings().get(EntityConfiguration.STORAGE);
+							sc = new SiteConstruction(EntityConfiguration.STORAGE, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), new Position(storagePosX * 64, storagePosY * 64) , EntityConfiguration.SITE_CONSTRUCTION, EntityConfiguration.BOT_FACTION, GameConfiguration.TILE_SIZE, 0, graphicsManager, map.getTile(storagePosY, storagePosX));
 						}
-						ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getStorageBuildings().get(EntityConfiguration.STORAGE);
-						sc = new SiteConstruction(EntityConfiguration.STORAGE, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), new Position(tileStorageX * 64, tileStorageY * 64) , EntityConfiguration.SITE_CONSTRUCTION, EntityConfiguration.BOT_FACTION, GameConfiguration.TILE_SIZE, 0, graphicsManager, map.getTile(tileStorageX, tileStorageY));
 					}
 				}
 				else {
-					worker.initRessource(ressource);
-					System.out.println("au travail fdp !");
+					if(worker.getCurrentAction() != EntityConfiguration.REPAIR && worker.getCurrentAction() != EntityConfiguration.WALK) {
+						worker.initRessource(ressource);
+						System.out.println("au travail fdp !");
+					}
 				}
 			}
 		}

@@ -150,7 +150,7 @@ public class EntitiesManager
 		}
 		
 		if(botManager != null) {
-			SiteConstruction sc = botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions);
+			SiteConstruction sc = botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions);
 			if(sc != null) {
 				botEntities.add(sc);
 				botSiteConstructions.add(sc);
