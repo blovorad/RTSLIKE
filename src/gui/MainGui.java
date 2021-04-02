@@ -658,12 +658,14 @@ public class MainGui extends JFrame implements Runnable
 					}
 				}
 				else if(e.getButton() == 3){
+					Minimap minimap = dashboard.getMinimap();
+					List<Unit> listSelectedUnit = manager.getSelectedUnits();	
+					
 					if(!Collision.collidePanel(leftDownPanel, e.getX(), e.getY()) && !Collision.collidePanelMinimap(rightDownPanel, e.getX(), e.getY())) {
 						if(mouse.getId() > -1) {
 							mouse.setId(-1);
 						}
 						else {
-							List<Unit> listSelectedUnit = manager.getSelectedUnits();	
 							List<Worker> listWorkers = manager.getSelectedWorkers();
 							boolean goingToHarvest = false;
 							
@@ -694,7 +696,6 @@ public class MainGui extends JFrame implements Runnable
 								else if(listSelectedUnit.isEmpty() == false && target == null) {
 									for(Unit unit : listSelectedUnit){
 										unit.calculateSpeed(new Position(mouseX, mouseY));
-										unit.setCurrentAction(EntityConfiguration.WALK);
 										unit.setTarget(null);
 										unit.setCurrentAction(EntityConfiguration.WALK);
 									}
@@ -723,6 +724,44 @@ public class MainGui extends JFrame implements Runnable
 											building.setDestination(new Position(mouseX, mouseY));
 										}
 									}
+								}
+							}
+						}
+					}
+					else {
+						if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
+							int x = e.getX() - minimap.getFirstGridXOfMap();
+							int y = e.getY() - minimap.getFirstGridYOfMap();
+							x /= minimap.getGridMapWidth();
+							y /= minimap.getGridMapHeight();
+
+							x *= GameConfiguration.TILE_SIZE;
+							y *= GameConfiguration.TILE_SIZE;
+							
+							/*x -= camera.getScreenWidth() / 2;
+							y -= camera.getScreenHeight() / 2;
+							
+							if(x < 0){
+								x = 0;
+							}
+							else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth()){
+								x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
+							}
+							
+							if(y < 0){
+								y = 0;
+							}
+							else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight()){
+								y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
+							}*/
+							
+							Position p = new Position(x, y);
+							
+							if(listSelectedUnit.isEmpty() == false) {
+								for(Unit unit : listSelectedUnit){
+									unit.calculateSpeed(p);
+									unit.setTarget(null);
+									unit.setCurrentAction(EntityConfiguration.WALK);
 								}
 							}
 						}

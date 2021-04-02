@@ -199,6 +199,9 @@ public class Unit extends Entity
 						this.setDestination(null);
 					}
 				}
+				else {
+					this.setDestination(null);
+				}
 			}
 		}
 		
