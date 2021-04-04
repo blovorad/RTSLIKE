@@ -81,6 +81,7 @@ public class BotManager {
 		this.setMax(explore(botFighters, botProdBuildings, max)); 
 		int money = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getMoneyCount();
 		//System.out.println("money : " + money);
+		nextAge(money, botProdBuildings);
 		List<Ressource> visibleRessources = getVisibleRessources(ressources, fog);
 		//System.out.println("nb ressource : " + visibleRessources.size());
 		List<Worker> IdleWorker = getIdleWorker(botWorkers);
@@ -325,6 +326,42 @@ public class BotManager {
 							int price = building.startProd(EntityConfiguration.WORKER, money);
 							factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - price);
 							System.out.println("start prod");
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void nextAge(int money, List<ProductionBuilding> botProdBuildings) {
+		if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() != 3) {
+			for(ProductionBuilding building : botProdBuildings) {
+				if(building.getId() == EntityConfiguration.HQ) {
+					boolean upgrading = false;
+					if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() == 1) {
+						if(building.getIsProducing()) {
+							for(int prod : building.getElementCount()) {
+								if(prod == EntityConfiguration.AGE_UPGRADE) {
+									upgrading = true;
+								}
+							}
+						}
+						if(upgrading == false) {
+							factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - building.startProd(EntityConfiguration.AGE_UPGRADE, money));
+							System.out.println("upgrading to age 2");
+						}
+					}
+					if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() == 2) {
+						if(building.getIsProducing()) {
+							for(int prod : building.getElementCount()) {
+								if(prod == EntityConfiguration.AGE_UPGRADE_2) {
+									upgrading = true;
+								}
+							}
+						}
+						if(upgrading == false) {
+							factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - building.startProd(EntityConfiguration.AGE_UPGRADE_2, money));
+							System.out.println("upgrading to age 3");
 						}
 					}
 				}
