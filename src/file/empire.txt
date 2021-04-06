@@ -1,5 +1,5 @@
 infantry
-attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 7;description : infantry empire;hpMax : 20;cost : 25;
+attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 6; armor : 5;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 7;description : infantry empire;hpMax : 20;cost : 25;
 archer
 attackRange : 5;attackSpeed : 10;sightRange : 300;range : 10;damage : 5; armor : 5;maxSpeed : 5;hp : 20;age : 1;timeToBuild : 15;description : archer empire;hpMax : 20;cost : 25;
 cavalry

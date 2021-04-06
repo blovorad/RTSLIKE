@@ -72,7 +72,7 @@ public class GameBuilder {
 		//rajout a effacer
 		Tile tile3 = map.getTile(12, 12);
         Position p5 = new Position(9 * GameConfiguration.TILE_SIZE, 9 * GameConfiguration.TILE_SIZE);
-        manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, p5, tile3);
+        manager.createBuilding(EntityConfiguration.BARRACK, EntityConfiguration.BOT_FACTION, p5, tile3);
         
         Tile tile4 = map.getTile(9, 9);
         Position p6 = new Position(12 * GameConfiguration.TILE_SIZE, 12 * GameConfiguration.TILE_SIZE);

@@ -215,8 +215,6 @@ public class MainGui extends JFrame implements Runnable
 			List<StorageBuilding> storagesBuilding = manager.getStorageBuildings();
 			List<AttackBuilding> attackBuildings = manager.getAttackBuildings();
 			List<ProductionBuilding> prodBuildings = manager.getProdBuildings();
-			List<Fighter> fighters = manager.getFighters();
-			List<Worker> workers = manager.getWorkers();
 			List<SiteConstruction> siteConstructions = manager.getSiteConstructions();
 			
 			if(selectEntity == null)
@@ -261,34 +259,6 @@ public class MainGui extends JFrame implements Runnable
 				}
 			}
 			
-			if(selectEntity == null)
-			{
-				for( Fighter fighter: fighters )
-				{
-					Position  fighterPosition = new Position(fighter.getPosition().getX(), fighter.getPosition().getY());
-					
-					if(x > fighterPosition.getX() && x < fighterPosition.getX() + EntityConfiguration.UNIT_SIZE && y > fighterPosition.getY() && y < fighterPosition.getY() + EntityConfiguration.UNIT_SIZE)
-					{
-						selectEntity = fighter;
-						break;
-					}
-				}
-			}
-			
-			if(selectEntity == null)
-			{
-				for( Worker worker: workers )
-				{
-					Position workerPosition  = new Position(worker.getPosition().getX(), worker.getPosition().getY());
-					
-					if(x > workerPosition.getX() && x < workerPosition.getX() + EntityConfiguration.UNIT_SIZE && y > workerPosition.getY() && y < workerPosition.getY() + EntityConfiguration.UNIT_SIZE)
-					{
-						selectEntity = worker;
-						break;
-					}
-				}
-			}
-			
 			if(selectEntity == null) {
 				for( SiteConstruction siteConstruction : siteConstructions) {
 					Position siteConstructionPosition = new Position(siteConstruction.getPosition().getX(), siteConstruction.getPosition().getY());
@@ -302,6 +272,48 @@ public class MainGui extends JFrame implements Runnable
 			}
 			
 		return selectEntity;	
+		}
+		
+		public Unit checkUnit(int mouseX, int mouseY)
+		{	
+			List<Fighter> fighters = manager.getFighters();
+			List<Worker> workers = manager.getWorkers();
+			
+			Unit selectUnit = null;
+			
+			int x = mouseX;
+			int y = mouseY;
+			
+
+			if(selectUnit == null)
+			{
+				for( Fighter fighter: fighters )
+				{
+					Position  fighterPosition = new Position(fighter.getPosition().getX(), fighter.getPosition().getY());
+					
+					if(x > fighterPosition.getX() && x < fighterPosition.getX() + EntityConfiguration.UNIT_SIZE && y > fighterPosition.getY() && y < fighterPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectUnit = fighter;
+						break;
+					}
+				}
+			}
+			
+			if(selectUnit == null)
+			{
+				for( Worker worker: workers )
+				{
+					Position workerPosition  = new Position(worker.getPosition().getX(), worker.getPosition().getY());
+					
+					if(x > workerPosition.getX() && x < workerPosition.getX() + EntityConfiguration.UNIT_SIZE && y > workerPosition.getY() && y < workerPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectUnit = worker;
+						break;
+					}
+				}
+			}
+			
+			return selectUnit;
 		}
 		
 		public Ressource checkRessource(int mouseX, int mouseY)
@@ -674,6 +686,7 @@ public class MainGui extends JFrame implements Runnable
 						
 						if(goingToHarvest == false) {
 							Entity target = checkEntity(mouseX, mouseY);
+							Unit targetUnit = checkUnit(mouseX, mouseY);
 							
 							if(listSelectedUnit.isEmpty() == false && target != null)
 							{
@@ -682,6 +695,16 @@ public class MainGui extends JFrame implements Runnable
 									unit.calculateSpeed(target.getPosition());
 									unit.setCurrentAction(EntityConfiguration.WALK);
 									unit.setTarget(target);
+								}
+							}
+							else if(listSelectedUnit.isEmpty() == false && targetUnit != null)
+							{
+								for(Unit unit : listSelectedUnit)
+								{
+									unit.calculateSpeed(targetUnit.getPosition());
+									unit.setCurrentAction(EntityConfiguration.WALK);
+									unit.setTarget(targetUnit);
+									unit.setTargetUnit(targetUnit);
 								}
 							}
 							else if(listSelectedUnit.isEmpty() == false && target == null) {

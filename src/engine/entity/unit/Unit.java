@@ -18,6 +18,8 @@ import engine.math.Collision;
 
 public class Unit extends Entity
 {
+	private Unit targetUnit;
+	
 	private int currentAction;
 	private int attackRange;
 	private int attackSpeed;
@@ -82,17 +84,23 @@ public class Unit extends Entity
 	{
 		if(this.getTarget() != null)
 		{
+			System.out.println("test");
 			if(this.timer <= 0)
 			{
-				if(this.getTarget().getHp() >= 0)
+				if(this.targetUnit != null && this.targetUnit.getHp() >= 0)
 				{
-					this.getTarget().damage(damage);
-					
-					this.timer = this.attackSpeed;
+					this.targetUnit.damage((damage - this.targetUnit.getArmor()));
 					this.checkTarget();
 				}
+				
+				else if(this.getTarget().getHp() >= 0)
+				{
+					this.getTarget().damage(damage);
+					this.checkTarget();
+				}
+				this.timer = this.attackSpeed;
 			}
-			this.timer --;
+			this.timer--;
 		}
 	}
 	
@@ -102,6 +110,7 @@ public class Unit extends Entity
 		if(this.getTarget().getHp() <= 0)
 		{
 			this.setTarget(null);
+			this.targetUnit = null;
 		}
 	}
 	
@@ -293,5 +302,14 @@ public class Unit extends Entity
 	public void setTimer(int timer)
 	{
 		this.timer = timer;
+	}
+	
+	public void setTargetUnit(Unit targetUnit)
+	{
+		this.targetUnit = targetUnit;
+	}
+	public Unit getTargetUnit()
+	{
+		return this.targetUnit;
 	}
 }
