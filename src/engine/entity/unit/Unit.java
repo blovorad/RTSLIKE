@@ -18,6 +18,8 @@ import engine.math.Collision;
 
 public class Unit extends Entity
 {
+	private Unit targetUnit;
+	
 	private int currentAction;
 	private int attackRange;
 	private int attackSpeed;
@@ -35,7 +37,7 @@ public class Unit extends Entity
 		
 		this.currentAction = EntityConfiguration.IDDLE;
 		this.attackRange = attackRange;
-		this.setAttackSpeed(5);
+		this.setAttackSpeed(attackSpeed);
 		this.maxSpeed = maxSpeed;
 		this.damage = damage;
 		this.range = range;
@@ -82,14 +84,25 @@ public class Unit extends Entity
 	{
 		if(this.getTarget() != null)
 		{
-			if(this.timer > 0)
+			System.out.println("test");
+			if(this.timer <= 0)
 			{
-				if(this.getTarget().getHp() > 0)
+				if(this.targetUnit != null && this.targetUnit.getHp() >= 0)
+				{
+					if(damage > this.targetUnit.getArmor()) {
+						this.targetUnit.damage((damage - this.targetUnit.getArmor()));
+					}
+					this.checkTarget();
+				}
+				
+				else if(this.getTarget().getHp() >= 0)
 				{
 					this.getTarget().damage(damage);
-					this.timer --;
+					this.checkTarget();
 				}
+				this.timer = this.attackSpeed;
 			}
+			this.timer--;
 		}
 	}
 	
@@ -99,6 +112,7 @@ public class Unit extends Entity
 		if(this.getTarget().getHp() <= 0)
 		{
 			this.setTarget(null);
+			this.targetUnit = null;
 		}
 	}
 	
@@ -162,50 +176,48 @@ public class Unit extends Entity
 		this.speed = speed;
 	}
 	
-	public void calculateSpeed(Position p)
-	{
+	public void calculateSpeed(Position p){	
 		this.setDestination(p);
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
 
-	public void update()
-	{
+	public void update(){
 		super.update();
 		Position p = this.getPosition();
 		
-		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination())))
-		{	
+		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination()))){	
 			calculateSpeed(this.getTarget().getPosition());
 		}
-		/*else if(this.getTarget() == null && this.getDestination() != null && this.getDestination().equals(this.getPosition()))
-		{
-			this.setDestination(null);
-		}*/
 		else
 		{	
-			
 			if(this.getDestination() != null)
 			{
-				//System.out.println("on a une destination");
 				if(!this.getPosition().equals(this.getDestination()))   //!this.getPosition().equals(this.getDestination()) Collision.collideEntity(this, this.getDestination())
 				{
 					//System.out.println("pas egal on bouge");
 					//System.out.println("speed : " + this.speed.getVx() + "," + this.speed.getVy());
 					if( (this.getPosition().getX() < this.getDestination().getX() && speed.getVx() < 0) || (this.getPosition().getX() > this.getDestination().getX() && speed.getVx() > 0) )
 					{
+						//System.out.println("LA VITESSE X EST OK");
 						this.getPosition().setX(this.getDestination().getX());
 						speed.setVx(0);
 					}
-					else if( (this.getPosition().getY() < this.getDestination().getY() && speed.getVy() < 0) || (this.getPosition().getY() > this.getDestination().getY() && speed.getVy() > 0) )
+					if( (this.getPosition().getY() < this.getDestination().getY() && speed.getVy() < 0) || (this.getPosition().getY() > this.getDestination().getY() && speed.getVy() > 0) )
 					{
+						//System.out.println("LA VITESSE Y EST OK");
 						this.getPosition().setY(this.getDestination().getY());
 						speed.setVy(0);
 					}
-					else if( this.getPosition().equals(this.getDestination()))
+					if( this.getPosition().equals(this.getDestination()))
 					{
+						//System.out.println("La destination est null");
 						this.setDestination(null);
 					}
+				}
+				else {
+					this.speed.reset();
+					this.setDestination(null);
 				}
 			}
 		}
@@ -240,6 +252,26 @@ public class Unit extends Entity
 			this.getSpeed().setVy(0);
 		}
 		
+
+		if(this.getTarget() != null && this.getTarget().getFaction() != this.getFaction() && Collision.collideAttack(this.getTarget(), this) && this.getCurrentAction() != EntityConfiguration.HARVEST)
+		{
+			this.checkTarget();
+			System.out.println(this.getTarget());
+			this.getSpeed().reset();
+			this.attack(this.getDamage());
+			System .out.println("timer: " + this.timer);
+			
+			if(this.getTarget() == null)
+			{
+				this.setCurrentAction(EntityConfiguration.IDDLE);
+				this.timer = this.attackSpeed;
+			}
+			else
+			{
+				this.setCurrentAction(EntityConfiguration.ATTACK);
+			}
+		}
+		
 		manageState();
 	}
 	
@@ -253,9 +285,6 @@ public class Unit extends Entity
 		}
 		else if(currentAction == EntityConfiguration.ATTACK || currentAction == EntityConfiguration.HARVEST || currentAction == EntityConfiguration.REPAIR) {
 			this.getAnimation().setFrameState(EntityConfiguration.ATTACK);
-		}
-		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideEntity(this, this.getTarget())) {
-			this.attack(5);
 		}
 	}
 
@@ -275,5 +304,14 @@ public class Unit extends Entity
 	public void setTimer(int timer)
 	{
 		this.timer = timer;
+	}
+	
+	public void setTargetUnit(Unit targetUnit)
+	{
+		this.targetUnit = targetUnit;
+	}
+	public Unit getTargetUnit()
+	{
+		return this.targetUnit;
 	}
 }

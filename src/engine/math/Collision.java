@@ -2,6 +2,8 @@ package engine.math;
 
 import java.awt.Rectangle;
 
+import javax.swing.JPanel;
+
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 
@@ -75,6 +77,26 @@ public class Collision {
 		return false;
 	}
 	
+	public static boolean collidePanel(JPanel panel, int x, int y) {
+		Rectangle r1 = new Rectangle(panel.getX(), panel.getY(), panel.getWidth(), panel.getHeight());
+		Rectangle r2 = new Rectangle(x, y, 1, 1);
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean collidePanelMinimap(JPanel panel, int x, int y) {
+		Rectangle r1 = new Rectangle(panel.getX() + panel.getWidth() / 2, panel.getY(), panel.getWidth(), panel.getHeight());
+		Rectangle r2 = new Rectangle(x, y, 1, 1);
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public static boolean collideEntity(Unit unit, Entity  target) {
 		Rectangle r1 = new Rectangle(unit.getPosition().getX(), unit.getPosition().getY(), EntityConfiguration.UNIT_SIZE, EntityConfiguration.UNIT_SIZE);
 		Rectangle r2 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE);
@@ -89,6 +111,65 @@ public class Collision {
 	public static boolean collideRessource(Worker worker, Ressource  ressource) {
 		Rectangle r1 = new Rectangle(worker.getPosition().getX(), worker.getPosition().getY(), EntityConfiguration.UNIT_SIZE, EntityConfiguration.UNIT_SIZE);
 		Rectangle r2 = new Rectangle(ressource.getPosition().getX() - 7*GameConfiguration.TILE_SIZE, ressource.getPosition().getY() - 7*GameConfiguration.TILE_SIZE, 14*GameConfiguration.TILE_SIZE, 14*GameConfiguration.TILE_SIZE);
+		
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	public static boolean collideFogEntity(int xTab, int yTab, int widthTab, int heightTab, Entity botEntity) {
+		int tileSize = GameConfiguration.TILE_SIZE;
+		int entitySize = GameConfiguration.TILE_SIZE;
+		if(botEntity.getId() == EntityConfiguration.CAVALRY) {
+			entitySize = EntityConfiguration.CAVALRY_SIZE;
+		}
+		else if(botEntity.getId() <= EntityConfiguration.WORKER) {
+			entitySize = EntityConfiguration.UNIT_SIZE;
+		}
+		
+		Rectangle r1 = new Rectangle(xTab * tileSize, yTab * tileSize, widthTab * tileSize - xTab * tileSize, heightTab * tileSize - yTab * tileSize);
+		Rectangle r2 = new Rectangle(botEntity.getPosition().getX(), botEntity.getPosition().getY(), entitySize, entitySize);
+		
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean collideAttack(Entity target , Unit attacker) 
+	{
+		int sizeAttacker;
+		int sizeTarget;
+		
+		if(target.getId() >= EntityConfiguration.FORGE && target.getId() <= EntityConfiguration.ARCHERY)
+		{
+			sizeTarget = GameConfiguration.TILE_SIZE;
+		}
+		else
+		{
+			if(target.getId() == EntityConfiguration.CAVALRY)
+			{
+				sizeTarget = EntityConfiguration.CAVALRY_SIZE;
+			}
+			else
+			{
+				sizeTarget = EntityConfiguration.UNIT_SIZE;
+			}
+		}
+		
+		if(target.getId() == EntityConfiguration.CAVALRY)
+		{
+			sizeAttacker = EntityConfiguration.CAVALRY_SIZE;
+		}
+		else
+		{
+			sizeAttacker = EntityConfiguration.UNIT_SIZE;
+		}
+		
+		Rectangle r1 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), sizeTarget, sizeTarget);
+		Rectangle r2 = new Rectangle(attacker.getPosition().getX() - attacker.getAttackRange()/2*sizeAttacker, attacker.getPosition().getY() - attacker.getAttackRange()/2*sizeAttacker, attacker.getAttackRange()*2*sizeAttacker, attacker.getAttackRange()*2*sizeAttacker);
 		
 		if(r1.intersects(r2)) {
 			return true;

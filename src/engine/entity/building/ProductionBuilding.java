@@ -49,8 +49,8 @@ public abstract class ProductionBuilding extends Entity{
 		}
 		if(timer > 0) {
 			if(popCount < maxPop) {
-				timer -= 1.0 / GameConfiguration.GAME_SPEED; ;
-				if(this.getProductionId() == EntityConfiguration.INFANTRY) {
+				timer -= 1.0 / GameConfiguration.GAME_SPEED;
+				/*if(this.getProductionId() == EntityConfiguration.INFANTRY) {
 					System.out.println("updating infantry production time remaning : " + timer);
 				}
 				else if(this.getProductionId() == EntityConfiguration.ARCHER) {
@@ -67,7 +67,7 @@ public abstract class ProductionBuilding extends Entity{
 				}
 				else {
 					System.out.println("Invalid id");
-				}
+				}*/
 			}
 		}
 	}

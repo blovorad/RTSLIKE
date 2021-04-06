@@ -27,6 +27,8 @@ public class ForWorker extends Patron
 	{
 		super(hp, age, description, hpMax, sightRange, cost);
 		
+		this.attackRange = attackRange;
+		this.attackSpeed = attackSpeed;
 		this.range = range;
 		this.damage = damage;
 		this.armor = armor;

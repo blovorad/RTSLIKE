@@ -132,9 +132,9 @@ public class Worker extends Unit
 					this.setTarget(this.ressource);
 				}
 			}
-					
-			// récupère ressources
-			 else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this) && this.ressource.getHp() > 0){
+			// rÃ©cupÃ¨re ressources
+			 else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this) && this.ressource.getHp() > 0)
+			{
 				this.getSpeed().reset();
 				this.toHarvest();
 			} 
@@ -147,18 +147,21 @@ public class Worker extends Unit
 		}
 		
 		// Pose ces ressources si il en a et si on click sur un batiment de stockage
-		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this)){
+		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
+		{
 			nearbyStorage(storageBuildings);
 			this.storageBuilding.addRessource(this.quantityRessource);
+			storageBuildings = null;
 			this.quantityRessource = 0;
-			storageBuilding = null;
+			this.storageBuilding = null;
 			this.setTarget(null);
 			this.setCurrentAction(EntityConfiguration.IDDLE);
 		}	
 		
-		//réparee les batiments
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION)
+		//rÃ©paree les batiments
+		else if(this.getTarget() != null && this.getTarget().getFaction() == this.getFaction())
 		{
+			
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
 				this.setCurrentAction(EntityConfiguration.REPAIR);
