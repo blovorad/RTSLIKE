@@ -218,8 +218,6 @@ public class MainGui extends JFrame implements Runnable
 			List<StorageBuilding> storagesBuilding = manager.getStorageBuildings();
 			List<AttackBuilding> attackBuildings = manager.getAttackBuildings();
 			List<ProductionBuilding> prodBuildings = manager.getProdBuildings();
-			List<Fighter> fighters = manager.getFighters();
-			List<Worker> workers = manager.getWorkers();
 			List<SiteConstruction> siteConstructions = manager.getSiteConstructions();
 			
 			if(selectEntity == null)
@@ -264,34 +262,6 @@ public class MainGui extends JFrame implements Runnable
 				}
 			}
 			
-			if(selectEntity == null)
-			{
-				for( Fighter fighter: fighters )
-				{
-					Position  fighterPosition = new Position(fighter.getPosition().getX(), fighter.getPosition().getY());
-					
-					if(x > fighterPosition.getX() && x < fighterPosition.getX() + EntityConfiguration.UNIT_SIZE && y > fighterPosition.getY() && y < fighterPosition.getY() + EntityConfiguration.UNIT_SIZE)
-					{
-						selectEntity = fighter;
-						break;
-					}
-				}
-			}
-			
-			if(selectEntity == null)
-			{
-				for( Worker worker: workers )
-				{
-					Position workerPosition  = new Position(worker.getPosition().getX(), worker.getPosition().getY());
-					
-					if(x > workerPosition.getX() && x < workerPosition.getX() + EntityConfiguration.UNIT_SIZE && y > workerPosition.getY() && y < workerPosition.getY() + EntityConfiguration.UNIT_SIZE)
-					{
-						selectEntity = worker;
-						break;
-					}
-				}
-			}
-			
 			if(selectEntity == null) {
 				for( SiteConstruction siteConstruction : siteConstructions) {
 					Position siteConstructionPosition = new Position(siteConstruction.getPosition().getX(), siteConstruction.getPosition().getY());
@@ -305,6 +275,48 @@ public class MainGui extends JFrame implements Runnable
 			}
 			
 		return selectEntity;	
+		}
+		
+		public Unit checkUnit(int mouseX, int mouseY)
+		{	
+			List<Fighter> fighters = manager.getFighters();
+			List<Worker> workers = manager.getWorkers();
+			
+			Unit selectUnit = null;
+			
+			int x = mouseX;
+			int y = mouseY;
+			
+
+			if(selectUnit == null)
+			{
+				for( Fighter fighter: fighters )
+				{
+					Position  fighterPosition = new Position(fighter.getPosition().getX(), fighter.getPosition().getY());
+					
+					if(x > fighterPosition.getX() && x < fighterPosition.getX() + EntityConfiguration.UNIT_SIZE && y > fighterPosition.getY() && y < fighterPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectUnit = fighter;
+						break;
+					}
+				}
+			}
+			
+			if(selectUnit == null)
+			{
+				for( Worker worker: workers )
+				{
+					Position workerPosition  = new Position(worker.getPosition().getX(), worker.getPosition().getY());
+					
+					if(x > workerPosition.getX() && x < workerPosition.getX() + EntityConfiguration.UNIT_SIZE && y > workerPosition.getY() && y < workerPosition.getY() + EntityConfiguration.UNIT_SIZE)
+					{
+						selectUnit = worker;
+						break;
+					}
+				}
+			}
+			
+			return selectUnit;
 		}
 		
 		public Ressource checkRessource(int mouseX, int mouseY)
@@ -683,6 +695,7 @@ public class MainGui extends JFrame implements Runnable
 							
 							if(goingToHarvest == false) {
 								Entity target = checkEntity(mouseX, mouseY);
+								Unit targetUnit = checkUnit(mouseX, mouseY);
 								
 								if(listSelectedUnit.isEmpty() == false && target != null)
 								{
@@ -691,6 +704,16 @@ public class MainGui extends JFrame implements Runnable
 										unit.calculateSpeed(target.getPosition());
 										unit.setCurrentAction(EntityConfiguration.WALK);
 										unit.setTarget(target);
+									}
+								}
+								else if(listSelectedUnit.isEmpty() == false && targetUnit != null)
+								{
+									for(Unit unit : listSelectedUnit)
+									{
+										unit.calculateSpeed(targetUnit.getPosition());
+										unit.setCurrentAction(EntityConfiguration.WALK);
+										unit.setTarget(targetUnit);
+										unit.setTargetUnit(targetUnit);
 									}
 								}
 								else if(listSelectedUnit.isEmpty() == false && target == null) {
@@ -718,10 +741,28 @@ public class MainGui extends JFrame implements Runnable
 										}
 									}
 									else {
-										//ici on met le point de ralliment pour les batiment de production
-										ProductionBuilding building = manager.getSelectedProdBuilding();
-										if(building != null) {
-											building.setDestination(new Position(mouseX, mouseY));
+										//ici on fait en sorte que la tour attaque bien la cible qu'on lui montre	
+										if(manager.getSelectedAttackBuilding() != null) {
+											List<Unit> units = manager.getUnits();
+											int x = mouseX + camera.getX();
+											int y = mouseY + camera.getY();
+											for(Unit unit : units) {
+												Position unitPosition = unit.getPosition();
+												if(unit.getFaction() == EntityConfiguration.BOT_FACTION) {
+													if (x > unitPosition.getX() && x < unitPosition.getX() + EntityConfiguration.UNIT_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + EntityConfiguration.UNIT_SIZE) {
+														manager.getSelectedAttackBuilding().setTarget(unit);
+														System.out.println("new target : " + manager.getSelectedAttackBuilding().getTarget().getDescription());
+														break;
+													}
+												}
+											}
+										}
+										else {
+											//ici on met le point de ralliment pour les batiment de production
+											ProductionBuilding building = manager.getSelectedProdBuilding();
+											if(building != null) {
+												building.setDestination(new Position(mouseX, mouseY));
+											}
 										}
 									}
 								}
@@ -737,23 +778,6 @@ public class MainGui extends JFrame implements Runnable
 
 							x *= GameConfiguration.TILE_SIZE;
 							y *= GameConfiguration.TILE_SIZE;
-							
-							/*x -= camera.getScreenWidth() / 2;
-							y -= camera.getScreenHeight() / 2;
-							
-							if(x < 0){
-								x = 0;
-							}
-							else if(x > GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth()){
-								x = GameConfiguration.TILE_SIZE * GameConfiguration.COLUMN_COUNT - camera.getScreenWidth();
-							}
-							
-							if(y < 0){
-								y = 0;
-							}
-							else if(y > GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight()){
-								y = GameConfiguration.TILE_SIZE * GameConfiguration.LINE_COUNT - camera.getScreenHeight();
-							}*/
 							
 							Position p = new Position(x, y);
 							

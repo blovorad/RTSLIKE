@@ -240,7 +240,7 @@ public class PaintStrategyGame
 		}
 		else if(entity.getFaction() == EntityConfiguration.BOT_FACTION)
 		{
-			graphics.setColor(Color.white);
+			graphics.setColor(Color.red);
 		}
 		else if(entity.getId() == 13)
 		{

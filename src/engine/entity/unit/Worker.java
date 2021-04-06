@@ -129,7 +129,7 @@ public class Worker extends Unit
 				}
 			}
 					
-			// récupère ressources
+			// rÃ©cupÃ¨re ressources
 			 else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this) && this.ressource.getHp() > 0)
 			{
 				this.getSpeed().reset();
@@ -151,12 +151,14 @@ public class Worker extends Unit
 			this.storageBuilding.addRessource(this.quantityRessource);
 			storageBuildings = null;
 			this.quantityRessource = 0;
+			this.storageBuilding = null;
 			this.setTarget(null);
 		}	
 		
-		//réparee les batiments
+		//rÃ©paree les batiments
 		else if(this.getTarget() != null && this.getTarget().getFaction() == this.getFaction())
 		{
+			
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
 				this.setCurrentAction(EntityConfiguration.REPAIR);

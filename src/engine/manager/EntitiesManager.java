@@ -150,13 +150,13 @@ public class EntitiesManager
 		}
 		
 		if(botManager != null) {
-			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions);
+			/*botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions);
 			if(botManager.getBuildingInAttempt() == true) {
 				Tile tile = botManager.getTileToBuild();
 				Position p = new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE);
 				createConstructionSite(botManager.getIdToBuild(), EntityConfiguration.BOT_FACTION, p, botManager.getTileToBuild());
 				botManager.buildBuilding();
-			}
+			}*/
 		}
 		
 		for(Fighter fighter : fighters) 
@@ -243,7 +243,9 @@ public class EntitiesManager
 		for(SiteConstruction siteConstruction : siteConstructions) {
 			siteConstruction.update();
 			if(siteConstruction.isRemove()) {
-				createBuilding(siteConstruction.getBuildingId(), siteConstruction.getFaction(), siteConstruction.getPosition(), siteConstruction.getTile());
+				if(siteConstruction.getHp() > 0) {
+					createBuilding(siteConstruction.getBuildingId(), siteConstruction.getFaction(), siteConstruction.getPosition(), siteConstruction.getTile());
+				}
 				removeSiteConstructions.add(siteConstruction);
 			}
 		}
@@ -393,6 +395,7 @@ public class EntitiesManager
 		}
 		else if(id == EntityConfiguration.STORAGE){
 			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getStorageBuildings().get(id);
+			System.out.println("DESCRIPTION : " + patronBuilding.getDescription() + ", et la faction : " + faction);
 			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
 		}
 		else if(id == EntityConfiguration.TOWER){
@@ -775,13 +778,15 @@ public class EntitiesManager
 		this.collisionList.clear();
 		this.drawingList.clear();
 		this.fighters.clear();
+		this.playerFighters.clear();
+		this.playerWorkers.clear();
 		this.attackBuildings.clear();
 		this.storageBuildings.clear();
 		this.prodBuildings.clear();
 		this.workers.clear();
 		this.ressources.clear();
 		this.selectedUnits.clear();
-		this.units.clear();
+		this.selectedWorkers.clear();
 		clearSelectedBuildings();
 		factionManager.clean();
 		this.units.clear();

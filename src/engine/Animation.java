@@ -129,6 +129,10 @@ public class Animation {
 		return this.hasAnimation;
 	}
 	
+	public void setCurrentFrame(float frame) {
+		this.currentFrame = frame;
+	}
+	
 	public float getCurrentFrame() {
 		return currentFrame;
 	}

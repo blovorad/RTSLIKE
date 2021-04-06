@@ -13,7 +13,6 @@ public class GameConfiguration
 	public final static int GAME_SPEED = 1000/30;
 	
 	public final static int WINDOW_WIDTH = 1366;//Toolkit.getDefaultToolkit().getScreenSize().width;
-
 	public final static int WINDOW_HEIGHT = 768;//Toolkit.getDefaultToolkit().getScreenSize().height;
 	
 	public final static boolean launchInFullScreen = false;
@@ -32,5 +31,4 @@ public class GameConfiguration
 	
 	public final static int LEFT = 0;
 	public final static int RIGHT = 1;
-	
 }

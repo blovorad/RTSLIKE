@@ -58,7 +58,7 @@ public class BotManager {
 		setStableBuilt(false);
 		setCastleBuilt(false);
 		setForgeBuilt(false);
-		setHqBuilt(hqBuilt);
+		setHqBuilt(true);
 		setFactionManager(factionManager);
 		fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
 		Race race = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace();
@@ -100,7 +100,7 @@ public class BotManager {
 		updateVisibleRessources();
 		//System.out.println("nb ressource : " + visibleRessources.size());
 		recolte();
-		prodWorker();
+		//prodWorker();
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
@@ -288,8 +288,8 @@ public class BotManager {
 							fighter.setDestination(new Position(targetX, targetY));
 							fighter.calculateSpeed(new Position(targetX, targetY));
 							fighter.setState(EntityConfiguration.WALK);
-							System.out.println("cavalier exploring");
-							System.out.println("cavalier dest" + fighter.getDestination().getX() + "," + fighter.getDestination().getY());
+							//System.out.println("cavalier exploring");
+							//System.out.println("cavalier dest" + fighter.getDestination().getX() + "," + fighter.getDestination().getY());
 							this.setMax(maxX);
 						}
 					}
@@ -330,7 +330,7 @@ public class BotManager {
 								worker.setTarget(sitec);
 								worker.calculateSpeed(sitec.getPosition());
 								worker.setCurrentAction(EntityConfiguration.WALK);
-								//System.out.println("va constru fdp !");
+								System.out.println("va constru fdp !");
 								storageInRange = true;
 							}
 						}
