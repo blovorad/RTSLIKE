@@ -760,36 +760,61 @@ public class EntitiesManager
 	}
 	
 	public void clean(){
-		this.botAttackBuildings.clear();
-		this.botFighters.clear();
-		this.botManager = null;
-		this.botProdBuildings.clear();
-		this.botStorageBuildings.clear();
-		this.botWorkers.clear();
-		this.botEntities.clear();
+		collisionList.clear();
+		drawingList.clear();
+		playerEntities.clear();
 		
+		selectedUnits.clear();
+		selectedFighters.clear();
+		selectedWorkers.clear();
+
+		playerWorkers.clear();
+		playerFighters.clear();
+		
+		clearSelectedRessource();
+		
+		fighters.clear();
+		removeFighters.clear();
+		
+		workers.clear();
+		removeWorkers.clear();
+		
+		units.clear();
+		
+		attackBuildings.clear();
+		removeAttackBuildings.clear();
+
+		prodBuildings.clear();
+		removeProdBuildings.clear();
+		
+		storageBuildings.clear();
+		
+		playerStorageBuildings.clear();
+		playerProdBuildings.clear();
+		playerAttackBuildings.clear();
+		
+		botStorageBuildings.clear();
+		botProdBuildings.clear();
+		botAttackBuildings.clear();
+		botFighters.clear();
+		botWorkers.clear();
+		botSiteConstructions.clear();
+		botEntities.clear();
+		
+		removeStorageBuildings.clear();
+		
+		ressources.clear();
+		removeRessources.clear();
+		
+		siteConstructions.clear();
+		removeSiteConstructions.clear();
+		
+		waitingToAdd.clear();
 		removeList.clear();
 		
-		
-		this.playerAttackBuildings.clear();
-		this.playerProdBuildings.clear();
-		
-		this.playerEntities.clear();
-		this.collisionList.clear();
-		this.drawingList.clear();
-		this.fighters.clear();
-		this.playerFighters.clear();
-		this.playerWorkers.clear();
-		this.attackBuildings.clear();
-		this.storageBuildings.clear();
-		this.prodBuildings.clear();
-		this.workers.clear();
-		this.ressources.clear();
-		this.selectedUnits.clear();
-		this.selectedWorkers.clear();
+		this.botManager = null;
 		clearSelectedBuildings();
 		factionManager.clean();
-		this.units.clear();
 	}
 
 	public List<Entity> getDrawingList() {

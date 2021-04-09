@@ -3,6 +3,7 @@ package engine.map;
 import java.util.ArrayList;
 import java.util.List;
 
+import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
 import engine.math.Collision;
@@ -66,6 +67,10 @@ public class Fog {
 		
 		int widthTab = (x + sightRange) / GameConfiguration.TILE_SIZE;
 		int heightTab = (y + sightRange) / GameConfiguration.TILE_SIZE;
+		if(entity.getId() == EntityConfiguration.SITE_CONSTRUCTION) {
+			widthTab = entity.getPosition().getX() / GameConfiguration.TILE_SIZE + 1;
+			heightTab =  entity.getPosition().getY() / GameConfiguration.TILE_SIZE + 1;
+		}
 		
 		if(widthTab > GameConfiguration.COLUMN_COUNT) {
 			widthTab = GameConfiguration.COLUMN_COUNT;
@@ -75,7 +80,6 @@ public class Fog {
 		}
 		
 		//System.out.println("TAB : " + xTab + "," + yTab + ", et " + widthTab + "," +heightTab);
-		
 		for (int lineIndex = yTab; lineIndex < heightTab; lineIndex++) {
 			for (int columnIndex = xTab; columnIndex < widthTab; columnIndex++) {
 				if(lineIndex < GameConfiguration.LINE_COUNT && columnIndex < GameConfiguration.COLUMN_COUNT) {
