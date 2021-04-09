@@ -47,6 +47,8 @@ public class BotManager {
 	private List<Ressource> visibleRessources;
 	private List<Worker> idleWorker;
 	private int money;
+	private Fighter explorer;
+	private ProductionBuilding hq;
 	
 	private boolean buildingInAttempt;
 	private Tile tileToBuild;
@@ -100,7 +102,7 @@ public class BotManager {
 		updateVisibleRessources();
 		//System.out.println("nb ressource : " + visibleRessources.size());
 		recolte();
-		//prodWorker();
+		prodWorker();
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
@@ -196,104 +198,122 @@ public class BotManager {
 	
 	//states
 	public void explore() {
-		for(ProductionBuilding building : getBotProdBuildings()) {
-			if(building.getId() == EntityConfiguration.HQ) {
-				for(Fighter fighter : getBotFighters()) {
-					if(fighter.getId() == EntityConfiguration.CAVALRY) {
-						if(fighter.getDestination() == null) {
-							int x = building.getPosition().getX() / GameConfiguration.TILE_SIZE;
-							int y = building.getPosition().getY() / GameConfiguration.TILE_SIZE;
-							//System.out.println("pos hq = " + x + "," + y);
-							boolean[][] tabFog = fog.getFog();
-							int targetX = 0;
-							int targetY = 0;
-							int maxX = getMax();
-							int maxY = getMax();
-							while(targetX == 0 && targetY == 0) {
-								for(int i = x-maxX; i < x+maxX; i++) {
-									//System.out.println("tabfog[" + (y-maxY) + "][" + i + "] = " + tabFog[y-maxY][i]);
-									if(y-maxY < GameConfiguration.LINE_COUNT && i < GameConfiguration.COLUMN_COUNT) {
-										if(tabFog[y-maxY][i] == true) {
-											if(targetX == 0 && targetY == 0) {
-												targetX = i * GameConfiguration.TILE_SIZE;
-												targetY = (y-maxY) * GameConfiguration.TILE_SIZE;
-											}
-											else {
-												if(calculate(building.getPosition(), new Position(i * GameConfiguration.TILE_SIZE, (y-maxY) * GameConfiguration.TILE_SIZE)) <  calculate(building.getPosition(), new Position(targetX, targetY))) {
-													targetX = i * GameConfiguration.TILE_SIZE;
-													targetY = (y-maxY) * GameConfiguration.TILE_SIZE;
-												}
-											}
-										}
-									}
-								}
-								for(int j = y-maxY; j < y+maxY; j++) {
-									//System.out.println("tabfog[" + j + "][" + (x+maxX) + "] = " + tabFog[j][x+maxX]);
-									if(j < GameConfiguration.LINE_COUNT && x+maxX < GameConfiguration.COLUMN_COUNT) {
-										if(tabFog[j][x+maxX] == true) {
-											if(targetX == 0 && targetY == 0) {
-												targetX = (x+maxX) * GameConfiguration.TILE_SIZE;
-												targetY = j * GameConfiguration.TILE_SIZE;
-											}
-											else {
-												if(calculate(building.getPosition(), new Position((x+maxX) * GameConfiguration.TILE_SIZE, j * GameConfiguration.TILE_SIZE)) <  calculate(building.getPosition(), new Position(targetX, targetY))) {
-													targetX = (x+maxX) * GameConfiguration.TILE_SIZE;
-													targetY = j * GameConfiguration.TILE_SIZE;
-												}
-											}
-										}
-									}
-								}
-								for(int j = y-maxY; j < y+maxY; j++) {
-									//System.out.println("tabfog[" + j + "][" + (x-maxX) + "] = " + tabFog[j][x-maxX]);
-									if(j < GameConfiguration.LINE_COUNT && x-maxX < GameConfiguration.COLUMN_COUNT) {
-										if(tabFog[j][x-maxX] == true) {
-											if(targetX == 0 && targetY == 0) {
-												targetX = (x-maxX) * GameConfiguration.TILE_SIZE;
-												targetY = j * GameConfiguration.TILE_SIZE;
-											}
-											else {
-												if(calculate(building.getPosition(), new Position((x-maxX) * GameConfiguration.TILE_SIZE, j * GameConfiguration.TILE_SIZE)) <  calculate(building.getPosition(), new Position(targetX, targetY))) {
-													targetX = (x-maxX) * GameConfiguration.TILE_SIZE;
-													targetY = j * GameConfiguration.TILE_SIZE;
-												}
-											}
-										}
-									}
-								}
-								for(int i = x-maxX; i < x+maxX; i++) {
-									//System.out.println("tabfog[" + (y+maxY) + "][" + i + "] = " + tabFog[y+maxY][i]);
-									if(y+maxY < GameConfiguration.LINE_COUNT && i < GameConfiguration.COLUMN_COUNT) {
-										if(tabFog[y+maxY][i] == true) {
-											if(targetX == 0 && targetY == 0) {
-												targetX = i * GameConfiguration.TILE_SIZE;
-												targetY = (y+maxY) * GameConfiguration.TILE_SIZE;
-											}
-											else {
-												if(calculate(building.getPosition(), new Position(i * GameConfiguration.TILE_SIZE, (y+maxY) * GameConfiguration.TILE_SIZE)) <  calculate(building.getPosition(), new Position(targetX, targetY))) {
-													targetX = i * GameConfiguration.TILE_SIZE;
-													targetY = (y+maxY) * GameConfiguration.TILE_SIZE;
-												}
-											}
-										}
-									}
-								}
-								//System.out.println("maxX = " + maxX);
-								//System.out.println("maxY = " + maxY);
+		if(getHq() == null) {
+			for(ProductionBuilding building : getBotProdBuildings()) {
+				if(building.getId() == EntityConfiguration.HQ) {
+					setHq(building);
+				}
+			}
+		}
+		else {
+			if(getHq().getHp() <= 0) {
+				setHq(null);
+			}
+		}
+		if(getExplorer() == null) {
+			for(Fighter fighter : getBotFighters()) {
+				if(fighter.getId() == EntityConfiguration.CAVALRY) {
+					setExplorer(fighter);
+				}
+			}
+		}
+		else {
+			if(getExplorer().getHp() <= 0) {
+				setExplorer(null);
+			}
+		}
+		if(getHq() != null && getExplorer() != null) {
+			if(explorer.getDestination() == null) {
+				int x = hq.getPosition().getX() / GameConfiguration.TILE_SIZE;
+				int y = hq.getPosition().getY() / GameConfiguration.TILE_SIZE;
+				//System.out.println("pos hq = " + x + "," + y);
+				boolean[][] tabFog = fog.getFog();
+				int targetX = 0;
+				int targetY = 0;
+				int maxX = getMax();
+				int maxY = getMax();
+				while(targetX == 0 && targetY == 0) {
+					for(int i = x-maxX; i < x+maxX; i++) {
+						//System.out.println("tabfog[" + (y-maxY) + "][" + i + "] = " + tabFog[y-maxY][i]);
+						if(y-maxY < GameConfiguration.LINE_COUNT && i < GameConfiguration.COLUMN_COUNT) {
+							if(tabFog[y-maxY][i] == true) {
 								if(targetX == 0 && targetY == 0) {
-									maxX++;
-									maxY++;
+									targetX = i * GameConfiguration.TILE_SIZE;
+									targetY = (y-maxY) * GameConfiguration.TILE_SIZE;
+								}
+								else {
+									if(calculate(hq.getPosition(), new Position(i * GameConfiguration.TILE_SIZE, (y-maxY) * GameConfiguration.TILE_SIZE)) <  calculate(hq.getPosition(), new Position(targetX, targetY))) {
+										targetX = i * GameConfiguration.TILE_SIZE;
+										targetY = (y-maxY) * GameConfiguration.TILE_SIZE;
+									}
 								}
 							}
-							fighter.setDestination(new Position(targetX, targetY));
-							fighter.calculateSpeed(new Position(targetX, targetY));
-							fighter.setState(EntityConfiguration.WALK);
-							//System.out.println("cavalier exploring");
-							//System.out.println("cavalier dest" + fighter.getDestination().getX() + "," + fighter.getDestination().getY());
-							this.setMax(maxX);
 						}
 					}
+					for(int j = y-maxY; j < y+maxY; j++) {
+						//System.out.println("tabfog[" + j + "][" + (x+maxX) + "] = " + tabFog[j][x+maxX]);
+						if(j < GameConfiguration.LINE_COUNT && x+maxX < GameConfiguration.COLUMN_COUNT) {
+							if(tabFog[j][x+maxX] == true) {
+								if(targetX == 0 && targetY == 0) {
+									targetX = (x+maxX) * GameConfiguration.TILE_SIZE;
+									targetY = j * GameConfiguration.TILE_SIZE;
+								}
+								else {
+									if(calculate(hq.getPosition(), new Position((x+maxX) * GameConfiguration.TILE_SIZE, j * GameConfiguration.TILE_SIZE)) <  calculate(hq.getPosition(), new Position(targetX, targetY))) {
+										targetX = (x+maxX) * GameConfiguration.TILE_SIZE;
+										targetY = j * GameConfiguration.TILE_SIZE;
+									}
+								}
+							}
+						}
+					}
+					for(int j = y-maxY; j < y+maxY; j++) {
+						//System.out.println("tabfog[" + j + "][" + (x-maxX) + "] = " + tabFog[j][x-maxX]);
+						if(j < GameConfiguration.LINE_COUNT && x-maxX < GameConfiguration.COLUMN_COUNT) {
+							if(tabFog[j][x-maxX] == true) {
+								if(targetX == 0 && targetY == 0) {
+									targetX = (x-maxX) * GameConfiguration.TILE_SIZE;
+									targetY = j * GameConfiguration.TILE_SIZE;
+								}
+								else {
+									if(calculate(hq.getPosition(), new Position((x-maxX) * GameConfiguration.TILE_SIZE, j * GameConfiguration.TILE_SIZE)) <  calculate(hq.getPosition(), new Position(targetX, targetY))) {
+										targetX = (x-maxX) * GameConfiguration.TILE_SIZE;
+										targetY = j * GameConfiguration.TILE_SIZE;
+									}
+								}
+							}
+						}
+					}
+					for(int i = x-maxX; i < x+maxX; i++) {
+						//System.out.println("tabfog[" + (y+maxY) + "][" + i + "] = " + tabFog[y+maxY][i]);
+						if(y+maxY < GameConfiguration.LINE_COUNT && i < GameConfiguration.COLUMN_COUNT) {
+							if(tabFog[y+maxY][i] == true) {
+								if(targetX == 0 && targetY == 0) {
+									targetX = i * GameConfiguration.TILE_SIZE;
+									targetY = (y+maxY) * GameConfiguration.TILE_SIZE;
+								}
+								else {
+									if(calculate(hq.getPosition(), new Position(i * GameConfiguration.TILE_SIZE, (y+maxY) * GameConfiguration.TILE_SIZE)) <  calculate(hq.getPosition(), new Position(targetX, targetY))) {
+										targetX = i * GameConfiguration.TILE_SIZE;
+										targetY = (y+maxY) * GameConfiguration.TILE_SIZE;
+									}
+								}
+							}
+						}
+					}
+					//System.out.println("maxX = " + maxX);
+					//System.out.println("maxY = " + maxY);
+					if(targetX == 0 && targetY == 0) {
+						maxX++;
+						maxY++;
+					}
 				}
+				explorer.setDestination(new Position(targetX, targetY));
+				explorer.calculateSpeed(new Position(targetX, targetY));
+				explorer.setState(EntityConfiguration.WALK);
+				//System.out.println("cavalier exploring");
+				//System.out.println("cavalier dest" + explorer.getDestination().getX() + "," + explorer.getDestination().getY());
+				this.setMax(maxX);
 			}
 		}
 	}
@@ -696,5 +716,21 @@ public class BotManager {
 
 	public void setHqBuilt(boolean hqBuilt) {
 		this.hqBuilt = hqBuilt;
+	}
+
+	public Fighter getExplorer() {
+		return explorer;
+	}
+
+	public void setExplorer(Fighter explorer) {
+		this.explorer = explorer;
+	}
+
+	public ProductionBuilding getHq() {
+		return hq;
+	}
+
+	public void setHq(ProductionBuilding hq) {
+		this.hq = hq;
 	}
 }

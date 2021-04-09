@@ -814,6 +814,8 @@ public class EntitiesManager
 		
 		this.botManager = null;
 		clearSelectedBuildings();
+		
+		removeSiteConstructions.clear();
 		factionManager.clean();
 	}
 
