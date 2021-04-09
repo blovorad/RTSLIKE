@@ -407,6 +407,7 @@ public class EntitiesManager
 		}
 		
 		if(sc != null) {
+			tile.setSolid(true);
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(sc);
 			}
@@ -632,10 +633,8 @@ public class EntitiesManager
 		ProductionBuilding bprod = null;
 		AttackBuilding battack = null;
 		StorageBuilding bstorage = null;
-		tile.setSolid(true);
 			
 		if(id == EntityConfiguration.FORGE){
-
 			ForProductionBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getProductionBuildings().get(id);
 			bprod = new Forge(position, id, patronBuilding.getDescription(), patronBuilding.getHpMax(), faction, tile, factionManager.getFactions().get(faction).getRace().getForgeUpgrades(), patronBuilding.getSightRange(), graphicsManager);
 		}
@@ -677,6 +676,7 @@ public class EntitiesManager
 		}
 		
 		if(bprod != null) {
+			tile.setSolid(true);
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(bprod);
 				playerProdBuildings.add(bprod);
@@ -691,6 +691,7 @@ public class EntitiesManager
 			System.out.println("ajout Building production");
 		}
 		else if(bstorage != null){
+			tile.setSolid(true);
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(bstorage);
 			}
@@ -707,6 +708,7 @@ public class EntitiesManager
 			System.out.println("ajout building storage");
 		}
 		else if(battack != null) {
+			tile.setSolid(true);
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(battack);
 				playerAttackBuildings.add(battack);

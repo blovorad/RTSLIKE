@@ -385,10 +385,9 @@ public class BotManager {
 						
 						for(int i = y; i<= height; i++) {
 							for(int j = x; j <= width; j++) {
-								if(map.getTile(j, i).isSolid() == false) {
+								if(map.getTile(j, i).isSolid() == false && foundPlace == false) {
 									storagePosX = j;
 									storagePosY = i;
-									map.getTile(j, i).setSolid(true);
 									foundPlace = true;
 									//System.out.println("pos libre : " + j + " " + i);
 								}

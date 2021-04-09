@@ -658,6 +658,9 @@ public class MainGui extends JFrame implements Runnable
 								}
 								mouse.setId(-1);
 							}
+							else {
+								System.out.println("TILE SOLID");
+							}
 							selectionRectangle.setActive(false);
 						}
 						else if(selectionRectangle.isActive() == false){
