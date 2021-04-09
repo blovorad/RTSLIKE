@@ -51,6 +51,12 @@ public class Fog {
 	public void clearFog(int x, int y, int sightRange, Entity entity, List<Entity>drawingList, List<Entity> waitingList, List<Entity> removeList, List<Entity> botEntities) {
 		int xTab = x / GameConfiguration.TILE_SIZE;
 		int yTab = y / GameConfiguration.TILE_SIZE;
+		
+		if(entity.getId() == EntityConfiguration.SITE_CONSTRUCTION) {
+			xTab = entity.getPosition().getX() / GameConfiguration.TILE_SIZE;
+			yTab =  entity.getPosition().getY() / GameConfiguration.TILE_SIZE;
+		}
+		
 		if(xTab < 0) {
 			xTab = 0;
 		}
