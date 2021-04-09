@@ -86,6 +86,17 @@ public class BotManager {
 			else {
 				priceOfEntity.put(i, race.getProductionBuildings().get(i).getCost());
 			}
+			//System.out.println("COST ENTITY : " + priceOfEntity.get(i));
+		}
+		
+		for(int i = EntityConfiguration.ARMOR_UPGRADE; i <= EntityConfiguration.SIGHT_RANGE_UPGRADE; i++) {
+			priceOfEntity.put(i, race.getForgeUpgrades().get(i).getCost());
+			//System.out.println("COST FORGE UPGRADE : " + priceOfEntity.get(i));
+		}
+		
+		for(int i = EntityConfiguration.AGE_UPGRADE; i <= EntityConfiguration.AGE_UPGRADE_2; i++) {
+			priceOfEntity.put(i, race.getHQUpgrades().get(i).getCost());
+			//System.out.println("COST HQ UPGRADE : " + priceOfEntity.get(i));
 		}
 		
 		buildingInAttempt = false;

@@ -35,11 +35,10 @@ public class EntityConfiguration {
 	public final static int ARMOR_UPGRADE = 17;
 	public final static int DAMAGE_UPGRADE = 18;
 	public final static int ATTACK_SPEED_UPGRADE = 19;
-	public final static int SPEED_UPGRADE = 20;
-	public final static int ATTACK_RANGE_UPGRADE = 21;
-	public final static int SIGHT_RANGE_UPGRADE = 22;
-	public final static int AGE_UPGRADE = 23;
-	public final static int AGE_UPGRADE_2 = 24;
+	public final static int ATTACK_RANGE_UPGRADE = 20;
+	public final static int SIGHT_RANGE_UPGRADE = 21;
+	public final static int AGE_UPGRADE = 22;
+	public final static int AGE_UPGRADE_2 = 23;
 	
 	public final static int SITE_CONSTRUCTION = 40;
 	
