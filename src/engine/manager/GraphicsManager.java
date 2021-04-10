@@ -135,8 +135,6 @@ public class GraphicsManager {
 		
 		initTreeGraphics();
 		initWaterGraphics();
-		initPlayerGraphics();
-		initBotGraphics();
 	}
 	
 	private void initWaterGraphics() {
@@ -171,246 +169,14 @@ public class GraphicsManager {
 		}
 	}
 	
-	private void initBotGraphics() {
-		BufferedImage workerImage = null;
-		BufferedImage archerImage = null;
-		BufferedImage infantryImage = null;
-		BufferedImage specialImage = null;
+	private void initCavalryPlayerGraphics() {
 		BufferedImage cavalryImage = null;
 		
 		try {
-			workerImage = ImageIO.read(new File("src/graphics/engineerBot.png"));
-			archerImage = ImageIO.read(new File("src/graphics/archerBot.png"));
-			infantryImage = ImageIO.read(new File("src/graphics/knightBot.png"));
-			specialImage = ImageIO.read(new File("src/graphics/thiefBot.png"));
-			cavalryImage = ImageIO.read(new File("src/graphics/cavalryBot.png"));
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		//left gauche, right droite
-		
-		//WORKER FIRST
-		leftWorkerBot = new BufferedImage[4][4];
-		rightWorkerBot = new BufferedImage[4][4];
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = workerImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				leftWorkerBot[i][j] = imageBis;
-			}
-		}
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = workerImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				rightWorkerBot[i][j] = imageBis;
-			}
-		}
-		
-		leftInfantryBot = new BufferedImage[4][4];
-		rightInfantryBot = new BufferedImage[4][4];
-		//INFANTRY
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = infantryImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				leftInfantryBot[i][j] = imageBis;
-			}
-		}
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = infantryImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				rightInfantryBot[i][j] = imageBis;
-			}
-		}
-		
-		leftArcherBot = new BufferedImage[4][4];
-		rightArcherBot = new BufferedImage[4][4];
-		//ARCHER
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = archerImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				leftArcherBot[i][j] = imageBis;
-			}
-		}
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = archerImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				rightArcherBot[i][j] = imageBis;
-			}
-		}
-		
-		leftCavalryBot = new BufferedImage[4][4];
-		rightCavalryBot = new BufferedImage[4][4];
-		//CAVALRY
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = cavalryImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				int a = 0;
-				if(i == EntityConfiguration.IDDLE) {
-					a = EntityConfiguration.ATTACK;
-				}
-				else if(i == EntityConfiguration.WALK) {
-					a = EntityConfiguration.DIE;
-				}
-				else if(i == EntityConfiguration.ATTACK) {
-					a = EntityConfiguration.IDDLE;
-				}
-				else if(i == EntityConfiguration.DIE) {
-					a = EntityConfiguration.WALK;
-				}
-				leftCavalryBot[a][j] = imageBis;
-			}
-		}
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = cavalryImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				int a = 0;
-				if(i == EntityConfiguration.IDDLE) {
-					a = EntityConfiguration.ATTACK;
-				}
-				else if(i == EntityConfiguration.WALK) {
-					a = EntityConfiguration.DIE;
-				}
-				else if(i == EntityConfiguration.ATTACK) {
-					a = EntityConfiguration.IDDLE;
-				}
-				else if(i == EntityConfiguration.DIE) {
-					a = EntityConfiguration.WALK;
-				}
-				rightCavalryBot[a][j] = imageBis;
-			}
-		}
-		
-		leftSpecialBot = new BufferedImage[4][4];
-		rightSpecialBot = new BufferedImage[4][4];
-		//SPECIAL
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = specialImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				leftSpecialBot[i][j] = imageBis;
-			}
-		}
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = specialImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				rightSpecialBot[i][j] = imageBis;
-			}
-		}
-		
-	}
-
-	private void initPlayerGraphics() {
-		BufferedImage workerImage = null;
-		BufferedImage archerImage = null;
-		BufferedImage infantryImage = null;
-		BufferedImage specialImage = null;
-		BufferedImage cavalryImage = null;
-		
-		try {
-			workerImage = ImageIO.read(new File("src/graphics/engineerPlayer.png"));
-			archerImage = ImageIO.read(new File("src/graphics/archerPlayer.png"));
-			infantryImage = ImageIO.read(new File("src/graphics/knightPlayer.png"));
-			specialImage = ImageIO.read(new File("src/graphics/thiefPlayer.png"));
 			cavalryImage = ImageIO.read(new File("src/graphics/cavalryPlayer.png"));
 		}
-		catch(IOException e) {
+		catch(Exception e) {
 			e.printStackTrace();
-		}
-		//left gauche, right droite
-		
-		//WORKER FIRST
-		leftWorkerPlayer = new BufferedImage[4][4];
-		rightWorkerPlayer = new BufferedImage[4][4];
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = workerImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				leftWorkerPlayer[i][j] = imageBis;
-			}
-		}
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = workerImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				rightWorkerPlayer[i][j] = imageBis;
-			}
-		}
-		
-		leftInfantryPlayer = new BufferedImage[4][4];
-		rightInfantryPlayer = new BufferedImage[4][4];
-		//INFANTRY
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = infantryImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				leftInfantryPlayer[i][j] = imageBis;
-			}
-		}
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = infantryImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				rightInfantryPlayer[i][j] = imageBis;
-			}
-		}
-		
-		leftArcherPlayer = new BufferedImage[4][4];
-		rightArcherPlayer = new BufferedImage[4][4];
-		//ARCHER
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = archerImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				leftArcherPlayer[i][j] = imageBis;
-			}
-		}
-		for(int i = 0; i < 4; i++) {
-			for(int j = 0; j < 4; j++) {
-				BufferedImage imageBis = archerImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
-				int decoupeX = 80;
-				int decoupeY = 80;
-				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
-				rightArcherPlayer[i][j] = imageBis;
-			}
 		}
 		
 		leftCavalryPlayer = new BufferedImage[4][4];
@@ -460,6 +226,115 @@ public class GraphicsManager {
 				rightCavalryPlayer[a][j] = imageBis;
 			}
 		}
+	}
+	
+	private void initWorkerPlayerGraphics() {
+		BufferedImage workerImage = null;
+		
+		try {
+			workerImage = ImageIO.read(new File("src/graphics/engineerPlayer.png"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		leftWorkerPlayer = new BufferedImage[4][4];
+		rightWorkerPlayer = new BufferedImage[4][4];
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = workerImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				leftWorkerPlayer[i][j] = imageBis;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = workerImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				rightWorkerPlayer[i][j] = imageBis;
+			}
+		}
+	}
+	
+	private void initInfantryPlayerGraphics() {
+		BufferedImage infantryImage = null;
+		
+		try {
+			infantryImage = ImageIO.read(new File("src/graphics/knightPlayer.png"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		leftInfantryPlayer = new BufferedImage[4][4];
+		rightInfantryPlayer = new BufferedImage[4][4];
+		//INFANTRY
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = infantryImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				leftInfantryPlayer[i][j] = imageBis;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = infantryImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				rightInfantryPlayer[i][j] = imageBis;
+			}
+		}
+	}
+	
+	private void initArcherPlayerGraphics() {
+		BufferedImage archerImage = null;
+		
+		try {
+			archerImage = ImageIO.read(new File("src/graphics/archerPlayer.png"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		leftArcherPlayer = new BufferedImage[4][4];
+		rightArcherPlayer = new BufferedImage[4][4];
+		//ARCHER
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = archerImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				leftArcherPlayer[i][j] = imageBis;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = archerImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				rightArcherPlayer[i][j] = imageBis;
+			}
+		}
+	}
+	
+	private void initSpecialPlayerGraphics() {
+		BufferedImage specialImage = null;
+		
+		try {
+			specialImage = ImageIO.read(new File("src/graphics/thiefPlayer.png"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 		
 		leftSpecialPlayer = new BufferedImage[4][4];
 		rightSpecialPlayer = new BufferedImage[4][4];
@@ -483,75 +358,313 @@ public class GraphicsManager {
 			}
 		}
 	}
+	
+	private void initCavalryBotGraphics() {
+		BufferedImage cavalryImage = null;
+		
+		try {
+			cavalryImage = ImageIO.read(new File("src/graphics/cavalryBot.png"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		leftCavalryBot = new BufferedImage[4][4];
+		rightCavalryBot = new BufferedImage[4][4];
+		//CAVALRY
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = cavalryImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				int a = 0;
+				if(i == EntityConfiguration.IDDLE) {
+					a = EntityConfiguration.ATTACK;
+				}
+				else if(i == EntityConfiguration.WALK) {
+					a = EntityConfiguration.DIE;
+				}
+				else if(i == EntityConfiguration.ATTACK) {
+					a = EntityConfiguration.IDDLE;
+				}
+				else if(i == EntityConfiguration.DIE) {
+					a = EntityConfiguration.WALK;
+				}
+				leftCavalryBot[a][j] = imageBis;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = cavalryImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				int a = 0;
+				if(i == EntityConfiguration.IDDLE) {
+					a = EntityConfiguration.ATTACK;
+				}
+				else if(i == EntityConfiguration.WALK) {
+					a = EntityConfiguration.DIE;
+				}
+				else if(i == EntityConfiguration.ATTACK) {
+					a = EntityConfiguration.IDDLE;
+				}
+				else if(i == EntityConfiguration.DIE) {
+					a = EntityConfiguration.WALK;
+				}
+				rightCavalryBot[a][j] = imageBis;
+			}
+		}
+	}
+	
+	private void initWorkerBotGraphics() {
+		BufferedImage workerImage = null;
+		
+		try {
+			workerImage = ImageIO.read(new File("src/graphics/engineerBot.png"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		leftWorkerBot = new BufferedImage[4][4];
+		rightWorkerBot = new BufferedImage[4][4];
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = workerImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				leftWorkerBot[i][j] = imageBis;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = workerImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				rightWorkerBot[i][j] = imageBis;
+			}
+		}
+	}
+	
+	private void initInfantryBotGraphics() {
+		BufferedImage infantryImage = null;
+		
+		try {
+			infantryImage = ImageIO.read(new File("src/graphics/knightBot.png"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		leftInfantryBot = new BufferedImage[4][4];
+		rightInfantryBot = new BufferedImage[4][4];
+		//INFANTRY
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = infantryImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				leftInfantryBot[i][j] = imageBis;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = infantryImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				rightInfantryBot[i][j] = imageBis;
+			}
+		}
+	}
+	
+	private void initArcherBotGraphics() {
+		BufferedImage archerImage = null;
+		
+		try {
+			archerImage = ImageIO.read(new File("src/graphics/archerBot.png"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		leftArcherBot = new BufferedImage[4][4];
+		rightArcherBot = new BufferedImage[4][4];
+		//ARCHER
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = archerImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				leftArcherBot[i][j] = imageBis;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = archerImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				rightArcherBot[i][j] = imageBis;
+			}
+		}
+	}
+	
+	private void initSpecialBotGraphics() {
+		BufferedImage specialImage = null;
+		
+		try {
+			specialImage = ImageIO.read(new File("src/graphics/thiefBot.png"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		leftSpecialBot = new BufferedImage[4][4];
+		rightSpecialBot = new BufferedImage[4][4];
+		//SPECIAL
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = specialImage.getSubimage(j * 512, (i * 2) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				leftSpecialBot[i][j] = imageBis;
+			}
+		}
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 4; j++) {
+				BufferedImage imageBis = specialImage.getSubimage(j * 512, (i * 2 + 1) * 511, 512, 511);
+				int decoupeX = 80;
+				int decoupeY = 80;
+				imageBis = imageBis.getSubimage(decoupeX, decoupeY, 512 - decoupeX * 2, 511 - decoupeY * 2);
+				rightSpecialBot[i][j] = imageBis;
+			}
+		}
+	}
 
 	public BufferedImage[][] getLeftInfantry(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.leftInfantryPlayer == null) {
+				initInfantryPlayerGraphics();
+			}
 			return this.leftInfantryPlayer;
 		}
 		else {
+			if(this.leftInfantryBot == null) {
+				initInfantryBotGraphics();
+			}
 			return this.leftInfantryBot;
 		}
 	}
 
 	public BufferedImage[][] getRightInfantry(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.rightInfantryPlayer == null) {
+				initInfantryPlayerGraphics();
+			}
 			return this.rightInfantryPlayer;
 		}
 		else {
+			if(this.rightInfantryBot == null) {
+				initInfantryBotGraphics();
+			}
 			return this.rightInfantryBot;
 		}
 	}
 	
 	public BufferedImage[][] getLeftArcher(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.leftArcherPlayer == null) {
+				initArcherPlayerGraphics();
+			}
 			return this.leftArcherPlayer;
 		}
 		else {
+			if(this.leftArcherBot == null) {
+				initArcherBotGraphics();
+			}
 			return this.leftArcherBot;
 		}
 	}
 
 	public BufferedImage[][] getRightArcher(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.rightArcherPlayer == null) {
+				initArcherPlayerGraphics();
+			}
 			return this.rightArcherPlayer;
 		}
 		else {
+			if(this.rightArcherBot == null) {
+				initArcherBotGraphics();
+			}
 			return this.rightArcherBot;
 		}
 	}
 	
 	public BufferedImage[][] getLeftCavalry(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.leftCavalryPlayer == null) {
+				initCavalryPlayerGraphics();
+			}
 			return this.leftCavalryPlayer;
 		}
 		else {
+			if(this.leftCavalryBot == null) {
+				initCavalryBotGraphics();
+			}
 			return this.leftCavalryBot;
 		}
 	}
 
 	public BufferedImage[][] getRightCavalry(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.rightCavalryPlayer == null) {
+				initCavalryPlayerGraphics();
+			}
 			return this.rightCavalryPlayer;
 		}
 		else {
+			if(this.rightCavalryBot == null) {
+				initCavalryBotGraphics();
+			}
 			return this.rightCavalryBot;
 		}
 	}
 	
 	public BufferedImage[][] getLeftSpecial(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.leftSpecialPlayer == null) {
+				initSpecialPlayerGraphics();
+			}
 			return this.leftSpecialPlayer;
 		}
 		else {
+			if(this.leftSpecialBot == null) {
+				initSpecialBotGraphics();
+			}
 			return this.leftSpecialBot;
 		}
 	}
 
 	public BufferedImage[][] getRightSpecial(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.rightSpecialPlayer == null) {
+				initSpecialPlayerGraphics();
+			}
 			return this.rightSpecialPlayer;
 		}
 		else {
+			if(this.rightSpecialBot == null) {
+				initSpecialBotGraphics();
+			}
 			return this.rightSpecialBot;
 		}
 	}
@@ -559,18 +672,30 @@ public class GraphicsManager {
 
 	public BufferedImage[][] getLeftWorker(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.leftWorkerPlayer == null) {
+				initWorkerPlayerGraphics();
+			}
 			return this.leftWorkerPlayer;
 		}
 		else {
+			if(this.leftWorkerBot == null) {
+				initWorkerBotGraphics();
+			}
 			return this.leftWorkerBot;
 		}
 	}
 
 	public BufferedImage[][] getRightWorker(int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			if(this.rightWorkerPlayer == null) {
+				initWorkerPlayerGraphics();
+			}
 			return this.rightWorkerPlayer;
 		}
 		else {
+			if(this.rightWorkerBot == null) {
+				initWorkerBotGraphics();
+			}
 			return this.rightWorkerBot;
 		}
 	}

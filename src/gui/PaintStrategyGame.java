@@ -16,6 +16,7 @@ import engine.Position;
 import engine.entity.unit.Unit;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
+import engine.map.FogCase;
 import engine.map.Map;
 import engine.map.Minimap;
 import engine.map.Tile;
@@ -146,14 +147,22 @@ public class PaintStrategyGame
 	}
 	
 	public void paint(Fog fog, Graphics graphics, Camera camera) {
-		graphics.setColor(Color.black);
 		boolean[][] removeFog = fog.getFog();
+		FogCase[][] dynamicFog = fog.getDynamicFog();
 		int tileSize = GameConfiguration.TILE_SIZE;
+		
 		for (int lineIndex = 0; lineIndex < fog.getLineCount(); lineIndex++) 
 		{
 			for (int columnIndex = 0; columnIndex < fog.getColumnCount(); columnIndex++) 
 			{
+				if(!GameConfiguration.debug_mod) {
+					if(dynamicFog[lineIndex][columnIndex].getVisible() == true) {
+						graphics.setColor(new Color(0,0,0, 100));
+						graphics.fillRect(columnIndex * tileSize - camera.getX(), lineIndex * tileSize - camera.getY(), tileSize, tileSize);
+					}
+				}
 				if(removeFog[lineIndex][columnIndex] == true) {
+					graphics.setColor(Color.black);
 					graphics.fillRect(columnIndex * tileSize - camera.getX(), lineIndex * tileSize - camera.getY(), tileSize, tileSize);
 				}
 			}
@@ -231,7 +240,7 @@ public class PaintStrategyGame
 		}
 		else if(entity.getFaction() == EntityConfiguration.BOT_FACTION)
 		{
-			graphics.setColor(Color.white);
+			graphics.setColor(Color.red);
 		}
 		else if(entity.getId() == 13)
 		{

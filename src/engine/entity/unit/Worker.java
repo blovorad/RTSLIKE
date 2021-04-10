@@ -122,13 +122,16 @@ public class Worker extends Unit
 				this.ressource = null;
 				nearbyResource(ressources);
 				if(this.ressource == null) {
+					if(this.quantityRessource > 0) {
+						nearbyStorage(storageBuildings);
+						this.setTarget(this.storageBuilding);
+					}
 					this.setCurrentAction(EntityConfiguration.IDDLE);
 				}
 				else {
 					this.setTarget(this.ressource);
 				}
 			}
-					
 			// récupère ressources
 			 else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this) && this.ressource.getHp() > 0)
 			{
@@ -138,8 +141,7 @@ public class Worker extends Unit
 			
 			
 			// revien a la ressource quand posse ces ressources
-			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax)
-			{
+			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax){
 				this.setTarget(ressource);
 			}		
 		}
@@ -149,14 +151,17 @@ public class Worker extends Unit
 		{
 			nearbyStorage(storageBuildings);
 			this.storageBuilding.addRessource(this.quantityRessource);
+			storageBuildings = null;
 			this.quantityRessource = 0;
 			this.storageBuilding = null;
 			this.setTarget(null);
+			this.setCurrentAction(EntityConfiguration.IDDLE);
 		}	
 		
 		//réparee les batiments
-		else if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.PLAYER_FACTION)
+		else if(this.getTarget() != null && this.getTarget().getFaction() == this.getFaction())
 		{
+			
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
 				this.setCurrentAction(EntityConfiguration.REPAIR);

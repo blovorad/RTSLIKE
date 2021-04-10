@@ -2,6 +2,8 @@ package engine.math;
 
 import java.awt.Rectangle;
 
+import javax.swing.JPanel;
+
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 
@@ -75,6 +77,26 @@ public class Collision {
 		return false;
 	}
 	
+	public static boolean collidePanel(JPanel panel, int x, int y) {
+		Rectangle r1 = new Rectangle(panel.getX(), panel.getY(), panel.getWidth(), panel.getHeight());
+		Rectangle r2 = new Rectangle(x, y, 1, 1);
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean collidePanelMinimap(JPanel panel, int x, int y) {
+		Rectangle r1 = new Rectangle(panel.getX() + panel.getWidth() / 2, panel.getY(), panel.getWidth(), panel.getHeight());
+		Rectangle r2 = new Rectangle(x, y, 1, 1);
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public static boolean collideEntity(Unit unit, Entity  target) {
 		Rectangle r1 = new Rectangle(unit.getPosition().getX(), unit.getPosition().getY(), EntityConfiguration.UNIT_SIZE, EntityConfiguration.UNIT_SIZE);
 		Rectangle r2 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE);
@@ -96,8 +118,27 @@ public class Collision {
 		
 		return false;
 	}
+	public static boolean collideFogEntity(int xTab, int yTab, int widthTab, int heightTab, Entity botEntity) {
+		int tileSize = GameConfiguration.TILE_SIZE;
+		int entitySize = GameConfiguration.TILE_SIZE;
+		if(botEntity.getId() == EntityConfiguration.CAVALRY) {
+			entitySize = EntityConfiguration.CAVALRY_SIZE;
+		}
+		else if(botEntity.getId() <= EntityConfiguration.WORKER) {
+			entitySize = EntityConfiguration.UNIT_SIZE;
+		}
+		
+		Rectangle r1 = new Rectangle(xTab * tileSize, yTab * tileSize, widthTab * tileSize - xTab * tileSize, heightTab * tileSize - yTab * tileSize);
+		Rectangle r2 = new Rectangle(botEntity.getPosition().getX(), botEntity.getPosition().getY(), entitySize, entitySize);
+		
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
 	
-	public static boolean collideattack(Entity target , Unit attacker) 
+	public static boolean collideAttack(Entity target , Unit attacker) 
 	{
 		int sizeAttacker;
 		int sizeTarget;
@@ -136,5 +177,4 @@ public class Collision {
 		
 		return false;
 	}
-	
 }
