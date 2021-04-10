@@ -216,6 +216,11 @@ public class Unit extends Entity
 					}
 				}
 			}
+			else
+			{
+				this.setDestination(null);
+				this.speed.reset();
+			}
 		}
 		
 		this.getPosition().setX(this.getPosition().getX() + (int)this.getSpeed().getVx());
@@ -249,7 +254,7 @@ public class Unit extends Entity
 		}
 		
 
-		if(this.getTarget() != null && this.getTarget().getFaction() == EntityConfiguration.BOT_FACTION && Collision.collideattack(this.getTarget(), this) ) //Collision.collideEntity(this, this.getTarget()) Collision.collideattack(this, this.getTarget())
+		if(this.getTarget() != null && this.getTarget().getFaction() != this.getFaction() && Collision.collideattack(this.getTarget(), this) ) //Collision.collideEntity(this, this.getTarget()) Collision.collideattack(this, this.getTarget())
 		{
 			this.checkTarget();
 			System.out.println(this.getTarget());
