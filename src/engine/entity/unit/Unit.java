@@ -34,7 +34,7 @@ public class Unit extends Entity
 	
 	private Speed speed;
 	
-	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
+	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager, int state)
 	{
 		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
 		
@@ -48,7 +48,7 @@ public class Unit extends Entity
 		this.setDestination(destination);
 		this.speed = new Speed(0, 0);
 		this.timer = this.attackSpeed;
-		this.state = EntityConfiguration.AGGRESIF_STATE;
+		this.state = state;
 		
 		if(destination != null) {
 			System.out.println("calcul");
@@ -117,6 +117,7 @@ public class Unit extends Entity
 		{
 			this.setTarget(null);
 			this.targetUnit = null;
+			this.setDestination(null);
 		}
 	}
 	
@@ -190,10 +191,13 @@ public class Unit extends Entity
 		super.update();
 		Position p = this.getPosition();
 		
-		if(this.getTarget() != null && this.getDestination() != null && !(this.getTarget().getPosition().equals(this.getDestination())))
+		if(this.getTarget() != null  && this.getDestination() != null && this.currentAction != EntityConfiguration.ATTACK && !(this.getTarget().getPosition().equals(this.getDestination())))
 		{
 			calculateSpeed(this.getTarget().getPosition());
-			System.out.println("je change ma destination");
+			if(this.getId() == EntityConfiguration.CAVALRY && this.getFaction() == EntityConfiguration.PLAYER_FACTION)
+			{
+				System.out.println("je change ma destination");
+			}
 		}
 		else
 		{	
@@ -263,48 +267,83 @@ public class Unit extends Entity
 			this.getSpeed().setVy(0);
 		}
 		
-		if(this.getTarget() != null && this.getTarget().getFaction() != this.getFaction() && Collision.collideAttack(this.getTarget(), this) && this.getCurrentAction() != EntityConfiguration.HARVEST)
+		if(this.getTarget() != null && this.getTarget().getFaction() != this.getFaction() && this.getCurrentAction() != EntityConfiguration.HARVEST)
 		{
-			this.checkTarget();
-			System.out.println(this.getTarget());
-			this.getSpeed().reset();
-			this.attack(this.getDamage());
-			System .out.println("timer: " + this.timer);
-			
-			if(this.getTarget() == null)
+			if(Collision.collideAttack(this.getTarget(), this))
+			{
+				this.checkTarget();
+				System.out.println(this.getTarget());
+				this.getSpeed().reset();
+				this.attack(this.getDamage());
+				System .out.println("timer: " + this.timer);
+				
+				if(this.getTarget() == null)
+				{
+					this.setCurrentAction(EntityConfiguration.IDDLE);
+					this.timer = this.attackSpeed;
+				}
+				else
+				{
+					this.setCurrentAction(EntityConfiguration.ATTACK);
+				}
+			}
+			else
 			{
 				this.setCurrentAction(EntityConfiguration.IDDLE);
 				this.timer = this.attackSpeed;
 			}
-			else
-			{
-				this.setCurrentAction(EntityConfiguration.ATTACK);
-			}
 		}
 		
-		if(this.state == EntityConfiguration.AGGRESIF_STATE && this.getTarget() == null && this.targetUnit == null)
+		if(this.state == EntityConfiguration.AGGRESIF_STATE && this.getTarget() == null && this.targetUnit == null && (this.getFaction() == EntityConfiguration.BOT_FACTION || this.getDestination() == null ))
 		{
 			
 			if(!units.isEmpty())
 			{
-				int distanceUnit;
+				//int distanceUnit;
 				
 				for(Unit value: units)
 				{
-					distanceUnit = calculate(value.getPosition());
+					//distanceUnit = calculate(value.getPosition());
 					
 					if(Collision.collideVision(value, this) && value.getFaction() != this.getFaction())
 					{
 						this.targetUnit = value;
 						this.setTarget(value);
+						this.setDestination(new Position(value.getPosition().getX(), value.getPosition().getY()));
+						this.calculateSpeed(value.getPosition());
 					}
 					
 				}
 			}
 		}
-		else if(this.state == EntityConfiguration.DEFENSIF_STATE && this.getTarget() != null)
+		else if(this.state == EntityConfiguration.DEFENSIF_STATE && this.getTarget() == null && this.isHit())
 		{
+			if(!units.isEmpty())
+			{	
+				for(Unit value: units)
+				{	
+					if(Collision.collideVision(value, this) && value.getFaction() != this.getFaction() && value.getTarget() == this)
+					{
+						this.targetUnit = value;
+						this.setTarget(value);
+						this.setDestination(new Position(value.getPosition().getX(), value.getPosition().getY()));
+						this.calculateSpeed(value.getPosition());
+						
+						break;
+					}
+					
+				}
+			}
+		}
+		
+		if(this.getId() == EntityConfiguration.CAVALRY && this.getFaction() == EntityConfiguration.PLAYER_FACTION)
+		{
+			System.out.println("Ma target est: " + this.getTarget());
+			System.out.println("Ma targetUnir est: " + this.targetUnit);
+			if(this.getTargetUnit() != null)
+			System.out.println("La vie de ma target: " + this.targetUnit.getHp());
 			
+			System.out.println("Ma destination est : " + this.getDestination());
 		}
 		
 		manageState();
