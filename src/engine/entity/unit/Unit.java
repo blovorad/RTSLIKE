@@ -294,7 +294,7 @@ public class Unit extends Entity
 			}
 		}
 		
-		if(this.state == EntityConfiguration.AGGRESIF_STATE && this.getTarget() == null && this.targetUnit == null && (this.getFaction() == EntityConfiguration.BOT_FACTION || this.getDestination() == null ))
+		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.getTarget() == null && this.targetUnit == null && (this.getFaction() == EntityConfiguration.BOT_FACTION || this.getDestination() == null ))
 		{
 			
 			if(!units.isEmpty())
@@ -383,6 +383,14 @@ public class Unit extends Entity
 	public void setTimer(int timer)
 	{
 		this.timer = timer;
+	}
+	
+	public int getState() {
+		return this.state;
+	}
+	
+	public void setState(int state) {
+		this.state = state;
 	}
 	
 	public void setTargetUnit(Unit targetUnit)

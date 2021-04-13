@@ -44,7 +44,7 @@ public class EntityConfiguration {
 	
 	public final static int PASSIF_STATE = 0;
 	public final static int DEFENSIF_STATE = 1;
-	public final static int AGGRESIF_STATE = 2;
+	public final static int AGRESSIF_STATE = 2;
 	
 	public final static int IDDLE = 2;
 	public final static int ATTACK = 0;

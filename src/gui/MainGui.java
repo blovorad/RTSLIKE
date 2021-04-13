@@ -386,7 +386,6 @@ public class MainGui extends JFrame implements Runnable
 				for(Fighter fighter : listFighters) {
 					Position pos = fighter.getPosition();
 					if(x > pos.getX() && x < pos.getX() + EntityConfiguration.UNIT_SIZE && y > pos.getY() && y < pos.getY() + EntityConfiguration.UNIT_SIZE) {
-						dashboard.setDescriptionPanelForUnit(fighter);
 						noUnitSelected = false;
 						if(clickCount > 1) {
 							manager.addSelectedFighter(fighter);
@@ -398,6 +397,9 @@ public class MainGui extends JFrame implements Runnable
 							break;
 						}
 					}
+				}
+				if(manager.getSelectedFighters().isEmpty() == false) {
+					dashboard.setDescriptionPanelForUnit(manager.getSelectedFighters().get(0), manager.getSelectedFighters());
 				}
 			}
 	
@@ -504,9 +506,11 @@ public class MainGui extends JFrame implements Runnable
 				{
 					manager.addSelectedUnit(fighter);
 					manager.addSelectedFighter(fighter);
-					dashboard.setDescriptionPanelForUnit(fighter);
 					noUnitSelected = false;
 				}
+			}
+			if(manager.getSelectedFighters().isEmpty() == false) {
+				dashboard.setDescriptionPanelForUnit(manager.getSelectedFighters().get(0), manager.getSelectedFighters());
 			}
 			
 			if(noUnitSelected == true)

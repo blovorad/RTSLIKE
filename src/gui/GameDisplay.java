@@ -103,6 +103,11 @@ public class GameDisplay extends JPanel
 	private JRadioButton radioButton3;
 	private ButtonGroup groupButton;
 	
+	//unit state
+	private JRadioButton agressifState;
+	private JRadioButton defensifState;
+	private ButtonGroup stateGroupButton;
+	
 	//print the selected map
 	private JLabel labelMap;
 	private ImageIcon map1;
@@ -498,17 +503,36 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
-	public void setDescriptionPanelForUnit(Unit unit)
+	public void setDescriptionPanelForUnit(Unit unit, List<Fighter>fighters)
 	{
 		descriptionPanel.removeAll();
 		descriptionPanel.setLayout(new GridLayout(1, 3));
+		
+		stateGroupButton = new ButtonGroup();
+		agressifState = new JRadioButton(new ChangeState("AGRESSIF", EntityConfiguration.AGRESSIF_STATE, fighters));
+		defensifState = new JRadioButton(new ChangeState("DEFENSIF", EntityConfiguration.DEFENSIF_STATE, fighters));
+		agressifState.setOpaque(false);
+		defensifState.setOpaque(false);
+		
+		stateGroupButton.add(agressifState);
+		stateGroupButton.add(defensifState);
+		if(unit.getState() == EntityConfiguration.AGRESSIF_STATE) {
+			agressifState.setSelected(true);
+		}
+		else if(unit.getState() == EntityConfiguration.DEFENSIF_STATE) {
+			defensifState.setSelected(true);
+		}
 		
 		statEntityContainer.setForUnit(unit);
 		unitStatistiquesLabel.setText("\nPoints de vie : " + unit.getHp() +
 										"\nDegats : " + unit.getDamage() + 
 										"\nArmure : " + unit.getArmor());
+		JPanel pForButton = new JPanel(new GridLayout(2,1));
+		pForButton.setOpaque(false);
+		pForButton.add(agressifState);
+		pForButton.add(defensifState);
 		
-		descriptionPanel.add(new JLabel("etat"));
+		descriptionPanel.add(pForButton);
 		descriptionPanel.add(new JLabel(unit.getDescription()));
 		descriptionPanel.add(unitStatistiquesLabel);
 		
@@ -1191,6 +1215,36 @@ public class GameDisplay extends JPanel
 			setDescriptionPanelForConstruction();
 		}
 	}
+	
+	
+	private class ChangeState extends AbstractAction{
+		private static final long serialVersionUID = 1L;
+		
+		private int type;
+		private List<Fighter>fighters;
+		
+		public ChangeState(String name, int type, List<Fighter> fighters) {
+			super(name);
+			this.type = type;
+			this.fighters = fighters;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(type == EntityConfiguration.DEFENSIF_STATE) {
+				for(Fighter fighter : fighters) {
+					fighter.setState(EntityConfiguration.DEFENSIF_STATE);
+				}
+			}
+			else if(type == EntityConfiguration.AGRESSIF_STATE) {
+				for(Fighter fighter : fighters) {
+					fighter.setState(EntityConfiguration.AGRESSIF_STATE);
+				}
+			}
+			
+		}
+	}
+	
 	
 	//for mainMenuGui
 	private class RadioButton1 extends AbstractAction
