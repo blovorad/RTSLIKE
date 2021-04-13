@@ -86,9 +86,9 @@ public class Worker extends Unit
 		}
 	}
 	
-	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
+	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings, List<Unit> units)
 	{
-		super.update();
+		super.update(units);
 		
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST)
 		{
@@ -229,11 +229,6 @@ public class Worker extends Unit
 		return this.harvestSpeed;
 	}
 	
-	public int calculate(Position position)
-	{
-		return (int) Math.sqrt(Math.pow(position.getX() - this.getPosition().getX(), 2) + Math.pow(position.getY() - this.getPosition().getY(), 2));
-	}
-
 	public int getHarvestSpeed()
 	{
 		return this.harvestSpeed;

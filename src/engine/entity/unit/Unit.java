@@ -1,10 +1,14 @@
 package engine.entity.unit;
 
+import java.util.List;
+
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
 import engine.Position;
+import engine.Ressource;
 import engine.Speed;
+import engine.entity.building.StorageBuilding;
 import engine.manager.GraphicsManager;
 import engine.math.Collision;
 
@@ -28,6 +32,7 @@ public class Unit extends Entity
 	private int range;
 	private int armor;
 	private int timer;
+	private int state;
 	
 	private Speed speed;
 	
@@ -45,6 +50,7 @@ public class Unit extends Entity
 		this.setDestination(destination);
 		this.speed = new Speed(0, 0);
 		this.timer = this.attackSpeed;
+		this.state = EntityConfiguration.AGGRESIF_STATE;
 		
 		if(destination != null) {
 			System.out.println("calcul");
@@ -182,11 +188,13 @@ public class Unit extends Entity
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
 
-	public void update(){
+	public void update(List<Unit> units){
 		super.update();
 		Position p = this.getPosition();
 		
-		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination()))){	
+		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination())))
+		{
+			this.setDestination(this.getTarget().getPosition());
 			calculateSpeed(this.getTarget().getPosition());
 		}
 		else
@@ -276,7 +284,37 @@ public class Unit extends Entity
 			}
 		}
 		
+		if(this.state == EntityConfiguration.AGGRESIF_STATE && this.getTarget() == null && this.targetUnit == null)
+		{
+			
+			if(!units.isEmpty())
+			{
+				int distanceUnit;
+				
+				for(Unit value: units)
+				{
+					distanceUnit = calculate(value.getPosition());
+					
+					if(Collision.collideVision(value, this) && value.getFaction() != this.getFaction())
+					{
+						this.targetUnit = value;
+						this.setTarget(value);
+					}
+					
+				}
+			}
+		}
+		else if(this.state == EntityConfiguration.DEFENSIF_STATE && this.getTarget() != null)
+		{
+			
+		}
+		
 		manageState();
+	}
+	
+	public int calculate(Position position)
+	{
+		return (int) Math.sqrt(Math.pow(position.getX() - this.getPosition().getX(), 2) + Math.pow(position.getY() - this.getPosition().getY(), 2));
 	}
 	
 	public void manageState() {

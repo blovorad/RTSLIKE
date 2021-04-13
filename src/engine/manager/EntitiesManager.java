@@ -161,7 +161,7 @@ public class EntitiesManager
 		
 		for(Fighter fighter : fighters) 
 		{
-			fighter.update();
+			fighter.update(units);
 			if(fighter.isRemove())
 			{
 				removeFighters.add(fighter);
@@ -171,10 +171,10 @@ public class EntitiesManager
 		
 		for(Worker worker : workers) {
 			if(worker.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-				worker.update(ressources, playerStorageBuildings);
+				worker.update(ressources, playerStorageBuildings, units);
 			}
 			else {
-				worker.update(ressources, botStorageBuildings);
+				worker.update(ressources, botStorageBuildings,units);
 			}
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
