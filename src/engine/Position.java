@@ -1,5 +1,6 @@
 package engine;
 
+import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 
 /**
@@ -40,31 +41,25 @@ public class Position
 		this.y = y;
 	}
 	
-	public boolean equalsX(Position position)
-	{
-		if( this.x == position.x )
+	public boolean allerLesBleus(Position position, int faction) {
+		if(this.x == position.getX() && this.y == position.getY())
 		{
 			return true;
 		}
-	return false;
-	}
-	
-	public boolean equalsY(Position position)
-	{
-		if(this.y == position.y)
-		{
-			return true;
+		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			System.out.println("equals position : " + this.x + "," + this.y + " alors :: " + position.getX() + "," + position.getY());
 		}
 	return false;
 	}
 	
 	public boolean equals(Position position)
 	{
-		if(this.x == position.x && this.y == position.y)
+		if(this.x == position.getX() && this.y == position.getY())
 		{
+			
 			return true;
 		}
-		
+		//System.out.println("equals position : " + this.x + "," + this.y + " alors :: " + position.getX() + "," + position.getY());
 	return false;
 	}
 	

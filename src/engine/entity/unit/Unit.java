@@ -177,7 +177,7 @@ public class Unit extends Entity
 	}
 	
 	public void calculateSpeed(Position p){	
-		this.setDestination(p);
+		this.setDestination(new Position(p.getX(), p.getY()));
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
@@ -186,7 +186,7 @@ public class Unit extends Entity
 		super.update();
 		Position p = this.getPosition();
 		
-		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination()))){	
+		if(this.getTarget() != null && this.getDestination()!= null && !this.getTarget().getPosition().equals(this.getDestination()) && this.getCurrentAction() != EntityConfiguration.ATTACK){	
 			calculateSpeed(this.getTarget().getPosition());
 		}
 		else
@@ -255,11 +255,16 @@ public class Unit extends Entity
 
 		if(this.getTarget() != null && this.getTarget().getFaction() != this.getFaction() && Collision.collideAttack(this.getTarget(), this) && this.getCurrentAction() != EntityConfiguration.HARVEST)
 		{
+			if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+				System.out.println("on est taper");
+				System.out.println("POSITION DESTINATION : " + this.getDestination().getX() + "," + this.getDestination().getY());
+				System.out.println("POSITION TARGET : " + this.getTarget().getPosition().getX() + "," + this.getTarget().getPosition().getY());
+			}
 			this.checkTarget();
-			System.out.println(this.getTarget());
+			//System.out.println(this.getTarget());
 			this.getSpeed().reset();
 			this.attack(this.getDamage());
-			System .out.println("timer: " + this.timer);
+			//System .out.println("timer: " + this.timer);
 			
 			if(this.getTarget() == null)
 			{
@@ -268,6 +273,7 @@ public class Unit extends Entity
 			}
 			else
 			{
+				this.getSpeed().reset();
 				this.setCurrentAction(EntityConfiguration.ATTACK);
 			}
 		}

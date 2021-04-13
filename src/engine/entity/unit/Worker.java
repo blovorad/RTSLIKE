@@ -89,6 +89,11 @@ public class Worker extends Unit
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings)
 	{
 		super.update();
+		if(this.getCurrentAction() == EntityConfiguration.HARVEST && this.getTarget() != null) {
+			if(this.getTarget().getId() == EntityConfiguration.SITE_CONSTRUCTION) {
+				this.setCurrentAction(EntityConfiguration.WALK);
+			}
+		}
 		
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST)
 		{
@@ -161,7 +166,6 @@ public class Worker extends Unit
 		//réparee les batiments
 		else if(this.getTarget() != null && this.getTarget().getFaction() == this.getFaction())
 		{
-			
 			if(Collision.collideUnit(this.getTarget().getPosition(), this))
 			{
 				this.setCurrentAction(EntityConfiguration.REPAIR);
