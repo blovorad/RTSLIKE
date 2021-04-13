@@ -6,9 +6,7 @@ import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
 import engine.Position;
-import engine.Ressource;
 import engine.Speed;
-import engine.entity.building.StorageBuilding;
 import engine.manager.GraphicsManager;
 import engine.math.Collision;
 
@@ -192,10 +190,9 @@ public class Unit extends Entity
 		super.update();
 		Position p = this.getPosition();
 		
-		if(this.targetUnit != null && this.getTarget() != null && !(this.targetUnit.getPosition().equals(this.getDestination())))
+		if(this.getTarget() != null && this.getDestination() != null && !(this.getTarget().getPosition().equals(this.getDestination())))
 		{
-			this.setDestination(this.targetUnit.getPosition());
-			calculateSpeed(this.targetUnit.getPosition());
+			calculateSpeed(this.getTarget().getPosition());
 			System.out.println("je change ma destination");
 		}
 		else

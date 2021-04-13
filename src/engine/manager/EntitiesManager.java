@@ -314,11 +314,7 @@ public class EntitiesManager
 		
 		//removing worker
 		if(removeWorkers.isEmpty() == false) {
-			for(Worker worker : selectedWorkers) {
-				if(removeWorkers.contains(worker)) {
-					selectedWorkers.remove(worker);
-				}
-			}
+			selectedWorkers.removeAll(removeWorkers);
 			botEntities.removeAll(removeWorkers);
 			botWorkers.removeAll(removeWorkers);
 			workers.removeAll(removeWorkers);
@@ -334,11 +330,7 @@ public class EntitiesManager
 		
 		//removing fighter
 		if(removeFighters.isEmpty() == false) {
-			for(Fighter fighter : selectedFighters) {
-				if(removeFighters.contains(fighter)) {
-					selectedFighters.remove(fighter);
-				}
-			}
+			selectedFighters.removeAll(removeFighters);
 			botEntities.removeAll(removeFighters);
 			botFighters.removeAll(removeFighters);
 			fighters.removeAll(removeFighters);

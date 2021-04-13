@@ -209,7 +209,7 @@ public class Collision {
 		}
 		
 		Rectangle r1 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), sizeTarget, sizeTarget);
-		Rectangle r2 = new Rectangle(attacker.getPosition().getX() - attacker.getAttackRange()/2*sizeAttacker, attacker.getPosition().getY() - attacker.getAttackRange()/2*sizeAttacker, attacker.getAttackRange()*2*sizeAttacker, attacker.getAttackRange()*2*sizeAttacker);
+		Rectangle r2 = new Rectangle(attacker.getPosition().getX() - attacker.getSightRange()/2*sizeAttacker, attacker.getPosition().getY() - attacker.getSightRange()/2*sizeAttacker, attacker.getSightRange()*2*sizeAttacker, attacker.getSightRange()*2*sizeAttacker);
 		
 		if(r1.intersects(r2)) {
 			return true;
