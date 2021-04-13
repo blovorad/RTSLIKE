@@ -183,7 +183,7 @@ public class Unit extends Entity
 	}
 	
 	public void calculateSpeed(Position p){	
-		this.setDestination(p);
+		this.setDestination(new Position(p.getX(), p.getY()));
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
@@ -192,10 +192,11 @@ public class Unit extends Entity
 		super.update();
 		Position p = this.getPosition();
 		
-		if(this.getTarget() != null && this.getDestination()!= null && !(this.getTarget().getPosition().equals(this.getDestination())))
+		if(this.targetUnit != null && this.getTarget() != null && !(this.targetUnit.getPosition().equals(this.getDestination())))
 		{
-			this.setDestination(this.getTarget().getPosition());
-			calculateSpeed(this.getTarget().getPosition());
+			this.setDestination(this.targetUnit.getPosition());
+			calculateSpeed(this.targetUnit.getPosition());
+			System.out.println("je change ma destination");
 		}
 		else
 		{	
