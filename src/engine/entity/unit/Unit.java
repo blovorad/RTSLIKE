@@ -1,16 +1,20 @@
 package engine.entity.unit;
 
+import java.util.List;
+
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
 import engine.Position;
+import engine.Ressource;
 import engine.Speed;
+import engine.entity.building.StorageBuilding;
 import engine.manager.GraphicsManager;
 import engine.math.Collision;
 
 /**
  *
- * crÃ©ation:16/02/2021
+ * création:16/02/2021
  * @author Girard 
  * @version:16/02/2021
  * 
@@ -28,6 +32,7 @@ public class Unit extends Entity
 	private int range;
 	private int armor;
 	private int timer;
+	private int state;
 	
 	private Speed speed;
 	
@@ -45,6 +50,7 @@ public class Unit extends Entity
 		this.setDestination(destination);
 		this.speed = new Speed(0, 0);
 		this.timer = this.attackSpeed;
+		this.state = EntityConfiguration.AGGRESIF_STATE;
 		
 		if(destination != null) {
 			System.out.println("calcul");
@@ -182,12 +188,15 @@ public class Unit extends Entity
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
 
-	public void update(){
+	public void update(List<Unit> units){
 		super.update();
 		Position p = this.getPosition();
 		
-		if(this.getTarget() != null && this.getDestination()!= null && !this.getTarget().getPosition().equals(this.getDestination()) && this.getCurrentAction() != EntityConfiguration.ATTACK){	
-			calculateSpeed(this.getTarget().getPosition());
+		if(this.targetUnit != null && this.getTarget() != null && !(this.targetUnit.getPosition().equals(this.getDestination())))
+		{
+			this.setDestination(this.targetUnit.getPosition());
+			calculateSpeed(this.targetUnit.getPosition());
+			System.out.println("je change ma destination");
 		}
 		else
 		{	
@@ -219,6 +228,11 @@ public class Unit extends Entity
 					this.speed.reset();
 					this.setDestination(null);
 				}
+			}
+			else
+			{
+				this.setDestination(null);
+				this.speed.reset();
 			}
 		}
 		
@@ -252,19 +266,13 @@ public class Unit extends Entity
 			this.getSpeed().setVy(0);
 		}
 		
-
 		if(this.getTarget() != null && this.getTarget().getFaction() != this.getFaction() && Collision.collideAttack(this.getTarget(), this) && this.getCurrentAction() != EntityConfiguration.HARVEST)
 		{
-			if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-				System.out.println("on est taper");
-				System.out.println("POSITION DESTINATION : " + this.getDestination().getX() + "," + this.getDestination().getY());
-				System.out.println("POSITION TARGET : " + this.getTarget().getPosition().getX() + "," + this.getTarget().getPosition().getY());
-			}
 			this.checkTarget();
-			//System.out.println(this.getTarget());
+			System.out.println(this.getTarget());
 			this.getSpeed().reset();
 			this.attack(this.getDamage());
-			//System .out.println("timer: " + this.timer);
+			System .out.println("timer: " + this.timer);
 			
 			if(this.getTarget() == null)
 			{
@@ -273,12 +281,41 @@ public class Unit extends Entity
 			}
 			else
 			{
-				this.getSpeed().reset();
 				this.setCurrentAction(EntityConfiguration.ATTACK);
 			}
 		}
 		
+		if(this.state == EntityConfiguration.AGGRESIF_STATE && this.getTarget() == null && this.targetUnit == null)
+		{
+			
+			if(!units.isEmpty())
+			{
+				int distanceUnit;
+				
+				for(Unit value: units)
+				{
+					distanceUnit = calculate(value.getPosition());
+					
+					if(Collision.collideVision(value, this) && value.getFaction() != this.getFaction())
+					{
+						this.targetUnit = value;
+						this.setTarget(value);
+					}
+					
+				}
+			}
+		}
+		else if(this.state == EntityConfiguration.DEFENSIF_STATE && this.getTarget() != null)
+		{
+			
+		}
+		
 		manageState();
+	}
+	
+	public int calculate(Position position)
+	{
+		return (int) Math.sqrt(Math.pow(position.getX() - this.getPosition().getX(), 2) + Math.pow(position.getY() - this.getPosition().getY(), 2));
 	}
 	
 	public void manageState() {

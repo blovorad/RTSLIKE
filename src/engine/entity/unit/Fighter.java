@@ -1,5 +1,7 @@
 package engine.entity.unit;
 
+import java.util.List;
+
 import engine.Position;
 import engine.manager.GraphicsManager;
 
@@ -23,7 +25,8 @@ public class Fighter extends Unit
 		//System.out.println("maxspeed fighter : " + maxSpeed);
 	}
 
-	public int getState() {
+	public int getState() 
+	{
 		return state;
 	}
 
@@ -31,7 +34,8 @@ public class Fighter extends Unit
 		this.state = state;
 	}
 	
-	public void update() {
-		super.update();
+	public void update(List<Unit> units) 
+	{
+		super.update(units);
 	}
 }
