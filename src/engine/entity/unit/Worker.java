@@ -226,6 +226,7 @@ public class Worker extends Unit
 		this.ressource = ressource;
 		this.calculateSpeed(this.ressource.getPosition());
 		this.setCurrentAction(EntityConfiguration.HARVEST);
+		this.setTarget(ressource);
 	}
 	
 	public int calculateTimer()
