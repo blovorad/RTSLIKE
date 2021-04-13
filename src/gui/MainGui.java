@@ -720,6 +720,7 @@ public class MainGui extends JFrame implements Runnable
 									for(Unit unit : listSelectedUnit){
 										unit.calculateSpeed(new Position(mouseX, mouseY));
 										unit.setTarget(null);
+										unit.setTargetUnit(null);
 										unit.setCurrentAction(EntityConfiguration.WALK);
 									}
 								}

@@ -314,43 +314,36 @@ public class EntitiesManager
 		
 		//removing worker
 		if(removeWorkers.isEmpty() == false) {
-			for(Worker worker : selectedWorkers) {
-				if(removeWorkers.contains(worker)) {
-					selectedWorkers.remove(worker);
-				}
-			}
-			botEntities.removeAll(removeWorkers);
-			botWorkers.removeAll(removeWorkers);
-			workers.removeAll(removeWorkers);
-			collisionList.removeAll(removeWorkers);
-			drawingList.removeAll(removeWorkers);
-			units.removeAll(removeWorkers);
-			selectedUnits.removeAll(removeWorkers);
-			playerEntities.removeAll(removeWorkers);
-			selectedWorkers.removeAll(removeWorkers);
-			playerWorkers.removeAll(removeWorkers);
-			removeWorkers.clear();
-		}
-		
-		//removing fighter
-		if(removeFighters.isEmpty() == false) {
-			for(Fighter fighter : selectedFighters) {
-				if(removeFighters.contains(fighter)) {
-					selectedFighters.remove(fighter);
-				}
-			}
-			botEntities.removeAll(removeFighters);
-			botFighters.removeAll(removeFighters);
-			fighters.removeAll(removeFighters);
-			collisionList.removeAll(removeFighters);
-			drawingList.removeAll(removeFighters);
-			units.removeAll(removeFighters);
-			selectedUnits.removeAll(removeFighters);
-			playerEntities.removeAll(removeFighters);
-			selectedFighters.removeAll(removeFighters);
-			playerFighters.removeAll(removeFighters);
-			removeFighters.clear();
-		}
+            selectedWorkers.removeAll(removeWorkers);
+            botEntities.removeAll(removeWorkers);
+            botWorkers.removeAll(removeWorkers);
+            workers.removeAll(removeWorkers);
+            collisionList.removeAll(removeWorkers);
+            drawingList.removeAll(removeWorkers);
+            units.removeAll(removeWorkers);
+            selectedUnits.removeAll(removeWorkers);
+            playerEntities.removeAll(removeWorkers);
+            selectedWorkers.removeAll(removeWorkers);
+            playerWorkers.removeAll(removeWorkers);
+            removeWorkers.clear();
+        }
+        
+        //removing fighter
+        if(removeFighters.isEmpty() == false) {
+            selectedFighters.removeAll(removeFighters);
+            botEntities.removeAll(removeFighters);
+            botFighters.removeAll(removeFighters);
+            fighters.removeAll(removeFighters);
+            collisionList.removeAll(removeFighters);
+            drawingList.removeAll(removeFighters);
+            units.removeAll(removeFighters);
+            selectedUnits.removeAll(removeFighters);
+            playerEntities.removeAll(removeFighters);
+            selectedFighters.removeAll(removeFighters);
+            playerFighters.removeAll(removeFighters);
+            removeFighters.clear();
+        }
+
 		
 		//removing constructionSite
 		if(removeSiteConstructions.isEmpty() == false) {
