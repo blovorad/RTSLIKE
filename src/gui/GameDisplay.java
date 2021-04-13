@@ -69,6 +69,7 @@ public class GameDisplay extends JPanel
 	private PaintStrategyMainMenu paintStrategyMainMenu = null;
 	private PaintStrategyOption paintStrategyOption = null;
 	private PaintStrategyPauseMenu paintStrategyPauseMenu = null;
+	private PaintStrategyVictoryScreen paintStrategyVictoryScreen = null;
 	
 	private Minimap minimap;
 	
@@ -126,6 +127,8 @@ public class GameDisplay extends JPanel
 	private JPanel gamePanel;
 	private JPanel optionPanel;
 	private JPanel pauseMenuPanel;
+	private JPanel loosePanel;
+	private JPanel winPanel = null;
 	
 	private JPanel descriptionPanel;
 	private JPanel ressourceInfoPanel;
@@ -165,6 +168,12 @@ public class GameDisplay extends JPanel
 		/*gamePanel = createGamePanel();
 		gamePanel.setVisible(false);*/
 		
+		loosePanel = createLoosePanel();
+		loosePanel.setVisible(false);
+		
+		winPanel = createWinPanel();
+		winPanel.setVisible(false);
+		
 		optionPanel = createOptionPanel();
 		optionPanel.setVisible(false);
 		
@@ -192,6 +201,30 @@ public class GameDisplay extends JPanel
 	public JPanel getMainPanel()
 	{
 		return this;
+	}
+	
+	private JPanel createLoosePanel() {
+		JPanel panel = new JPanel(new GridLayout(3, 0));
+		panel.add(new JLabel());
+		panel.add(new JLabel("Dommage, l'ordinateur est meilleur !!!!!!"));
+		panel.add(new JButton(new BackToMenuAfterVictory("Retour au Menu")));
+		return panel;
+	}
+	
+	private JPanel createWinPanel() {
+		JPanel panel = new JPanel(new GridLayout(3, 3));
+		panel.add(new JLabel());
+		panel.add(new JLabel());
+		panel.add(new JLabel());
+		
+		panel.add(new JLabel());
+		panel.add(new JLabel("Bravo, l'ordinateur est mort !!!!!!"));
+		panel.add(new JLabel());
+		
+		panel.add(new JLabel());
+		panel.add(new JButton(new BackToMenuAfterVictory("Retour au Menu")));
+		panel.add(new JLabel());
+		return panel;
 	}
 	
 	private JPanel createMainMenuPanel()
@@ -1028,6 +1061,17 @@ public class GameDisplay extends JPanel
 					fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
 				}
 			}
+			
+			if(manager.getPlayerWin()) {
+				oldState = state;
+				state = GameConfiguration.PLAYERWIN;
+				manageState();
+			}
+			else if(manager.getBotWin()) {
+				oldState = state;
+				state = GameConfiguration.BOTWIN;
+				manageState();
+			}
 		}
 		if(audioManager.getSliderVolume() != this.sonSlider.getValue()) {
 			audioManager.manageVolume(this.sonSlider.getValue());
@@ -1113,6 +1157,12 @@ public class GameDisplay extends JPanel
 			}
 			this.paintStrategyPauseMenu.paint(g, graphicsManager);
 		}
+		else if(state == GameConfiguration.BOTWIN || state == GameConfiguration.PLAYERWIN) {
+			if(this.paintStrategyVictoryScreen == null) {
+				paintStrategyVictoryScreen = new PaintStrategyVictoryScreen();
+			}
+			this.paintStrategyVictoryScreen.paint(g, graphicsManager);
+		}
 	}
 	
 	private class BuildingProduction extends AbstractAction
@@ -1140,6 +1190,21 @@ public class GameDisplay extends JPanel
 					setDescriptionPanelForBuilding(prodBuilding, manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades());
 				}
 			}
+		}
+	}
+	
+	private class BackToMenuAfterVictory extends AbstractAction{
+		private static final long seriaulVersionUID = 1L;
+		
+		public BackToMenuAfterVictory(String name) {
+			super(name);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			oldState = state;
+			state = GameConfiguration.INMENU;
+			manageState();
 		}
 	}
 	
@@ -1675,6 +1740,15 @@ public class GameDisplay extends JPanel
 					manager.clean();
 					camera.reset();
 				}
+				else if(oldState == GameConfiguration.BOTWIN || oldState == GameConfiguration.PLAYERWIN) {
+					winPanel.setVisible(false);
+					loosePanel.setVisible(false);
+					getMainPanel().remove(loosePanel);
+					getMainPanel().remove(winPanel);
+					manager.clean();
+					camera.reset();
+				}
+				
 				audioManager.startFx(1);
 				mainMenuPanel.setVisible(true);
 				getMainPanel().add(mainMenuPanel);
@@ -1728,6 +1802,24 @@ public class GameDisplay extends JPanel
 				audioManager.startFx(1);
 				pauseMenuPanel.setVisible(true);
 				getMainPanel().add(pauseMenuPanel);
+				break;
+				
+			case GameConfiguration.PLAYERWIN:
+				if(oldState == GameConfiguration.INGAME) {
+					gamePanel.setVisible(false);
+					getMainPanel().remove(gamePanel);
+				}
+				winPanel.setVisible(true);
+				getMainPanel().add(winPanel);
+				break;
+				
+			case GameConfiguration.BOTWIN:
+				if(oldState == GameConfiguration.INGAME) {
+					gamePanel.setVisible(false);
+					getMainPanel().remove(gamePanel);
+				}
+				loosePanel.setVisible(true);
+				getMainPanel().add(loosePanel);
 				break;
 			
 			default:

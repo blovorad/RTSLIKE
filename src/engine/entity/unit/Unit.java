@@ -51,7 +51,7 @@ public class Unit extends Entity
 		this.state = state;
 		
 		if(destination != null) {
-			System.out.println("calcul");
+			//System.out.println("calcul");
 			calculateSpeed(destination);
 		}
 	}
@@ -88,7 +88,7 @@ public class Unit extends Entity
 	{
 		if(this.getTarget() != null)
 		{
-			System.out.println("test");
+			//System.out.println("test");
 			if(this.timer <= 0)
 			{
 				if(this.targetUnit != null && this.targetUnit.getHp() >= 0)
@@ -194,10 +194,10 @@ public class Unit extends Entity
 		if(this.getTarget() != null  && this.getDestination() != null && this.currentAction != EntityConfiguration.ATTACK && !(this.getTarget().getPosition().equals(this.getDestination())))
 		{
 			calculateSpeed(this.getTarget().getPosition());
-			if(this.getId() == EntityConfiguration.CAVALRY && this.getFaction() == EntityConfiguration.PLAYER_FACTION)
+			/*if(this.getId() == EntityConfiguration.CAVALRY && this.getFaction() == EntityConfiguration.PLAYER_FACTION)
 			{
-				System.out.println("je change ma destination");
-			}
+				//System.out.println("je change ma destination");
+			}*/
 		}
 		else
 		{	
@@ -272,10 +272,10 @@ public class Unit extends Entity
 			if(Collision.collideAttack(this.getTarget(), this))
 			{
 				this.checkTarget();
-				System.out.println(this.getTarget());
+				//System.out.println(this.getTarget());
 				this.getSpeed().reset();
 				this.attack(this.getDamage());
-				System .out.println("timer: " + this.timer);
+				//System .out.println("timer: " + this.timer);
 				
 				if(this.getTarget() == null)
 				{
@@ -336,15 +336,15 @@ public class Unit extends Entity
 			}
 		}
 		
-		if(this.getId() == EntityConfiguration.CAVALRY && this.getFaction() == EntityConfiguration.PLAYER_FACTION)
+		/*if(this.getId() == EntityConfiguration.CAVALRY && this.getFaction() == EntityConfiguration.PLAYER_FACTION)
 		{
-			System.out.println("Ma target est: " + this.getTarget());
+			//System.out.println("Ma target est: " + this.getTarget());
 			System.out.println("Ma targetUnir est: " + this.targetUnit);
 			if(this.getTargetUnit() != null)
 			System.out.println("La vie de ma target: " + this.targetUnit.getHp());
 			
 			System.out.println("Ma destination est : " + this.getDestination());
-		}
+		}*/
 		
 		manageState();
 	}

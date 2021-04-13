@@ -100,6 +100,9 @@ public class EntitiesManager
 	
 	private List<Entity> waitingToAdd = new ArrayList<Entity>();
 	private List<Entity> removeList = new ArrayList<Entity>();
+	
+	private boolean playerWin = false;
+	private boolean botWin = false;
 
 	
 	public EntitiesManager(AudioManager audioManager) 
@@ -248,6 +251,13 @@ public class EntitiesManager
 				}
 				removeSiteConstructions.add(siteConstruction);
 			}
+		}
+		
+		if(botAttackBuildings.isEmpty() && botProdBuildings.isEmpty() && botStorageBuildings.isEmpty()) {
+			playerWin = true;
+		}
+		if(playerAttackBuildings.isEmpty() && playerProdBuildings.isEmpty() && playerStorageBuildings.isEmpty()) {
+			botWin = true;
 		}
 		
 		cleanList();	
@@ -923,6 +933,14 @@ public class EntitiesManager
 
 	public List<AttackBuilding> getAttackBuildings() {
 		return attackBuildings;
+	}
+	
+	public boolean getPlayerWin() {
+		return this.playerWin;
+	}
+	
+	public boolean getBotWin() {
+		return this.botWin;
 	}
 
 	public void setAttackBuildings(List<AttackBuilding> attackBuildings) {
