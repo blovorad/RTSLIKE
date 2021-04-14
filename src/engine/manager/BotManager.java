@@ -527,11 +527,12 @@ public class BotManager {
 	
 	public void placeBuildings() {
 		updateBuiltBuildings();
+		updateMoney();
 		if(getBuildingInAttempt() == false && getBotWorkers() != null) {
 			//System.out.println("placing building");
 			//System.out.println("hq ? " + isHqBuilt());
 			//System.out.println("barrack ? " + isBarrackBuilt());
-			if(isHqBuilt() == false) {
+			if(isHqBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.HQ)) {
 				System.out.println("hq pas contruct");
 				int targetX = getBotWorkers().get(0).getPosition().getX() / 64;
 				System.out.println("targetX : " + targetX);
@@ -553,11 +554,12 @@ public class BotManager {
 					}
 					max++;
 				}
+				removeMoney(priceOfEntity.get(EntityConfiguration.HQ));
 				buildingInAttempt = true;
 				tileToBuild = place;
 				idToBuild = EntityConfiguration.HQ;
 			}
-			else if(isBarrackBuilt() == false) {
+			else if(isBarrackBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.BARRACK)) {
 				System.out.println("barrack pas construct");
 				if(getHq() != null) {
 					System.out.println("on a un hq");
@@ -578,13 +580,14 @@ public class BotManager {
 							}
 						}
 					}
+					removeMoney(priceOfEntity.get(EntityConfiguration.BARRACK));
 					buildingInAttempt = true;
 					tileToBuild = place;
 					idToBuild = EntityConfiguration.BARRACK;
 				}
 			}
 			else if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() >= 2) {
-				if(isArcheryBuilt() == false) {
+				if(isArcheryBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.ARCHERY)) {
 					System.out.println("archery pas construct");
 					if(getHq() != null) {
 						System.out.println("on a un hq");
@@ -605,12 +608,13 @@ public class BotManager {
 								}
 							}
 						}
+						removeMoney(priceOfEntity.get(EntityConfiguration.ARCHERY));
 						buildingInAttempt = true;
 						tileToBuild = place;
 						idToBuild = EntityConfiguration.ARCHERY;
 					}
 				}
-				else if(isStableBuilt() == false) {
+				else if(isStableBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.STABLE)) {
 					System.out.println("stable pas construct");
 					if(getHq() != null) {
 						System.out.println("on a un hq");
@@ -631,35 +635,39 @@ public class BotManager {
 								}
 							}
 						}
+						removeMoney(priceOfEntity.get(EntityConfiguration.STABLE));
 						buildingInAttempt = true;
 						tileToBuild = place;
 						idToBuild = EntityConfiguration.STABLE;
 					}
 				}
-				else if(isStableBuilt() == false) {
-					System.out.println("stable pas construct");
-					if(getHq() != null) {
-						System.out.println("on a un hq");
-						int targetX = getHq().getPosition().getX() / 64;
-						int targetY = getHq().getPosition().getY() / 64;
-						//Tile HqTile = map.getTile(targetX, targetY);
-						Tile place = null;
-						while(place == null) {
-							//System.out.println("tagetX = " + targetX);
-							//System.out.println("tagetY = " + targetY);
-							int placeX = getRandomNumberInRange(targetX - 5, targetX + 5);
-							//System.out.println("placeX = " + placeX);
-							int placeY = getRandomNumberInRange(targetY - 5, targetY + 5);
-							//System.out.println("placeY = " + placeY);
-							if(placeX < 100 && placeY < 100) {
-								if(map.getTile(placeX, placeY).isSolid() == false) {
-									place = map.getTile(placeX, placeY);
+				else if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() >= 3) {
+					if(isCastleBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.CASTLE)) {
+						System.out.println("castle pas construct");
+						if(getHq() != null) {
+							System.out.println("on a un hq");
+							int targetX = getHq().getPosition().getX() / 64;
+							int targetY = getHq().getPosition().getY() / 64;
+							//Tile HqTile = map.getTile(targetX, targetY);
+							Tile place = null;
+							while(place == null) {
+								//System.out.println("tagetX = " + targetX);
+								//System.out.println("tagetY = " + targetY);
+								int placeX = getRandomNumberInRange(targetX - 5, targetX + 5);
+								//System.out.println("placeX = " + placeX);
+								int placeY = getRandomNumberInRange(targetY - 5, targetY + 5);
+								//System.out.println("placeY = " + placeY);
+								if(placeX < 100 && placeY < 100) {
+									if(map.getTile(placeX, placeY).isSolid() == false) {
+										place = map.getTile(placeX, placeY);
+									}
 								}
 							}
+							removeMoney(priceOfEntity.get(EntityConfiguration.CASTLE));
+							buildingInAttempt = true;
+							tileToBuild = place;
+							idToBuild = EntityConfiguration.CASTLE;
 						}
-						buildingInAttempt = true;
-						tileToBuild = place;
-						idToBuild = EntityConfiguration.STABLE;
 					}
 				}
 			}
