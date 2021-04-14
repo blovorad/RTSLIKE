@@ -205,9 +205,6 @@ public class EntitiesManager
 				this.factionManager.getFactions().get(building.getFaction()).checkUpgrade(building.getElementCount());
 				building.remove();
 				removeProdBuildings.add(building);
-				if(building.getFaction() == EntityConfiguration.BOT_FACTION) {
-					botManager.removeBuilding(building.getId());
-				}
 			}
 		}
 		

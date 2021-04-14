@@ -4,6 +4,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import configuration.BotConfiguration;
 import configuration.EntityConfiguration;
@@ -53,6 +54,7 @@ public class BotManager {
 	private boolean buildingInAttempt;
 	private Tile tileToBuild;
 	private int idToBuild;
+	private List<Worker> builders;
 	
 	public BotManager(FactionManager factionManager, GraphicsManager graphicsManager, Map map) {
 		setBarrackBuilt(false);
@@ -87,6 +89,7 @@ public class BotManager {
 				priceOfEntity.put(i, race.getProductionBuildings().get(i).getCost());
 			}
 		}
+		builders = new ArrayList<Worker>();
 		
 		buildingInAttempt = false;
 		tileToBuild = null;
@@ -103,6 +106,8 @@ public class BotManager {
 		//System.out.println("nb ressource : " + visibleRessources.size());
 		recolte();
 		prodWorker();
+		placeBuildings();
+		constructBuilding();
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
@@ -176,6 +181,7 @@ public class BotManager {
 		setCastleBuilt(false);
 		setForgeBuilt(false);
 		setHqBuilt(false);
+		setStableBuilt(false);
 		for(ProductionBuilding building : getBotProdBuildings()) {
 			if(building.getId() == EntityConfiguration.ARCHERY) {
 				setArcheryBuilt(true);
@@ -192,11 +198,44 @@ public class BotManager {
 			if(building.getId() == EntityConfiguration.HQ) {
 				setHqBuilt(true);
 			}
+			if(building.getId() == EntityConfiguration.STABLE) {
+				setStableBuilt(true);
+			}
+		}
+		for(SiteConstruction site : getSiteConstructions()) {
+			if(site.getBuildingId() == EntityConfiguration.ARCHERY) {
+				setArcheryBuilt(true);
+			}
+			if(site.getBuildingId() == EntityConfiguration.BARRACK) {
+				setBarrackBuilt(true);
+			}
+			if(site.getBuildingId() == EntityConfiguration.CASTLE) {
+				setCastleBuilt(true);
+			}
+			if(site.getBuildingId() == EntityConfiguration.FORGE) {
+				setForgeBuilt(true);
+			}
+			if(site.getBuildingId() == EntityConfiguration.HQ) {
+				setHqBuilt(true);
+			}
+			if(site.getBuildingId() == EntityConfiguration.STABLE) {
+				setStableBuilt(true);
+			}
 		}
 	}
 	
+    public int getRandomNumberInRange(int min, int max) {
+        if (min <= max) {
+        	Random r = new Random();
+            return r.nextInt((max - min) + 1) + min;
+        }
+        else {
+        	Random r = new Random();
+            return r.nextInt((min - max) + 1) + max;
+        }
+    }
 	
-	//states
+	//states--------------------------------------------------------------------------------------------
 	public void explore() {
 		if(getHq() == null) {
 			for(ProductionBuilding building : getBotProdBuildings()) {
@@ -335,7 +374,7 @@ public class BotManager {
 				}
 				boolean storageInRange = false;
 				for(StorageBuilding storage : getBotStorageBuildings()) { // check si storage in range
-					System.out.println("range ressource : " + calculate(storage.getPosition(), ressource.getPosition()) /  GameConfiguration.TILE_SIZE);
+					//System.out.println("range ressource : " + calculate(storage.getPosition(), ressource.getPosition()) /  GameConfiguration.TILE_SIZE);
 					if(calculate(storage.getPosition(), ressource.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
 						storageInRange = true;
 						//System.out.println("bat storage in range ! storagerang = " + storageInRange);
@@ -350,7 +389,7 @@ public class BotManager {
 								worker.setTarget(sitec);
 								worker.calculateSpeed(sitec.getPosition());
 								worker.setCurrentAction(EntityConfiguration.WALK);
-								System.out.println("va constru fdp !");
+								//System.out.println("va constru fdp !");
 								storageInRange = true;
 							}
 						}
@@ -408,7 +447,7 @@ public class BotManager {
 						if(!building.getIsProducing()) {
 							int price = building.startProd(EntityConfiguration.WORKER, money);
 							removeMoney(price);
-							System.out.println("start prod");
+							//System.out.println("start prod");
 						}
 					}
 				}
@@ -445,47 +484,8 @@ public class BotManager {
 	public void buildBuilding() {
 		buildingInAttempt = false;
 		tileToBuild = null;
-		if(idToBuild == EntityConfiguration.BARRACK) {
-			barrackBuilt = true;
-		}
-		else if(idToBuild == EntityConfiguration.ARCHERY) {
-			archeryBuilt = true;
-		}
-		else if(idToBuild == EntityConfiguration.STABLE) {
-			stableBuilt = true;
-		}
-		else if(idToBuild == EntityConfiguration.CASTLE) {
-			castleBuilt = true;
-		}
-		else if(idToBuild == EntityConfiguration.FORGE) {
-			forgeBuilt = true;
-		}
-		else if(idToBuild == EntityConfiguration.HQ) {
-			hqBuilt = true;
-		}
-		
+		updateBuiltBuildings();
 		idToBuild = -1;
-	}
-	
-	public void removeBuilding(int id) {
-		if(idToBuild == EntityConfiguration.BARRACK) {
-			barrackBuilt = false;
-		}
-		else if(idToBuild == EntityConfiguration.ARCHERY) {
-			archeryBuilt = false;
-		}
-		else if(idToBuild == EntityConfiguration.STABLE) {
-			stableBuilt = false;
-		}
-		else if(idToBuild == EntityConfiguration.CASTLE) {
-			castleBuilt = false;
-		}
-		else if(idToBuild == EntityConfiguration.FORGE) {
-			forgeBuilt = false;
-		}
-		else if(idToBuild == EntityConfiguration.HQ) {
-			hqBuilt = false;
-		}
 	}
 	
 	public void nextAge() {
@@ -503,7 +503,7 @@ public class BotManager {
 						}
 						if(upgrading == false) {
 							removeMoney(building.startProd(EntityConfiguration.AGE_UPGRADE, money));
-							System.out.println("upgrading to age 2");
+							//System.out.println("upgrading to age 2");
 
 						}
 					}
@@ -517,7 +517,7 @@ public class BotManager {
 						}
 						if(upgrading == false) {
 							removeMoney(building.startProd(EntityConfiguration.AGE_UPGRADE_2, money));
-							System.out.println("upgrading to age 3");
+							//System.out.println("upgrading to age 3");
 						}
 					}
 				}
@@ -525,14 +525,199 @@ public class BotManager {
 		}
 	}
 	
-	public void constructBuildings() {
+	public void placeBuildings() {
 		updateBuiltBuildings();
-		updateIdleWorker();
-		if(getIdleWorker() != null) {
-
+		if(getBuildingInAttempt() == false && getBotWorkers() != null) {
+			//System.out.println("placing building");
+			//System.out.println("hq ? " + isHqBuilt());
+			//System.out.println("barrack ? " + isBarrackBuilt());
+			if(isHqBuilt() == false) {
+				System.out.println("hq pas contruct");
+				int targetX = getBotWorkers().get(0).getPosition().getX() / 64;
+				System.out.println("targetX : " + targetX);
+				int targetY = getBotWorkers().get(0).getPosition().getY() / 64;
+				System.out.println("targetY : " + targetY);
+				Tile targetTile = map.getTile(targetY, targetX);
+				Tile place = null;
+				int max = 1;
+				while(place == null) {
+					for(int i = targetTile.getColumn() - max; i <= targetTile.getColumn() + max; i++) {
+						for(int j = targetTile.getLine() - max; j <= targetTile.getLine() + max; j++) {
+							if(i < GameConfiguration.COLUMN_COUNT && j < GameConfiguration.LINE_COUNT) {
+								System.out.println("case check : " + j + ";" + i);
+								if(map.getTile(j, i).isSolid() == false) {
+									place = map.getTile(j, i);
+								}
+							}
+						}
+					}
+					max++;
+				}
+				buildingInAttempt = true;
+				tileToBuild = place;
+				idToBuild = EntityConfiguration.HQ;
+			}
+			else if(isBarrackBuilt() == false) {
+				System.out.println("barrack pas construct");
+				if(getHq() != null) {
+					System.out.println("on a un hq");
+					int targetX = getHq().getPosition().getX() / 64;
+					int targetY = getHq().getPosition().getY() / 64;
+					//Tile HqTile = map.getTile(targetX, targetY);
+					Tile place = null;
+					while(place == null) {
+						//System.out.println("tagetX = " + targetX);
+						//System.out.println("tagetY = " + targetY);
+						int placeX = getRandomNumberInRange(targetX - 5, targetX + 5);
+						//System.out.println("placeX = " + placeX);
+						int placeY = getRandomNumberInRange(targetY - 5, targetY + 5);
+						//System.out.println("placeY = " + placeY);
+						if(placeX < 100 && placeY < 100) {
+							if(map.getTile(placeX, placeY).isSolid() == false) {
+								place = map.getTile(placeX, placeY);
+							}
+						}
+					}
+					buildingInAttempt = true;
+					tileToBuild = place;
+					idToBuild = EntityConfiguration.BARRACK;
+				}
+			}
+			else if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() >= 2) {
+				if(isArcheryBuilt() == false) {
+					System.out.println("archery pas construct");
+					if(getHq() != null) {
+						System.out.println("on a un hq");
+						int targetX = getHq().getPosition().getX() / 64;
+						int targetY = getHq().getPosition().getY() / 64;
+						//Tile HqTile = map.getTile(targetX, targetY);
+						Tile place = null;
+						while(place == null) {
+							//System.out.println("tagetX = " + targetX);
+							//System.out.println("tagetY = " + targetY);
+							int placeX = getRandomNumberInRange(targetX - 5, targetX + 5);
+							//System.out.println("placeX = " + placeX);
+							int placeY = getRandomNumberInRange(targetY - 5, targetY + 5);
+							//System.out.println("placeY = " + placeY);
+							if(placeX < 100 && placeY < 100) {
+								if(map.getTile(placeX, placeY).isSolid() == false) {
+									place = map.getTile(placeX, placeY);
+								}
+							}
+						}
+						buildingInAttempt = true;
+						tileToBuild = place;
+						idToBuild = EntityConfiguration.ARCHERY;
+					}
+				}
+				else if(isStableBuilt() == false) {
+					System.out.println("stable pas construct");
+					if(getHq() != null) {
+						System.out.println("on a un hq");
+						int targetX = getHq().getPosition().getX() / 64;
+						int targetY = getHq().getPosition().getY() / 64;
+						//Tile HqTile = map.getTile(targetX, targetY);
+						Tile place = null;
+						while(place == null) {
+							//System.out.println("tagetX = " + targetX);
+							//System.out.println("tagetY = " + targetY);
+							int placeX = getRandomNumberInRange(targetX - 5, targetX + 5);
+							//System.out.println("placeX = " + placeX);
+							int placeY = getRandomNumberInRange(targetY - 5, targetY + 5);
+							//System.out.println("placeY = " + placeY);
+							if(placeX < 100 && placeY < 100) {
+								if(map.getTile(placeX, placeY).isSolid() == false) {
+									place = map.getTile(placeX, placeY);
+								}
+							}
+						}
+						buildingInAttempt = true;
+						tileToBuild = place;
+						idToBuild = EntityConfiguration.STABLE;
+					}
+				}
+				else if(isStableBuilt() == false) {
+					System.out.println("stable pas construct");
+					if(getHq() != null) {
+						System.out.println("on a un hq");
+						int targetX = getHq().getPosition().getX() / 64;
+						int targetY = getHq().getPosition().getY() / 64;
+						//Tile HqTile = map.getTile(targetX, targetY);
+						Tile place = null;
+						while(place == null) {
+							//System.out.println("tagetX = " + targetX);
+							//System.out.println("tagetY = " + targetY);
+							int placeX = getRandomNumberInRange(targetX - 5, targetX + 5);
+							//System.out.println("placeX = " + placeX);
+							int placeY = getRandomNumberInRange(targetY - 5, targetY + 5);
+							//System.out.println("placeY = " + placeY);
+							if(placeX < 100 && placeY < 100) {
+								if(map.getTile(placeX, placeY).isSolid() == false) {
+									place = map.getTile(placeX, placeY);
+								}
+							}
+						}
+						buildingInAttempt = true;
+						tileToBuild = place;
+						idToBuild = EntityConfiguration.STABLE;
+					}
+				}
+			}
 		}
-		else {
+		
+	}
 	
+	public void constructBuilding() {
+		updateIdleWorker();
+		if(getSiteConstructions() != null) {
+			for(SiteConstruction sitec : getSiteConstructions()) { // check si a site de constru de storage in range
+				if(sitec.getFaction() == EntityConfiguration.BOT_FACTION) {
+					if(sitec.getBuildingId() != EntityConfiguration.STORAGE) {
+						//System.out.println("construct target found");
+						boolean hasWorker = false;
+						for(Worker worker : getBotWorkers()) {
+							if(worker.getTarget() != null) {
+								if(worker.getTarget().equals(sitec)) {
+									hasWorker = true;
+								}
+							}
+						}
+						if(hasWorker == false) {
+							if(getIdleWorker().isEmpty() == false) {
+								System.out.println("y a des idle");
+								for(Worker worker : getIdleWorker()) {
+									builders.add(worker);
+								}
+							}
+							else {
+								for(Worker worker : getBotWorkers()) {
+									if(getBuilders().isEmpty()) {
+										if(worker.getTarget() != null && worker.getTarget().getId() != EntityConfiguration.SITE_CONSTRUCTION) {
+											builders.add(worker);
+										}
+									}
+									if(builders.isEmpty() == false) {
+										if(calculate(worker.getPosition(), sitec.getPosition()) < calculate(getBuilders().get(0).getPosition(), sitec.getPosition())){
+											if(worker.getTarget() != null && worker.getTarget().getId() != EntityConfiguration.SITE_CONSTRUCTION) {
+												builders.clear();
+												builders.add(worker);
+											}
+										}
+									}
+								}
+							}
+							for(Worker worker : getBuilders()) {
+								System.out.println("builders : " + getBuilders().size());
+								worker.setTarget(sitec);
+								worker.calculateSpeed(sitec.getPosition());
+								worker.setCurrentAction(EntityConfiguration.WALK);
+								System.out.println("va constru fdp !");
+							}
+						}
+					}
+				}
+				getBuilders().clear();
+			}
 		}
 	}
 	
@@ -732,5 +917,13 @@ public class BotManager {
 
 	public void setHq(ProductionBuilding hq) {
 		this.hq = hq;
+	}
+
+	public List<Worker> getBuilders() {
+		return builders;
+	}
+
+	public void setBuilders(List<Worker> builders) {
+		this.builders = builders;
 	}
 }
