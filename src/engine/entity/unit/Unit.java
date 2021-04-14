@@ -113,7 +113,7 @@ public class Unit extends Entity
 	
 	public void checkTarget()
 	{
-		if(this.getTarget().getHp() <= 0)
+		if(this.getTarget() != null && this.getTarget().getHp() <= 0)
 		{
 			this.setTarget(null);
 			this.targetUnit = null;

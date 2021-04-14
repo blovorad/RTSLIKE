@@ -172,6 +172,13 @@ public class Worker extends Unit
 				this.toRepair();
 				this.getSpeed().reset();
 			}
+			
+			this.checkTarget();
+			
+			if(this.getTarget() == null)
+			{
+				this.setCurrentAction(EntityConfiguration.IDDLE);
+			}
 		}
 		
 		
