@@ -78,13 +78,13 @@ public class GameBuilder {
 		manager.createFighter(EntityConfiguration.CAVALRY, EntityConfiguration.BOT_FACTION, patronFighter, p5, null);
 		
 		//rajout a effacer
-		Tile tile3 = map.getTile(12, 12);
+		/*Tile tile3 = map.getTile(12, 12);
         p5 = new Position(9 * GameConfiguration.TILE_SIZE, 9 * GameConfiguration.TILE_SIZE);
         manager.createBuilding(EntityConfiguration.BARRACK, EntityConfiguration.BOT_FACTION, p5, tile3);
         
         Tile tile4 = map.getTile(9, 9);
         Position p6 = new Position(12 * GameConfiguration.TILE_SIZE, 12 * GameConfiguration.TILE_SIZE);
-        manager.createBuilding(EntityConfiguration.BARRACK, EntityConfiguration.PLAYER_FACTION, p6, tile4);
+        manager.createBuilding(EntityConfiguration.BARRACK, EntityConfiguration.PLAYER_FACTION, p6, tile4);*/
 	}
 	
 }
