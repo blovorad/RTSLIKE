@@ -114,6 +114,22 @@ public class Fog {
 		}
 	}
 	
+	public void checkUnit(List<Entity> playerList, List<Entity> visibleList) {
+		for (int lineIndex = 0; lineIndex < GameConfiguration.LINE_COUNT; lineIndex++) {
+			for (int columnIndex = 0; columnIndex < GameConfiguration.COLUMN_COUNT; columnIndex++) {
+				if(fog[lineIndex][columnIndex] == false) {
+					for(Entity entity : playerList) {
+						if(Collision.collideFogEntity(columnIndex, lineIndex, GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE, entity)) {
+							if(visibleList.contains(entity) == false) {
+								visibleList.add(entity);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	public void checkingBotTargetInFog(List<Entity> drawingList, List<Entity> waitingList, List<Entity> removeList){
 		if(!GameConfiguration.debug_mod) {
 			for(Entity entity : waitingList) {

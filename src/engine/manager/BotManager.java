@@ -19,8 +19,10 @@ import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Fighter;
 import engine.entity.unit.Worker;
 import engine.map.Fog;
+import engine.map.FogCase;
 import engine.map.Map;
 import engine.map.Tile;
+import engine.math.Collision;
 import factionConfiguration.Race;
 
 public class BotManager {
@@ -47,6 +49,8 @@ public class BotManager {
 	private List<SiteConstruction> siteConstructions;
 	private List<Ressource> visibleRessources;
 	private List<Worker> idleWorker;
+	private List<Entity> ennemieVisible;
+	private List<Entity> removeVisibleEnnemie = new ArrayList<Entity>();
 	private int money;
 	private Fighter explorer;
 	private ProductionBuilding hq;
@@ -65,6 +69,7 @@ public class BotManager {
 		setForgeBuilt(false);
 		setHqBuilt(true);
 		setFactionManager(factionManager);
+		ennemieVisible = new ArrayList<Entity>();
 		fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
 		Race race = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace();
 		
@@ -109,10 +114,10 @@ public class BotManager {
 		idToBuild = -1;
 	}
 	
-	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions) {
+	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions, List<Entity> playerEntities) {
 		updateList(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions);
 		updateMoney();
-		updateFog();
+		updateFog(playerEntities);
 		explore(); 
 		nextAge();
 		updateVisibleRessources();
@@ -125,11 +130,19 @@ public class BotManager {
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
-	public void updateFog() {
+	public void updateFog(List<Entity> playerEntities) {
 		for(Entity entity : getBotEntities()) {
 			Position p = entity.getPosition();
 			fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
 		}
+		fog.checkUnit(playerEntities, ennemieVisible);
+		for(Entity entity : ennemieVisible) {
+			if(entity.getHp() <= 0) {
+				removeVisibleEnnemie.add(entity);
+			}
+		}
+		ennemieVisible.removeAll(removeVisibleEnnemie);
+		removeVisibleEnnemie.clear();
 	}
 
 	public void updateList(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions) {

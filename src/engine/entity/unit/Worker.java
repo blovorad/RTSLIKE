@@ -75,7 +75,7 @@ public class Worker extends Unit
 					this.getTarget().setHp(((this.getTarget().getHp()) + 1));
 				}
 				
-				if(this.getTarget().getHp() >= this.getTarget().getHpMax())
+				if(this.getTarget().getHp() >= this.getTarget().getHpMax() || this.getTarget().getHp() <= 0)
 				{
 					this.setTarget(null);
 					this.setCurrentAction(EntityConfiguration.IDDLE);

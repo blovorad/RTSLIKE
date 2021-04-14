@@ -153,7 +153,7 @@ public class EntitiesManager
 		}
 		
 		if(botManager != null) {
-			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions);
+			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions, playerEntities);
 			if(botManager.getBuildingInAttempt() == true) {
 				Tile tile = botManager.getTileToBuild();
 				Position p = new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE);

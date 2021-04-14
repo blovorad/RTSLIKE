@@ -32,7 +32,7 @@ public class Faction {
 	public Faction(int id) {
 		age = 1;
 		buildingCount = 0;
-		maxPopulation = 20;
+		maxPopulation = 50;
 		moneyCount = 5000;
 		populationCount = 0;
 		upgradesDone = new HashMap<Integer, ForUpgrade>();
