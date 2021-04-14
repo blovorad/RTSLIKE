@@ -152,7 +152,7 @@ public class EntitiesManager
 			removeList.clear();
 		}
 		
-		/*if(botManager != null) {
+		if(botManager != null) {
 			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions);
 			if(botManager.getBuildingInAttempt() == true) {
 				Tile tile = botManager.getTileToBuild();
@@ -160,7 +160,7 @@ public class EntitiesManager
 				createConstructionSite(botManager.getIdToBuild(), EntityConfiguration.BOT_FACTION, p, botManager.getTileToBuild());
 				botManager.buildBuilding();
 			}
-		}*/
+		}
 		
 		for(Fighter fighter : fighters) 
 		{
