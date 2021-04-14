@@ -55,6 +55,7 @@ public class BotManager {
 	private Tile tileToBuild;
 	private int idToBuild;
 	private List<Worker> builders;
+	private List<Fighter> army;
 	
 	public BotManager(FactionManager factionManager, GraphicsManager graphicsManager, Map map) {
 		setBarrackBuilt(false);
@@ -90,6 +91,7 @@ public class BotManager {
 			}
 		}
 		builders = new ArrayList<Worker>();
+		army = new ArrayList<Fighter>();
 		
 		buildingInAttempt = false;
 		tileToBuild = null;
@@ -108,6 +110,7 @@ public class BotManager {
 		prodWorker();
 		placeBuildings();
 		constructBuilding();
+		prodArmy();
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
@@ -441,11 +444,11 @@ public class BotManager {
 	
 	public void prodWorker() {
 		if(botWorkers.size() < BotConfiguration.MAX_WORKER) {
-			if(money > priceOfEntity.get(EntityConfiguration.WORKER)) {
+			if(getMoney() > priceOfEntity.get(EntityConfiguration.WORKER)) {
 				for(ProductionBuilding building : botProdBuildings) {
 					if(building.getId() == EntityConfiguration.HQ) {
 						if(!building.getIsProducing()) {
-							int price = building.startProd(EntityConfiguration.WORKER, money);
+							int price = building.startProd(EntityConfiguration.WORKER, getMoney());
 							removeMoney(price);
 							//System.out.println("start prod");
 						}
@@ -729,6 +732,94 @@ public class BotManager {
 		}
 	}
 	
+	public void prodArmy() {
+		int nbIfantry = 0;
+		int nbCavalry = 0;
+		int nbArcher = 0;
+		int nbSpecial = 0;
+		
+		int cptInfantry = 0;
+		int cptCavalry = 0;
+		int cptArcher = 0;
+		int cptSpecial = 0;
+		
+		if(isBarrackBuilt()) {
+			nbIfantry = 10;
+		}
+		if(isStableBuilt()) {
+			nbCavalry = 10;
+		}
+		if(isArcheryBuilt()) {
+			nbArcher = 10;
+		}
+		if(isCastleBuilt()) {
+			nbSpecial = 10;
+		}
+		for(Fighter fighter : getBotFighters()) {
+			if(getArmy().contains(fighter) == false) {
+				if(fighter.getId() == EntityConfiguration.INFANTRY) {
+					cptInfantry++;
+				}
+				if(fighter.getId() == EntityConfiguration.CAVALRY && fighter.equals(explorer) == false) {
+					cptCavalry++;
+				}
+				if(fighter.getId() == EntityConfiguration.ARCHER) {
+					cptArcher++;
+				}
+				if(fighter.getId() == EntityConfiguration.SPECIAL_UNIT) {
+					cptSpecial++;
+				}
+			}
+		}
+		System.out.println("infantry : " + cptInfantry + " / " + nbIfantry);
+		System.out.println("cavalry : " + cptCavalry + " / " + nbCavalry);
+		System.out.println("archer : " + cptArcher + " / " + nbArcher);
+		System.out.println("special : " + cptSpecial + " / " + nbSpecial);
+		for(ProductionBuilding building : getBotProdBuildings()) {
+			if(building.getIsProducing() == false) {
+				if(building.getId() == EntityConfiguration.BARRACK && cptInfantry < nbIfantry) {
+					if(getMoney() > priceOfEntity.get(EntityConfiguration.INFANTRY)) {
+						removeMoney(building.startProd(EntityConfiguration.INFANTRY, getMoney()));
+					}
+				}
+				if(building.getId() == EntityConfiguration.STABLE && cptCavalry < nbCavalry) {
+					if(getMoney() > priceOfEntity.get(EntityConfiguration.CAVALRY)) {
+						removeMoney(building.startProd(EntityConfiguration.CAVALRY, getMoney()));
+					}
+				}
+				if(building.getId() == EntityConfiguration.ARCHERY && cptArcher < nbArcher) {
+					if(getMoney() > priceOfEntity.get(EntityConfiguration.ARCHER)) {
+						removeMoney(building.startProd(EntityConfiguration.ARCHER, getMoney()));
+					}
+				}
+				if(building.getId() == EntityConfiguration.CASTLE && cptSpecial < nbSpecial) {
+					if(getMoney() > priceOfEntity.get(EntityConfiguration.SPECIAL_UNIT)) {
+						removeMoney(building.startProd(EntityConfiguration.SPECIAL_UNIT, getMoney()));
+					}
+				}
+			}
+		}
+		if(cptInfantry > nbIfantry && cptCavalry > nbCavalry && cptArcher > nbArcher && cptSpecial > nbSpecial) {
+			System.out.println("constitution de l'armee !");
+			for(Fighter fighter : getBotFighters()) {
+				if(getArmy().contains(fighter) == false) {
+					if(fighter.getId() == EntityConfiguration.INFANTRY) {
+						getArmy().add(fighter);
+					}
+					if(fighter.getId() == EntityConfiguration.CAVALRY && fighter.equals(explorer) == false) {
+						getArmy().add(fighter);
+					}
+					if(fighter.getId() == EntityConfiguration.ARCHER) {
+						getArmy().add(fighter);
+					}
+					if(fighter.getId() == EntityConfiguration.SPECIAL_UNIT) {
+						getArmy().add(fighter);
+					}
+				}
+			}
+		}
+	}
+	
 	//getter & setter
 	public FactionManager getFactionManager() {
 		return factionManager;
@@ -933,5 +1024,13 @@ public class BotManager {
 
 	public void setBuilders(List<Worker> builders) {
 		this.builders = builders;
+	}
+
+	public List<Fighter> getArmy() {
+		return army;
+	}
+
+	public void setArmy(List<Fighter> army) {
+		this.army = army;
 	}
 }
