@@ -374,8 +374,10 @@ public class MainGui extends JFrame implements Runnable
 					manager.addSelectedUnit(worker);
 					if(clickCount > 1) {
 						for(Worker worker2 : listWorkers) {
-							manager.addSelectedWorker(worker2);
-							manager.addSelectedUnit(worker2);
+							if(worker != worker2) {
+								manager.addSelectedWorker(worker2);
+								manager.addSelectedUnit(worker2);
+							}
 						}
 					}
 					break;
@@ -387,15 +389,17 @@ public class MainGui extends JFrame implements Runnable
 					Position pos = fighter.getPosition();
 					if(x > pos.getX() && x < pos.getX() + EntityConfiguration.UNIT_SIZE && y > pos.getY() && y < pos.getY() + EntityConfiguration.UNIT_SIZE) {
 						noUnitSelected = false;
+						manager.addSelectedFighter(fighter);
+						manager.addSelectedUnit(fighter);
 						if(clickCount > 1) {
-							manager.addSelectedFighter(fighter);
-							manager.addSelectedUnit(fighter);
+							for(Fighter fighter2 : listFighters) {
+								if(fighter != fighter2) {
+									manager.addSelectedFighter(fighter2);
+									manager.addSelectedUnit(fighter2);
+								}
+							}
 						}
-						else {
-							manager.addSelectedFighter(fighter);
-							manager.addSelectedUnit(fighter);
-							break;
-						}
+						break;
 					}
 				}
 				if(manager.getSelectedFighters().isEmpty() == false) {
@@ -472,6 +476,9 @@ public class MainGui extends JFrame implements Runnable
 						}
 					}
 				}
+			}
+			else {
+				audioManager.startFx(4);
 			}
 		}
 		
@@ -589,6 +596,9 @@ public class MainGui extends JFrame implements Runnable
 					}
 				}
 			}
+			else {
+				audioManager.startFx(4);
+			}
 		}
 		
 		
@@ -662,6 +672,7 @@ public class MainGui extends JFrame implements Runnable
 								}
 								mouse.setId(-1);
 							}
+							audioManager.startFx(3);
 							selectionRectangle.setActive(false);
 						}
 						else if(selectionRectangle.isActive() == false){
@@ -689,6 +700,7 @@ public class MainGui extends JFrame implements Runnable
 								Ressource ressource  = checkRessource(mouseX, mouseY);
 								if(ressource != null) {
 									goingToHarvest = true;
+									audioManager.startFx(3);
 									for(Worker worker : listWorkers) 
 									{
 										worker.initRessource(ressource);
@@ -703,6 +715,7 @@ public class MainGui extends JFrame implements Runnable
 								
 								if(listSelectedUnit.isEmpty() == false && target != null)
 								{
+									audioManager.startFx(3);
 									for(Unit unit : listSelectedUnit)
 									{
 										unit.calculateSpeed(target.getPosition());
@@ -712,6 +725,7 @@ public class MainGui extends JFrame implements Runnable
 								}
 								else if(listSelectedUnit.isEmpty() == false && targetUnit != null)
 								{
+									audioManager.startFx(5);
 									for(Unit unit : listSelectedUnit)
 									{
 										unit.calculateSpeed(targetUnit.getPosition());
@@ -721,6 +735,7 @@ public class MainGui extends JFrame implements Runnable
 									}
 								}
 								else if(listSelectedUnit.isEmpty() == false && target == null) {
+									audioManager.startFx(3);
 									for(Unit unit : listSelectedUnit){
 										unit.calculateSpeed(new Position(mouseX, mouseY));
 										unit.setTarget(null);
@@ -746,28 +761,10 @@ public class MainGui extends JFrame implements Runnable
 										}
 									}
 									else {
-										//ici on fait en sorte que la tour attaque bien la cible qu'on lui montre	
-										if(manager.getSelectedAttackBuilding() != null) {
-											List<Unit> units = manager.getUnits();
-											int x = mouseX + camera.getX();
-											int y = mouseY + camera.getY();
-											for(Unit unit : units) {
-												Position unitPosition = unit.getPosition();
-												if(unit.getFaction() == EntityConfiguration.BOT_FACTION) {
-													if (x > unitPosition.getX() && x < unitPosition.getX() + EntityConfiguration.UNIT_SIZE && y > unitPosition.getY() && y < unitPosition.getY() + EntityConfiguration.UNIT_SIZE) {
-														manager.getSelectedAttackBuilding().setTarget(unit);
-														System.out.println("new target : " + manager.getSelectedAttackBuilding().getTarget().getDescription());
-														break;
-													}
-												}
-											}
-										}
-										else {
-											//ici on met le point de ralliment pour les batiment de production
-											ProductionBuilding building = manager.getSelectedProdBuilding();
-											if(building != null) {
-												building.setDestination(new Position(mouseX, mouseY));
-											}
+										//ici on met le point de ralliment pour les batiment de production
+										ProductionBuilding building = manager.getSelectedProdBuilding();
+										if(building != null) {
+											building.setDestination(new Position(mouseX, mouseY));
 										}
 									}
 								}
@@ -787,6 +784,7 @@ public class MainGui extends JFrame implements Runnable
 							Position p = new Position(x, y);
 							
 							if(listSelectedUnit.isEmpty() == false) {
+								audioManager.startFx(3);
 								for(Unit unit : listSelectedUnit){
 									unit.calculateSpeed(p);
 									unit.setTarget(null);

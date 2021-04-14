@@ -39,6 +39,9 @@ public class AudioManager {
 			fxs.add(new File("src/sounds/launchGameFx.wav"));
 			fxs.add(new File("src/sounds/menuButtonFx.wav"));
 			fxs.add(new File("src/sounds/produceUpgradeFx.wav"));
+			fxs.add(new File("src/sounds/yesMyLord.wav"));
+			fxs.add(new File("src/sounds/yes.wav"));
+			fxs.add(new File("src/sounds/enGarde.wav"));
 			
 		}
 		catch(Exception e) {
@@ -100,15 +103,20 @@ public class AudioManager {
 	}
 	
 	public void startFx(int id) {
-		if(fx != null) {
-			fx.close();
-		}
-		try {
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
-			fx.open(inputStream);
-			fx.start();
-		} catch(Exception e) {
-			e.printStackTrace();
+		if(!fx.isRunning()) {
+			if(fx != null) {
+				fx.close();
+			}
+			try {
+				AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
+				fx.open(inputStream);
+				float volumeInFloat = (float)sliderVolume / 100;
+				FloatControl gainControl = (FloatControl) fx.getControl(FloatControl.Type.MASTER_GAIN);        
+			    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
+				fx.start();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
