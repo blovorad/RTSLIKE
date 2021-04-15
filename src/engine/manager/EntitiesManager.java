@@ -690,6 +690,7 @@ public class EntitiesManager
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(bprod);
 				playerProdBuildings.add(bprod);
+				playerBuildings.add(bprod);
 			}
 			else {
 				botEntities.add(bprod);
@@ -702,12 +703,11 @@ public class EntitiesManager
 		}
 		else if(bstorage != null){
 			tile.setSolid(true);
-			if(faction == EntityConfiguration.PLAYER_FACTION) {
-				playerEntities.add(bstorage);
-			}
 			this.drawingList.add(bstorage);
 			this.storageBuildings.add(bstorage);
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
+				playerEntities.add(bstorage);
+				playerBuildings.add(bstorage);
 				this.playerStorageBuildings.add(bstorage);
 			}
 			else if(faction == EntityConfiguration.BOT_FACTION) {
@@ -722,6 +722,7 @@ public class EntitiesManager
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(battack);
 				playerAttackBuildings.add(battack);
+				playerBuildings.add(battack);
 			}
 			else {
 				botEntities.add(battack);
