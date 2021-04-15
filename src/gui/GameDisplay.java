@@ -549,6 +549,9 @@ public class GameDisplay extends JPanel
 		agressifState.setOpaque(false);
 		defensifState.setOpaque(false);
 		passifState.setOpaque(false);
+		agressifState.setFocusable(false);
+		defensifState.setFocusable(false);
+		passifState.setFocusable(false);
 		
 		stateGroupButton.add(agressifState);
 		stateGroupButton.add(defensifState);
