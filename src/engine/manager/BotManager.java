@@ -48,6 +48,7 @@ public class BotManager {
 	private List<Ressource> visibleRessources;
 	private List<Worker> idleWorker;
 	private List<Entity> ennemieVisible;
+	private List<Entity> waitingList = new ArrayList<Entity>();
 	private List<Entity> removeVisibleEnnemie = new ArrayList<Entity>();
 	private int money;
 	private Fighter explorer;
@@ -133,7 +134,16 @@ public class BotManager {
 			Position p = entity.getPosition();
 			fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
 		}
-		fog.checkUnit(playerEntities, ennemieVisible);
+		fog.checkUnit(playerEntities, waitingList, removeVisibleEnnemie);
+		fog.checkingPlayerTargetInFog(ennemieVisible, waitingList, removeVisibleEnnemie);
+		if(waitingList.isEmpty() == false) {
+			ennemieVisible.addAll(waitingList);
+			waitingList.clear();
+		}
+		if(removeVisibleEnnemie.isEmpty() == false) {
+			ennemieVisible.removeAll(removeVisibleEnnemie);
+			removeVisibleEnnemie.clear();
+		}
 		for(Entity entity : ennemieVisible) {
 			if(entity.getHp() <= 0) {
 				removeVisibleEnnemie.add(entity);

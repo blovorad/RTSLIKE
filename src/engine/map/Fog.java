@@ -114,7 +114,7 @@ public class Fog {
 		}
 	}
 	
-	public void checkUnit(List<Entity> playerList, List<Entity> visibleList) {
+	public void checkUnit(List<Entity> playerList, List<Entity> waitingList, List<Entity> removeList) {
 		for (int lineIndex = 0; lineIndex < GameConfiguration.LINE_COUNT; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < GameConfiguration.COLUMN_COUNT; columnIndex++) {
 				if(fog[lineIndex][columnIndex] == false) {
@@ -128,12 +128,31 @@ public class Fog {
 					}
 					for(Entity entity : playerList) {
 						if(Collision.collideFogEntity(columnIndex, lineIndex, widthTab, heightTab, entity)) {
-							if(visibleList.contains(entity) == false) {
-								visibleList.add(entity);
+							if(!waitingList.contains(entity)) {
+								waitingList.add(entity);
+							}
+						}
+						else {
+							if(!removeList.contains(entity)) {
+								removeList.add(entity);
 							}
 						}
 					}
 				}
+			}
+		}
+	}
+	
+	public void checkingPlayerTargetInFog(List<Entity> visibleList, List<Entity> waitingList, List<Entity> removeList) {
+		for(Entity entity : waitingList) {
+			if(removeList.contains(entity)) {
+				removeList.remove(entity);
+			}
+		}
+		
+		for(Entity entity : visibleList) {
+			if(waitingList.contains(entity)) {
+				waitingList.remove(entity);
 			}
 		}
 	}
