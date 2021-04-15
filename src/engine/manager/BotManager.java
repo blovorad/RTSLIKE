@@ -126,6 +126,7 @@ public class BotManager {
 		placeBuildings();
 		constructBuilding();
 		prodArmy();
+		attack();
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
@@ -567,11 +568,11 @@ public class BotManager {
 			//System.out.println("hq ? " + isHqBuilt());
 			//System.out.println("barrack ? " + isBarrackBuilt());
 			if(isHqBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.HQ)) {
-				System.out.println("hq pas contruct");
+				//System.out.println("hq pas contruct");
 				int targetX = getBotWorkers().get(0).getPosition().getX() / 64;
-				System.out.println("targetX : " + targetX);
+				//System.out.println("targetX : " + targetX);
 				int targetY = getBotWorkers().get(0).getPosition().getY() / 64;
-				System.out.println("targetY : " + targetY);
+				//System.out.println("targetY : " + targetY);
 				Tile targetTile = map.getTile(targetY, targetX);
 				Tile place = null;
 				int max = 1;
@@ -579,7 +580,7 @@ public class BotManager {
 					for(int i = targetTile.getColumn() - max; i <= targetTile.getColumn() + max; i++) {
 						for(int j = targetTile.getLine() - max; j <= targetTile.getLine() + max; j++) {
 							if(i < GameConfiguration.COLUMN_COUNT && j < GameConfiguration.LINE_COUNT) {
-								System.out.println("case check : " + j + ";" + i);
+								//System.out.println("case check : " + j + ";" + i);
 								if(map.getTile(j, i).isSolid() == false) {
 									place = map.getTile(j, i);
 								}
@@ -594,9 +595,9 @@ public class BotManager {
 				idToBuild = EntityConfiguration.HQ;
 			}
 			else if(isBarrackBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.BARRACK)) {
-				System.out.println("barrack pas construct");
+				//System.out.println("barrack pas construct");
 				if(getHq() != null) {
-					System.out.println("on a un hq");
+					//System.out.println("on a un hq");
 					int targetX = getHq().getPosition().getX() / 64;
 					int targetY = getHq().getPosition().getY() / 64;
 					//Tile HqTile = map.getTile(targetX, targetY);
@@ -622,9 +623,9 @@ public class BotManager {
 			}
 			else if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() >= 2) {
 				if(isArcheryBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.ARCHERY)) {
-					System.out.println("archery pas construct");
+					//System.out.println("archery pas construct");
 					if(getHq() != null) {
-						System.out.println("on a un hq");
+						//System.out.println("on a un hq");
 						int targetX = getHq().getPosition().getX() / 64;
 						int targetY = getHq().getPosition().getY() / 64;
 						//Tile HqTile = map.getTile(targetX, targetY);
@@ -649,9 +650,9 @@ public class BotManager {
 					}
 				}
 				else if(isStableBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.STABLE)) {
-					System.out.println("stable pas construct");
+					//System.out.println("stable pas construct");
 					if(getHq() != null) {
-						System.out.println("on a un hq");
+						//System.out.println("on a un hq");
 						int targetX = getHq().getPosition().getX() / 64;
 						int targetY = getHq().getPosition().getY() / 64;
 						//Tile HqTile = map.getTile(targetX, targetY);
@@ -677,9 +678,9 @@ public class BotManager {
 				}
 				else if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() >= 3) {
 					if(isCastleBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.CASTLE)) {
-						System.out.println("castle pas construct");
+						//System.out.println("castle pas construct");
 						if(getHq() != null) {
-							System.out.println("on a un hq");
+							//System.out.println("on a un hq");
 							int targetX = getHq().getPosition().getX() / 64;
 							int targetY = getHq().getPosition().getY() / 64;
 							//Tile HqTile = map.getTile(targetX, targetY);
@@ -726,7 +727,7 @@ public class BotManager {
 						}
 						if(hasWorker == false) {
 							if(getIdleWorker().isEmpty() == false) {
-								System.out.println("y a des idle");
+								//System.out.println("y a des idle");
 								for(Worker worker : getIdleWorker()) {
 									builders.add(worker);
 								}
@@ -749,11 +750,11 @@ public class BotManager {
 								}
 							}
 							for(Worker worker : getBuilders()) {
-								System.out.println("builders : " + getBuilders().size());
+								//System.out.println("builders : " + getBuilders().size());
 								worker.setTarget(sitec);
 								worker.calculateSpeed(sitec.getPosition());
 								worker.setCurrentAction(EntityConfiguration.WALK);
-								System.out.println("va constru fdp !");
+								//System.out.println("va constru fdp !");
 							}
 						}
 					}
@@ -802,8 +803,9 @@ public class BotManager {
 				}
 			}
 		}
-		/*System.out.println("infantry : " + cptInfantry + " / " + nbIfantry);
-		System.out.println("cavalry : " + cptCavalry + " / " + nbCavalry);
+		System.out.println("army size" + army.size());
+		System.out.println("infantry : " + cptInfantry + " / " + nbIfantry);
+		/*System.out.println("cavalry : " + cptCavalry + " / " + nbCavalry);
 		System.out.println("archer : " + cptArcher + " / " + nbArcher);
 		System.out.println("special : " + cptSpecial + " / " + nbSpecial);*/
 		for(ProductionBuilding building : getBotProdBuildings()) {
@@ -830,8 +832,8 @@ public class BotManager {
 				}
 			}
 		}
-		if(cptInfantry > nbIfantry && cptCavalry > nbCavalry && cptArcher > nbArcher && cptSpecial > nbSpecial) {
-			System.out.println("constitution de l'armee !");
+		if(cptInfantry >= nbIfantry && nbIfantry != 0/*&& cptCavalry >= nbCavalry && cptArcher >= nbArcher && cptSpecial >= nbSpecial*/) {
+			System.out.println("constitution de l'armee ! -------------------------------------------------");
 			for(Fighter fighter : getBotFighters()) {
 				if(getArmy().contains(fighter) == false) {
 					if(fighter.getId() == EntityConfiguration.INFANTRY) {
@@ -845,6 +847,33 @@ public class BotManager {
 					}
 					if(fighter.getId() == EntityConfiguration.SPECIAL_UNIT) {
 						getArmy().add(fighter);
+					}
+				}
+			}
+		}
+	}
+	
+	public void attack() {
+		if(getArmy().isEmpty() == false) {
+			if(ennemieVisible.isEmpty() == false) {
+				Entity target = null;
+				for(Entity ennemie : ennemieVisible) {
+					System.out.println("ennemie : " + ennemie);
+					if(ennemie != null) {
+						if(target == null) {
+							target = ennemie;
+						}
+						if(calculate(ennemie.getPosition(), hq.getPosition()) < calculate(target.getPosition(), hq.getPosition())) {
+							target = ennemie;
+						}
+					}
+				}
+				System.out.println("army target : " + target);
+				for(Fighter fighter : getArmy()) {
+					if(fighter.getTarget() == null) {
+						fighter.setTarget(target);
+						fighter.calculateSpeed(target.getPosition());
+						System.out.println("attack !");
 					}
 				}
 			}
