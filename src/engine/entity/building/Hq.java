@@ -79,7 +79,7 @@ public class Hq extends ProductionBuilding{
 				return upgrade.getCost();
 			}
 			else {
-				System.out.println("Pas assez de gold !");
+				//System.out.println("Pas assez de gold !");
 				return 0;
 			}
 		}

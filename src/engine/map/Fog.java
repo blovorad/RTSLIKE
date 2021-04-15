@@ -6,6 +6,7 @@ import java.util.List;
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
 import engine.Entity;
+import engine.entity.unit.Unit;
 import engine.math.Collision;
 
 /**
@@ -114,7 +115,7 @@ public class Fog {
 		}
 	}
 	
-	public void checkUnit(List<Entity> playerList, List<Entity> waitingList, List<Entity> removeList) {
+	public void checkUnit(List<Unit> playerUnits, List<Unit> unitWaitingEnnemieVisible, List<Unit> unitRemoveEnnemieVisible) {
 		for (int lineIndex = 0; lineIndex < GameConfiguration.LINE_COUNT; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < GameConfiguration.COLUMN_COUNT; columnIndex++) {
 				if(fog[lineIndex][columnIndex] == false) {
@@ -126,15 +127,15 @@ public class Fog {
 					if(heightTab > GameConfiguration.LINE_COUNT - 1) {
 						heightTab = GameConfiguration.LINE_COUNT - 1;
 					}
-					for(Entity entity : playerList) {
-						if(Collision.collideFogEntity(columnIndex, lineIndex, widthTab, heightTab, entity)) {
-							if(!waitingList.contains(entity)) {
-								waitingList.add(entity);
+					for(Unit unit : playerUnits) {
+						if(Collision.collideFogUnit(columnIndex, lineIndex, widthTab, heightTab, unit)) {
+							if(!unitWaitingEnnemieVisible.contains(unit)) {
+								unitWaitingEnnemieVisible.add(unit);
 							}
 						}
 						else {
-							if(!removeList.contains(entity)) {
-								removeList.add(entity);
+							if(!unitRemoveEnnemieVisible.contains(unit)) {
+								unitRemoveEnnemieVisible.add(unit);
 							}
 						}
 					}
@@ -143,16 +144,59 @@ public class Fog {
 		}
 	}
 	
-	public void checkingPlayerTargetInFog(List<Entity> visibleList, List<Entity> waitingList, List<Entity> removeList) {
-		for(Entity entity : waitingList) {
-			if(removeList.contains(entity)) {
-				removeList.remove(entity);
+	public void checkingPlayerTargetUnitInFog(List<Unit> unitEnnemieVisible, List<Unit> unitWaitingEnnemieVisible, List<Unit> unitRemoveEnnemieVisible) {
+		for(Unit entity : unitWaitingEnnemieVisible) {
+			if(unitRemoveEnnemieVisible.contains(entity)) {
+				unitRemoveEnnemieVisible.remove(entity);
 			}
 		}
 		
-		for(Entity entity : visibleList) {
-			if(waitingList.contains(entity)) {
-				waitingList.remove(entity);
+		for(Unit entity : unitEnnemieVisible) {
+			if(unitWaitingEnnemieVisible.contains(entity)) {
+				unitWaitingEnnemieVisible.remove(entity);
+			}
+		}
+	}
+	
+	public void checkBuilding(List<Entity> playerBuildings, List<Entity> buildingWaitingEnnemieVisible, List<Entity> buildingRemoveEnnemieVisible){
+		for (int lineIndex = 0; lineIndex < GameConfiguration.LINE_COUNT; lineIndex++) {
+			for (int columnIndex = 0; columnIndex < GameConfiguration.COLUMN_COUNT; columnIndex++) {
+				if(fog[lineIndex][columnIndex] == false) {
+					int widthTab = columnIndex + 1;
+					int heightTab = lineIndex + 1;
+					if(widthTab > GameConfiguration.COLUMN_COUNT - 1) {
+						widthTab = GameConfiguration.COLUMN_COUNT - 1;
+					}
+					if(heightTab > GameConfiguration.LINE_COUNT - 1) {
+						heightTab = GameConfiguration.LINE_COUNT - 1;
+					}
+					for(Entity entity : playerBuildings) {
+						if(Collision.collideFogEntity(columnIndex, lineIndex, widthTab, heightTab, entity)) {
+							if(!buildingWaitingEnnemieVisible.contains(entity)) {
+								buildingWaitingEnnemieVisible.add(entity);
+							}
+						}
+						else {
+							if(!buildingRemoveEnnemieVisible.contains(entity)) {
+								buildingRemoveEnnemieVisible.add(entity);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void checkingPlayerTargetBuildingInFog(List<Entity> buildingEnnemieVisible, List<Entity> buildingWaitingEnnemieVisible, List<Entity> buildingRemoveEnnemieVisible){
+		for(Entity entity : buildingWaitingEnnemieVisible) {
+			if(buildingRemoveEnnemieVisible.contains(entity)) {
+				buildingRemoveEnnemieVisible.remove(entity);
+			}
+		}
+		
+		for(Entity entity : buildingEnnemieVisible) {
+			if(buildingWaitingEnnemieVisible.contains(entity)) {
+				buildingWaitingEnnemieVisible.remove(entity);
 			}
 		}
 	}

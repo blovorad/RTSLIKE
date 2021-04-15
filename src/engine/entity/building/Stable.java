@@ -51,7 +51,7 @@ public class Stable extends ProductionBuilding{
 			return cavalry.getCost();
 		}
 		else {
-			System.out.println("Pas assez de gold !");
+			//System.out.println("Pas assez de gold !");
 			return 0;
 		}
 	}

@@ -69,6 +69,8 @@ public class EntitiesManager
 	private List<Worker> removeWorkers = new ArrayList<Worker>();
 	
 	private List<Unit> units;
+	private List<Unit> playerUnits = new ArrayList<Unit>();
+	private List<Entity> playerBuildings = new ArrayList<Entity>();
 	
 	private List<AttackBuilding> attackBuildings;
 	private List<AttackBuilding> removeAttackBuildings = new ArrayList<AttackBuilding>();
@@ -153,7 +155,7 @@ public class EntitiesManager
 		}
 		
 		if(botManager != null) {
-			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions, playerEntities);
+			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions, playerBuildings, playerUnits);
 			if(botManager.getBuildingInAttempt() == true) {
 				Tile tile = botManager.getTileToBuild();
 				Position p = new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE);
@@ -278,6 +280,7 @@ public class EntitiesManager
 			if(removeStorageBuildings.contains(selectedStorageBuilding)) {
 				clearSelectedStorageBuilding();
 			}
+			playerBuildings.removeAll(removeStorageBuildings);
 			botEntities.removeAll(removeStorageBuildings);
 			botStorageBuildings.removeAll(removeStorageBuildings);
 			storageBuildings.removeAll(removeStorageBuildings);
@@ -294,6 +297,7 @@ public class EntitiesManager
 			if(removeAttackBuildings.contains(selectedAttackBuilding)) {
 				clearSelectedAttackBuilding();
 			}
+			playerBuildings.removeAll(removeAttackBuildings);
 			playerAttackBuildings.removeAll(removeAttackBuildings);
 			botEntities.removeAll(removeAttackBuildings);
 			botAttackBuildings.removeAll(removeAttackBuildings);
@@ -309,6 +313,7 @@ public class EntitiesManager
 			if(removeProdBuildings.contains(selectedProdBuilding)) {
 				clearSelectedProdBuilding();
 			}
+			playerBuildings.removeAll(removeProdBuildings);
 			playerProdBuildings.removeAll(removeProdBuildings);
 			botEntities.removeAll(removeProdBuildings);
 			botProdBuildings.removeAll(removeProdBuildings);
@@ -321,6 +326,7 @@ public class EntitiesManager
 		
 		//removing worker
 		if(removeWorkers.isEmpty() == false) {
+			playerUnits.removeAll(removeWorkers);
             selectedWorkers.removeAll(removeWorkers);
             botEntities.removeAll(removeWorkers);
             botWorkers.removeAll(removeWorkers);
@@ -337,6 +343,7 @@ public class EntitiesManager
         
         //removing fighter
         if(removeFighters.isEmpty() == false) {
+        	playerUnits.removeAll(removeFighters);
             selectedFighters.removeAll(removeFighters);
             botEntities.removeAll(removeFighters);
             botFighters.removeAll(removeFighters);
@@ -356,6 +363,7 @@ public class EntitiesManager
 			if(removeSiteConstructions.contains(selectedSiteConstruction)) {
 				clearSelectedSiteConstruction();
 			}
+			playerBuildings.removeAll(removeSiteConstructions);
 			botEntities.removeAll(removeSiteConstructions);
 			botSiteConstructions.removeAll(removeSiteConstructions);
 			siteConstructions.removeAll(removeSiteConstructions);
@@ -409,6 +417,7 @@ public class EntitiesManager
 			tile.setSolid(true);
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(sc);
+				playerBuildings.add(sc);
 			}
 			else {
 				botEntities.add(sc);
@@ -449,6 +458,7 @@ public class EntitiesManager
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(fighter);
 				playerFighters.add(fighter);
+				playerUnits.add(fighter);
 			}
 			else {
 				botEntities.add(fighter);
@@ -479,6 +489,7 @@ public class EntitiesManager
 		else {
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				playerEntities.add(worker);
+				playerUnits.add(worker);
 				playerWorkers.add(worker);
 			}
 			else {
@@ -793,6 +804,8 @@ public class EntitiesManager
 		playerStorageBuildings.clear();
 		playerProdBuildings.clear();
 		playerAttackBuildings.clear();
+		playerBuildings.clear();
+		playerUnits.clear();
 		
 		botStorageBuildings.clear();
 		botProdBuildings.clear();

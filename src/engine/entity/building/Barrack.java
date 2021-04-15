@@ -50,7 +50,7 @@ public class Barrack extends ProductionBuilding{
 			return infantry.getCost();
 		}
 		else {
-			System.out.println("Pas assez de gold !");
+			//System.out.println("Pas assez de gold !");
 			return 0;
 		}
 	}

@@ -892,6 +892,8 @@ public class MainGui extends JFrame implements Runnable
 			{
 				int x = e.getX();
 				int y = e.getY();
+				mouse.setX(x);
+				mouse.setY(y);
 				
 				if(x < camera.getRectX() || x > camera.getRectX() + camera.getRectW() || y < camera.getRectY() || y > camera.getRectY() + camera.getRectH())
 				{

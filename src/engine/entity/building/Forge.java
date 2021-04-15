@@ -50,7 +50,7 @@ public class Forge extends ProductionBuilding{
 			return upgradeCost;
 		}
 		else {
-			System.out.println("Pas assez de gold !");
+			//System.out.println("Pas assez de gold !");
 			return 0;
 		}
 	}

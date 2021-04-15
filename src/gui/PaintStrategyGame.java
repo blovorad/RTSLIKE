@@ -12,6 +12,7 @@ import configuration.GameConfiguration;
 import engine.Animation;
 import engine.Camera;
 import engine.Entity;
+import engine.Mouse;
 import engine.Position;
 import engine.entity.unit.Unit;
 import engine.manager.GraphicsManager;
@@ -124,6 +125,20 @@ public class PaintStrategyGame
 			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 		}
 		paintLifeBarre(entity, graphics, camera);
+	}
+	
+	public void paintMouseBuilding(Mouse mouse, Graphics graphics, Map map, Camera camera, GraphicsManager graphicsManager) {
+		int x = (mouse.getPosition().getX() + camera.getX()) / GameConfiguration.TILE_SIZE;
+		int y = (mouse.getPosition().getY() + camera.getY()) / GameConfiguration.TILE_SIZE;
+
+		if(map.getTile(x, y).isSolid() == true) {
+			graphics.setColor(Color.red);
+		}
+		else {
+			graphics.setColor(Color.green);
+		}
+		graphics.fillRect(mouse.getPosition().getX() - GameConfiguration.TILE_SIZE / 2, mouse.getPosition().getY() - GameConfiguration.TILE_SIZE / 2, GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE);
+		graphics.drawImage(mouse.getFrame(), mouse.getPosition().getX() - GameConfiguration.TILE_SIZE / 2, mouse.getPosition().getY() - GameConfiguration.TILE_SIZE / 2, GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE, null);
 	}
 	
 	public void paintLifeBarre(Entity entity, Graphics graphics, Camera camera) {

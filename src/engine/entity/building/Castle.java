@@ -56,7 +56,7 @@ public class Castle extends ProductionBuilding{
 			return special.getCost();
 		}
 		else {
-			System.out.println("Pas assez de gold !");
+			//System.out.println("Pas assez de gold !");
 			return 0;
 		}
 	}

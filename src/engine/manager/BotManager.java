@@ -17,6 +17,7 @@ import engine.entity.building.ProductionBuilding;
 import engine.entity.building.SiteConstruction;
 import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Fighter;
+import engine.entity.unit.Unit;
 import engine.entity.unit.Worker;
 import engine.map.Fog;
 import engine.map.Map;
@@ -47,9 +48,15 @@ public class BotManager {
 	private List<SiteConstruction> siteConstructions;
 	private List<Ressource> visibleRessources;
 	private List<Worker> idleWorker;
-	private List<Entity> ennemieVisible;
-	private List<Entity> waitingList = new ArrayList<Entity>();
-	private List<Entity> removeVisibleEnnemie = new ArrayList<Entity>();
+	
+	private List<Entity> buildingEnnemieVisible;
+	private List<Entity> buildingWaitingEnnemieVisible = new ArrayList<Entity>();
+	private List<Entity> buildingRemoveEnnemieVisible = new ArrayList<Entity>();
+	
+	private List<Unit> unitEnnemieVisible;
+	private List<Unit> unitWaitingEnnemieVisible = new ArrayList<Unit>();
+	private List<Unit> unitRemoveEnnemieVisible = new ArrayList<Unit>();
+	
 	private int money;
 	private Fighter explorer;
 	private ProductionBuilding hq;
@@ -68,7 +75,8 @@ public class BotManager {
 		setForgeBuilt(false);
 		setHqBuilt(true);
 		setFactionManager(factionManager);
-		ennemieVisible = new ArrayList<Entity>();
+		buildingEnnemieVisible = new ArrayList<Entity>();
+		unitEnnemieVisible = new ArrayList<Unit>();
 		fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
 		Race race = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace();
 		
@@ -113,10 +121,10 @@ public class BotManager {
 		idToBuild = -1;
 	}
 	
-	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions, List<Entity> playerEntities) {
+	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions, List<Entity> playerBuildings, List<Unit> playerUnits) {
 		updateList(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions);
 		updateMoney();
-		updateFog(playerEntities);
+		updateFog(playerBuildings, playerUnits);
 		explore(); 
 		nextAge();
 		updateVisibleRessources();
@@ -126,32 +134,100 @@ public class BotManager {
 		placeBuildings();
 		constructBuilding();
 		prodArmy();
+		attack();
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
-	public void updateFog(List<Entity> playerEntities) {
+	public void updateFog(List<Entity> playerBuildings, List<Unit> playerUnits) {
 		for(Entity entity : getBotEntities()) {
 			Position p = entity.getPosition();
 			fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
 		}
-		fog.checkUnit(playerEntities, waitingList, removeVisibleEnnemie);
-		fog.checkingPlayerTargetInFog(ennemieVisible, waitingList, removeVisibleEnnemie);
-		if(waitingList.isEmpty() == false) {
-			ennemieVisible.addAll(waitingList);
-			waitingList.clear();
+		fog.checkUnit(playerUnits, unitWaitingEnnemieVisible, unitRemoveEnnemieVisible);
+		fog.checkingPlayerTargetUnitInFog(unitEnnemieVisible, unitWaitingEnnemieVisible, unitRemoveEnnemieVisible);
+
+		if(unitWaitingEnnemieVisible.isEmpty() == false) {
+			unitEnnemieVisible.addAll(unitWaitingEnnemieVisible);
+			unitWaitingEnnemieVisible.clear();
 		}
-		if(removeVisibleEnnemie.isEmpty() == false) {
-			ennemieVisible.removeAll(removeVisibleEnnemie);
-			removeVisibleEnnemie.clear();
-		}
-		for(Entity entity : ennemieVisible) {
-			if(entity.getHp() <= 0) {
-				removeVisibleEnnemie.add(entity);
+		for(Unit unit : unitEnnemieVisible) {
+			if(unit.getHp() <= 0) {
+				unitRemoveEnnemieVisible.add(unit);
 			}
 		}
-		ennemieVisible.removeAll(removeVisibleEnnemie);
-		removeVisibleEnnemie.clear();
+		if(unitRemoveEnnemieVisible.isEmpty() == false) {
+			unitEnnemieVisible.removeAll(unitRemoveEnnemieVisible);
+			unitRemoveEnnemieVisible.clear();
+		}
+		unitEnnemieVisible.removeAll(unitRemoveEnnemieVisible);
+		unitRemoveEnnemieVisible.clear();
+		
+		
+		fog.checkBuilding(playerBuildings, buildingWaitingEnnemieVisible, buildingRemoveEnnemieVisible);
+		fog.checkingPlayerTargetBuildingInFog(buildingEnnemieVisible, buildingWaitingEnnemieVisible, buildingRemoveEnnemieVisible);
+
+		if(buildingWaitingEnnemieVisible.isEmpty() == false) {
+			buildingEnnemieVisible.addAll(buildingWaitingEnnemieVisible);
+			buildingWaitingEnnemieVisible.clear();
+		}
+		for(Entity entity : buildingEnnemieVisible) {
+			if(entity.getHp() <= 0) {
+				buildingRemoveEnnemieVisible.add(entity);
+			}
+		}
+		if(buildingRemoveEnnemieVisible.isEmpty() == false) {
+			buildingEnnemieVisible.removeAll(buildingRemoveEnnemieVisible);
+			buildingRemoveEnnemieVisible.clear();
+		}
+		buildingEnnemieVisible.removeAll(buildingRemoveEnnemieVisible);
+		buildingRemoveEnnemieVisible.clear();
 	}
+	
+	public void attack() {
+        if(getArmy().isEmpty() == false) {
+            if(buildingEnnemieVisible.isEmpty() == false) {
+                Entity target = null;
+                for(Entity ennemie : buildingEnnemieVisible) {
+                	if(target == null) {
+                        target = ennemie;
+                    }
+                    if(calculate(ennemie.getPosition(), hq.getPosition()) < calculate(target.getPosition(), hq.getPosition())) {
+                        target = ennemie;
+                    }
+                }
+                System.out.println("army target : " + target);
+                for(Fighter fighter : getArmy()) {
+                    if(fighter.getTarget() == null) {
+                        fighter.setTarget(target);
+                        System.out.println("attack !");
+                    }
+                }
+            }
+            if(unitEnnemieVisible.isEmpty() == false) {
+            	 Entity target = null;
+            	 Unit targetUnit = null;
+                 for(Unit ennemie : unitEnnemieVisible) {
+                 	if(target == null) {
+                         target = ennemie;
+                     }
+                 	if(targetUnit == null) {
+                 		targetUnit = ennemie;
+                 	}
+                    if(calculate(ennemie.getPosition(), hq.getPosition()) < calculate(target.getPosition(), hq.getPosition())) {
+                        target = ennemie;
+                    }
+                 }
+                 System.out.println("army target : " + target);
+                 for(Fighter fighter : getArmy()) {
+                     if(fighter.getTarget() == null) {
+                         fighter.setTarget(target);
+                         fighter.setTargetUnit(targetUnit);
+                         System.out.println("attack !");
+                     }
+                 }
+            }
+        }
+    }
 
 	public void updateList(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions) {
 		setBotEntities(botEntities);
@@ -749,11 +825,11 @@ public class BotManager {
 								}
 							}
 							for(Worker worker : getBuilders()) {
-								System.out.println("builders : " + getBuilders().size());
+								//System.out.println("builders : " + getBuilders().size());
 								worker.setTarget(sitec);
 								worker.calculateSpeed(sitec.getPosition());
 								worker.setCurrentAction(EntityConfiguration.WALK);
-								System.out.println("va constru fdp !");
+								//System.out.println("va constru fdp !");
 							}
 						}
 					}
@@ -830,7 +906,7 @@ public class BotManager {
 				}
 			}
 		}
-		if(cptInfantry > nbIfantry && cptCavalry > nbCavalry && cptArcher > nbArcher && cptSpecial > nbSpecial) {
+		if(cptInfantry > nbIfantry){// && cptCavalry > nbCavalry && cptArcher > nbArcher && cptSpecial > nbSpecial) {
 			System.out.println("constitution de l'armee !");
 			for(Fighter fighter : getBotFighters()) {
 				if(getArmy().contains(fighter) == false) {

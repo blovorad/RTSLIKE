@@ -56,7 +56,7 @@ public class GameBuilder {
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p3, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p4, null);
 		manager.createFighter(EntityConfiguration.CAVALRY, EntityConfiguration.PLAYER_FACTION, patronFighter, p5, null);
-		
+
 		//cr�ation d'un ennemie
 		tile = map.getTile(84, 84);
 		tile2 = map.getTile(82, 88);

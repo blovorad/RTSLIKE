@@ -50,7 +50,7 @@ public class Archery extends ProductionBuilding{
 			return archer.getCost();
 		}
 		else {
-			System.out.println("Pas assez de gold !");
+			//System.out.println("Pas assez de gold !");
 			return 0;
 		}
 	}

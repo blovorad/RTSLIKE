@@ -475,8 +475,11 @@ public class GameDisplay extends JPanel
 		buttonForge.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonForge.setEnabled(false);
+			buttonForge.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getAge());
 		}
-		buttonForge.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getAge());
+		else {
+			buttonForge.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getCost());
+		}
 		
 		JButton buttonBarrack = new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACK));
 		buttonBarrack.setFocusable(false);
@@ -486,14 +489,20 @@ public class GameDisplay extends JPanel
 		buttonStable.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonStable.setEnabled(false);
+			buttonStable.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getAge());
 		}
-		buttonStable.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getAge());
+		else {
+			buttonStable.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getCost());
+		}
 		
 		JButton buttonHq = new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ));
 		buttonHq.setFocusable(false);
-		buttonHq.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getAge());
 		if(faction.getAge() <= 1) {
 			buttonHq.setEnabled(false);
+			buttonHq.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getAge());
+		}
+		else {
+			buttonHq.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getCost());
 		}
 		
 		JButton buttonStockage = new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE));
@@ -504,15 +513,21 @@ public class GameDisplay extends JPanel
 		buttonCastle.setFocusable(false);
 		if(faction.getAge() <= 2) {
 			buttonCastle.setEnabled(false);
+			buttonCastle.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getAge());
 		}
-		buttonCastle.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getAge());
+		else {
+			buttonCastle.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getCost());
+		}
 		
 		JButton buttonArchery = new JButton(new ConstructBuilding("Acherie", EntityConfiguration.ARCHERY));
 		buttonArchery.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonArchery.setEnabled(false);
+			buttonArchery.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getAge());
 		}
-		buttonArchery.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getCost() + ",age requis : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getAge());
+		else {
+			buttonArchery.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getCost());
+		}
 		
 		JButton buttonTower = new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER));
 		buttonTower.setFocusable(false);
@@ -1138,12 +1153,16 @@ public class GameDisplay extends JPanel
 				this.paintStrategyGame.paintSelectionRectRessource(ressource, g, camera);
 			}
 			
+			this.paintStrategyGame.paint(fog, g, camera);
+			
+			if(mouse.getId() > -1) {
+				this.paintStrategyGame.paintMouseBuilding(mouse, g, map, camera, graphicsManager);
+			}
+			
 			if(selectionRectangle.isActive())
 			{
 				this.paintStrategyGame.paint(selectionRectangle, g, camera);
 			}
-			
-			this.paintStrategyGame.paint(fog, g, camera);
 			
 			this.paintStrategyGame.paintGui(map, fog, entities, g, camera, descriptionPanel, ressourceInfoPanel, minimapPanel, minimap, graphicsManager);
 		}
@@ -1269,6 +1288,7 @@ public class GameDisplay extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			mouse.setId(this.getId());
+			mouse.getEntityNoAnimationTexture(graphicsManager, id, EntityConfiguration.PLAYER_FACTION);
 		}
 		
 		public int getId() {
