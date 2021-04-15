@@ -107,6 +107,7 @@ public class GameDisplay extends JPanel
 	//unit state
 	private JRadioButton agressifState;
 	private JRadioButton defensifState;
+	private JRadioButton passifState;
 	private ButtonGroup stateGroupButton;
 	
 	//print the selected map
@@ -544,26 +545,33 @@ public class GameDisplay extends JPanel
 		stateGroupButton = new ButtonGroup();
 		agressifState = new JRadioButton(new ChangeState("AGRESSIF", EntityConfiguration.AGRESSIF_STATE, fighters));
 		defensifState = new JRadioButton(new ChangeState("DEFENSIF", EntityConfiguration.DEFENSIF_STATE, fighters));
+		passifState = new JRadioButton(new ChangeState("PASSIF", EntityConfiguration.PASSIF_STATE, fighters));
 		agressifState.setOpaque(false);
 		defensifState.setOpaque(false);
+		passifState.setOpaque(false);
 		
 		stateGroupButton.add(agressifState);
 		stateGroupButton.add(defensifState);
+		stateGroupButton.add(passifState);
 		if(unit.getState() == EntityConfiguration.AGRESSIF_STATE) {
 			agressifState.setSelected(true);
 		}
 		else if(unit.getState() == EntityConfiguration.DEFENSIF_STATE) {
 			defensifState.setSelected(true);
 		}
+		else if(unit.getState() == EntityConfiguration.PASSIF_STATE) {
+			passifState.setSelected(true);
+		}
 		
 		statEntityContainer.setForUnit(unit);
 		unitStatistiquesLabel.setText("\nPoints de vie : " + unit.getHp() +
 										"\nDegats : " + unit.getDamage() + 
 										"\nArmure : " + unit.getArmor());
-		JPanel pForButton = new JPanel(new GridLayout(2,1));
+		JPanel pForButton = new JPanel(new GridLayout(3,1));
 		pForButton.setOpaque(false);
 		pForButton.add(agressifState);
 		pForButton.add(defensifState);
+		pForButton.add(passifState);
 		
 		descriptionPanel.add(pForButton);
 		descriptionPanel.add(new JLabel(unit.getDescription()));
@@ -1194,7 +1202,7 @@ public class GameDisplay extends JPanel
 	}
 	
 	private class BackToMenuAfterVictory extends AbstractAction{
-		private static final long seriaulVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 		
 		public BackToMenuAfterVictory(String name) {
 			super(name);
@@ -1304,6 +1312,11 @@ public class GameDisplay extends JPanel
 			else if(type == EntityConfiguration.AGRESSIF_STATE) {
 				for(Fighter fighter : fighters) {
 					fighter.setState(EntityConfiguration.AGRESSIF_STATE);
+				}
+			}
+			else if(type == EntityConfiguration.PASSIF_STATE) {
+				for(Fighter fighter : fighters) {
+					fighter.setState(EntityConfiguration.PASSIF_STATE);
 				}
 			}
 			

@@ -123,7 +123,6 @@ public class PaintStrategyGame
 		else if(entity.getId() == EntityConfiguration.RESSOURCE) {
 			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
 		}
-		
 		paintLifeBarre(entity, graphics, camera);
 	}
 	

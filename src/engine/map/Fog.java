@@ -118,8 +118,16 @@ public class Fog {
 		for (int lineIndex = 0; lineIndex < GameConfiguration.LINE_COUNT; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < GameConfiguration.COLUMN_COUNT; columnIndex++) {
 				if(fog[lineIndex][columnIndex] == false) {
+					int widthTab = columnIndex + 1;
+					int heightTab = lineIndex + 1;
+					if(widthTab > GameConfiguration.COLUMN_COUNT - 1) {
+						widthTab = GameConfiguration.COLUMN_COUNT - 1;
+					}
+					if(heightTab > GameConfiguration.LINE_COUNT - 1) {
+						heightTab = GameConfiguration.LINE_COUNT - 1;
+					}
 					for(Entity entity : playerList) {
-						if(Collision.collideFogEntity(columnIndex, lineIndex, GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE, entity)) {
+						if(Collision.collideFogEntity(columnIndex, lineIndex, widthTab, heightTab, entity)) {
 							if(visibleList.contains(entity) == false) {
 								visibleList.add(entity);
 							}

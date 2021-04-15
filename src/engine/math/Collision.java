@@ -118,18 +118,19 @@ public class Collision {
 		
 		return false;
 	}
-	public static boolean collideFogEntity(int xTab, int yTab, int widthTab, int heightTab, Entity botEntity) {
+	public static boolean collideFogEntity(int xTab, int yTab, int widthTab, int heightTab, Entity entity) {
 		int tileSize = GameConfiguration.TILE_SIZE;
 		int entitySize = GameConfiguration.TILE_SIZE;
-		if(botEntity.getId() == EntityConfiguration.CAVALRY) {
+		
+		if(entity.getId() == EntityConfiguration.CAVALRY) {
 			entitySize = EntityConfiguration.CAVALRY_SIZE;
 		}
-		else if(botEntity.getId() <= EntityConfiguration.WORKER) {
+		else if(entity.getId() <= EntityConfiguration.WORKER) {
 			entitySize = EntityConfiguration.UNIT_SIZE;
 		}
 		
 		Rectangle r1 = new Rectangle(xTab * tileSize, yTab * tileSize, widthTab * tileSize - xTab * tileSize, heightTab * tileSize - yTab * tileSize);
-		Rectangle r2 = new Rectangle(botEntity.getPosition().getX(), botEntity.getPosition().getY(), entitySize, entitySize);
+		Rectangle r2 = new Rectangle(entity.getPosition().getX(), entity.getPosition().getY(), entitySize, entitySize);
 		
 		if(r1.intersects(r2)) {
 			return true;
@@ -180,7 +181,7 @@ public class Collision {
 	
 	public static boolean collideVision(Entity target , Unit attacker) 
 	{
-		int sizeAttacker;
+		//int sizeAttacker;
 		int sizeTarget;
 		
 		if(target.getId() >= EntityConfiguration.FORGE && target.getId() <= EntityConfiguration.ARCHERY)
@@ -199,14 +200,14 @@ public class Collision {
 			}
 		}
 		
-		if(target.getId() == EntityConfiguration.CAVALRY)
+		/*if(target.getId() == EntityConfiguration.CAVALRY)
 		{
 			sizeAttacker = EntityConfiguration.CAVALRY_SIZE;
 		}
 		else
 		{
 			sizeAttacker = EntityConfiguration.UNIT_SIZE;
-		}
+		}*/
 		
 		Rectangle r1 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), sizeTarget, sizeTarget);
 		Rectangle r2 = new Rectangle(attacker.getPosition().getX() - attacker.getSightRange()/2, attacker.getPosition().getY() - attacker.getSightRange()/2, attacker.getSightRange()*2, attacker.getSightRange()*2);

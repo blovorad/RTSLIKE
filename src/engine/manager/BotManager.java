@@ -19,10 +19,8 @@ import engine.entity.building.StorageBuilding;
 import engine.entity.unit.Fighter;
 import engine.entity.unit.Worker;
 import engine.map.Fog;
-import engine.map.FogCase;
 import engine.map.Map;
 import engine.map.Tile;
-import engine.math.Collision;
 import factionConfiguration.Race;
 
 public class BotManager {
@@ -767,16 +765,16 @@ public class BotManager {
 		int cptSpecial = 0;
 		
 		if(isBarrackBuilt()) {
-			nbIfantry = 10;
+			nbIfantry = BotConfiguration.MAX_INFANTRY;
 		}
 		if(isStableBuilt()) {
-			nbCavalry = 10;
+			nbCavalry = BotConfiguration.MAX_CAVALRY;;
 		}
 		if(isArcheryBuilt()) {
-			nbArcher = 10;
+			nbArcher = BotConfiguration.MAX_ARCHER;;
 		}
 		if(isCastleBuilt()) {
-			nbSpecial = 10;
+			nbSpecial = BotConfiguration.MAX_SPECIAL;;
 		}
 		for(Fighter fighter : getBotFighters()) {
 			if(getArmy().contains(fighter) == false) {
@@ -794,10 +792,10 @@ public class BotManager {
 				}
 			}
 		}
-		System.out.println("infantry : " + cptInfantry + " / " + nbIfantry);
+		/*System.out.println("infantry : " + cptInfantry + " / " + nbIfantry);
 		System.out.println("cavalry : " + cptCavalry + " / " + nbCavalry);
 		System.out.println("archer : " + cptArcher + " / " + nbArcher);
-		System.out.println("special : " + cptSpecial + " / " + nbSpecial);
+		System.out.println("special : " + cptSpecial + " / " + nbSpecial);*/
 		for(ProductionBuilding building : getBotProdBuildings()) {
 			if(building.getIsProducing() == false) {
 				if(building.getId() == EntityConfiguration.BARRACK && cptInfantry < nbIfantry) {

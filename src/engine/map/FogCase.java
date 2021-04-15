@@ -1,6 +1,5 @@
 package engine.map;
 
-import engine.Entity;
 /**
  * 
  * @author gautier
