@@ -31,7 +31,7 @@ public class Forge extends ProductionBuilding{
 			int nextIdToProduce = this.getElementCount().get(0);
 			this.setTimer(getUpgrades().get(nextIdToProduce).getTimeToProduce());
 		}
-		System.out.println("producing upgrade final");
+		//System.out.println("producing upgrade final");
 		
 		return id;
 	}
@@ -40,7 +40,7 @@ public class Forge extends ProductionBuilding{
 	public int startProd(int id, int moneyCount) {
 		int upgradeCost = this.getUpgrades().get(id).getCost();
 		int timeBuilding = this.getUpgrades().get(id).getTimeToProduce();
-		System.out.println("Start prod de upgrade, cout : " + upgradeCost + ", gold : " + moneyCount);
+		//System.out.println("Start prod de upgrade, cout : " + upgradeCost + ", gold : " + moneyCount);
 		if(upgradeCost <= moneyCount) {
 			this.getElementCount().add(id);
 			if(this.getIsProducing() == false) {
@@ -71,7 +71,7 @@ public class Forge extends ProductionBuilding{
 				i++;
 			}
 			
-			System.out.println("Suppression prod de upgrade, cout : " + upgradeCost);
+			//System.out.println("Suppression prod de upgrade, cout : " + upgradeCost);
 			this.getElementCount().remove(this.getElementCount().size() - 1);
 			if(this.getElementCount().isEmpty()) {
 				this.setIsProducing(false);

@@ -226,7 +226,7 @@ public class EntitiesManager
 					else if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {
 						createUpgrade(id, building.getFaction());
 					}
-					System.out.println("producing unit");
+					//System.out.println("producing unit");
 				}
 			}
 			if(building.isRemove()) {
@@ -425,7 +425,7 @@ public class EntitiesManager
 		}
 		else if(id == EntityConfiguration.STORAGE){
 			ForStorageBuilding patronBuilding = this.factionManager.getFactions().get(faction).getRace().getStorageBuildings().get(id);
-			System.out.println("DESCRIPTION : " + patronBuilding.getDescription() + ", et la faction : " + faction);
+			//System.out.println("DESCRIPTION : " + patronBuilding.getDescription() + ", et la faction : " + faction);
 			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
 		}
 		else if(id == EntityConfiguration.TOWER){
@@ -433,7 +433,7 @@ public class EntitiesManager
 			sc = new SiteConstruction(id, 1, patronBuilding.getHpMax(), patronBuilding.getDescription(), position, EntityConfiguration.SITE_CONSTRUCTION, faction, GameConfiguration.TILE_SIZE, 0, graphicsManager, tile);
 		}
 		else{
-			System.out.println("invalide ID");
+			//System.out.println("invalide ID");
 		}
 		
 		if(sc != null) {
@@ -449,7 +449,7 @@ public class EntitiesManager
 			}
 			this.waitingToAdd.add(sc);
 			this.siteConstructions.add(sc);
-			System.out.println("ajout d'un site de construction");
+			//System.out.println("ajout d'un site de construction");
 		}
 	return sc;
 	}
@@ -535,7 +535,7 @@ public class EntitiesManager
 			audioManager.startFx(2);
 		}
 		if(id == EntityConfiguration.AGE_UPGRADE || id == EntityConfiguration.AGE_UPGRADE_2) {
-			System.out.println("upgrade age !");
+			//System.out.println("upgrade age !");
 			if(faction == EntityConfiguration.PLAYER_FACTION) {
 				factionManager.getFactions().get(faction).setUpgradeAge(true);
 			}
@@ -724,7 +724,7 @@ public class EntitiesManager
 			this.drawingList.add(bprod);
 			this.prodBuildings.add(bprod);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
-			System.out.println("ajout Building production");
+			//System.out.println("ajout Building production");
 		}
 		else if(bstorage != null){
 			tile.setSolid(true);
@@ -740,7 +740,7 @@ public class EntitiesManager
 				botEntities.add(bstorage);
 			}
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
-			System.out.println("ajout building storage");
+			//System.out.println("ajout building storage");
 		}
 		else if(battack != null) {
 			tile.setSolid(true);
@@ -756,7 +756,7 @@ public class EntitiesManager
 			this.drawingList.add(battack);
 			this.attackBuildings.add(battack);
 			this.factionManager.getFactions().get(faction).setBuildingCount(this.factionManager.getFactions().get(faction).getBuildingCount() + 1);
-			System.out.println("ajout building attack");
+			//System.out.println("ajout building attack");
 		}
 		
 		

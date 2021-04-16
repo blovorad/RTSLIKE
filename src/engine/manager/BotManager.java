@@ -59,6 +59,7 @@ public class BotManager {
 	
 	private int money;
 	private Fighter explorer;
+	private Fighter explorerRandom;
 	private ProductionBuilding hq;
 	
 	private boolean buildingInAttempt;
@@ -316,14 +317,29 @@ public class BotManager {
 		}
 		if(getExplorer() == null) {
 			for(Fighter fighter : getBotFighters()) {
-				if(fighter.getId() == EntityConfiguration.CAVALRY) {
+				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && getExplorer() == null) {
 					setExplorer(fighter);
+					fighter.setState(EntityConfiguration.PASSIF_STATE);
 				}
 			}
 		}
 		else {
 			if(getExplorer().getHp() <= 0) {
 				setExplorer(null);
+			}
+		}
+		if(getExplorerRandom() == null) {
+			for(Fighter fighter : getBotFighters()) {
+				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && fighter.equals(getExplorer()) == false && getExplorerRandom() == null) {
+					setExplorerRandom(fighter);
+					fighter.setState(EntityConfiguration.PASSIF_STATE);
+					System.out.println("explo rdm set");
+				}
+			}
+		}
+		else {
+			if(getExplorerRandom().getHp() <= 0) {
+				setExplorerRandom(null);
 			}
 		}
 		if(getHq() != null && getExplorer() != null) {
@@ -412,13 +428,30 @@ public class BotManager {
 						maxY++;
 					}
 				}
-				explorer.setDestination(new Position(targetX, targetY));
-				explorer.calculateSpeed(new Position(targetX, targetY));
-				explorer.setState(EntityConfiguration.WALK);
+				getExplorer().setDestination(new Position(targetX, targetY));
+				getExplorer().calculateSpeed(new Position(targetX, targetY));
 				//System.out.println("cavalier exploring");
 				//System.out.println("cavalier dest" + explorer.getDestination().getX() + "," + explorer.getDestination().getY());
 				this.setMax(maxX);
 			}
+		}
+		if(getExplorerRandom() != null && getExplorerRandom().getDestination() == null) {
+			boolean[][] tabFog = fog.getFog();
+			boolean destinationFound = false;
+			int placeX = getRandomNumberInRange(0, GameConfiguration.COLUMN_COUNT -1);
+			int placeY = getRandomNumberInRange(0, GameConfiguration.LINE_COUNT - 1);
+			while(destinationFound == false) {
+				if(tabFog[placeY][placeX] == true) {
+					destinationFound = true;
+				}
+				else {
+					placeX = getRandomNumberInRange(0, GameConfiguration.COLUMN_COUNT -1); // line column ?
+					placeY = getRandomNumberInRange(0, GameConfiguration.LINE_COUNT - 1);
+				}
+			}
+			getExplorerRandom().setDestination(new Position(placeX * GameConfiguration.TILE_SIZE, placeY * GameConfiguration.TILE_SIZE));
+			getExplorerRandom().calculateSpeed(new Position(placeX * GameConfiguration.TILE_SIZE, placeY * GameConfiguration.TILE_SIZE));
+			System.out.println("actual dest : " + getExplorerRandom().getDestination().getX() + ";" + getExplorerRandom().getDestination().getY());
 		}
 	}
 	
@@ -638,7 +671,7 @@ public class BotManager {
 						//System.out.println("placeX = " + placeX);
 						int placeY = getRandomNumberInRange(targetY - 5, targetY + 5);
 						//System.out.println("placeY = " + placeY);
-						if(placeX < 100 && placeY < 100) {
+						if(placeX < GameConfiguration.COLUMN_COUNT && placeY < GameConfiguration.LINE_COUNT) { //verifier si je me suis pas encore tromper sur ligne collone
 							if(map.getTile(placeX, placeY).isSolid() == false) {
 								place = map.getTile(placeX, placeY);
 							}
@@ -862,14 +895,14 @@ public class BotManager {
 			}
 		}
 
-		if(cptInfantry >= nbIfantry && nbIfantry != 0/*&& cptCavalry >= nbCavalry && cptArcher >= nbArcher && cptSpecial >= nbSpecial*/) {
+		if(cptInfantry >= nbIfantry && nbIfantry != 0 && cptCavalry >= nbCavalry && nbCavalry != 0 && cptArcher >= nbArcher && nbArcher != 0 && cptSpecial >= nbSpecial && nbSpecial != 0) {
 			//System.out.println("constitution de l'armee ! -------------------------------------------------");
 			for(Fighter fighter : getBotFighters()) {
 				if(getArmy().contains(fighter) == false) {
 					if(fighter.getId() == EntityConfiguration.INFANTRY) {
 						getArmy().add(fighter);
 					}
-					if(fighter.getId() == EntityConfiguration.CAVALRY && fighter.equals(explorer) == false) {
+					if(fighter.getId() == EntityConfiguration.CAVALRY && fighter.equals(explorer) == false && fighter.equals(explorerRandom) == false) {
 						getArmy().add(fighter);
 					}
 					if(fighter.getId() == EntityConfiguration.ARCHER) {
@@ -918,13 +951,16 @@ public class BotManager {
                         target = ennemie;
                     }
                  }
-                 System.out.println("army target : " + target);
+                 //System.out.println("army target : " + target);
                  for(Fighter fighter : getArmy()) {
-                     if(fighter.getTarget() == null) {
+                	 if(fighter.getHp() <= 0) {
+                		 getArmy().remove(fighter);
+                	 }
+                	 else if(fighter.getTarget() == null) {
                          fighter.setTarget(target);
                          fighter.setTargetUnit(targetUnit);
                          fighter.calculateSpeed(target.getPosition());
-                         System.out.println("attack !");
+                         //System.out.println("attack !");
                      }
                  }
             }
@@ -1143,5 +1179,13 @@ public class BotManager {
 
 	public void setArmy(List<Fighter> army) {
 		this.army = army;
+	}
+
+	public Fighter getExplorerRandom() {
+		return explorerRandom;
+	}
+
+	public void setExplorerRandom(Fighter explorerRandom) {
+		this.explorerRandom = explorerRandom;
 	}
 }

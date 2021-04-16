@@ -33,14 +33,14 @@ public class Archery extends ProductionBuilding{
 		{
 			this.setTimer(archer.getTimeToBuild());
 		}
-		System.out.println("producing worker final");
+		//System.out.println("producing worker final");
 		
 		return id;
 	}
 
 	@Override
 	public int startProd(int id, int moneyCount) {
-		System.out.println("Start prod de archer, cout : " + this.archer.getCost() + ", gold : " + moneyCount);
+		//System.out.println("Start prod de archer, cout : " + this.archer.getCost() + ", gold : " + moneyCount);
 		if(this.archer.getCost() <= moneyCount) {
 			this.getElementCount().add(id);
 			if(this.getIsProducing() == false) {
@@ -58,7 +58,7 @@ public class Archery extends ProductionBuilding{
 	@Override
 	public int removeProduction(List<Integer> searchingUpgrade) {
 		if(this.getIsProducing() == true) {
-			System.out.println("Suppression prod de archer, cout : " + this.archer.getCost());
+			//System.out.println("Suppression prod de archer, cout : " + this.archer.getCost());
 			this.getElementCount().remove(this.getElementCount().size() - 1);
 			if(this.getElementCount().isEmpty()) {
 				this.setIsProducing(false);

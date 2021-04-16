@@ -44,8 +44,8 @@ public abstract class AttackBuilding extends Entity{
 					}else{
 						attak();
 						this.setAttackCooldown(this.getAttackSpeed());
-						System.out.println(this.getDescription() + " attacked " + this.getTarget().getDescription() + " for " + this.getDamage() + " !");
-						System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
+						//System.out.println(this.getDescription() + " attacked " + this.getTarget().getDescription() + " for " + this.getDamage() + " !");
+						//System.out.println(this.getTarget().getDescription() + " is now " + this.getTarget().getHp());
 					}
 				}
 			}

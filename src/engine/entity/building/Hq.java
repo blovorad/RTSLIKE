@@ -46,7 +46,7 @@ public class Hq extends ProductionBuilding{
 				this.setTimer(worker.getTimeToBuild());
 			}
 		}
-		System.out.println("producing worker final");
+		//System.out.println("producing worker final");
 		
 		return id;
 	}
@@ -54,7 +54,7 @@ public class Hq extends ProductionBuilding{
 	@Override
 	public int startProd(int id, int moneyCount) {	
 		if(id == EntityConfiguration.WORKER) {
-			System.out.println("Start prod de worker, cout : " + this.worker.getCost() + ", gold : " + moneyCount);
+			//System.out.println("Start prod de worker, cout : " + this.worker.getCost() + ", gold : " + moneyCount);
 			if(this.worker.getCost() <= moneyCount) {
 				this.getElementCount().add(id);
 				if(this.getIsProducing() == false) {
@@ -64,7 +64,7 @@ public class Hq extends ProductionBuilding{
 				return worker.getCost();
 			}
 			else {
-				System.out.println("Pas assez de gold !");
+				//System.out.println("Pas assez de gold !");
 				return 0;
 			}
 		}
@@ -90,7 +90,7 @@ public class Hq extends ProductionBuilding{
 		if(this.getIsProducing() == true) {
 			int idRemove = this.getElementCount().get(this.getElementCount().size() - 1);
 			if(idRemove == EntityConfiguration.WORKER) {
-				System.out.println("Suppression prod de worker, cout : " + this.worker.getCost());
+				//System.out.println("Suppression prod de worker, cout : " + this.worker.getCost());
 				this.getElementCount().remove(this.getElementCount().size() - 1);
 				if(this.getElementCount().isEmpty()) {
 					this.setIsProducing(false);
@@ -111,7 +111,7 @@ public class Hq extends ProductionBuilding{
 					i++;
 				}
 				
-				System.out.println("Suppression prod de upgrade, cout : " + upgradeCost);
+				//System.out.println("Suppression prod de upgrade, cout : " + upgradeCost);
 				this.getElementCount().remove(this.getElementCount().size() - 1);
 				if(this.getElementCount().isEmpty()) {
 					this.setIsProducing(false);

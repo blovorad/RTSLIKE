@@ -39,14 +39,14 @@ public class Castle extends ProductionBuilding{
 		{
 			this.setTimer(special.getTimeToBuild());
 		}
-		System.out.println("producing worker final");
+		//System.out.println("producing special final");
 		
 		return id;
 	}
 
 	@Override
 	public int startProd(int id, int moneyCount) {
-		System.out.println("Start prod de infantry, cout : " + this.special.getCost() + ", gold : " + moneyCount);
+		//System.out.println("Start prod de infantry, cout : " + this.special.getCost() + ", gold : " + moneyCount);
 		if(this.special.getCost() <= moneyCount) {
 			this.getElementCount().add(id);
 			if(this.getIsProducing() == false) {
@@ -64,7 +64,7 @@ public class Castle extends ProductionBuilding{
 	@Override
 	public int removeProduction(List<Integer> searchingUpgrade) {
 		if(this.getIsProducing() == true) {
-			System.out.println("Suppression prod de special, cout : " + this.special.getCost());
+			//System.out.println("Suppression prod de special, cout : " + this.special.getCost());
 			this.getElementCount().remove(this.getElementCount().size() - 1);
 			if(this.getElementCount().isEmpty()) {
 				this.setIsProducing(false);
