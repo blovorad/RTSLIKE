@@ -51,11 +51,16 @@ public class Unit extends Entity
 		this.speed = new Speed(0, 0);
 		this.timer = this.attackSpeed;
 		this.state = state;
+		this.finalPosition = null;
 		
 		if(destination != null) {
 			//System.out.println("calcul");
 			calculateSpeed(destination);
 		}
+	}
+	
+	public void setFinalDestination(Position position) {
+		this.finalPosition = position;
 	}
 	
 	public void move(float vx, float vy)

@@ -719,6 +719,7 @@ public class MainGui extends JFrame implements Runnable
 									for(Unit unit : listSelectedUnit)
 									{
 										unit.calculateSpeed(target.getPosition());
+										unit.setFinalDestination(target.getPosition());
 										unit.setCurrentAction(EntityConfiguration.WALK);
 										unit.setTarget(target);
 										if(unit.getFaction() != target.getFaction()) {
@@ -739,6 +740,7 @@ public class MainGui extends JFrame implements Runnable
 									for(Unit unit : listSelectedUnit)
 									{
 										unit.calculateSpeed(targetUnit.getPosition());
+										unit.setFinalDestination(target.getPosition());
 										unit.setCurrentAction(EntityConfiguration.WALK);
 										unit.setTarget(targetUnit);
 										unit.setTargetUnit(targetUnit);
@@ -748,6 +750,7 @@ public class MainGui extends JFrame implements Runnable
 									audioManager.startFx(3);
 									for(Unit unit : listSelectedUnit){
 										unit.calculateSpeed(new Position(mouseX, mouseY));
+										unit.setFinalDestination(new Position(mouseX, mouseY));
 										unit.setTarget(null);
 										unit.setTargetUnit(null);
 										unit.setCurrentAction(EntityConfiguration.WALK);
