@@ -11,6 +11,7 @@ import engine.Camera;
 import engine.Entity;
 import engine.Position;
 import engine.Ressource;
+import engine.entity.unit.Fighter;
 import engine.entity.unit.Unit;
 import engine.entity.unit.Worker;
 
@@ -130,6 +131,23 @@ public class Collision {
 		}
 		
 		Rectangle r1 = new Rectangle(xTab * tileSize, yTab * tileSize, widthTab * tileSize - xTab * tileSize, heightTab * tileSize - yTab * tileSize);
+		Rectangle r2 = new Rectangle(entity.getPosition().getX(), entity.getPosition().getY(), entitySize, entitySize);
+		
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean collideForFx(Entity entity, Camera camera) {
+		int entitySize = EntityConfiguration.UNIT_SIZE;
+		
+		if(entity.getId() == EntityConfiguration.CAVALRY) {
+			entitySize = EntityConfiguration.CAVALRY_SIZE;
+		}
+		
+		Rectangle r1 = new Rectangle(camera.getX(), camera.getY(), GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
 		Rectangle r2 = new Rectangle(entity.getPosition().getX(), entity.getPosition().getY(), entitySize, entitySize);
 		
 		if(r1.intersects(r2)) {

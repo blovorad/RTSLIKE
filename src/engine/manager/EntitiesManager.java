@@ -5,6 +5,7 @@ import java.util.List;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
+import engine.Camera;
 import engine.Entity;
 import engine.Position;
 import engine.Ressource;
@@ -24,6 +25,7 @@ import engine.entity.unit.Unit;
 import engine.entity.unit.Worker;
 import engine.map.Map;
 import engine.map.Tile;
+import engine.math.Collision;
 import factionConfiguration.ForAttackBuilding;
 import factionConfiguration.ForFighter;
 import factionConfiguration.ForProductionBuilding;
@@ -44,6 +46,7 @@ public class EntitiesManager
 	private GraphicsManager graphicsManager;
 	private AudioManager audioManager;
 	private BotManager botManager;
+	private Camera camera;
 	
 	private List<Entity> collisionList = new ArrayList<Entity>();
 	private List<Entity> drawingList = new ArrayList<Entity>();
@@ -105,11 +108,11 @@ public class EntitiesManager
 	
 	private boolean playerWin = false;
 	private boolean botWin = false;
-
 	
-	public EntitiesManager(AudioManager audioManager) 
+	public EntitiesManager(AudioManager audioManager, Camera camera) 
 	{
 		this.audioManager = audioManager;
+		this.camera = camera;
 		this.graphicsManager = new GraphicsManager();
 		this.factionManager = new FactionManager();
 		this.fighters = new ArrayList<Fighter>();
@@ -167,6 +170,11 @@ public class EntitiesManager
 		for(Fighter fighter : fighters) 
 		{
 			fighter.update(units);
+			if(fighter.getCurrentAction() == EntityConfiguration.ATTACK) {
+				if(Collision.collideForFx(fighter, camera)) {
+					audioManager.startFx(6);
+				}
+			}
 			if(fighter.isRemove())
 			{
 				removeFighters.add(fighter);
@@ -180,6 +188,17 @@ public class EntitiesManager
 			}
 			else {
 				worker.update(ressources, botStorageBuildings,units);
+			}
+			
+			if(worker.getCurrentAction() == EntityConfiguration.ATTACK) {
+				if(Collision.collideForFx(worker, camera)) {
+					audioManager.startFx(6);
+				}
+			}
+			else if(worker.getCurrentAction() == EntityConfiguration.HARVEST && worker.getSpeed().hasSpeed() == false && worker.getQuantityRessource() > 0) {
+				if(Collision.collideForFx(worker, camera)) {
+					audioManager.startFx(8);
+				}
 			}
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
@@ -459,6 +478,7 @@ public class EntitiesManager
 				playerEntities.add(fighter);
 				playerFighters.add(fighter);
 				playerUnits.add(fighter);
+				audioManager.startFx(7);
 			}
 			else {
 				botEntities.add(fighter);
@@ -491,6 +511,7 @@ public class EntitiesManager
 				playerEntities.add(worker);
 				playerUnits.add(worker);
 				playerWorkers.add(worker);
+				audioManager.startFx(7);
 			}
 			else {
 				botEntities.add(worker);

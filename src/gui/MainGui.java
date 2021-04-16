@@ -78,8 +78,8 @@ public class MainGui extends JFrame implements Runnable
 		audioManager = new AudioManager();
 		
 		mouse = new Mouse();
-		manager = new EntitiesManager(audioManager);
 		camera = new Camera(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
+		manager = new EntitiesManager(audioManager, camera);
 		dashboard = new GameDisplay(camera, manager, mouse, selectionRectangle, audioManager, graphicsManager);
 		
 		MouseControls mouseControls = new MouseControls();

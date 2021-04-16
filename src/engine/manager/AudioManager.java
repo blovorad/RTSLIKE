@@ -22,7 +22,10 @@ public class AudioManager {
 	private Clip musique;
 	private int sliderVolume;
 	private int currentMusique;
-	private Clip fx;
+	private Clip fxMinage;
+	private Clip fxAttack;
+	private Clip fxOrder;
+	private Clip otherFx;
 	private List<File>fxs;
 	
 	public AudioManager() {
@@ -31,7 +34,10 @@ public class AudioManager {
 		try {
 			File file = new File("src/sounds/musique1.wav");
 			musique = AudioSystem.getClip();
-			setFx(AudioSystem.getClip());
+			otherFx = AudioSystem.getClip();
+			fxOrder = AudioSystem.getClip();
+			fxAttack = AudioSystem.getClip();
+			fxMinage = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 			musique.open(inputStream);
 			musique.start();
@@ -42,6 +48,9 @@ public class AudioManager {
 			fxs.add(new File("src/sounds/yesMyLord.wav"));
 			fxs.add(new File("src/sounds/yes.wav"));
 			fxs.add(new File("src/sounds/enGarde.wav"));
+			fxs.add(new File("src/sounds/combat.wav"));
+			fxs.add(new File("src/sounds/unitProduit.wav"));
+			fxs.add(new File("src/sounds/minage.wav"));
 			
 		}
 		catch(Exception e) {
@@ -103,19 +112,72 @@ public class AudioManager {
 	}
 	
 	public void startFx(int id) {
-		if(!fx.isRunning()) {
-			if(fx != null) {
-				fx.close();
+		if(id == 8) {
+			if(!fxMinage.isRunning()) {
+				if(fxMinage != null) {
+					fxMinage.close();
+				}
+				try {
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
+					fxMinage.open(inputStream);
+					float volumeInFloat = (float)sliderVolume / 100;
+					FloatControl gainControl = (FloatControl) fxMinage.getControl(FloatControl.Type.MASTER_GAIN);        
+				    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
+				    fxMinage.start();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
-			try {
-				AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
-				fx.open(inputStream);
-				float volumeInFloat = (float)sliderVolume / 100;
-				FloatControl gainControl = (FloatControl) fx.getControl(FloatControl.Type.MASTER_GAIN);        
-			    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
-				fx.start();
-			} catch(Exception e) {
-				e.printStackTrace();
+		}
+		else if(id >= 3 && id <= 4) {
+			if(!fxOrder.isRunning()) {
+				if(fxOrder != null) {
+					fxOrder.close();
+				}
+				try {
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
+					fxOrder.open(inputStream);
+					float volumeInFloat = (float)sliderVolume / 100;
+					FloatControl gainControl = (FloatControl) fxOrder.getControl(FloatControl.Type.MASTER_GAIN);        
+				    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
+				    fxOrder.start();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		else if(id == 6) {
+			if(!fxAttack.isRunning()) {
+				if(fxAttack != null) {
+					fxAttack.close();
+				}
+				try {
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
+					fxAttack.open(inputStream);
+					float volumeInFloat = (float)sliderVolume / 100;
+					FloatControl gainControl = (FloatControl) fxAttack.getControl(FloatControl.Type.MASTER_GAIN);        
+				    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
+				    fxAttack.start();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		else {
+			if(!otherFx.isRunning()) {
+				if(otherFx != null) {
+					otherFx.close();
+				}
+				try {
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
+					otherFx.open(inputStream);
+					float volumeInFloat = (float)sliderVolume / 100;
+					FloatControl gainControl = (FloatControl) otherFx.getControl(FloatControl.Type.MASTER_GAIN);        
+				    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
+				    otherFx.start();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -162,13 +224,4 @@ public class AudioManager {
 	public void setSliderVolume(int sliderVolume) {
 		this.sliderVolume = sliderVolume;
 	}
-
-	public Clip getFx() {
-		return fx;
-	}
-
-	public void setFx(Clip fx) {
-		this.fx = fx;
-	}
-
 }

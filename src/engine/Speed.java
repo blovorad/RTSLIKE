@@ -44,5 +44,12 @@ public class Speed
         vx = 0;
         vy = 0;
     }
+    
+    public boolean hasSpeed() {
+    	if(this.vx != 0.0 || this.vy != 0.0) {
+    		return true;
+    	}
+    	return false;
+    }
 
 }

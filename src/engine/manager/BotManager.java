@@ -832,8 +832,8 @@ public class BotManager {
 				}
 			}
 		}
-		System.out.println("army size" + army.size());
-		System.out.println("infantry : " + cptInfantry + " / " + nbIfantry);
+		//System.out.println("army size" + army.size());
+		//System.out.println("infantry : " + cptInfantry + " / " + nbIfantry);
 		/*System.out.println("cavalry : " + cptCavalry + " / " + nbCavalry);
 		System.out.println("archer : " + cptArcher + " / " + nbArcher);
 		System.out.println("special : " + cptSpecial + " / " + nbSpecial);*/
@@ -863,7 +863,7 @@ public class BotManager {
 		}
 
 		if(cptInfantry >= nbIfantry && nbIfantry != 0/*&& cptCavalry >= nbCavalry && cptArcher >= nbArcher && cptSpecial >= nbSpecial*/) {
-			System.out.println("constitution de l'armee ! -------------------------------------------------");
+			//System.out.println("constitution de l'armee ! -------------------------------------------------");
 			for(Fighter fighter : getBotFighters()) {
 				if(getArmy().contains(fighter) == false) {
 					if(fighter.getId() == EntityConfiguration.INFANTRY) {
