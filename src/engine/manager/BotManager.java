@@ -142,9 +142,34 @@ public class BotManager {
 		prodArmy();
 		attack();
 		prodUpgrade();
+		checkTargetUnit();
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
+	public void checkTargetUnit() {
+		for(Fighter fighter : botFighters) {
+			if(fighter.getTargetUnit() != null) {
+				boolean[][] fog = this.fog.getFog();
+				Position targetPos = fighter.getTargetUnit().getPosition();
+				if(fog[targetPos.getY() / GameConfiguration.TILE_SIZE][targetPos.getX() / GameConfiguration.TILE_SIZE] == true) {
+					fighter.setTarget(null);
+					fighter.setTargetUnit(null);
+				}
+			}
+		}
+		
+		for(Worker worker : botWorkers) {
+			if(worker.getTargetUnit() != null) {
+				boolean[][] fog = this.fog.getFog();
+				Position targetPos = worker.getTargetUnit().getPosition();
+				if(fog[targetPos.getY() / GameConfiguration.TILE_SIZE][targetPos.getX() / GameConfiguration.TILE_SIZE] == true) {
+					worker.setTarget(null);
+					worker.setTargetUnit(null);
+				}
+			}
+		}
+	}
+	
 	public void updateFog(List<Entity> playerBuildings, List<Unit> playerUnits) {
 		for(Entity entity : getBotEntities()) {
 			Position p = entity.getPosition();

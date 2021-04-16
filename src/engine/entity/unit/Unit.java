@@ -354,6 +354,7 @@ public class Unit extends Entity
 					Position targetPos = this.targetUnit.getPosition();
 					FogCase[][] fog = playerFog.getDynamicFog();
 					if(fog[targetPos.getY() / GameConfiguration.TILE_SIZE][targetPos.getX() / GameConfiguration.TILE_SIZE].getVisible() == false) {
+						this.setTarget(null);
 						targetUnit = null;
 					}
 				}
