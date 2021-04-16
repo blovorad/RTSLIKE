@@ -832,10 +832,10 @@ public class BotManager {
 		int nbArcher = 0;
 		int nbSpecial = 0;
 		
-		int cptInfantry = 0;
-		int cptCavalry = 0;
-		int cptArcher = 0;
-		int cptSpecial = 0;
+		List<Fighter> cptInfantry = new ArrayList<Fighter>();
+		List<Fighter> cptCavalry = new ArrayList<Fighter>();
+		List<Fighter> cptArcher = new ArrayList<Fighter>();
+		List<Fighter> cptSpecial = new ArrayList<Fighter>();
 		
 		if(isBarrackBuilt()) {
 			nbIfantry = BotConfiguration.MAX_INFANTRY;
@@ -852,66 +852,61 @@ public class BotManager {
 		for(Fighter fighter : getBotFighters()) {
 			if(getArmy().contains(fighter) == false) {
 				if(fighter.getId() == EntityConfiguration.INFANTRY) {
-					cptInfantry++;
+					cptInfantry.add(fighter);
 				}
-				if(fighter.getId() == EntityConfiguration.CAVALRY && fighter.equals(explorer) == false) {
-					cptCavalry++;
+				if(fighter.getId() == EntityConfiguration.CAVALRY && fighter.equals(getExplorer()) == false && fighter.equals(getExplorerRandom()) == false) {
+					cptCavalry.add(fighter);
 				}
 				if(fighter.getId() == EntityConfiguration.ARCHER) {
-					cptArcher++;
+					cptArcher.add(fighter);
 				}
 				if(fighter.getId() == EntityConfiguration.SPECIAL_UNIT) {
-					cptSpecial++;
+					cptSpecial.add(fighter);
 				}
 			}
 		}
-		//System.out.println("army size" + army.size());
-		//System.out.println("infantry : " + cptInfantry + " / " + nbIfantry);
-		/*System.out.println("cavalry : " + cptCavalry + " / " + nbCavalry);
-		System.out.println("archer : " + cptArcher + " / " + nbArcher);
-		System.out.println("special : " + cptSpecial + " / " + nbSpecial);*/
+		/*System.out.println("army size : " + army.size());
+		System.out.println("infantry : " + cptInfantry.size() + " / " + nbIfantry);
+		System.out.println("cavalry : " + cptCavalry.size() + " / " + nbCavalry);
+		System.out.println("archer : " + cptArcher.size() + " / " + nbArcher);
+		System.out.println("special : " + cptSpecial.size() + " / " + nbSpecial);*/
 		for(ProductionBuilding building : getBotProdBuildings()) {
 			if(building.getIsProducing() == false) {
-				if(building.getId() == EntityConfiguration.BARRACK && cptInfantry < nbIfantry) {
+				if(building.getId() == EntityConfiguration.BARRACK && cptInfantry.size() < nbIfantry) {
 					if(getMoney() > priceOfEntity.get(EntityConfiguration.INFANTRY)) {
 						removeMoney(building.startProd(EntityConfiguration.INFANTRY, getMoney()));
 					}
 				}
-				if(building.getId() == EntityConfiguration.STABLE && cptCavalry < nbCavalry) {
+				if(building.getId() == EntityConfiguration.STABLE && cptCavalry.size() < nbCavalry) {
 					if(getMoney() > priceOfEntity.get(EntityConfiguration.CAVALRY)) {
 						removeMoney(building.startProd(EntityConfiguration.CAVALRY, getMoney()));
 					}
 				}
-				if(building.getId() == EntityConfiguration.ARCHERY && cptArcher < nbArcher) {
+				if(building.getId() == EntityConfiguration.ARCHERY && cptArcher.size() < nbArcher) {
 					if(getMoney() > priceOfEntity.get(EntityConfiguration.ARCHER)) {
 						removeMoney(building.startProd(EntityConfiguration.ARCHER, getMoney()));
 					}
 				}
-				if(building.getId() == EntityConfiguration.CASTLE && cptSpecial < nbSpecial) {
+				if(building.getId() == EntityConfiguration.CASTLE && cptSpecial.size() < nbSpecial) {
 					if(getMoney() > priceOfEntity.get(EntityConfiguration.SPECIAL_UNIT)) {
 						removeMoney(building.startProd(EntityConfiguration.SPECIAL_UNIT, getMoney()));
 					}
 				}
 			}
 		}
-
-		if(cptInfantry >= nbIfantry && nbIfantry != 0 && cptCavalry >= nbCavalry && nbCavalry != 0 && cptArcher >= nbArcher && nbArcher != 0 && cptSpecial >= nbSpecial && nbSpecial != 0) {
+		if(cptInfantry.size() >= nbIfantry && nbIfantry != 0 && cptCavalry.size() >= nbCavalry && nbCavalry != 0 && cptArcher.size() >= nbArcher && nbArcher != 0 && cptSpecial.size() >= nbSpecial && nbSpecial != 0) {
 			//System.out.println("constitution de l'armee ! -------------------------------------------------");
-			for(Fighter fighter : getBotFighters()) {
-				if(getArmy().contains(fighter) == false) {
-					if(fighter.getId() == EntityConfiguration.INFANTRY) {
-						getArmy().add(fighter);
-					}
-					if(fighter.getId() == EntityConfiguration.CAVALRY && fighter.equals(explorer) == false && fighter.equals(explorerRandom) == false) {
-						getArmy().add(fighter);
-					}
-					if(fighter.getId() == EntityConfiguration.ARCHER) {
-						getArmy().add(fighter);
-					}
-					if(fighter.getId() == EntityConfiguration.SPECIAL_UNIT) {
-						getArmy().add(fighter);
-					}
-				}
+			for(Fighter fighter : cptInfantry) {
+				getArmy().add(fighter);
+			}
+			for(Fighter fighter : cptCavalry) {
+				getArmy().add(fighter);
+			}
+			for(Fighter fighter : cptArcher) {
+				getArmy().add(fighter);
+			}
+			for(Fighter fighter : cptSpecial) {
+				getArmy().add(fighter);
 			}
 		}
 	}
@@ -928,12 +923,12 @@ public class BotManager {
                         target = ennemie;
                     }
                 }
-                System.out.println("army target : " + target);
+                //System.out.println("army target : " + target);
                 for(Fighter fighter : getArmy()) {
                     if(fighter.getTarget() == null) {
                         fighter.setTarget(target);
                         fighter.calculateSpeed(target.getPosition());
-                        System.out.println("attack !");
+                        //System.out.println("attack !");
                     }
                 }
             }
