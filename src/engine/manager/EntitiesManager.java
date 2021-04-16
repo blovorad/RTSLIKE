@@ -149,7 +149,11 @@ public class EntitiesManager
 	public void update() 
 	{
 		if(waitingToAdd.isEmpty() == false) {
-			drawingList.addAll(waitingToAdd);
+			for(Entity entity : waitingToAdd) {
+				if(drawingList.contains(entity) == false) {
+					drawingList.add(entity);
+				}
+			}
 			waitingToAdd.clear();
 		}
 		if(removeList.isEmpty() == false) {

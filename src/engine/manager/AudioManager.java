@@ -121,8 +121,15 @@ public class AudioManager {
 					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
 					fxMinage.open(inputStream);
 					float volumeInFloat = (float)sliderVolume / 100;
-					FloatControl gainControl = (FloatControl) fxMinage.getControl(FloatControl.Type.MASTER_GAIN);        
-				    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
+					FloatControl gainControl = (FloatControl) fxMinage.getControl(FloatControl.Type.MASTER_GAIN);
+					float volumeToChange = 20f * (float) Math.log10(volumeInFloat);
+					if(volumeToChange < 0) {
+						volumeToChange *= 2;
+					}
+					else {
+						volumeToChange /= 4;
+					}
+				    gainControl.setValue(volumeToChange);
 				    fxMinage.start();
 				} catch(Exception e) {
 					e.printStackTrace();
