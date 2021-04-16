@@ -34,14 +34,14 @@ public class Stable extends ProductionBuilding{
 		{
 			this.setTimer(cavalry.getTimeToBuild());
 		}
-		System.out.println("producing cavalry final");
+		//System.out.println("producing cavalry final");
 		
 		return id;
 	}
 
 	@Override
 	public int startProd(int id, int moneyCount) {
-		System.out.println("Start prod de cavalry, cout : " + this.cavalry.getCost() + ", gold : " + moneyCount);
+		//System.out.println("Start prod de cavalry, cout : " + this.cavalry.getCost() + ", gold : " + moneyCount);
 		if(this.cavalry.getCost() <= moneyCount) {
 			this.getElementCount().add(id);
 			if(this.getIsProducing() == false) {
@@ -59,7 +59,7 @@ public class Stable extends ProductionBuilding{
 	@Override
 	public int removeProduction(List<Integer> searchingUpgrade) {
 		if(this.getIsProducing() == true) {
-			System.out.println("Suppression prod de cavalry, cout : " + this.cavalry.getCost());
+			//System.out.println("Suppression prod de cavalry, cout : " + this.cavalry.getCost());
 			this.getElementCount().remove(this.getElementCount().size() - 1);
 			if(this.getElementCount().isEmpty()) {
 				this.setIsProducing(false);

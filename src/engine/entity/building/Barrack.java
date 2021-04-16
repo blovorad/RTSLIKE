@@ -33,14 +33,14 @@ public class Barrack extends ProductionBuilding{
 		{
 			this.setTimer(infantry.getTimeToBuild());
 		}
-		System.out.println("producing worker final");
+		//System.out.println("producing infantry final");
 		
 		return id;
 	}
 
 	@Override
 	public int startProd(int id, int moneyCount) {
-		System.out.println("Start prod de infantry, cout : " + this.infantry.getCost() + ", gold : " + moneyCount);
+		//System.out.println("Start prod de infantry, cout : " + this.infantry.getCost() + ", gold : " + moneyCount);
 		if(this.infantry.getCost() <= moneyCount) {
 			this.getElementCount().add(id);
 			if(this.getIsProducing() == false) {
@@ -58,7 +58,7 @@ public class Barrack extends ProductionBuilding{
 	@Override
 	public int removeProduction(List<Integer> searchingUpgrade) {
 		if(this.getIsProducing() == true) {
-			System.out.println("Suppression prod de infantry, cout : " + this.infantry.getCost());
+			//System.out.println("Suppression prod de infantry, cout : " + this.infantry.getCost());
 			this.getElementCount().remove(this.getElementCount().size() - 1);
 			if(this.getElementCount().isEmpty()) {
 				this.setIsProducing(false);
