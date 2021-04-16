@@ -5,6 +5,7 @@ import java.util.List;
 import configuration.EntityConfiguration;
 import engine.Position;
 import engine.manager.GraphicsManager;
+import engine.map.Fog;
 
 /**
  * 
@@ -23,8 +24,8 @@ public class Fighter extends Unit
 	}
 
 	
-	public void update(List<Unit> units) 
+	public void update(List<Unit> units, Fog playerFog) 
 	{
-		super.update(units);
+		super.update(units, playerFog);
 	}
 }

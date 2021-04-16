@@ -8,6 +8,8 @@ import engine.Entity;
 import engine.Position;
 import engine.Speed;
 import engine.manager.GraphicsManager;
+import engine.map.Fog;
+import engine.map.FogCase;
 import engine.math.Collision;
 
 /**
@@ -187,7 +189,7 @@ public class Unit extends Entity
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
 
-	public void update(List<Unit> units){
+	public void update(List<Unit> units, Fog playerFog){
 		super.update();
 		Position p = this.getPosition();
 		
@@ -345,6 +347,18 @@ public class Unit extends Entity
 			
 			System.out.println("Ma destination est : " + this.getDestination());
 		}*/
+		
+		if(!GameConfiguration.debug_mod) {
+			if(playerFog != null) {
+				if(targetUnit != null) {
+					Position targetPos = this.targetUnit.getPosition();
+					FogCase[][] fog = playerFog.getDynamicFog();
+					if(fog[targetPos.getY() / GameConfiguration.TILE_SIZE][targetPos.getX() / GameConfiguration.TILE_SIZE].getVisible() == false) {
+						targetUnit = null;
+					}
+				}
+			}
+		}
 		
 		manageState();
 	}

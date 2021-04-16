@@ -23,6 +23,7 @@ import engine.entity.building.Tower;
 import engine.entity.unit.Fighter;
 import engine.entity.unit.Unit;
 import engine.entity.unit.Worker;
+import engine.map.Fog;
 import engine.map.Map;
 import engine.map.Tile;
 import engine.math.Collision;
@@ -47,6 +48,7 @@ public class EntitiesManager
 	private AudioManager audioManager;
 	private BotManager botManager;
 	private Camera camera;
+	private Fog playerFog;
 	
 	private List<Entity> collisionList = new ArrayList<Entity>();
 	private List<Entity> drawingList = new ArrayList<Entity>();
@@ -146,6 +148,10 @@ public class EntitiesManager
 		this.botManager = new BotManager(factionManager, graphicsManager, map);
 	}
 	
+	public void setPlayerFog(Fog fog) {
+		this.playerFog = fog;
+	}
+	
 	public void update() 
 	{
 		if(waitingToAdd.isEmpty() == false) {
@@ -173,7 +179,12 @@ public class EntitiesManager
 		
 		for(Fighter fighter : fighters) 
 		{
-			fighter.update(units);
+			if(fighter.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+				fighter.update(units, playerFog);
+			}
+			else {
+				fighter.update(units, null);
+			}
 			if(fighter.getCurrentAction() == EntityConfiguration.ATTACK) {
 				if(Collision.collideForFx(fighter, camera)) {
 					audioManager.startFx(6);
@@ -188,10 +199,10 @@ public class EntitiesManager
 		
 		for(Worker worker : workers) {
 			if(worker.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-				worker.update(ressources, playerStorageBuildings, units);
+				worker.update(ressources, playerStorageBuildings, units, playerFog);
 			}
 			else {
-				worker.update(ressources, botStorageBuildings,units);
+				worker.update(ressources, botStorageBuildings, units, null);
 			}
 			
 			if(worker.getCurrentAction() == EntityConfiguration.ATTACK) {

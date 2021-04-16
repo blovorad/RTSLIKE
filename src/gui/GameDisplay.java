@@ -1512,7 +1512,7 @@ public class GameDisplay extends JPanel
 		public void actionPerformed(ActionEvent e) 
 		{	
 			fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
-			//dynamicFog = new DynamicFog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
+			manager.setPlayerFog(fog);
 			audioManager.startFx(0);
 			time = 0;
 			map = GameBuilder.buildMap(selectedMap, graphicsManager, manager);

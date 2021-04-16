@@ -8,6 +8,7 @@ import engine.Position;
 import engine.Ressource;
 import engine.entity.building.StorageBuilding;
 import engine.manager.GraphicsManager;
+import engine.map.Fog;
 import engine.math.Collision;
 
 
@@ -86,9 +87,9 @@ public class Worker extends Unit
 		}
 	}
 	
-	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings, List<Unit> units)
+	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings, List<Unit> units, Fog playerFog)
 	{
-		super.update(units);
+		super.update(units, playerFog);
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST && this.getTarget() != null) {
 			if(this.getTarget().getId() == EntityConfiguration.SITE_CONSTRUCTION) {
 				this.setCurrentAction(EntityConfiguration.WALK);
