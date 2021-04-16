@@ -11,7 +11,6 @@ import engine.Camera;
 import engine.Entity;
 import engine.Position;
 import engine.Ressource;
-import engine.entity.unit.Fighter;
 import engine.entity.unit.Unit;
 import engine.entity.unit.Worker;
 

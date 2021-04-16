@@ -10,6 +10,7 @@ import engine.Speed;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
 import engine.map.FogCase;
+import engine.map.Map;
 import engine.math.Collision;
 
 /**
@@ -23,20 +24,20 @@ import engine.math.Collision;
 public class Unit extends Entity
 {
 	private Unit targetUnit;
+	private Position finalPosition;
 	
 	private int currentAction;
 	private int attackRange;
 	private int attackSpeed;
 	private int maxSpeed;
 	private int damage;
-	private int range;
 	private int armor;
 	private int timer;
 	private int state;
 	
 	private Speed speed;
 	
-	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager, int state)
+	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager, int state)
 	{
 		super(hp, hpMax, description, position, id, faction, sightRange, maxFrame, graphicsManager);
 		
@@ -45,7 +46,6 @@ public class Unit extends Entity
 		this.setAttackSpeed(attackSpeed);
 		this.maxSpeed = maxSpeed;
 		this.damage = damage;
-		this.range = range;
 		this.armor = armor;
 		this.setDestination(destination);
 		this.speed = new Speed(0, 0);
@@ -133,16 +133,6 @@ public class Unit extends Entity
 		this.damage = damage;
 	}
 
-	public int getRange() 
-	{
-		return range;
-	}
-
-	public void setRange(int range) 
-	{
-		this.range = range;
-	}
-
 	public int getArmor() 
 	{
 		return armor;
@@ -189,7 +179,7 @@ public class Unit extends Entity
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
 
-	public void update(List<Unit> units, Fog playerFog){
+	public void update(List<Unit> units, Fog playerFog, Map map){
 		super.update();
 		Position p = this.getPosition();
 		

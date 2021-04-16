@@ -32,27 +32,27 @@ public class Gaia extends Race
 	
 	public void initWorker()
 	{
-		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 20, 5, 3, 20, 20, 2, 25, "Travailleur gaia", 20, 10, 1, 10, 10, 15, 25));
+		this.getPatronWorkers().put(EntityConfiguration.WORKER, new ForWorker(5 , 10, 10, 5, 3, 20, 20, 2, 25, "Travailleur gaia", 20, 10, 1, 10, 10, 15, 25));
 	}
 	
 	public void initCavalry()
 	{
-		this.getPatronFighters().put(EntityConfiguration.CAVALRY, new ForFighter(5 , 10, 10, 20, 5, 3, 50, 20, 2, 25, "Cavalier gaia", 5, 25));
+		this.getPatronFighters().put(EntityConfiguration.CAVALRY, new ForFighter(5 , 10, 10, 5, 3, 50, 20, 2, 25, "Cavalier gaia", 5, 25));
 	}
 	
 	public void initInfantry()
 	{
-		this.getPatronFighters().put(EntityConfiguration.INFANTRY, new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Fantassin gaia", 5, 25));
+		this.getPatronFighters().put(EntityConfiguration.INFANTRY, new ForFighter(5, 10, 10, 3, 1, 25, 15, 1, 25, "Fantassin gaia", 5, 25));
 	}
 	
 	public void initArcher()
 	{
-		this.getPatronFighters().put(EntityConfiguration.ARCHER, new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Archer gaia", 5, 25));
+		this.getPatronFighters().put(EntityConfiguration.ARCHER, new ForFighter(5, 10, 10, 3, 1, 25, 15, 1, 25, "Archer gaia", 5, 25));
 	}
 	
 	public void initSpecial()
 	{
-		this.getPatronFighters().put(EntityConfiguration.SPECIAL_UNIT, new ForFighter(5, 10, 10, 15, 3, 1, 25, 15, 1, 25, "Special gaia", 5, 25));
+		this.getPatronFighters().put(EntityConfiguration.SPECIAL_UNIT, new ForFighter(5, 10, 10, 3, 1, 25, 15, 1, 25, "Special gaia", 5, 25));
 	}
 	
 	public void initForge()

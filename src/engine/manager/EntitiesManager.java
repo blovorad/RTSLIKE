@@ -49,6 +49,7 @@ public class EntitiesManager
 	private BotManager botManager;
 	private Camera camera;
 	private Fog playerFog;
+	private Map map;
 	
 	private List<Entity> collisionList = new ArrayList<Entity>();
 	private List<Entity> drawingList = new ArrayList<Entity>();
@@ -152,6 +153,10 @@ public class EntitiesManager
 		this.playerFog = fog;
 	}
 	
+	public void setMap(Map map) {
+		this.map = map;
+	}
+	
 	public void update() 
 	{
 		if(waitingToAdd.isEmpty() == false) {
@@ -180,10 +185,10 @@ public class EntitiesManager
 		for(Fighter fighter : fighters) 
 		{
 			if(fighter.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-				fighter.update(units, playerFog);
+				fighter.update(units, playerFog, map);
 			}
 			else {
-				fighter.update(units, null);
+				fighter.update(units, null, map);
 			}
 			if(fighter.getCurrentAction() == EntityConfiguration.ATTACK) {
 				if(Collision.collideForFx(fighter, camera)) {
@@ -199,10 +204,10 @@ public class EntitiesManager
 		
 		for(Worker worker : workers) {
 			if(worker.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-				worker.update(ressources, playerStorageBuildings, units, playerFog);
+				worker.update(ressources, playerStorageBuildings, units, playerFog, map);
 			}
 			else {
-				worker.update(ressources, botStorageBuildings, units, null);
+				worker.update(ressources, botStorageBuildings, units, null, map);
 			}
 			
 			if(worker.getCurrentAction() == EntityConfiguration.ATTACK) {
@@ -470,16 +475,16 @@ public class EntitiesManager
 		Fighter fighter = null;
 		
 		if(id == EntityConfiguration.INFANTRY) {
-			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 4, graphicsManager);
+			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 4, graphicsManager);
 		}
 		else if(id == EntityConfiguration.ARCHER) {
-			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 4, graphicsManager);
+			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 4, graphicsManager);
 		}
 		else if(id == EntityConfiguration.CAVALRY) {
-			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 4, graphicsManager);
+			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 4, graphicsManager);
 		}
 		else if(id == EntityConfiguration.SPECIAL_UNIT) {
-			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 4, graphicsManager);
+			fighter = new Fighter(patron.getHp(), 0, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getArmor(), 0, position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getSightRange(), 4, graphicsManager);
 		}
 		else {
 			System.out.println("invalid id production fighter : " + id);
@@ -512,7 +517,7 @@ public class EntitiesManager
 		Worker worker = null;
 		
 		if(id == EntityConfiguration.WORKER) {
-			worker = new Worker(patron.getHp(), EntityConfiguration.IDDLE, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getRange(), patron.getArmor(), patron.getRepairSpeed(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getHarvestSpeed(), patron.getRessourceMax(), patron.getSightRange(), 4, graphicsManager);
+			worker = new Worker(patron.getHp(), EntityConfiguration.IDDLE, patron.getAttackRange(), patron.getAttackSpeed(), patron.getMaxSpeed(), patron.getDamage(), patron.getArmor(), patron.getRepairSpeed(), position, id, patron.getDescription(), patron.getHpMax(), faction, destination, patron.getHarvestSpeed(), patron.getRessourceMax(), patron.getSightRange(), 4, graphicsManager);
 		}
 		else {
 			System.out.print("invalid id production worker : " + id);

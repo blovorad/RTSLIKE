@@ -1517,6 +1517,7 @@ public class GameDisplay extends JPanel
 			time = 0;
 			map = GameBuilder.buildMap(selectedMap, graphicsManager, manager);
 			GameBuilder.buildFaction(manager, boxPlayer1.getSelectedIndex() + 1, boxPlayer2.getSelectedIndex() + 1, map);
+			manager.setMap(map);
 			
 			gamePanel = createGamePanel();
 			gamePanel.setVisible(false);

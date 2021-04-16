@@ -8,7 +8,6 @@ package factionConfiguration;
 
 public class ForFighter extends Patron
 {
-	private int range;
 	private int damage;
 	private int armor;
 	private int maxSpeed;
@@ -16,27 +15,16 @@ public class ForFighter extends Patron
 	private int attackSpeed;
 	private int attackRange;
 	
-	public ForFighter(int attackRange, int attackSpeed, int sightRange, int range, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int cost)
+	public ForFighter(int attackRange, int attackSpeed, int sightRange, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int cost)
 	{
 		super(hp, age, description, hpMax, sightRange, cost);
 		
 		this.attackRange = attackRange;
 		this.attackSpeed = attackSpeed;
-		this.range = range;
 		this.damage = damage;
 		this.armor = armor;
 		this.maxSpeed = maxSpeed;
 		this.setTimeToBuild(timeToBuild);
-	}
-
-	public int getRange() 
-	{
-		return range;
-	}
-
-	public void setRange(int range) 
-	{
-		this.range = range;
 	}
 
 	public int getDamage() 

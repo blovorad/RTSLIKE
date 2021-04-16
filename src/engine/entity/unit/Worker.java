@@ -9,6 +9,7 @@ import engine.Ressource;
 import engine.entity.building.StorageBuilding;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
+import engine.map.Map;
 import engine.math.Collision;
 
 
@@ -32,9 +33,9 @@ public class Worker extends Unit
 	private int repairSpeed;
 	
 	
-	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int range, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange, int maxFrame, GraphicsManager graphicsManager)
+	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{	
-		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, range, armor, position, id, description, destination, hpMax, faction, sightRange, maxFrame, graphicsManager, EntityConfiguration.PASSIF_STATE);
+		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, armor, position, id, description, destination, hpMax, faction, sightRange, maxFrame, graphicsManager, EntityConfiguration.PASSIF_STATE);
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
 		
@@ -87,9 +88,9 @@ public class Worker extends Unit
 		}
 	}
 	
-	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings, List<Unit> units, Fog playerFog)
+	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings, List<Unit> units, Fog playerFog, Map map)
 	{
-		super.update(units, playerFog);
+		super.update(units, playerFog, map);
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST && this.getTarget() != null) {
 			if(this.getTarget().getId() == EntityConfiguration.SITE_CONSTRUCTION) {
 				this.setCurrentAction(EntityConfiguration.WALK);
