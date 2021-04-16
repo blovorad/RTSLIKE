@@ -67,6 +67,7 @@ public class BotManager {
 	private int idToBuild;
 	private List<Worker> builders;
 	private List<Fighter> army;
+	private AbstractMap<Integer, Boolean> upgrades;
 	
 	public BotManager(FactionManager factionManager, GraphicsManager graphicsManager, Map map) {
 		setBarrackBuilt(false);
@@ -116,6 +117,10 @@ public class BotManager {
 		}
 		builders = new ArrayList<Worker>();
 		army = new ArrayList<Fighter>();
+		upgrades = new HashMap<Integer, Boolean>();
+		for(int i = EntityConfiguration.ARMOR_UPGRADE; i <= EntityConfiguration.SIGHT_RANGE_UPGRADE; i++) {
+			upgrades.put(i, false);
+		}
 		
 		buildingInAttempt = false;
 		tileToBuild = null;
@@ -136,6 +141,7 @@ public class BotManager {
 		constructBuilding();
 		prodArmy();
 		attack();
+		prodUpgrade();
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
@@ -248,6 +254,7 @@ public class BotManager {
 		setForgeBuilt(false);
 		setHqBuilt(false);
 		setStableBuilt(false);
+		setForgeBuilt(false);
 		for(ProductionBuilding building : getBotProdBuildings()) {
 			if(building.getId() == EntityConfiguration.ARCHERY) {
 				setArcheryBuilt(true);
@@ -266,6 +273,9 @@ public class BotManager {
 			}
 			if(building.getId() == EntityConfiguration.STABLE) {
 				setStableBuilt(true);
+			}
+			if(building.getId() == EntityConfiguration.FORGE) {
+				setForgeBuilt(true);
 			}
 		}
 		for(SiteConstruction site : getSiteConstructions()) {
@@ -286,6 +296,9 @@ public class BotManager {
 			}
 			if(site.getBuildingId() == EntityConfiguration.STABLE) {
 				setStableBuilt(true);
+			}
+			if(site.getBuildingId() == EntityConfiguration.FORGE) {
+				setForgeBuilt(true);
 			}
 		}
 	}
@@ -684,7 +697,34 @@ public class BotManager {
 				}
 			}
 			else if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() >= 2) {
-				if(isArcheryBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.ARCHERY)) {
+				if(isStableBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.STABLE)) {
+					//System.out.println("stable pas construct");
+					if(getHq() != null) {
+						//System.out.println("on a un hq");
+						int targetX = getHq().getPosition().getX() / 64;
+						int targetY = getHq().getPosition().getY() / 64;
+						//Tile HqTile = map.getTile(targetX, targetY);
+						Tile place = null;
+						while(place == null) {
+							//System.out.println("tagetX = " + targetX);
+							//System.out.println("tagetY = " + targetY);
+							int placeX = getRandomNumberInRange(targetX - 5, targetX + 5);
+							//System.out.println("placeX = " + placeX);
+							int placeY = getRandomNumberInRange(targetY - 5, targetY + 5);
+							//System.out.println("placeY = " + placeY);
+							if(placeX < 100 && placeY < 100) {
+								if(map.getTile(placeX, placeY).isSolid() == false) {
+									place = map.getTile(placeX, placeY);
+								}
+							}
+						}
+						removeMoney(priceOfEntity.get(EntityConfiguration.STABLE));
+						buildingInAttempt = true;
+						tileToBuild = place;
+						idToBuild = EntityConfiguration.STABLE;
+					}
+				}
+				else if(isArcheryBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.ARCHERY)) {
 					//System.out.println("archery pas construct");
 					if(getHq() != null) {
 						//System.out.println("on a un hq");
@@ -711,7 +751,7 @@ public class BotManager {
 						idToBuild = EntityConfiguration.ARCHERY;
 					}
 				}
-				else if(isStableBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.STABLE)) {
+				else if(isForgeBuilt() == false && getMoney() >= priceOfEntity.get(EntityConfiguration.FORGE)) {
 					//System.out.println("stable pas construct");
 					if(getHq() != null) {
 						//System.out.println("on a un hq");
@@ -732,10 +772,10 @@ public class BotManager {
 								}
 							}
 						}
-						removeMoney(priceOfEntity.get(EntityConfiguration.STABLE));
+						removeMoney(priceOfEntity.get(EntityConfiguration.FORGE));
 						buildingInAttempt = true;
 						tileToBuild = place;
-						idToBuild = EntityConfiguration.STABLE;
+						idToBuild = EntityConfiguration.FORGE;
 					}
 				}
 				else if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() >= 3) {
@@ -962,6 +1002,34 @@ public class BotManager {
         }
     }
 	
+	public void prodUpgrade() {
+		if(isForgeBuilt() == true) {
+			for(ProductionBuilding building : getBotProdBuildings()) {
+				if(building.getId() == EntityConfiguration.FORGE) {
+					//System.out.println("Forge presente !");
+					if(building.getIsProducing() == false) {
+						boolean done = false;
+						int id = EntityConfiguration.ARMOR_UPGRADE;
+						while(done == false) {
+							if(getUpgrades().get(id) == false) {
+								if(priceOfEntity.get(id) < getMoney()) {
+									System.out.println("producing upgrade id :" + id);
+									removeMoney(building.startProd(id, getMoney()));
+									getUpgrades().replace(id, true);
+									done = true;
+								}
+							}
+							id++;
+							if(id > EntityConfiguration.SIGHT_RANGE_UPGRADE) {
+								done = true;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	//getter & setter
 	public FactionManager getFactionManager() {
 		return factionManager;
@@ -1182,5 +1250,13 @@ public class BotManager {
 
 	public void setExplorerRandom(Fighter explorerRandom) {
 		this.explorerRandom = explorerRandom;
+	}
+
+	public AbstractMap<Integer, Boolean> getUpgrades() {
+		return upgrades;
+	}
+
+	public void setUpgrades(AbstractMap<Integer, Boolean> upgrades) {
+		this.upgrades = upgrades;
 	}
 }
