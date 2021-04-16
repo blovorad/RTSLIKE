@@ -150,6 +150,7 @@ public class GameDisplay extends JPanel
 	private int selectedMap = 1;
 	
 	private float time;
+	private int size = 0;
 
 	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager, GraphicsManager graphicsManager)
 	{
@@ -165,15 +166,6 @@ public class GameDisplay extends JPanel
 		
 		audioManager.setState(state);
 		this.audioManager = audioManager;
-		
-		/*gamePanel = createGamePanel();
-		gamePanel.setVisible(false);*/
-		
-		loosePanel = createLoosePanel();
-		loosePanel.setVisible(false);
-		
-		winPanel = createWinPanel();
-		winPanel.setVisible(false);
 		
 		optionPanel = createOptionPanel();
 		optionPanel.setVisible(false);
@@ -205,26 +197,72 @@ public class GameDisplay extends JPanel
 	}
 	
 	private JPanel createLoosePanel() {
-		JPanel panel = new JPanel(new GridLayout(3, 0));
+		JPanel panel = new JPanel(new GridLayout(1, 3));
+
+		GridLayout gridLayout = new GridLayout(11,1);
+		JPanel panelBis = new JPanel(gridLayout);
+		
 		panel.add(new JLabel());
-		panel.add(new JLabel("Dommage, l'ordinateur est meilleur !!!!!!"));
-		panel.add(new JButton(new BackToMenuAfterVictory("Retour au Menu")));
+		
+		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
+		
+		for(int i = 0; i < gridPlacement; i++) {
+			if(i == 8) {
+				panelBis.add(new JButton(new BackToMenuAfterVictory("Retour au Menu")));
+			}
+			else if(i == 3) {
+				JTextArea area = new JTextArea();
+				area.setText("		Votre faction a perdus\n"
+						+ "		L'adversaire vous a vaincus\n"
+						+ "		Il est meilleur");
+				area.setEditable(false);
+				area.setOpaque(false);
+				panelBis.add(area);
+			}
+			else {
+				panelBis.add(new JLabel());
+			}
+		}
+		panel.add(panelBis);
+		panel.add(new JLabel());
+		
+		panelBis.setOpaque(false);
+		panel.setOpaque(false);
 		return panel;
 	}
 	
 	private JPanel createWinPanel() {
-		JPanel panel = new JPanel(new GridLayout(3, 3));
-		panel.add(new JLabel());
-		panel.add(new JLabel());
-		panel.add(new JLabel());
+		JPanel panel = new JPanel(new GridLayout(1, 3));
+
+		GridLayout gridLayout = new GridLayout(11,1);
+		JPanel panelBis = new JPanel(gridLayout);
 		
 		panel.add(new JLabel());
-		panel.add(new JLabel("Bravo, l'ordinateur est mort !!!!!!"));
+		
+		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
+		
+		for(int i = 0; i < gridPlacement; i++) {
+			if(i == 8) {
+				panelBis.add(new JButton(new BackToMenuAfterVictory("Retour au Menu")));
+			}
+			else if(i == 3) {
+				JTextArea area = new JTextArea();
+				area.setText("		Votre faction a gagner\n"
+						+ "		L'adversaire est  vaincus\n"
+						+ "		vous etes meilleurs");
+				area.setEditable(false);
+				area.setOpaque(false);
+				panelBis.add(area);
+			}
+			else {
+				panelBis.add(new JLabel());
+			}
+		}
+		panel.add(panelBis);
 		panel.add(new JLabel());
 		
-		panel.add(new JLabel());
-		panel.add(new JButton(new BackToMenuAfterVictory("Retour au Menu")));
-		panel.add(new JLabel());
+		panelBis.setOpaque(false);
+		panel.setOpaque(false);
 		return panel;
 	}
 	
@@ -1091,11 +1129,13 @@ public class GameDisplay extends JPanel
 			if(manager.getPlayerWin()) {
 				oldState = state;
 				state = GameConfiguration.PLAYERWIN;
+				winPanel = createWinPanel();
 				manageState();
 			}
 			else if(manager.getBotWin()) {
 				oldState = state;
 				state = GameConfiguration.BOTWIN;
+				loosePanel = createLoosePanel();
 				manageState();
 			}
 		}
@@ -1138,8 +1178,23 @@ public class GameDisplay extends JPanel
 				ressource = manager.getSelectedRessource();
 			}
 			
-			for(Entity entity : entities) {
-				this.paintStrategyGame.paint(entity, g, camera, graphicsManager);
+			if(size != entities.size()) {
+				System.out.println("SIZE CHANGED BEFORE ITERATING : before : " + size + " and after : " + entities.size());
+				size = entities.size();
+			}
+			try {
+				for(Entity entity : entities) {
+					this.paintStrategyGame.paint(entity, g, camera, graphicsManager);
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				e.getCause();
+			}
+			
+			if(size != entities.size()) {
+				System.out.println("SIZE CHANGED AFTER ITERATING : before : " + size + " and after : " + entities.size());
+				size = entities.size();
 			}
 			
 			for(Unit unit : units) {
@@ -1776,10 +1831,14 @@ public class GameDisplay extends JPanel
 					manager.clean();
 					camera.reset();
 				}
-				else if(oldState == GameConfiguration.BOTWIN || oldState == GameConfiguration.PLAYERWIN) {
-					winPanel.setVisible(false);
+				else if(oldState == GameConfiguration.BOTWIN) {
 					loosePanel.setVisible(false);
 					getMainPanel().remove(loosePanel);
+					manager.clean();
+					camera.reset();
+				}
+				else if(oldState == GameConfiguration.PLAYERWIN) {
+					winPanel.setVisible(false);
 					getMainPanel().remove(winPanel);
 					manager.clean();
 					camera.reset();
@@ -1861,6 +1920,7 @@ public class GameDisplay extends JPanel
 			default:
 				break;
 		}
+		getMainPanel().validate();
 		audioManager.setState(state);
 	}
 	

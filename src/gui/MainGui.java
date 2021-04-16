@@ -715,12 +715,22 @@ public class MainGui extends JFrame implements Runnable
 								
 								if(listSelectedUnit.isEmpty() == false && target != null)
 								{
-									audioManager.startFx(3);
+									boolean isAttack = false;
 									for(Unit unit : listSelectedUnit)
 									{
 										unit.calculateSpeed(target.getPosition());
 										unit.setCurrentAction(EntityConfiguration.WALK);
 										unit.setTarget(target);
+										if(unit.getFaction() != target.getFaction()) {
+											isAttack = true;
+										}
+									}
+									
+									if(isAttack == false) {
+										audioManager.startFx(3);
+									}
+									else {
+										audioManager.startFx(5);
 									}
 								}
 								else if(listSelectedUnit.isEmpty() == false && targetUnit != null)

@@ -592,7 +592,7 @@ public class BotManager {
 	public void placeBuildings() {
 		updateBuiltBuildings();
 		updateMoney();
-		if(getBuildingInAttempt() == false && getBotWorkers() != null) {
+		if(getBuildingInAttempt() == false && getBotWorkers().isEmpty() == false) {
 			//System.out.println("placing building");
 			//System.out.println("hq ? " + isHqBuilt());
 			//System.out.println("barrack ? " + isBarrackBuilt());
