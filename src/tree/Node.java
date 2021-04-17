@@ -2,32 +2,63 @@ package tree;
 
 public class Node 
 {
-	private Leaf leftLeaf;
-	private Leaf rightLeaf;
+	private float countHere;
+	private float countHereToDestination;
+	private float countPath;
+	private Node parent;
 	
-	public Node(Leaf leftLeaf, Leaf rightLeaf)
+	public Node(Node parent)
 	{
-		this.leftLeaf = leftLeaf;
-		this.rightLeaf = rightLeaf;
+		this.parent = parent;
+		this.countHere = calculateCountHere();
 	}
 	
-	public Leaf getLeftLeaf()
+	public float calculateCountHere()
 	{
-		return this.leftLeaf;
+		float count = this.parent.getCountHere();
+		
+		//Math.sqrt(Math.pow(position.getX() - this.getPosition().getX(), 2) + Math.pow(position.getY() - this.getPosition().getY(), 2));
+		return 1;
 	}
 	
-	public void setLeftLeaf(Leaf leftLeaf)
+	public float getCountHere()
 	{
-		this.leftLeaf = leftLeaf;
+		return this.countHere;
 	}
 	
-	public Leaf getRightLeaf()
+	public void setCountHere(float countHere)
 	{
-		return this.rightLeaf;
+		this.countHere = countHere;
 	}
 	
-	public void setRightLeaf(Leaf rightLeaf)
+	public float getCountHereToDestination()
 	{
-		this.rightLeaf = rightLeaf;
+		return this.countHereToDestination;
 	}
+	
+	public void setCountHereToDestination(float countHereToDestination)
+	{
+		this.countHereToDestination = countHereToDestination;
+	}
+	
+	public float getCountPath()
+	{
+		return this.countPath;
+	}
+	
+	public void setCountPath(float countPath)
+	{
+		this.countPath = countPath;
+	}
+	
+	public Node getParent()
+	{
+		return this.parent;
+	}
+	
+	public void setParent(Node parent)
+	{
+		this.parent = parent;
+	}
+
 }
