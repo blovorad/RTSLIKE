@@ -832,9 +832,57 @@ public class BotManager {
 						}
 					}
 				}
+				if(buildingInAttempt == false && getHq() != null) {
+					for(StorageBuilding storage : getBotStorageBuildings()) {
+						if(buildingInAttempt == false && (calculate(getHq().getPosition(), storage.getPosition()) / GameConfiguration.TILE_SIZE) > BotConfiguration.RANGE_HQ) {
+							boolean hasTower = false;
+							for(AttackBuilding tower : getBotAttackBuildings()) {
+								if(hasTower == false && (calculate(storage.getPosition(), tower.getPosition())/ GameConfiguration.TILE_SIZE) < BotConfiguration.RANGE_TOWER) {
+									hasTower = true;
+								}
+							}
+							if(hasTower == false) {
+								for(SiteConstruction site : getSiteConstructions()) {
+									if(site.getFaction() == EntityConfiguration.BOT_FACTION && site.getBuildingId() == EntityConfiguration.TOWER) {
+										if((calculate(storage.getPosition(), site.getPosition()) / GameConfiguration.TILE_SIZE) < BotConfiguration.RANGE_TOWER) {
+											hasTower = true;
+										}
+									}
+								}
+							}
+							if(hasTower == false) {
+								if(getMoney() >= priceOfEntity.get(EntityConfiguration.TOWER)) {
+									int targetX = storage.getPosition().getX() / 64;
+									//System.out.println("targetX : " + targetX);
+									int targetY = storage.getPosition().getY() / 64;
+									//System.out.println("targetY : " + targetY);
+									Tile targetTile = map.getTile(targetY, targetX);
+									Tile place = null;
+									int max = 1;
+									while(place == null) {
+										for(int i = targetTile.getColumn() - max; i <= targetTile.getColumn() + max; i++) {
+											for(int j = targetTile.getLine() - max; j <= targetTile.getLine() + max; j++) {
+												if(i < GameConfiguration.COLUMN_COUNT && j < GameConfiguration.LINE_COUNT) {
+													//System.out.println("case check : " + j + ";" + i);
+													if(map.getTile(j, i).isSolid() == false) {
+														place = map.getTile(j, i);
+													}
+												}
+											}
+										}
+										max++;
+									}
+									removeMoney(priceOfEntity.get(EntityConfiguration.TOWER));
+									buildingInAttempt = true;
+									tileToBuild = place;
+									idToBuild = EntityConfiguration.TOWER;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
-		
 	}
 	
 	public void constructBuilding() {

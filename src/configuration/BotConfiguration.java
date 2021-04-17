@@ -9,4 +9,6 @@ public class BotConfiguration {
 	public final static int MAX_ARCHER = 5;
 	public final static int MAX_CAVALRY = 5;
 	public final static int MAX_SPECIAL = 5;
+	public final static int RANGE_HQ = 5;
+	public final static int RANGE_TOWER = 3;
 }
