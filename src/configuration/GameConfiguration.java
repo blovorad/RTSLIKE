@@ -16,7 +16,7 @@ public class GameConfiguration
 	public final static int WINDOW_HEIGHT = 600;//Toolkit.getDefaultToolkit().getScreenSize().height;
 	
 	public final static boolean launchInFullScreen = false;
-	public final static boolean debug_mod = false;
+	public final static boolean debug_mod = true;
 	
 	public final static int COLUMN_COUNT = 100;
 	
