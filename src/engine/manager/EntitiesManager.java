@@ -873,6 +873,9 @@ public class EntitiesManager
 		
 		removeSiteConstructions.clear();
 		factionManager.clean();
+		
+		playerWin = false;
+		botWin = false;
 	}
 
 	public List<Entity> getDrawingList() {

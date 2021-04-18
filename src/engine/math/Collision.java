@@ -207,17 +207,6 @@ public class Collision {
 		return false;
 	}
 	
-	public static boolean collideTileAndPosition(Position tile, Position p) {
-		Rectangle r1 = new Rectangle(tile.getX(), tile.getY(), GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE);
-		Rectangle r2 = new Rectangle(p.getX(), p.getY(), 1, 1);
-		
-		if(r1.intersects(r2)) {
-			return true;
-		}
-		
-		return false;
-	}
-	
 	public static boolean collideVision(Entity target , Unit attacker) 
 	{
 		//int sizeAttacker;
