@@ -15,7 +15,7 @@ import engine.math.Collision;
 
 /**
  *
- * crÃ©ation:16/02/2021
+ * création:16/02/2021
  * @author Girard 
  * @version:16/02/2021
  * 
