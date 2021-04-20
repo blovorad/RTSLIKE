@@ -173,13 +173,13 @@ public class EntitiesManager
 		}
 		
 		if(botManager != null) {
-			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions, playerBuildings, playerUnits);
+			/*botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions, playerBuildings, playerUnits);
 			if(botManager.getBuildingInAttempt() == true) {
 				Tile tile = botManager.getTileToBuild();
 				Position p = new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE);
 				createConstructionSite(botManager.getIdToBuild(), EntityConfiguration.BOT_FACTION, p, botManager.getTileToBuild());
 				botManager.buildBuilding();
-			}
+			}*/
 		}
 		
 		for(Fighter fighter : fighters) 

@@ -355,8 +355,10 @@ public class BotManager {
 		}
 		if(getExplorer() == null) {
 			for(Fighter fighter : getBotFighters()) {
-				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && getExplorer() == null) {
+				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && getExplorer() == null && !fighter.equals(getExplorerRandom())) {
+					System.out.println("On set un explorer normal");
 					setExplorer(fighter);
+					System.out.println("explo normal : " + getExplorer());
 					fighter.setState(EntityConfiguration.PASSIF_STATE);
 				}
 			}
@@ -369,7 +371,9 @@ public class BotManager {
 		if(getExplorerRandom() == null) {
 			for(Fighter fighter : getBotFighters()) {
 				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && fighter.equals(getExplorer()) == false && getExplorerRandom() == null) {
+					System.out.println("On set un explorer rdn");
 					setExplorerRandom(fighter);
+					System.out.println("explo rnd : " + getExplorerRandom());
 					fighter.setState(EntityConfiguration.PASSIF_STATE);
 					System.out.println("explo rdm set");
 				}
@@ -405,7 +409,7 @@ public class BotManager {
 										targetY = (y-maxY) * GameConfiguration.TILE_SIZE;
 									}
 								}
-								if(map.getTile(targetY, targetX).isSolid()) {
+								if(map.getTile(targetY / GameConfiguration.TILE_SIZE, targetX / GameConfiguration.TILE_SIZE).isSolid()) {
 									targetX = 0;
 									targetY = 0;
 								}
@@ -426,7 +430,7 @@ public class BotManager {
 										targetY = j * GameConfiguration.TILE_SIZE;
 									}
 								}
-								if(map.getTile(targetY, targetX).isSolid()) {
+								if(map.getTile(targetY / GameConfiguration.TILE_SIZE, targetX / GameConfiguration.TILE_SIZE).isSolid()) {
 									targetX = 0;
 									targetY = 0;
 								}
@@ -447,7 +451,7 @@ public class BotManager {
 										targetY = j * GameConfiguration.TILE_SIZE;
 									}
 								}
-								if(map.getTile(targetY, targetX).isSolid()) {
+								if(map.getTile(targetY / GameConfiguration.TILE_SIZE, targetX / GameConfiguration.TILE_SIZE).isSolid()) {
 									targetX = 0;
 									targetY = 0;
 								}
@@ -468,7 +472,7 @@ public class BotManager {
 										targetY = (y+maxY) * GameConfiguration.TILE_SIZE;
 									}
 								}
-								if(map.getTile(targetY, targetX).isSolid()) {
+								if(map.getTile(targetY / GameConfiguration.TILE_SIZE, targetX / GameConfiguration.TILE_SIZE).isSolid()) {
 									targetX = 0;
 									targetY = 0;
 								}
@@ -482,14 +486,19 @@ public class BotManager {
 						maxY++;
 					}
 				}
-				getExplorer().setDestination(new Position(targetX, targetY));
-				getExplorer().calculateSpeed(new Position(targetX, targetY));
+				Position p5 = new Position(targetX, targetY);
+				getExplorer().setFinalDestination(p5);
+				System.out.println("position nous : " + getExplorer().getPosition().getX() / GameConfiguration.TILE_SIZE + "," + getExplorer().getPosition().getY() / GameConfiguration.TILE_SIZE);
+				System.out.println("position : " + p5.getX() / GameConfiguration.TILE_SIZE + "," + p5.getY() / GameConfiguration.TILE_SIZE);
+				//getExplorer().setDestination(new Position(targetX, targetY));
+				//getExplorer().calculateSpeed(new Position(targetX, targetY));
 				//System.out.println("cavalier exploring");
 				//System.out.println("cavalier dest" + explorer.getDestination().getX() + "," + explorer.getDestination().getY());
 				this.setMax(maxX);
 			}
 		}
 		if(getExplorerRandom() != null && getExplorerRandom().getDestination() == null) {
+			//System.out.println("ALLLER");
 			boolean[][] tabFog = fog.getFog();
 			boolean destinationFound = false;
 			int placeX = getRandomNumberInRange(0, GameConfiguration.COLUMN_COUNT -1);
@@ -505,9 +514,10 @@ public class BotManager {
 					placeY = getRandomNumberInRange(0, GameConfiguration.LINE_COUNT - 1);
 				}
 			}
-			getExplorerRandom().setDestination(new Position(placeX * GameConfiguration.TILE_SIZE, placeY * GameConfiguration.TILE_SIZE));
-			getExplorerRandom().calculateSpeed(new Position(placeX * GameConfiguration.TILE_SIZE, placeY * GameConfiguration.TILE_SIZE));
-			System.out.println("actual dest : " + getExplorerRandom().getDestination().getX() + ";" + getExplorerRandom().getDestination().getY());
+			getExplorerRandom().setFinalDestination(new Position(placeX * GameConfiguration.TILE_SIZE, placeY * GameConfiguration.TILE_SIZE));
+			//getExplorerRandom().setDestination(new Position(placeX * GameConfiguration.TILE_SIZE, placeY * GameConfiguration.TILE_SIZE));
+			//getExplorerRandom().calculateSpeed(new Position(placeX * GameConfiguration.TILE_SIZE, placeY * GameConfiguration.TILE_SIZE));
+			//System.out.println("actual dest : " + getExplorerRandom().getDestination().getX() + ";" + getExplorerRandom().getDestination().getY());
 		}
 	}
 	
@@ -541,7 +551,8 @@ public class BotManager {
 							
 							if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
 								worker.setTarget(sitec);
-								worker.calculateSpeed(sitec.getPosition());
+								//worker.calculateSpeed(sitec.getPosition());
+								worker.setFinalDestination(sitec.getPosition());
 								worker.setCurrentAction(EntityConfiguration.WALK);
 								//System.out.println("va constru fdp !");
 								storageInRange = true;
@@ -945,7 +956,8 @@ public class BotManager {
 							for(Worker worker : getBuilders()) {
 								//System.out.println("builders : " + getBuilders().size());
 								worker.setTarget(sitec);
-								worker.calculateSpeed(sitec.getPosition());
+								//worker.calculateSpeed(sitec.getPosition());
+								worker.setFinalDestination(sitec.getPosition());
 								worker.setCurrentAction(EntityConfiguration.WALK);
 								//System.out.println("va constru fdp !");
 							}
@@ -1058,7 +1070,8 @@ public class BotManager {
                 for(Fighter fighter : getArmy()) {
                     if(fighter.getTarget() == null) {
                         fighter.setTarget(target);
-                        fighter.calculateSpeed(target.getPosition());
+                        fighter.setFinalDestination(target.getPosition());
+                       // fighter.calculateSpeed(target.getPosition());
                         //System.out.println("attack !");
                     }
                 }
@@ -1085,7 +1098,8 @@ public class BotManager {
                 	 else if(fighter.getTarget() == null) {
                          fighter.setTarget(target);
                          fighter.setTargetUnit(targetUnit);
-                         fighter.calculateSpeed(target.getPosition());
+                         fighter.setFinalDestination(targetUnit.getPosition());
+                         //fighter.calculateSpeed(target.getPosition());
                          //System.out.println("attack !");
                      }
                  }

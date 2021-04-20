@@ -107,7 +107,7 @@ public class Worker extends Unit
 					this.nearbyStorage(storageBuildings);
 					this.setTarget(storageBuilding);
 					if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
-						
+						this.setFinalDestination(storageBuilding.getPosition());
 					}
 					else {
 						this.setFinalDestination(storageBuilding.getPosition());
@@ -139,7 +139,7 @@ public class Worker extends Unit
 						nearbyStorage(storageBuildings);
 						this.setTarget(this.storageBuilding);
 						if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
-							
+							this.setFinalDestination(this.storageBuilding.getPosition());
 						}
 						else {
 							this.setFinalDestination(this.storageBuilding.getPosition());
@@ -150,7 +150,7 @@ public class Worker extends Unit
 				else {
 					this.setTarget(this.ressource);
 					if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
-						
+						this.setFinalDestination(ressource.getPosition());
 					}
 					else {
 						this.setFinalDestination(ressource.getPosition());
@@ -166,14 +166,14 @@ public class Worker extends Unit
 			
 			
 			// revien a la ressource quand posse ces ressources
-			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax) {// && this.getTarget() != this.ressource){
+			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax && this.getTarget() != this.ressource){
 				this.setTarget(ressource);
-				if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
+				/*if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
 					
 				}
-				else {
+				else {*/
 					this.setFinalDestination(ressource.getPosition());
-				}
+				//}
 			}		
 		}
 		
@@ -257,12 +257,12 @@ public class Worker extends Unit
 	public void initRessource(Ressource ressource)
 	{
 		this.ressource = ressource;
-		if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
+		/*if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
 			this.calculateSpeed(this.ressource.getPosition());
 		}
-		else {
+		else {*/
 			this.setFinalDestination(ressource.getPosition());
-		}
+		//}
 		this.setCurrentAction(EntityConfiguration.HARVEST);
 		this.setTarget(ressource);
 		this.setTargetUnit(null);

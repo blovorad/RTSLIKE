@@ -100,8 +100,10 @@ public class Fog {
 									}
 								}
 								else {
-									if(!removeList.contains(botEntity)) {
-										removeList.add(botEntity);
+									if(botEntity.getId() >= EntityConfiguration.INFANTRY && botEntity.getId() <= EntityConfiguration.WORKER) {
+										if(!removeList.contains(botEntity)) {
+											removeList.add(botEntity);
+										}
 									}
 								}
 							}

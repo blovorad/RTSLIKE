@@ -72,7 +72,7 @@ public class Unit extends Entity
 		finalNode = new Node(new Position(position.getX() / GameConfiguration.TILE_SIZE, position.getY() / GameConfiguration.TILE_SIZE));
 		this.setDestination(null);
 		generatePath = true;
-		System.out.println("GENERATION PATH : " + generatePath);
+		//System.out.println("GENERATION PATH : " + generatePath);
 	}
 	
 	public void move(float vx, float vy)
@@ -194,7 +194,7 @@ public class Unit extends Entity
 		this.setDestination(new Position(p.getX(), p.getY()));
 		double angle = Math.atan2( (p.getY() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getY() + GameConfiguration.TILE_SIZE /2), (p.getX() + GameConfiguration.TILE_SIZE /2) - (this.getPosition().getX() + GameConfiguration.TILE_SIZE));
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
-		System.out.println("calcul d'une vitesse");
+		//System.out.println("calcul d'une vitesse");
 	}
 	
 	public void generatePath(Map map, Fog fog) {
@@ -204,8 +204,8 @@ public class Unit extends Entity
 		Node currentNode = new Node(new Position((p.getX() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE, (p.getY() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE));
 		List<Node> nodes = new ArrayList<Node>();
 		Tile[][] tiles = map.getTiles();
-		System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
-		System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
+		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
+		//System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 		
 		if(fog != null) {
 			boolean[][] brouillard = fog.getFog();
@@ -415,11 +415,11 @@ public class Unit extends Entity
 			}
 		}
 		
-		System.out.println("On reverse");
+		//System.out.println("On reverse");
 		if(currentNode != null) {
 			destination = path.reversePath(currentNode);
 			for(Position pos : destination) {
-				System.out.println("Les position : " + pos.getX() / GameConfiguration.TILE_SIZE + "," + pos.getY() / GameConfiguration.TILE_SIZE);
+				//System.out.println("Les position : " + pos.getX() / GameConfiguration.TILE_SIZE + "," + pos.getY() / GameConfiguration.TILE_SIZE);
 			}
 		}
 		else {
@@ -429,7 +429,7 @@ public class Unit extends Entity
 			destination.clear();
 		}
  		generatePath = false;
- 		System.out.println("GENERATION PATH : " + generatePath);
+ 		//System.out.println("GENERATION PATH : " + generatePath);
 	}
 
 	public void update(List<Unit> units, Fog playerFog, Map map){
@@ -440,7 +440,7 @@ public class Unit extends Entity
 			generatePath(map, playerFog);
 		}
 		
-		if(playerFog == null) {
+		/*if(playerFog == null) {
 		
 			if(this.getTarget() != null  && this.getDestination() != null && this.currentAction != EntityConfiguration.ATTACK && !(this.getTarget().getPosition().equals(this.getDestination())))
 			{
@@ -478,8 +478,8 @@ public class Unit extends Entity
 					this.speed.reset();
 				}
 			}
-		}
-		else {
+		}*/
+		//else {
 			if(finalNode != null && finalPosition != null) {
 				if(this.getDestination() == null) {
 					this.calculateSpeed(destination.get(0));
@@ -499,7 +499,7 @@ public class Unit extends Entity
 						}
 						if( this.getPosition().equals(this.getDestination()))
 						{
-							System.out.println("remove destination 1");
+							//System.out.println("remove destination 1");
 							destination.remove(0);
 							if(destination.isEmpty() == false) {
 								this.calculateSpeed(destination.get(0));
@@ -514,7 +514,7 @@ public class Unit extends Entity
 									finalPosition = null;
 								}
 								else {
-									System.out.println("GENERATION PATH : " + generatePath);
+									//System.out.println("GENERATION PATH : " + generatePath);
 									generatePath = true;
 								}
 							}
@@ -522,7 +522,7 @@ public class Unit extends Entity
 					}
 					else {
 						destination.remove(0);
-						System.out.println("remove destination 2");
+						//System.out.println("remove destination 2");
 						if(destination.isEmpty() == false) {
 							this.calculateSpeed(destination.get(0));
 						}
@@ -536,7 +536,7 @@ public class Unit extends Entity
 								finalPosition = null;
 							}
 							else {
-								System.out.println("GENERATION PATH : " + generatePath);
+								//System.out.println("GENERATION PATH : " + generatePath);
 								generatePath = true;
 							}
 						}
@@ -546,7 +546,6 @@ public class Unit extends Entity
 			else if(finalNode == null && this.getDestination() != null) {
 				if(!this.getPosition().equals(this.getDestination()))
 				{
-					System.out.println("ALALALALLAa");
 					if( (this.getPosition().getX() < this.getDestination().getX() && speed.getVx() < 0) || (this.getPosition().getX() > this.getDestination().getX() && speed.getVx() > 0) )
 					{
 						this.getPosition().setX(this.getDestination().getX());
@@ -567,7 +566,7 @@ public class Unit extends Entity
 					this.setDestination(null);
 				}
 			}
-		}
+		//}
 		
 		this.getPosition().setX(this.getPosition().getX() + (int)this.getSpeed().getVx());
 		this.getPosition().setY(this.getPosition().getY() + (int)this.getSpeed().getVy());
