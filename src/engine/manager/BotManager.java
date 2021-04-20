@@ -68,6 +68,7 @@ public class BotManager {
 	private List<Worker> builders;
 	private List<Fighter> army;
 	private AbstractMap<Integer, Boolean> upgrades;
+	private List<Tile> forbiddenTiles;
 	
 	public BotManager(FactionManager factionManager, GraphicsManager graphicsManager, Map map) {
 		setBarrackBuilt(false);
@@ -118,6 +119,7 @@ public class BotManager {
 		builders = new ArrayList<Worker>();
 		army = new ArrayList<Fighter>();
 		upgrades = new HashMap<Integer, Boolean>();
+		forbiddenTiles = new ArrayList<Tile>();
 		for(int i = EntityConfiguration.ARMOR_UPGRADE; i <= EntityConfiguration.SIGHT_RANGE_UPGRADE; i++) {
 			upgrades.put(i, false);
 		}
@@ -405,6 +407,10 @@ public class BotManager {
 										targetY = (y-maxY) * GameConfiguration.TILE_SIZE;
 									}
 								}
+								if(map.getTile(targetY, targetX).isSolid()) {
+									targetX = 0;
+									targetY = 0;
+								}
 							}
 						}
 					}
@@ -421,6 +427,10 @@ public class BotManager {
 										targetX = (x+maxX) * GameConfiguration.TILE_SIZE;
 										targetY = j * GameConfiguration.TILE_SIZE;
 									}
+								}
+								if(map.getTile(targetY, targetX).isSolid()) {
+									targetX = 0;
+									targetY = 0;
 								}
 							}
 						}
@@ -439,6 +449,10 @@ public class BotManager {
 										targetY = j * GameConfiguration.TILE_SIZE;
 									}
 								}
+								if(map.getTile(targetY, targetX).isSolid()) {
+									targetX = 0;
+									targetY = 0;
+								}
 							}
 						}
 					}
@@ -455,6 +469,10 @@ public class BotManager {
 										targetX = i * GameConfiguration.TILE_SIZE;
 										targetY = (y+maxY) * GameConfiguration.TILE_SIZE;
 									}
+								}
+								if(map.getTile(targetY, targetX).isSolid()) {
+									targetX = 0;
+									targetY = 0;
 								}
 							}
 						}
@@ -1331,5 +1349,13 @@ public class BotManager {
 
 	public void setUpgrades(AbstractMap<Integer, Boolean> upgrades) {
 		this.upgrades = upgrades;
+	}
+
+	public List<Tile> getForbiddenTiles() {
+		return forbiddenTiles;
+	}
+
+	public void setForbiddenTiles(List<Tile> forbiddenTiles) {
+		this.forbiddenTiles = forbiddenTiles;
 	}
 }
