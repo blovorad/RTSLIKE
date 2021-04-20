@@ -5,16 +5,16 @@ import engine.Position;
 public class Node {
 	
 	private Node parent;
-	private double g;
-	private double h;
-	private double f;
+	private int g;
+	private int h;
+	private int f;
 	private Position p;
 		
 	public Node(Position p) {
 		this.p = p;
-		this.g = 0f;
-		this.h = 0f;
-		this.f = 0f;
+		this.g = 0;
+		this.h = 0;
+		this.f = 0;
 		this.parent = null;
 	}
 	
@@ -30,9 +30,9 @@ public class Node {
 	
 	public boolean recalculateF(Node parent, Position p2) {
 		System.out.println("Recalculate");
-		double gBis = this.g;
-		double hBis = this.h;
-		double fBis = this.f;
+		int gBis = this.g;
+		int hBis = this.h;
+		int fBis = this.f;
 		Node parentBis = this.parent;
 		Position pBis = this.p;
 		
@@ -58,15 +58,15 @@ public class Node {
 		return this.parent;
 	}
 	
-	public double getG() {
+	public int getG() {
 		return this.g;
 	}
 	
-	public double getF() {
+	public int getF() {
 		return this.f;
 	}
 	
-	public double getH() {
+	public int getH() {
 		return this.h;
 	}
 	

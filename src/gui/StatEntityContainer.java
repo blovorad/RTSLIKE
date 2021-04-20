@@ -1,5 +1,6 @@
 package gui;
 
+import engine.Entity;
 import engine.Ressource;
 import engine.entity.building.AttackBuilding;
 import engine.entity.building.ProductionBuilding;
@@ -19,16 +20,19 @@ public class StatEntityContainer {
 	private int armor;
 	private int damage;
 	private int timerForProduction;
+	private Entity entity;
 	
 	public StatEntityContainer() {
 		hp = 0;
 		quantityRessource = 0;
 		armor = 0;
 		damage = 0;
+		entity = null;
 	}
 	
 	public void setForSiteConstruction(SiteConstruction sc) {
 		hp = sc.getHp();
+		entity = sc;
 	}
 	
 	public void setForWorker(Worker worker) {
@@ -36,28 +40,34 @@ public class StatEntityContainer {
 		quantityRessource = worker.getQuantityRessource();
 		armor = worker.getArmor();
 		damage = worker.getDamage();
+		entity = worker;
 	}
 	
 	public void setForUnit(Unit unit) {
 		hp = unit.getHp();
 		armor = unit.getArmor();
 		damage = unit.getDamage();
+		entity = unit;
 	}
 	
 	public void setForRessource(Ressource ressource) {
 		hp = ressource.getHp();
+		entity = ressource;
 	}
 	
 	public void setForAttackBuilding(AttackBuilding building) {
 		hp = building.getHp();
+		entity = building;
 	}
 	
 	public void setForStorageBuilding(StorageBuilding building) {
 		hp = building.getHp();
+		entity = building;
 	}
 	
 	public void setForProductionBuilding(ProductionBuilding building) {
 		hp = building.getHp();
+		entity = building;
 		timerForProduction = (int)building.getTimer();
 	}
 	
@@ -146,5 +156,13 @@ public class StatEntityContainer {
 		}
 		
 		return false;
+	}
+	
+	public Entity getEntity() {
+		return this.entity;
+	}
+	
+	public void setEntity(Entity entity) {
+		this.entity = entity;
 	}
 }

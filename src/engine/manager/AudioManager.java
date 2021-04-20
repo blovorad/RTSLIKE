@@ -40,7 +40,7 @@ public class AudioManager {
 			fxMinage = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 			musique.open(inputStream);
-			musique.start();
+			//musique.start();
 			
 			fxs.add(new File("src/sounds/launchGameFx.wav"));
 			fxs.add(new File("src/sounds/menuButtonFx.wav"));
@@ -56,7 +56,7 @@ public class AudioManager {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		manageVolume(25);
+		//manageVolume(25);
 	}
 	
 	public void manageVolume(int volume) {
@@ -67,7 +67,7 @@ public class AudioManager {
 	}
 	
 	public void update() {
-		if(oldState != state) {
+		/*if(oldState != state) {
 			if(state == 1 && oldState != 3) {
 				File file = new File("src/sounds/musique2.wav");
 				startSound(file);
@@ -96,23 +96,23 @@ public class AudioManager {
 					startSound(file);
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void startSound(File path) {
 		musique.close();
 		try {
-			System.out.println("tentative nouvelle musique " + currentMusique);
+			/*System.out.println("tentative nouvelle musique " + currentMusique);
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(path);
 			musique.open(inputStream);
-			musique.start();
+			musique.start();*/
 		} catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
 	public void startFx(int id) {
-		if(id == 8) {
+		/*if(id == 8) {
 			if(!fxMinage.isRunning()) {
 				if(fxMinage != null) {
 					fxMinage.close();
@@ -183,7 +183,7 @@ public class AudioManager {
 					e.printStackTrace();
 				}
 			}
-		}
+		}*/
 	}
 	
 	public int getState() {

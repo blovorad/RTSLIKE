@@ -150,7 +150,6 @@ public class GameDisplay extends JPanel
 	private int selectedMap = 1;
 	
 	private float time;
-	private int size = 0;
 
 	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager, GraphicsManager graphicsManager)
 	{
@@ -1095,6 +1094,18 @@ public class GameDisplay extends JPanel
 				}
 			}
 			
+			if(this.statEntityContainer.getEntity() != null) {
+				Entity entity = statEntityContainer.getEntity();
+				if(entity.getHp() <= 0) {
+					statEntityContainer.setEntity(null);
+					this.setDescriptionPanelStandard();
+				}
+				else if(entity.getId() == EntityConfiguration.SITE_CONSTRUCTION && entity.getHp() >= entity.getHpMax()) {
+					statEntityContainer.setEntity(null);
+					this.setDescriptionPanelStandard();
+				}
+			}
+			
 			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).isUpgradeAge()) {
 				if(this.manager.getSelectedProdBuilding() !=  null) {
 					List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(this.manager.getSelectedProdBuilding().getFaction()).getSearchingUpgrades();
@@ -1184,23 +1195,8 @@ public class GameDisplay extends JPanel
 				ressource = manager.getSelectedRessource();
 			}
 			
-			if(size != entities.size()) {
-				System.out.println("SIZE CHANGED BEFORE ITERATING : before : " + size + " and after : " + entities.size());
-				size = entities.size();
-			}
-			try {
-				for(Entity entity : entities) {
-					this.paintStrategyGame.paint(entity, g, camera, graphicsManager);
-				}
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-				e.getCause();
-			}
-			
-			if(size != entities.size()) {
-				System.out.println("SIZE CHANGED AFTER ITERATING : before : " + size + " and after : " + entities.size());
-				size = entities.size();
+			for(Entity entity : entities) {
+				this.paintStrategyGame.paint(entity, g, camera, graphicsManager);
 			}
 			
 			for(Unit unit : units) {

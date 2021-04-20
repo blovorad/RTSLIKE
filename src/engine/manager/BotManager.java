@@ -128,7 +128,7 @@ public class BotManager {
 	}
 	
 	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions, List<Entity> playerBuildings, List<Unit> playerUnits) {
-		updateList(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions);
+		/*updateList(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions);
 		updateMoney();
 		updateFog(playerBuildings, playerUnits);
 		explore(); 
@@ -142,7 +142,7 @@ public class BotManager {
 		prodArmy();
 		attack();
 		prodUpgrade();
-		checkTargetUnit();
+		checkTargetUnit();*/
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
