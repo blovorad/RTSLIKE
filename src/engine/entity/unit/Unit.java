@@ -204,110 +204,215 @@ public class Unit extends Entity
 		Node currentNode = new Node(new Position((p.getX() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE, (p.getY() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE));
 		List<Node> nodes = new ArrayList<Node>();
 		Tile[][] tiles = map.getTiles();
-		//boolean[][] brouillard = fog.getFog();
 		System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
 		System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 		
-		while(currentNode != finalNode && currentNode != null){// && brouillard[currentNode.getPosition().getY()][currentNode.getPosition().getX()] == false) {
-			//System.out.println("ITERATION");
-			//int maxX = currentNode.getPosition().getX() + 2;
-			//int maxY = currentNode.getPosition().getY() + 2;
-			Position bis = currentNode.getPosition();
-			if(bis.getY() - 1 >= 0 && bis.getX() >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
-				if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
-					if(tiles[bis.getY() - 1][bis.getX()].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX(), bis.getY() - 1))) {
-						Node node = new Node(new Position(bis.getX(), bis.getY() - 1));
-						nodes.add(node);
+		if(fog != null) {
+			boolean[][] brouillard = fog.getFog();
+			while(currentNode != finalNode && currentNode != null) {// && brouillard[currentNode.getPosition().getY()][currentNode.getPosition().getX()] == false) {
+				//System.out.println("ITERATION");
+				//int maxX = currentNode.getPosition().getX() + 2;
+				//int maxY = currentNode.getPosition().getY() + 2;
+				Position bis = currentNode.getPosition();
+				if(bis.getY() - 1 >= 0 && bis.getX() >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
+					if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
+						if(tiles[bis.getY() - 1][bis.getX()].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX(), bis.getY() - 1))) {
+							Node node = new Node(new Position(bis.getX(), bis.getY() - 1));
+							nodes.add(node);
+						}
 					}
-				}
-				else {
-					if(tiles[bis.getY() - 1][bis.getX()].isSolid() == false) {
-						Node node = new Node(new Position(bis.getX(), bis.getY() - 1));
-						nodes.add(node);
-					}
-				}
-			}
-			if(bis.getY() >= 0 && bis.getX() - 1 >= 0 && bis.getY() < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
-				if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
-					if(tiles[bis.getY()][bis.getX() - 1].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX() - 1, bis.getY()))) {
-						Node node = new Node(new Position(bis.getX() - 1, bis.getY()));
-						nodes.add(node);
-					}
-				}
-				else {
-					if(tiles[bis.getY()][bis.getX() - 1].isSolid() == false) {
-						Node node = new Node(new Position(bis.getX() - 1, bis.getY()));
-						nodes.add(node);
-					}
-				}
-			}
-			if(bis.getY() >= 0 && bis.getX() + 1 >= 0 && bis.getY() < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
-				if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
-					if(tiles[bis.getY()][bis.getX() + 1].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX() + 1, bis.getY()))) {
-						Node node = new Node(new Position(bis.getX() + 1, bis.getY()));
-						nodes.add(node);
-					}
-				}
-				else {
-					if(tiles[bis.getY()][bis.getX() + 1].isSolid() == false) {
-						Node node = new Node(new Position(bis.getX() + 1, bis.getY()));
-						nodes.add(node);
-					}
-				}
-			}
-			if(bis.getY() + 1 >= 0 && bis.getX() >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
-				if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
-					if(tiles[bis.getY() + 1][bis.getX()].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX(), bis.getY() + 1))) {
-						Node node = new Node(new Position(bis.getX(), bis.getY() + 1));
-						nodes.add(node);
-					}
-				}
-				else {
-					if(tiles[bis.getY() + 1][bis.getX()].isSolid() == false) {
-						Node node = new Node(new Position(bis.getX(), bis.getY() + 1));
-						nodes.add(node);
-					}
-				}
-			}
-			
-			/*if(bis.getY() - 1 >= 0 && bis.getX() - 1 >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
-				if(tiles[bis.getY() - 1][bis.getX() - 1].isSolid() == false) {
-					Node node = new Node(new Position(bis.getX() - 1, bis.getY() - 1));
-					nodes.add(node);
-				}
-			}
-			if(bis.getY() + 1 >= 0 && bis.getX() - 1 >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
-				if(tiles[bis.getY() + 1][bis.getX() - 1].isSolid() == false) {
-					Node node = new Node(new Position(bis.getX() - 1, bis.getY() + 1));
-					nodes.add(node);			
-				}
-			}
-			if(bis.getY() - 1 >= 0 && bis.getX() + 1 >= 0 && bis.getY()  - 1 < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
-				if(tiles[bis.getY() - 1][bis.getX() + 1].isSolid() == false) {
-					Node node = new Node(new Position(bis.getX() + 1, bis.getY() - 1));
-					nodes.add(node);
-				}
-			}
-			if(bis.getY() + 1 >= 0 && bis.getX() + 1 >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
-				if(tiles[bis.getY() + 1][bis.getX() + 1].isSolid() == false) {
-					Node node = new Node(new Position(bis.getX() + 1, bis.getY() + 1));
-					nodes.add(node);
-				}
-			}*/
-			/*for(int j = currentNode.getPosition().getY() - 1; j < maxY; j++) {
-				for(int i = currentNode.getPosition().getX() - 1; i < maxX; i++) {
-					if(tiles[j][i].isSolid() == false) {
-						if(j != bis.getY() / GameConfiguration.TILE_SIZE && i != bis.getX() / GameConfiguration.TILE_SIZE) {
-							Node node = new Node(new Position(i, j));
+					else {
+						if(tiles[bis.getY() - 1][bis.getX()].isSolid() == false) {
+							Node node = new Node(new Position(bis.getX(), bis.getY() - 1));
 							nodes.add(node);
 						}
 					}
 				}
-			}*/
-			//System.out.println("FINAL NODE POS : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
-			currentNode = path.generatePath(nodes, finalNode, currentNode);
-			//System.out.println("currentNOde pos :" + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
-			nodes.clear();
+				if(bis.getY() >= 0 && bis.getX() - 1 >= 0 && bis.getY() < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
+					if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
+						if(tiles[bis.getY()][bis.getX() - 1].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX() - 1, bis.getY()))) {
+							Node node = new Node(new Position(bis.getX() - 1, bis.getY()));
+							nodes.add(node);
+						}
+					}
+					else {
+						if(tiles[bis.getY()][bis.getX() - 1].isSolid() == false) {
+							Node node = new Node(new Position(bis.getX() - 1, bis.getY()));
+							nodes.add(node);
+						}
+					}
+				}
+				if(bis.getY() >= 0 && bis.getX() + 1 >= 0 && bis.getY() < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
+					if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
+						if(tiles[bis.getY()][bis.getX() + 1].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX() + 1, bis.getY()))) {
+							Node node = new Node(new Position(bis.getX() + 1, bis.getY()));
+							nodes.add(node);
+						}
+					}
+					else {
+						if(tiles[bis.getY()][bis.getX() + 1].isSolid() == false) {
+							Node node = new Node(new Position(bis.getX() + 1, bis.getY()));
+							nodes.add(node);
+						}
+					}
+				}
+				if(bis.getY() + 1 >= 0 && bis.getX() >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
+					if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
+						if(tiles[bis.getY() + 1][bis.getX()].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX(), bis.getY() + 1))) {
+							Node node = new Node(new Position(bis.getX(), bis.getY() + 1));
+							nodes.add(node);
+						}
+					}
+					else {
+						if(tiles[bis.getY() + 1][bis.getX()].isSolid() == false) {
+							Node node = new Node(new Position(bis.getX(), bis.getY() + 1));
+							nodes.add(node);
+						}
+					}
+				}
+				
+				/*if(bis.getY() - 1 >= 0 && bis.getX() - 1 >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
+					if(tiles[bis.getY() - 1][bis.getX() - 1].isSolid() == false) {
+						Node node = new Node(new Position(bis.getX() - 1, bis.getY() - 1));
+						nodes.add(node);
+					}
+				}
+				if(bis.getY() + 1 >= 0 && bis.getX() - 1 >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
+					if(tiles[bis.getY() + 1][bis.getX() - 1].isSolid() == false) {
+						Node node = new Node(new Position(bis.getX() - 1, bis.getY() + 1));
+						nodes.add(node);			
+					}
+				}
+				if(bis.getY() - 1 >= 0 && bis.getX() + 1 >= 0 && bis.getY()  - 1 < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
+					if(tiles[bis.getY() - 1][bis.getX() + 1].isSolid() == false) {
+						Node node = new Node(new Position(bis.getX() + 1, bis.getY() - 1));
+						nodes.add(node);
+					}
+				}
+				if(bis.getY() + 1 >= 0 && bis.getX() + 1 >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
+					if(tiles[bis.getY() + 1][bis.getX() + 1].isSolid() == false) {
+						Node node = new Node(new Position(bis.getX() + 1, bis.getY() + 1));
+						nodes.add(node);
+					}
+				}*/
+				/*for(int j = currentNode.getPosition().getY() - 1; j < maxY; j++) {
+					for(int i = currentNode.getPosition().getX() - 1; i < maxX; i++) {
+						if(tiles[j][i].isSolid() == false) {
+							if(j != bis.getY() / GameConfiguration.TILE_SIZE && i != bis.getX() / GameConfiguration.TILE_SIZE) {
+								Node node = new Node(new Position(i, j));
+								nodes.add(node);
+							}
+						}
+					}
+				}*/
+				//System.out.println("FINAL NODE POS : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
+				currentNode = path.generatePath(nodes, finalNode, currentNode);
+				//System.out.println("currentNOde pos :" + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
+				nodes.clear();
+			}
+		}
+		else {
+			while(currentNode != finalNode && currentNode != null) {// && brouillard[currentNode.getPosition().getY()][currentNode.getPosition().getX()] == false) {
+				//System.out.println("ITERATION");
+				//int maxX = currentNode.getPosition().getX() + 2;
+				//int maxY = currentNode.getPosition().getY() + 2;
+				Position bis = currentNode.getPosition();
+				if(bis.getY() - 1 >= 0 && bis.getX() >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
+					if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
+						if(tiles[bis.getY() - 1][bis.getX()].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX(), bis.getY() - 1))) {
+							Node node = new Node(new Position(bis.getX(), bis.getY() - 1));
+							nodes.add(node);
+						}
+					}
+					else {
+						if(tiles[bis.getY() - 1][bis.getX()].isSolid() == false) {
+							Node node = new Node(new Position(bis.getX(), bis.getY() - 1));
+							nodes.add(node);
+						}
+					}
+				}
+				if(bis.getY() >= 0 && bis.getX() - 1 >= 0 && bis.getY() < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
+					if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
+						if(tiles[bis.getY()][bis.getX() - 1].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX() - 1, bis.getY()))) {
+							Node node = new Node(new Position(bis.getX() - 1, bis.getY()));
+							nodes.add(node);
+						}
+					}
+					else {
+						if(tiles[bis.getY()][bis.getX() - 1].isSolid() == false) {
+							Node node = new Node(new Position(bis.getX() - 1, bis.getY()));
+							nodes.add(node);
+						}
+					}
+				}
+				if(bis.getY() >= 0 && bis.getX() + 1 >= 0 && bis.getY() < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
+					if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
+						if(tiles[bis.getY()][bis.getX() + 1].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX() + 1, bis.getY()))) {
+							Node node = new Node(new Position(bis.getX() + 1, bis.getY()));
+							nodes.add(node);
+						}
+					}
+					else {
+						if(tiles[bis.getY()][bis.getX() + 1].isSolid() == false) {
+							Node node = new Node(new Position(bis.getX() + 1, bis.getY()));
+							nodes.add(node);
+						}
+					}
+				}
+				if(bis.getY() + 1 >= 0 && bis.getX() >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
+					if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
+						if(tiles[bis.getY() + 1][bis.getX()].isSolid() == false || finalNode.getPosition().equals(new Position(bis.getX(), bis.getY() + 1))) {
+							Node node = new Node(new Position(bis.getX(), bis.getY() + 1));
+							nodes.add(node);
+						}
+					}
+					else {
+						if(tiles[bis.getY() + 1][bis.getX()].isSolid() == false) {
+							Node node = new Node(new Position(bis.getX(), bis.getY() + 1));
+							nodes.add(node);
+						}
+					}
+				}
+				
+				/*if(bis.getY() - 1 >= 0 && bis.getX() - 1 >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
+					if(tiles[bis.getY() - 1][bis.getX() - 1].isSolid() == false) {
+						Node node = new Node(new Position(bis.getX() - 1, bis.getY() - 1));
+						nodes.add(node);
+					}
+				}
+				if(bis.getY() + 1 >= 0 && bis.getX() - 1 >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
+					if(tiles[bis.getY() + 1][bis.getX() - 1].isSolid() == false) {
+						Node node = new Node(new Position(bis.getX() - 1, bis.getY() + 1));
+						nodes.add(node);			
+					}
+				}
+				if(bis.getY() - 1 >= 0 && bis.getX() + 1 >= 0 && bis.getY()  - 1 < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
+					if(tiles[bis.getY() - 1][bis.getX() + 1].isSolid() == false) {
+						Node node = new Node(new Position(bis.getX() + 1, bis.getY() - 1));
+						nodes.add(node);
+					}
+				}
+				if(bis.getY() + 1 >= 0 && bis.getX() + 1 >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
+					if(tiles[bis.getY() + 1][bis.getX() + 1].isSolid() == false) {
+						Node node = new Node(new Position(bis.getX() + 1, bis.getY() + 1));
+						nodes.add(node);
+					}
+				}*/
+				/*for(int j = currentNode.getPosition().getY() - 1; j < maxY; j++) {
+					for(int i = currentNode.getPosition().getX() - 1; i < maxX; i++) {
+						if(tiles[j][i].isSolid() == false) {
+							if(j != bis.getY() / GameConfiguration.TILE_SIZE && i != bis.getX() / GameConfiguration.TILE_SIZE) {
+								Node node = new Node(new Position(i, j));
+								nodes.add(node);
+							}
+						}
+					}
+				}*/
+				//System.out.println("FINAL NODE POS : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
+				currentNode = path.generatePath(nodes, finalNode, currentNode);
+				//System.out.println("currentNOde pos :" + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
+				nodes.clear();
+			}
 		}
 		
 		System.out.println("On reverse");
@@ -548,7 +653,7 @@ public class Unit extends Entity
 				}
 			}
 		}
-		else if(this.state == EntityConfiguration.DEFENSIF_STATE && this.getTarget() == null && this.isHit())
+		else if(this.state == EntityConfiguration.DEFENSIF_STATE && this.getTarget() == null && this.getDestination() == null && this.isHit())
 		{
 			if(!units.isEmpty())
 			{	
