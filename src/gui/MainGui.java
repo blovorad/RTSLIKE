@@ -667,8 +667,9 @@ public class MainGui extends JFrame implements Runnable
 								
 								for(Worker worker : listWorkers) 
 								{
+									worker.setFinalDestination(constructionSite.getPosition());
+									worker.setCurrentAction(EntityConfiguration.WALK);
 									worker.setTarget(constructionSite);
-									worker.calculateSpeed(constructionSite.getPosition());
 								}
 								mouse.setId(-1);
 							}
@@ -718,7 +719,8 @@ public class MainGui extends JFrame implements Runnable
 									boolean isAttack = false;
 									for(Unit unit : listSelectedUnit)
 									{
-										unit.calculateSpeed(target.getPosition());
+										System.out.println("ici");
+										//unit.calculateSpeed(target.getPosition());
 										unit.setFinalDestination(target.getPosition());
 										unit.setCurrentAction(EntityConfiguration.WALK);
 										unit.setTarget(target);
@@ -739,7 +741,7 @@ public class MainGui extends JFrame implements Runnable
 									audioManager.startFx(5);
 									for(Unit unit : listSelectedUnit)
 									{
-										unit.calculateSpeed(targetUnit.getPosition());
+										//unit.calculateSpeed(targetUnit.getPosition());
 										unit.setFinalDestination(targetUnit.getPosition());
 										unit.setCurrentAction(EntityConfiguration.WALK);
 										unit.setTarget(targetUnit);
@@ -749,7 +751,8 @@ public class MainGui extends JFrame implements Runnable
 								else if(listSelectedUnit.isEmpty() == false && target == null) {
 									audioManager.startFx(3);
 									for(Unit unit : listSelectedUnit){
-										unit.calculateSpeed(new Position(mouseX, mouseY));
+										//unit.calculateSpeed(new Position(mouseX, mouseY));
+										System.out.println("LALALLA");
 										unit.setFinalDestination(new Position(mouseX, mouseY));
 										unit.setTarget(null);
 										unit.setTargetUnit(null);
@@ -799,7 +802,6 @@ public class MainGui extends JFrame implements Runnable
 							if(listSelectedUnit.isEmpty() == false) {
 								audioManager.startFx(3);
 								for(Unit unit : listSelectedUnit){
-									unit.calculateSpeed(p);
 									unit.setFinalDestination(p);
 									unit.setTarget(null);
 									unit.setTargetUnit(null);

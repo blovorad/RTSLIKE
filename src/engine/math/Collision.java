@@ -22,6 +22,17 @@ import engine.entity.unit.Worker;
 
 public class Collision {
 	
+	public static boolean collidePath(Position tile, Position unit) {
+		Rectangle r1 = new Rectangle(tile.getX(), tile.getY(), GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE);
+		Rectangle r2 = new Rectangle(unit.getX(), unit.getY(), EntityConfiguration.UNIT_SIZE, EntityConfiguration.UNIT_SIZE);
+		
+		if(r1.intersects(r2)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public static boolean collide(Position p, SelectionRect r, Camera camera) {
 		Rectangle r1 = new Rectangle(p.getX(), p.getY(), GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE);
 		Rectangle r2 = new Rectangle(r.getX() + camera.getX(), r.getY() + camera.getY(), r.getW(), r.getH());
@@ -179,6 +190,7 @@ public class Collision {
 	
 	public static boolean collideAttack(Entity target , Unit attacker) 
 	{
+		int sizeAttacker;
 		int sizeTarget;
 		
 		if(target.getId() >= EntityConfiguration.FORGE && target.getId() <= EntityConfiguration.ARCHERY)
@@ -197,8 +209,17 @@ public class Collision {
 			}
 		}
 		
+		if(target.getId() == EntityConfiguration.CAVALRY)
+		{
+			sizeAttacker = EntityConfiguration.CAVALRY_SIZE;
+		}
+		else
+		{
+			sizeAttacker = EntityConfiguration.UNIT_SIZE;
+		}
+		
 		Rectangle r1 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), sizeTarget, sizeTarget);
-		Rectangle r2 = new Rectangle(attacker.getPosition().getX() - attacker.getAttackRange()/2, attacker.getPosition().getY() - attacker.getAttackRange()/2, attacker.getAttackRange()*2, attacker.getAttackRange()*2);
+		Rectangle r2 = new Rectangle(attacker.getPosition().getX() - attacker.getAttackRange()/2*sizeAttacker, attacker.getPosition().getY() - attacker.getAttackRange()/2*sizeAttacker, attacker.getAttackRange()*2*sizeAttacker, attacker.getAttackRange()*2*sizeAttacker);
 		
 		if(r1.intersects(r2)) {
 			return true;
