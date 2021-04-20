@@ -654,7 +654,7 @@ public class MainGui extends JFrame implements Runnable
 					}
 					if(!Collision.collidePanel(leftDownPanel, e.getX(), e.getY()) && !Collision.collidePanelMinimap(rightDownPanel, e.getX(), e.getY())) {
 						if(mouse.getId() > -1){
-							Tile tile = dashboard.getMap().getTile((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE, (e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE);
+							Tile tile = dashboard.getMap().getTile((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE, (e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE);
 							if(tile.isSolid() == false){
 								int x = ((e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
 								int y = ((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE) * GameConfiguration.TILE_SIZE;
@@ -800,7 +800,9 @@ public class MainGui extends JFrame implements Runnable
 								audioManager.startFx(3);
 								for(Unit unit : listSelectedUnit){
 									unit.calculateSpeed(p);
+									unit.setFinalDestination(p);
 									unit.setTarget(null);
+									unit.setTargetUnit(null);
 									unit.setCurrentAction(EntityConfiguration.WALK);
 								}
 							}

@@ -1,5 +1,6 @@
 package engine.entity.unit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import configuration.EntityConfiguration;
@@ -11,6 +12,7 @@ import engine.manager.GraphicsManager;
 import engine.map.Fog;
 import engine.map.FogCase;
 import engine.map.Map;
+import engine.map.Tile;
 import engine.math.Collision;
 
 /**
@@ -25,6 +27,8 @@ public class Unit extends Entity
 {
 	private Unit targetUnit;
 	private Position finalPosition;
+	
+	private List<Position> destination = new ArrayList<Position>();
 	
 	private int currentAction;
 	private int attackRange;

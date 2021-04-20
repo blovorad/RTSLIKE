@@ -179,7 +179,6 @@ public class Collision {
 	
 	public static boolean collideAttack(Entity target , Unit attacker) 
 	{
-		int sizeAttacker;
 		int sizeTarget;
 		
 		if(target.getId() >= EntityConfiguration.FORGE && target.getId() <= EntityConfiguration.ARCHERY)
@@ -196,15 +195,6 @@ public class Collision {
 			{
 				sizeTarget = EntityConfiguration.UNIT_SIZE;
 			}
-		}
-		
-		if(target.getId() == EntityConfiguration.CAVALRY)
-		{
-			sizeAttacker = EntityConfiguration.CAVALRY_SIZE;
-		}
-		else
-		{
-			sizeAttacker = EntityConfiguration.UNIT_SIZE;
 		}
 		
 		Rectangle r1 = new Rectangle(target.getPosition().getX(), target.getPosition().getY(), sizeTarget, sizeTarget);

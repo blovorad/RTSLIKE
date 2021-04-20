@@ -39,7 +39,7 @@ public class GameBuilder {
 		
 		//cr�ation du joueur
 		Tile tile2 = map.getTile(5, 5);
-		Tile tile = map.getTile(9, 5);
+		Tile tile = map.getTile(5, 9);
 		ForWorker patron = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 		ForFighter patronFighter = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronFighters().get(EntityConfiguration.CAVALRY);
 		
@@ -59,7 +59,7 @@ public class GameBuilder {
 
 		//cr�ation d'un ennemie
 		tile = map.getTile(84, 84);
-		tile2 = map.getTile(82, 88);
+		tile2 = map.getTile(88, 82);
 		patron = manager.getFactionManager().getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 		patronFighter = manager.getFactionManager().getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getPatronFighters().get(EntityConfiguration.CAVALRY);
 		

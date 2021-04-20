@@ -48,7 +48,7 @@ public class Map {
 				int index = scan.nextInt();
 				
 				Tile tile = new Tile(lineIndex, columnIndex, index, graphicsManager);
-				tiles[columnIndex][lineIndex] = tile;
+				tiles[lineIndex][columnIndex] = tile;
 				
 				if(index == MapConfiguration.GOLD){
 					goldTiles.add(tile);
