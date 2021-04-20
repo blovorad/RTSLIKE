@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.AbstractMap;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -1156,7 +1156,12 @@ public class GameDisplay extends JPanel
 				paintStrategyGame = new PaintStrategyGame(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT, minimapPanel, minimap);
 			}
 			this.paintStrategyGame.paint(this.map, g, this.camera, graphicsManager);
-			List<Entity> entities = manager.getDrawingList();
+			List<Entity> entitie = manager.getDrawingList();
+
+            List<Entity> entities = new ArrayList<Entity>();
+            for(Entity entity : entitie) {
+                entities.add(entity);
+            }
 			List<Unit> units = manager.getSelectedUnits();
 			
 			Entity building = null;
