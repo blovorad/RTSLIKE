@@ -146,7 +146,7 @@ public class EntitiesManager
 	}
 	
 	public void createBotManager(GraphicsManager graphicsManager, Map map) {
-		this.botManager = new BotManager(factionManager, graphicsManager, map);
+		this.botManager = new BotManager(factionManager, map);
 	}
 	
 	public void setPlayerFog(Fog fog) {

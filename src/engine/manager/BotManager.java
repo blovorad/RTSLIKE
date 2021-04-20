@@ -24,6 +24,13 @@ import engine.map.Map;
 import engine.map.Tile;
 import factionConfiguration.Race;
 
+/**
+ * <b>BotManager est la class qui gere le bot adverse</b>
+ * cette class est instanciee et mise a jour dans EntitiesManager
+ * 
+ * @see EntitiesManager
+ * @author Maxime Grodet
+ */
 public class BotManager {
 	
 	private boolean barrackBuilt;
@@ -35,7 +42,6 @@ public class BotManager {
 	private Fog fog;
 	private FactionManager factionManager;
 	private AbstractMap<Integer, Integer> priceOfEntity;
-	private GraphicsManager graphicsManager;
 	private Map map;
 	private int max;
 	private List<Entity> botEntities;
@@ -69,7 +75,7 @@ public class BotManager {
 	private List<Fighter> army;
 	private AbstractMap<Integer, Boolean> upgrades;
 	
-	public BotManager(FactionManager factionManager, GraphicsManager graphicsManager, Map map) {
+	public BotManager(FactionManager factionManager, Map map) {
 		setBarrackBuilt(false);
 		setArcheryBuilt(false);
 		setStableBuilt(false);
@@ -83,7 +89,6 @@ public class BotManager {
 		Race race = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace();
 		
 		priceOfEntity = new HashMap<Integer, Integer>();
-		setGraphicsManager(graphicsManager);
 		setMap(map);
 		setMax(1);
 		
@@ -545,18 +550,16 @@ public class BotManager {
 					}
 				}
 				for(SiteConstruction sitec : getSiteConstructions()) { // check si a site de constru de storage in range
-					if(sitec.getFaction() == EntityConfiguration.BOT_FACTION) {
-						if(sitec.getBuildingId() == EntityConfiguration.STORAGE) {
-							ressource = getClosestRessource(visibleRessources, sitec);
-							
-							if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
-								worker.setTarget(sitec);
-								//worker.calculateSpeed(sitec.getPosition());
-								worker.setFinalDestination(sitec.getPosition());
-								worker.setCurrentAction(EntityConfiguration.WALK);
-								//System.out.println("va constru fdp !");
-								storageInRange = true;
-							}
+					if(sitec.getBuildingId() == EntityConfiguration.STORAGE) {
+						ressource = getClosestRessource(visibleRessources, sitec);
+						
+						if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
+							worker.setTarget(sitec);
+							//worker.calculateSpeed(sitec.getPosition());
+							worker.setFinalDestination(sitec.getPosition());
+							worker.setCurrentAction(EntityConfiguration.WALK);
+							//System.out.println("va constru fdp !");
+							storageInRange = true;
 						}
 					}
 				}
@@ -872,7 +875,7 @@ public class BotManager {
 							}
 							if(hasTower == false) {
 								for(SiteConstruction site : getSiteConstructions()) {
-									if(site.getFaction() == EntityConfiguration.BOT_FACTION && site.getBuildingId() == EntityConfiguration.TOWER) {
+									if(site.getBuildingId() == EntityConfiguration.TOWER) {
 										if((calculate(storage.getPosition(), site.getPosition()) / GameConfiguration.TILE_SIZE) < BotConfiguration.RANGE_TOWER) {
 											hasTower = true;
 										}
@@ -918,49 +921,47 @@ public class BotManager {
 		updateIdleWorker();
 		if(getSiteConstructions() != null) {
 			for(SiteConstruction sitec : getSiteConstructions()) { // check si a site de constru de storage in range
-				if(sitec.getFaction() == EntityConfiguration.BOT_FACTION) {
-					if(sitec.getBuildingId() != EntityConfiguration.STORAGE) {
-						//System.out.println("construct target found");
-						boolean hasWorker = false;
-						for(Worker worker : getBotWorkers()) {
-							if(worker.getTarget() != null) {
-								if(worker.getTarget().equals(sitec)) {
-									hasWorker = true;
-								}
+				if(sitec.getBuildingId() != EntityConfiguration.STORAGE) {
+					//System.out.println("construct target found");
+					boolean hasWorker = false;
+					for(Worker worker : getBotWorkers()) {
+						if(worker.getTarget() != null) {
+							if(worker.getTarget().equals(sitec)) {
+								hasWorker = true;
 							}
 						}
-						if(hasWorker == false) {
-							if(getIdleWorker().isEmpty() == false) {
-								//System.out.println("y a des idle");
-								for(Worker worker : getIdleWorker()) {
-									builders.add(worker);
-								}
+					}
+					if(hasWorker == false) {
+						if(getIdleWorker().isEmpty() == false) {
+							//System.out.println("y a des idle");
+							for(Worker worker : getIdleWorker()) {
+								builders.add(worker);
 							}
-							else {
-								for(Worker worker : getBotWorkers()) {
-									if(getBuilders().isEmpty()) {
+						}
+						else {
+							for(Worker worker : getBotWorkers()) {
+								if(getBuilders().isEmpty()) {
+									if(worker.getTarget() != null && worker.getTarget().getId() != EntityConfiguration.SITE_CONSTRUCTION) {
+										builders.add(worker);
+									}
+								}
+								if(builders.isEmpty() == false) {
+									if(calculate(worker.getPosition(), sitec.getPosition()) < calculate(getBuilders().get(0).getPosition(), sitec.getPosition())){
 										if(worker.getTarget() != null && worker.getTarget().getId() != EntityConfiguration.SITE_CONSTRUCTION) {
+											builders.clear();
 											builders.add(worker);
 										}
 									}
-									if(builders.isEmpty() == false) {
-										if(calculate(worker.getPosition(), sitec.getPosition()) < calculate(getBuilders().get(0).getPosition(), sitec.getPosition())){
-											if(worker.getTarget() != null && worker.getTarget().getId() != EntityConfiguration.SITE_CONSTRUCTION) {
-												builders.clear();
-												builders.add(worker);
-											}
-										}
-									}
 								}
 							}
-							for(Worker worker : getBuilders()) {
-								//System.out.println("builders : " + getBuilders().size());
-								worker.setTarget(sitec);
-								//worker.calculateSpeed(sitec.getPosition());
-								worker.setFinalDestination(sitec.getPosition());
-								worker.setCurrentAction(EntityConfiguration.WALK);
-								//System.out.println("va constru fdp !");
-							}
+						}
+						for(Worker worker : getBuilders()) {
+							//System.out.println("builders : " + getBuilders().size());
+							worker.setTarget(sitec);
+							//worker.calculateSpeed(sitec.getPosition());
+							worker.setFinalDestination(sitec.getPosition());
+							worker.setCurrentAction(EntityConfiguration.WALK);
+							//System.out.println("va constru fdp !");
 						}
 					}
 				}
@@ -1142,14 +1143,6 @@ public class BotManager {
 
 	public void setFactionManager(FactionManager factionManager) {
 		this.factionManager = factionManager;
-	}
-
-	public GraphicsManager getGraphicsManager() {
-		return graphicsManager;
-	}
-
-	public void setGraphicsManager(GraphicsManager graphicsManager) {
-		this.graphicsManager = graphicsManager;
 	}
 
 	public Map getMap() {
