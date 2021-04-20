@@ -13,6 +13,8 @@ import engine.Entity;
 import engine.Position;
 import engine.Ressource;
 import engine.entity.building.AttackBuilding;
+import engine.entity.building.Forge;
+import engine.entity.building.Hq;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.SiteConstruction;
 import engine.entity.building.StorageBuilding;
@@ -22,11 +24,13 @@ import engine.entity.unit.Worker;
 import engine.map.Fog;
 import engine.map.Map;
 import engine.map.Tile;
+import factionConfiguration.ForUpgrade;
 import factionConfiguration.Race;
 
 /**
- * <b>BotManager est la class qui gere le bot adverse</b>
- * cette class est instanciee et mise a jour dans EntitiesManager
+ * <b>BotManager est la class qui gere le bot adverse.</b>
+ * <p>
+ * Cette class est instanciee et mise a jour dans EntitiesManager.
  * 
  * @see EntitiesManager
  * @author Maxime Grodet
@@ -75,6 +79,12 @@ public class BotManager {
 	private List<Fighter> army;
 	private AbstractMap<Integer, Boolean> upgrades;
 	
+	/**
+	 * Constructeur de BotManager ou toutes ses valeurs sont instanciees
+	 * 
+	 * @param factionManager lien vers le FactionManager pour gerer l'argent de la faction
+	 * @param map lien vers la carte pour acceder au case
+	 */
 	public BotManager(FactionManager factionManager, Map map) {
 		setBarrackBuilt(false);
 		setArcheryBuilt(false);
@@ -132,6 +142,22 @@ public class BotManager {
 		idToBuild = -1;
 	}
 	
+	/**
+	 * Methode executee a chaque iteration du jeu et appelee depuis EntitiesManager.
+	 * <p>
+	 * Cette methode donne les listes a mettre a jour puis appel les methode qui gere le comportement de notre bot.
+	 * @param botEntities Liste des entites du bot
+	 * @param botStorageBuildings Liste des StorageBuilding du bot.
+	 * @param botAttackBuildings Liste des AttackBuilding du bot.
+	 * @param botProdBuildings Liste des ProductionBuilding du bot.
+	 * @param botWorkers Liste des Workers du bot.
+	 * @param botFighters Liste des Fighters du bot.
+	 * @param ressources Liste des Ressources.
+	 * @param siteConstructions Liste des SiteConstruction du bot.
+	 * @param playerBuildings Liste des buildings du joueur.
+	 * @param playerUnits Liste des Unites du joueur.
+	 * @see EntitiesManager
+	 */
 	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions, List<Entity> playerBuildings, List<Unit> playerUnits) {
 		updateList(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions);
 		updateMoney();
@@ -151,6 +177,16 @@ public class BotManager {
 	}
 
 	//tools ----------------------------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Methode qui verifie, pour chaque fighter et worker, si leur target est toujours visible.
+	 * <p>
+	 * Si une target disparais dans le brouillard de guerre on supprime la target dans l'unite.
+	 * 
+	 *  @see Fighter
+	 *  @see Worker
+	 *  @see Fog
+	 */
 	public void checkTargetUnit() {
 		for(Fighter fighter : botFighters) {
 			if(fighter.getTargetUnit() != null) {
@@ -162,7 +198,6 @@ public class BotManager {
 				}
 			}
 		}
-		
 		for(Worker worker : botWorkers) {
 			if(worker.getTargetUnit() != null) {
 				boolean[][] fog = this.fog.getFog();
@@ -175,6 +210,12 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Methode qui met a jour le brouillard de guerre.
+	 * 
+	 * @param playerBuildings list des buildings du joueur
+	 * @param playerUnits liste des unites du joueur
+	 */
 	public void updateFog(List<Entity> playerBuildings, List<Unit> playerUnits) {
 		for(Entity entity : getBotEntities()) {
 			Position p = entity.getPosition();
@@ -220,6 +261,18 @@ public class BotManager {
 		buildingRemoveEnnemieVisible.clear();
 	}
 
+	/**
+	 * Methode qui met a jour les liste passees par le EntitiesManager
+	 * 
+	 * @param botEntities Liste des entites du bot
+	 * @param botStorageBuildings Liste des StorageBuilding du bot.
+	 * @param botAttackBuildings Liste des AttackBuilding du bot.
+	 * @param botProdBuildings Liste des ProductionBuilding du bot.
+	 * @param botWorkers Liste des Workers du bot.
+	 * @param botFighters Liste des Fighters du bot.
+	 * @param ressources Liste des Ressources.
+	 * @param siteConstructions Liste des SiteConstruction du bot.
+	 */
 	public void updateList(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions) {
 		setBotEntities(botEntities);
 		setBotStorageBuildings(botStorageBuildings);
@@ -231,20 +284,35 @@ public class BotManager {
 		setSiteConstructions(siteConstructions);
 	}
 	
+	/**
+	 * Methode qui met a jour la quantité d'argent du bot.
+	 */
 	public void updateMoney() {
 		setMoney(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getMoneyCount());
 	}
 	
+	/**
+	 * Methode pour soustraire de l'argent au bot.
+	 * @param sub entier a soustraire
+	 */
 	public void removeMoney(int sub) {
 		factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(getMoney() - sub);
 		updateMoney();
 	}
 	
+	/**
+	 * Methode qui ajoute de l'argent au bot.
+	 * @param add entier a ajouter
+	 */
 	public void addMoney(int add) {
 		factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(getMoney() + add);
 		updateMoney();
 	}
 	
+	/**
+	 * Methode qui met a jour la liste de Worker iddle.
+	 * @see Worker
+	 */
 	public void updateIdleWorker(){
 		List<Worker> idleWorker = new ArrayList<Worker>();
 		for(Worker worker : getBotWorkers()) {
@@ -255,6 +323,10 @@ public class BotManager {
 		setIdleWorker(idleWorker);
 	}
 	
+	/**
+	 * Methode qui met a jour la listes des ressources visible par le bot.
+	 * @see Ressource
+	 */
 	public void updateVisibleRessources(){
 		List<Ressource> visibleRessources = new ArrayList<Ressource>();
 		boolean[][] tabFog = fog.getFog();
@@ -272,11 +344,22 @@ public class BotManager {
 		this.setVisibleRessources(visibleRessources);
 	}
 	
+	/**
+	 * Methode qui calcule la distance entre deux positions.
+	 * 
+	 * @see Position
+	 * @param position Position de reference.
+	 * @param position2 Position a comparer.
+	 * @return La distance entre les deux position sous forme d'entier.
+	 */
 	public int calculate(Position position, Position position2)
 	{
 		return (int) Math.sqrt(Math.pow(position.getX() - position2.getX(), 2) + Math.pow(position.getY() - position2.getY(), 2));
 	}
 	
+	/**
+	 * Methode qui met a jour les variable qui definissent si un batiment est construit.
+	 */
 	public void updateBuiltBuildings() {
 		setArcheryBuilt(false);
 		setBarrackBuilt(false);
@@ -333,6 +416,12 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Methode qui retourne un nombre aléatoire entre deux bornes.
+	 * @param min Borne minimum.
+	 * @param max Borne maximum.
+	 * @return un entier aleatoire.
+	 */
     public int getRandomNumberInRange(int min, int max) {
         if (min <= max) {
         	Random r = new Random();
@@ -343,8 +432,67 @@ public class BotManager {
             return r.nextInt((min - max) + 1) + max;
         }
     }
+    
+    /**
+     * Methode qui calcule la ressource la plus proche d'un worker.
+     * @see Ressource
+     * @see Worker
+     * @param visibleRessources Liste des ressources visible
+     * @param worker Worker de reference
+     * @return La ressource la plus proche
+     */
+    public Ressource getClosestRessource(List<Ressource> visibleRessources, Worker worker) {
+		Ressource ressource = visibleRessources.get(0);
+		for(Ressource visibleRessource : visibleRessources) { //choisi la ressource la plus proche du worker
+			int distanceRessource;
+			distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
+			if(distanceRessource > calculate(visibleRessource.getPosition(), worker.getPosition()) && visibleRessource.getHp() > 0 ){
+				ressource = visibleRessource;
+			}
+		}
+		
+		return ressource;
+	}
 	
-	//states--------------------------------------------------------------------------------------------
+    /**
+     * Methode qui calcule la ressource la plus proche d'un site de construction.
+     * @see Ressource
+     * @see SiteConstruction
+     * @param visibleRessources Liste des ressources visible
+     * @param sc Site de construction de reference
+     * @return La ressource la plus proche
+     */
+	public Ressource getClosestRessource(List<Ressource> visibleRessources, SiteConstruction sc) {
+		Ressource ressource = visibleRessources.get(0);
+		for(Ressource visibleRessource : visibleRessources) { //choisi la ressource la plus proche du worker
+			int distanceRessource;
+			distanceRessource = calculate(ressource.getPosition(), sc.getPosition());
+			if(distanceRessource > calculate(visibleRessource.getPosition(), sc.getPosition()) && visibleRessource.getHp() > 0 ){
+				ressource = visibleRessource;
+			}
+		}
+		
+		return ressource;
+	}
+	
+	/**
+	 * Methode appelee par le EntitiesManager afin de remetre a zero les variables resposables de la construction une fois que le site de construction est place.
+	 */
+	public void buildBuilding() {
+		buildingInAttempt = false;
+		tileToBuild = null;
+		updateBuiltBuildings();
+		idToBuild = -1;
+	}
+	
+	//states--------------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Methode de l'etat d'exploration du bot.
+	 * <p>
+	 * Elle selectionne les explorateur et gere leur exploration.
+	 * @see Fog
+	 */
 	public void explore() {
 		if(getHq() == null) {
 			for(ProductionBuilding building : getBotProdBuildings()) {
@@ -526,6 +674,15 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Methode qui gere l'etat de recolte du bot.
+	 * <p>
+	 * Elle gere les worker pour les faire recolter des ressources et construire des batiment de storage.
+	 * @see Worker
+	 * @see StorageBuilding
+	 * @see SiteConstruction
+	 * @see Ressource
+	 */
 	public void recolte() {
 		updateVisibleRessources();
 		updateIdleWorker();
@@ -606,6 +763,14 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Methode qui gere l'etat de production de worker du bot.
+	 * <p>
+	 * Elle gere le hq afin de produire des Worker.
+	 * @see Worker
+	 * @see ProductionBuilding
+	 * @see Hq
+	 */
 	public void prodWorker() {
 		if(botWorkers.size() < BotConfiguration.MAX_WORKER) {
 			if(getMoney() > priceOfEntity.get(EntityConfiguration.WORKER)) {
@@ -622,39 +787,14 @@ public class BotManager {
 		}
 	}
 	
-	public Ressource getClosestRessource(List<Ressource> visibleRessources, Worker worker) {
-		Ressource ressource = visibleRessources.get(0);
-		for(Ressource visibleRessource : visibleRessources) { //choisi la ressource la plus proche du worker
-			int distanceRessource;
-			distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
-			if(distanceRessource > calculate(visibleRessource.getPosition(), worker.getPosition()) && visibleRessource.getHp() > 0 ){
-				ressource = visibleRessource;
-			}
-		}
-		
-		return ressource;
-	}
-	
-	public Ressource getClosestRessource(List<Ressource> visibleRessources, SiteConstruction sc) {
-		Ressource ressource = visibleRessources.get(0);
-		for(Ressource visibleRessource : visibleRessources) { //choisi la ressource la plus proche du worker
-			int distanceRessource;
-			distanceRessource = calculate(ressource.getPosition(), sc.getPosition());
-			if(distanceRessource > calculate(visibleRessource.getPosition(), sc.getPosition()) && visibleRessource.getHp() > 0 ){
-				ressource = visibleRessource;
-			}
-		}
-		
-		return ressource;
-	}
-	
-	public void buildBuilding() {
-		buildingInAttempt = false;
-		tileToBuild = null;
-		updateBuiltBuildings();
-		idToBuild = -1;
-	}
-	
+	/**
+	 * Methode qui gere l'etat de passage d'age du bot.
+	 * <p>
+	 * Elle gere l'hq pour passer a l'age suivant.
+	 * @see Hq
+	 * @see ProductionBuilding
+	 * @see ForUpgrade
+	 */
 	public void nextAge() {
 		if(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getAge() != 3) {
 			for(ProductionBuilding building : getBotProdBuildings()) {
@@ -692,6 +832,11 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Methode qui gere l'etat de placement de batiment du bot.
+	 * <p>
+	 * Elle choisie l'emplacement de diffrent type de batiment selon certain critere.
+	 */
 	public void placeBuildings() {
 		updateBuiltBuildings();
 		updateMoney();
@@ -917,6 +1062,12 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Methode qui gere l'etat de construction de batiment du bot.
+	 * <p>
+	 * Elle gere les Worker pour les repartir sur les different site de construction.
+	 * @see Worker
+	 */
 	public void constructBuilding() {
 		updateIdleWorker();
 		if(getSiteConstructions() != null) {
@@ -970,6 +1121,13 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Methode qui gere la production de l'armee du bot.
+	 * <p>
+	 * Elle gere les different batiment de production afin de produire des fighter et de les assembler en une armee.
+	 * @see ProductionBuilding
+	 * @see Fighter
+	 */
 	public void prodArmy() {
 		int nbIfantry = 0;
 		int nbCavalry = 0;
@@ -1055,6 +1213,13 @@ public class BotManager {
 		}
 	}
 	
+	/**
+	 * Methode qui gere l'etat d'attack du bot.
+	 * <p>
+	 * Elle selectionne l'armee et l'envoi attaquer l'unite ennemie visible la plus proche.
+	 * @see Fighter
+	 * @see Unit
+	 */
 	public void attack() {
         if(getArmy().isEmpty() == false) {
             if(buildingEnnemieVisible.isEmpty() == false) {
@@ -1108,6 +1273,14 @@ public class BotManager {
         }
     }
 	
+	/**
+	 * Methode qui gere l'etat de production d'amelioration du bot.
+	 * <p>
+	 * Elle gere la forge afin de produire des upgrades.
+	 * @see ProductionBuilding
+	 * @see Forge
+	 * @see ForUpgrade
+	 */
 	public void prodUpgrade() {
 		if(isForgeBuilt() == true) {
 			for(ProductionBuilding building : getBotProdBuildings()) {
@@ -1136,7 +1309,8 @@ public class BotManager {
 		}
 	}
 	
-	//getter & setter
+	//getter & setter ----------------------------------------------------------------------------------------------------------
+	
 	public FactionManager getFactionManager() {
 		return factionManager;
 	}
