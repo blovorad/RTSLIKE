@@ -68,7 +68,6 @@ public class BotManager {
 	private List<Worker> builders;
 	private List<Fighter> army;
 	private AbstractMap<Integer, Boolean> upgrades;
-	private List<Tile> forbiddenTiles;
 	
 	public BotManager(FactionManager factionManager, GraphicsManager graphicsManager, Map map) {
 		setBarrackBuilt(false);
@@ -119,7 +118,6 @@ public class BotManager {
 		builders = new ArrayList<Worker>();
 		army = new ArrayList<Fighter>();
 		upgrades = new HashMap<Integer, Boolean>();
-		forbiddenTiles = new ArrayList<Tile>();
 		for(int i = EntityConfiguration.ARMOR_UPGRADE; i <= EntityConfiguration.SIGHT_RANGE_UPGRADE; i++) {
 			upgrades.put(i, false);
 		}
@@ -498,9 +496,11 @@ public class BotManager {
 			int placeY = getRandomNumberInRange(0, GameConfiguration.LINE_COUNT - 1);
 			while(destinationFound == false) {
 				if(tabFog[placeY][placeX] == true) {
-					destinationFound = true;
+					if(map.getTile(placeY, placeX).isSolid() == false) {
+						destinationFound = true;
+					}
 				}
-				else {
+				if(destinationFound == false) {
 					placeX = getRandomNumberInRange(0, GameConfiguration.COLUMN_COUNT -1); // line column ?
 					placeY = getRandomNumberInRange(0, GameConfiguration.LINE_COUNT - 1);
 				}
@@ -1351,11 +1351,4 @@ public class BotManager {
 		this.upgrades = upgrades;
 	}
 
-	public List<Tile> getForbiddenTiles() {
-		return forbiddenTiles;
-	}
-
-	public void setForbiddenTiles(List<Tile> forbiddenTiles) {
-		this.forbiddenTiles = forbiddenTiles;
-	}
 }
