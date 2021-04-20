@@ -204,6 +204,29 @@ public class Unit extends Entity
 		Node currentNode = new Node(new Position((p.getX() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE, (p.getY() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE));
 		List<Node> nodes = new ArrayList<Node>();
 		Tile[][] tiles = map.getTiles();
+		
+		int sightRangeX = (p.getX() - this.getSightRange() / 3) / GameConfiguration.TILE_SIZE;
+		int sightRangeY = (p.getX() - this.getSightRange() / 3) / GameConfiguration.TILE_SIZE;
+		if(sightRangeX < 0) {
+			sightRangeX = 0;
+		}
+		else if(sightRangeX >= GameConfiguration.COLUMN_COUNT) {
+			sightRangeX = GameConfiguration.COLUMN_COUNT - 1;
+		}
+		if(sightRangeY < 0) {
+			sightRangeY = 0;
+		}
+		else if(sightRangeY >= GameConfiguration.LINE_COUNT) {
+			sightRangeY = GameConfiguration.LINE_COUNT - 1;
+		}
+		int sightRangeW = (sightRangeX + this.getSightRange()) / GameConfiguration.TILE_SIZE;
+		int sightRangeH = (sightRangeY + this.getSightRange()) / GameConfiguration.TILE_SIZE;
+		if(sightRangeW >= GameConfiguration.COLUMN_COUNT) {
+			sightRangeW = GameConfiguration.COLUMN_COUNT - 1;
+		}
+		if(sightRangeH >= GameConfiguration.LINE_COUNT) {
+			sightRangeH = GameConfiguration.LINE_COUNT - 1;
+		}
 		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
 		//System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 		
@@ -295,16 +318,7 @@ public class Unit extends Entity
 						nodes.add(node);
 					}
 				}*/
-				/*for(int j = currentNode.getPosition().getY() - 1; j < maxY; j++) {
-					for(int i = currentNode.getPosition().getX() - 1; i < maxX; i++) {
-						if(tiles[j][i].isSolid() == false) {
-							if(j != bis.getY() / GameConfiguration.TILE_SIZE && i != bis.getX() / GameConfiguration.TILE_SIZE) {
-								Node node = new Node(new Position(i, j));
-								nodes.add(node);
-							}
-						}
-					}
-				}*/
+				
 				//System.out.println("FINAL NODE POS : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 				currentNode = path.generatePath(nodes, finalNode, currentNode);
 				//System.out.println("currentNOde pos :" + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
@@ -374,40 +388,6 @@ public class Unit extends Entity
 					}
 				}
 				
-				/*if(bis.getY() - 1 >= 0 && bis.getX() - 1 >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
-					if(tiles[bis.getY() - 1][bis.getX() - 1].isSolid() == false) {
-						Node node = new Node(new Position(bis.getX() - 1, bis.getY() - 1));
-						nodes.add(node);
-					}
-				}
-				if(bis.getY() + 1 >= 0 && bis.getX() - 1 >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() - 1 < GameConfiguration.COLUMN_COUNT) {
-					if(tiles[bis.getY() + 1][bis.getX() - 1].isSolid() == false) {
-						Node node = new Node(new Position(bis.getX() - 1, bis.getY() + 1));
-						nodes.add(node);			
-					}
-				}
-				if(bis.getY() - 1 >= 0 && bis.getX() + 1 >= 0 && bis.getY()  - 1 < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
-					if(tiles[bis.getY() - 1][bis.getX() + 1].isSolid() == false) {
-						Node node = new Node(new Position(bis.getX() + 1, bis.getY() - 1));
-						nodes.add(node);
-					}
-				}
-				if(bis.getY() + 1 >= 0 && bis.getX() + 1 >= 0 && bis.getY() + 1 < GameConfiguration.LINE_COUNT && bis.getX() + 1 < GameConfiguration.COLUMN_COUNT) {
-					if(tiles[bis.getY() + 1][bis.getX() + 1].isSolid() == false) {
-						Node node = new Node(new Position(bis.getX() + 1, bis.getY() + 1));
-						nodes.add(node);
-					}
-				}*/
-				/*for(int j = currentNode.getPosition().getY() - 1; j < maxY; j++) {
-					for(int i = currentNode.getPosition().getX() - 1; i < maxX; i++) {
-						if(tiles[j][i].isSolid() == false) {
-							if(j != bis.getY() / GameConfiguration.TILE_SIZE && i != bis.getX() / GameConfiguration.TILE_SIZE) {
-								Node node = new Node(new Position(i, j));
-								nodes.add(node);
-							}
-						}
-					}
-				}*/
 				//System.out.println("FINAL NODE POS : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 				currentNode = path.generatePath(nodes, finalNode, currentNode);
 				//System.out.println("currentNOde pos :" + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
@@ -481,6 +461,11 @@ public class Unit extends Entity
 		}*/
 		//else {
 			if(finalNode != null && finalPosition != null) {
+				if(this.getTargetUnit() != null) {
+					if(!finalPosition.equals(this.getTargetUnit().getPosition())) {
+						this.setFinalDestination(this.getTargetUnit().getPosition());
+					}
+				}
 				if(this.getDestination() == null) {
 					this.calculateSpeed(destination.get(0));
 				}

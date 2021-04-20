@@ -2,6 +2,7 @@ package engine.manager;
 
 import configuration.EntityConfiguration;
 import configuration.GameConfiguration;
+import configuration.PositionConfiguration;
 import engine.Faction;
 import engine.Position;
 import engine.map.Map;
@@ -38,16 +39,16 @@ public class GameBuilder {
 		manager.createBotManager(manager.getGraphicsManager(), map);
 		
 		//cr�ation du joueur
-		Tile tile2 = map.getTile(5, 5);
-		Tile tile = map.getTile(5, 9);
+		Tile tile2 = map.getTile(PositionConfiguration.TILE_1_X, PositionConfiguration.TILE_1_Y);
+		Tile tile = map.getTile(PositionConfiguration.TILE_2_X, PositionConfiguration.TILE_2_Y);
 		ForWorker patron = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 		ForFighter patronFighter = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronFighters().get(EntityConfiguration.CAVALRY);
 		
-		Position p1 = new Position(8 * GameConfiguration.TILE_SIZE, 4 * GameConfiguration.TILE_SIZE);
-		Position p2 = new Position(8 * GameConfiguration.TILE_SIZE, 6 * GameConfiguration.TILE_SIZE);
-		Position p3 = new Position(10 * GameConfiguration.TILE_SIZE, 4 * GameConfiguration.TILE_SIZE);
-		Position p4 = new Position(10 * GameConfiguration.TILE_SIZE, 6 * GameConfiguration.TILE_SIZE);
-		Position p5 = new Position(12 * GameConfiguration.TILE_SIZE, 8 * GameConfiguration.TILE_SIZE);
+		Position p1 = new Position(PositionConfiguration.UNIT_1_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_1_Y * GameConfiguration.TILE_SIZE);
+		Position p2 = new Position(PositionConfiguration.UNIT_2_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_2_Y * GameConfiguration.TILE_SIZE);
+		Position p3 = new Position(PositionConfiguration.UNIT_3_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_3_Y * GameConfiguration.TILE_SIZE);
+		Position p4 = new Position(PositionConfiguration.UNIT_4_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_4_Y * GameConfiguration.TILE_SIZE);
+		Position p5 = new Position(PositionConfiguration.UNIT_5_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_5_Y * GameConfiguration.TILE_SIZE);
 		
 		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.PLAYER_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile);
 		manager.createBuilding(EntityConfiguration.STORAGE, EntityConfiguration.PLAYER_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2);
@@ -58,17 +59,16 @@ public class GameBuilder {
 		manager.createFighter(EntityConfiguration.CAVALRY, EntityConfiguration.PLAYER_FACTION, patronFighter, p5, null);
 
 		//cr�ation d'un ennemie
-		tile = map.getTile(84, 84);
-		tile2 = map.getTile(88, 82);
+		tile = map.getTile(PositionConfiguration.TILE_3_X, PositionConfiguration.TILE_3_Y);
+		tile2 = map.getTile(PositionConfiguration.TILE_4_X, PositionConfiguration.TILE_4_Y);
 		patron = manager.getFactionManager().getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getPatronWorkers().get(EntityConfiguration.WORKER);
 		patronFighter = manager.getFactionManager().getFactions().get(EntityConfiguration.BOT_FACTION).getRace().getPatronFighters().get(EntityConfiguration.CAVALRY);
 		
-		p1 = new Position(83 * GameConfiguration.TILE_SIZE, 83 * GameConfiguration.TILE_SIZE);
-		p2 = new Position(83 * GameConfiguration.TILE_SIZE, 85 * GameConfiguration.TILE_SIZE);
-		p3 = new Position(85 * GameConfiguration.TILE_SIZE, 83 * GameConfiguration.TILE_SIZE);
-		p4 = new Position(85 * GameConfiguration.TILE_SIZE, 85 * GameConfiguration.TILE_SIZE);
-		p5 = new Position(81 * GameConfiguration.TILE_SIZE, 81 * GameConfiguration.TILE_SIZE);
-		Position p6 = new Position(70 * GameConfiguration.TILE_SIZE, 80 * GameConfiguration.TILE_SIZE);
+		p1 = new Position(PositionConfiguration.UNIT_6_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_6_Y * GameConfiguration.TILE_SIZE);
+		p2 = new Position(PositionConfiguration.UNIT_7_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_7_Y * GameConfiguration.TILE_SIZE);
+		p3 = new Position(PositionConfiguration.UNIT_8_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_8_Y * GameConfiguration.TILE_SIZE);
+		p4 = new Position(PositionConfiguration.UNIT_9_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_9_Y * GameConfiguration.TILE_SIZE);
+		p5 = new Position(PositionConfiguration.UNIT_10_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_10_Y * GameConfiguration.TILE_SIZE);
 
 		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile);
 		manager.createBuilding(EntityConfiguration.STORAGE, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2);
@@ -77,7 +77,6 @@ public class GameBuilder {
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p3, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p4, null);
 		manager.createFighter(EntityConfiguration.CAVALRY, EntityConfiguration.BOT_FACTION, patronFighter, p5, null);
-		manager.createFighter(EntityConfiguration.CAVALRY, EntityConfiguration.BOT_FACTION, patronFighter, p6, null);
 	}
 	
 }

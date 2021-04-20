@@ -96,56 +96,57 @@ public class Empire extends Race
 	
 	public void initForge()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 2, null, "Forge Empire", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 2, this.getForgeUpgrades(), "Forge Empire", 400, 150));
 	}
 	
 	public void initHq()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(100, 1, null, "Quartier general Empire", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(300, 2, this.getHQUpgrades(), "Quartier general Empire", 400, 250));
 	}
 	
 	public void initCastle()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(100, 3, null, "Chateau Empire", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(400, 3, null, "Chateau Empire", 400, 250));
 	}
 	
 	public void initTower()
 	{
-		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(100, 10, 1, 80 ,10 ,1, "Tour Empire", 100, 25));
+		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(150, 400, 1, 80 ,10 ,1, "Tour Empire", 175));
 	}
 	
 	public void initRessourceStockage()
 	{
-		this.getStorageBuildings().put(EntityConfiguration.STORAGE, new ForStorageBuilding(100 , 1, "Stockage Empire", 100, 20, 25));
+		this.getStorageBuildings().put(EntityConfiguration.STORAGE, new ForStorageBuilding(50 , 1, "Stockage Empire", 300, 50));
 	}
 	
 	public void initBarrack()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.BARRACK, new ForProductionBuilding(100, 1, null, "Caserne Empire", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.BARRACK, new ForProductionBuilding(125, 1, null, "Caserne Empire", 400, 100));
 	}
 	
 	public void initArchery()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(100, 2, null, "Archerie Empire", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(125, 2, null, "Archerie Empire", 400, 100));
 	}
 	
 	public void initStable()
 	{
-		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(100, 2, null, "Ecurie Empire", 100, 20, 25));
+		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(140, 2, null, "Ecurie Empire", 400, 125));
 	}
 	
 	public void initForgeUpgrades()
 	{
-		this.getForgeUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(2, "armure en fer", 5, EntityConfiguration.ARMOR_UPGRADE, 40, 25));
-		this.getForgeUpgrades().put(EntityConfiguration.DAMAGE_UPGRADE, new ForUpgrade(2, "épée en acier", 5, EntityConfiguration.DAMAGE_UPGRADE, 40, 25));
-		this.getForgeUpgrades().put(EntityConfiguration.ATTACK_SPEED_UPGRADE, new ForUpgrade(3, "apprentissage de l'équilibre", 5, EntityConfiguration.ATTACK_SPEED_UPGRADE, 40, 25));
-		this.getForgeUpgrades().put(EntityConfiguration.ATTACK_RANGE_UPGRADE, new ForUpgrade(3, "lame plus longue", 5, EntityConfiguration.ATTACK_RANGE_UPGRADE, 40, 25));
-		this.getForgeUpgrades().put(EntityConfiguration.SIGHT_RANGE_UPGRADE, new ForUpgrade(3, "lunette de vue", 5, EntityConfiguration.SIGHT_RANGE_UPGRADE, 40, 25));
+		this.getForgeUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(2, "armure en fer", 1, EntityConfiguration.ARMOR_UPGRADE, 4, 75));
+		this.getForgeUpgrades().put(EntityConfiguration.DAMAGE_UPGRADE, new ForUpgrade(2, "épée en acier", 1, EntityConfiguration.DAMAGE_UPGRADE, 4, 75));
+		this.getForgeUpgrades().put(EntityConfiguration.ATTACK_SPEED_UPGRADE, new ForUpgrade(3, "apprentissage de l'équilibre", 5, EntityConfiguration.ATTACK_SPEED_UPGRADE, 4, 75));
+		this.getForgeUpgrades().put(EntityConfiguration.ATTACK_RANGE_UPGRADE, new ForUpgrade(3, "lame plus longue", 1, EntityConfiguration.ATTACK_RANGE_UPGRADE, 4, 75));
+		this.getForgeUpgrades().put(EntityConfiguration.SIGHT_RANGE_UPGRADE, new ForUpgrade(3, "lunette de vue", 75, EntityConfiguration.SIGHT_RANGE_UPGRADE, 4, 75));
 	}
 	
 	public void initHQUpgrades()
 	{
 		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE, new ForUpgrade(1, "upgrade age tier 2", 1, EntityConfiguration.AGE_UPGRADE, 7, 300));
-		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE_2, new ForUpgrade(1, "upgrade age tier 3", 1, EntityConfiguration.AGE_UPGRADE_2, 7, 300));
+		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE_2, new ForUpgrade(1, "upgrade age tier 3", 1, EntityConfiguration.AGE_UPGRADE_2, 7, 500));
 	}
+	
 }

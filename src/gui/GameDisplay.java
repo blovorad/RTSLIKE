@@ -207,10 +207,10 @@ public class GameDisplay extends JPanel
 		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
 		
 		for(int i = 0; i < gridPlacement; i++) {
-			if(i == 8) {
+			if(i == PositionConfiguration.LOOSE_BUTTON_PANEL) {
 				panelBis.add(new JButton(new BackToMenuAfterVictory("Retour au Menu")));
 			}
-			else if(i == 3) {
+			else if(i == PositionConfiguration.LOOSE_TEXT_PANEL) {
 				JTextArea area = new JTextArea();
 				area.setText("		Votre faction a perdus\n"
 						+ "		L'adversaire vous a vaincus\n"
@@ -242,10 +242,10 @@ public class GameDisplay extends JPanel
 		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
 		
 		for(int i = 0; i < gridPlacement; i++) {
-			if(i == 8) {
+			if(i == PositionConfiguration.WIN_BUTTON_PANEL) {
 				panelBis.add(new JButton(new BackToMenuAfterVictory("Retour au Menu")));
 			}
-			else if(i == 3) {
+			else if(i == PositionConfiguration.WIN_TEXT_PANEL) {
 				JTextArea area = new JTextArea();
 				area.setText("		Votre faction a gagner\n"
 						+ "		L'adversaire est  vaincus\n"
@@ -285,7 +285,7 @@ public class GameDisplay extends JPanel
 		
 		for(int i = 0; i < gridPlacement; i++)
         {
-        	if(i == 0)
+        	if(i == PositionConfiguration.OPTION_BUTTON_PANEL)
         	{
         		panel.add(new JButton(new GoToOptionFromMainMenuButton("OPTION")));
         	}
@@ -306,7 +306,7 @@ public class GameDisplay extends JPanel
         int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
         for(int i = 0; i < gridPlacement; i++)
         {
-        	if(i == 3)
+        	if(i == PositionConfiguration.J1_BUTTON_PANEL)
         	{
         		JPanel panel2 = new JPanel(new GridLayout(2,0));
         		JLabel p1 = new JLabel("Joueur 1");
@@ -318,7 +318,7 @@ public class GameDisplay extends JPanel
         		panel2.add(boxPlayer1);
                 panel.add(panel2);
         	}
-        	else if(i == 5)
+        	else if(i == PositionConfiguration.J2_BUTTON_PANEL)
         	{
         		JPanel panel2 = new JPanel(new GridLayout(2,0));
         		JLabel p2 = new JLabel("Joueur 2");
@@ -331,7 +331,7 @@ public class GameDisplay extends JPanel
         		panel2.add(boxPlayer2);
                 panel.add(panel2);
         	}
-        	else if(i == 9)
+        	else if(i == PositionConfiguration.EXIT_BUTTON_PANEL)
         	{
         		JButton button = new JButton(new ExitGameButton("QUITTER"));
         		panel.add(button);
@@ -359,19 +359,19 @@ public class GameDisplay extends JPanel
 	    int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
 	    for(int i = 0; i < gridPlacement; i++)
 	    {
-	    	if(i == 0)
+	    	if(i == PositionConfiguration.MAP_CHOOSE_PANEL)
 	        {
 	    		labelMap = new JLabel(map1);
 	            panel.add(labelMap);
 	        }
-	    	else if(i == 1)
+	    	else if(i == PositionConfiguration.CHOOSING_MAP_PANEL)
 	        {
 	    		GridLayout gridLayout2 = new GridLayout(4,2);
 	        	JPanel panel2 = new JPanel(gridLayout2);
 	        	int gridPlacement2 = gridLayout2.getColumns() * gridLayout2.getRows();
 	        	for(int j = 0; j < gridPlacement2; j++)
 	        	{
-	        		if(j == 1)
+	        		if(j == PositionConfiguration.MAP1_BUTTON_PANEL)
 	        		{
 	        	    		 radioButton1 = new JRadioButton(new RadioButton1("map1"));
 	        	    		 radioButton1.setOpaque(false);
@@ -379,21 +379,21 @@ public class GameDisplay extends JPanel
 	        	    	     groupButton.add(radioButton1);
 	        	    	     panel2.add(radioButton1);
 	        	    }
-	        		else if(j == 3)
+	        		else if(j == PositionConfiguration.MAP2_BUTTON_PANEL)
 	        		{
 	        	    	radioButton2 = new JRadioButton(new RadioButton2("map2"));
 	        	    	radioButton2.setOpaque(false);
 	        	    	groupButton.add(radioButton2);
 	        	    	panel2.add(radioButton2);
 	        		}
-	        	    else if(j == 5)
+	        	    else if(j == PositionConfiguration.MAP3_BUTTON_PANEL)
 	        	    {
 	        	    	radioButton3 = new JRadioButton(new RadioButton3("map3"));
 	        	    	radioButton3.setOpaque(false);
 	        	    	groupButton.add(radioButton3);
 	        	    	panel2.add(radioButton3); 
 	        	    }
-	        	    else if(j == 7)
+	        	    else if(j == PositionConfiguration.START_BUTTON_PANEL)
 	        	    {
 	        	    	panel2.add(new JButton(new LaunchGame("LANCER PARTIE")));
 	        	    }
@@ -405,7 +405,7 @@ public class GameDisplay extends JPanel
 	        	    }
 	        	}
 	        		panel2.setOpaque(false);
-	        	     panel.add(panel2);
+	        	    panel.add(panel2);
 	        }
 	        else
 	        {
@@ -427,19 +427,19 @@ public class GameDisplay extends JPanel
 		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
 		for(int i = 0; i < gridPlacement; i++)
 		{
-			if(i == 0)
+			if(i == PositionConfiguration.RESSOURCE_INFO_PANEL)
 			{
 				panel.add(createRessourceInfo());
 			}
-			else if(i == 2)
+			else if(i == PositionConfiguration.GAME_MENU_PANEL)
 			{
 				panel.add(createGameMenuPanel());
 			}
-			else if(i == 9)
+			else if(i == PositionConfiguration.DESCRIPTION_PANEL)
 			{
 				panel.add(createDescriptionPanel());
 			}
-			else if(i == 11) {
+			else if(i == PositionConfiguration.MINIMAP_PANEL) {
 				panel.add(createMinimapPanel());
 			}
 			else{
@@ -459,7 +459,7 @@ public class GameDisplay extends JPanel
 		int gridPlacement = gridLayout.getColumns() * gridLayout.getRows();
 		
 		for(int i = 0; i < gridPlacement; i++) {
-			if(i == 4) {
+			if(i == PositionConfiguration.GAME_PAUSE_PANEL) {
 				panel.add(new JButton(new PauseGameMenu("MENU")));
 			}
 			else {

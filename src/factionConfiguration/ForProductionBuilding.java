@@ -10,9 +10,9 @@ public class ForProductionBuilding extends Patron{
 	
 	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
-	public ForProductionBuilding(int hp, int age, AbstractMap<Integer, ForUpgrade> upgrades, String description, int hpMax, int sightRange, int cost)
+	public ForProductionBuilding(int hp, int age, AbstractMap<Integer, ForUpgrade> upgrades, String description, int sightRange, int cost)
 	{
-		super(hp, age, description, hpMax, sightRange, cost);
+		super(hp, age, description, hp, sightRange, cost);
 		this.upgrades = upgrades;
 	}
 
