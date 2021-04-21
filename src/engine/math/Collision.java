@@ -297,6 +297,12 @@ public class Collision {
 		return false;
 	}
 	
+	/**
+	 * use to see if a entity is in sightRange of an attackers
+	 * @param target
+	 * @param attacker
+	 * @return
+	 */
 	public static boolean collideVision(Entity target , Unit attacker) 
 	{
 		//int sizeAttacker;
