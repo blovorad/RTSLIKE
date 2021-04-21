@@ -3,33 +3,73 @@ package engine.entity.building;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
-
 import engine.Entity;
 import engine.Position;
 import engine.entity.unit.Unit;
 import engine.manager.GraphicsManager;
 import engine.map.Tile;
+
 /**
- * 
- * @author maxime
- *
+ * Class etendant Entity qui definis les batiments capable d'attaquer.
+ * @author Maxime Grodet
+ * @see Entity
  */
 public abstract class AttackBuilding extends Entity{
 
+	/**
+	 * Entier definissant la taille du champ de vision du batiment.
+	 */
 	private int sightRange;
-	private int attakRange;
-	private int attackSpeed;
-	private int damage;
-	private int attackCooldown;
-	private Tile tile;
-	private boolean isBuild;
 	
+	/**
+	 * Entier definissant la distance a laquelle le batiment peut attaquer.
+	 */
+	private int attakRange;
+	
+	/**
+	 * Entier definissantla vitesse d'attaque du batiment.
+	 */
+	private int attackSpeed;
+	
+	/**
+	 * Entier definissant les dommages qu'inflige le batiment a chaque attaque.
+	 */
+	private int damage;
+	
+	/**
+	 * Entier definissant le compteur de temps entre chaque attaque.
+	 */
+	private int attackCooldown;
+	
+	/**
+	 * Case ou se situe le batiment.
+	 */
+	private Tile tile;
+	
+	/**
+	 * Constructeur de l'archery ou tous ses parametres y sont definis.
+	 * 
+	 * @param position Position du batiment.
+	 * @param id Id du batiment.
+	 * @param description Desciption du batiment. 
+	 * @param hpMax Quantite d'hp maximum du batiment.
+	 * @param faction Faction du batiment.
+	 * @param tile Case ou est le batiment.
+	 * @param sightRange Taille du chanmp de vision du batiment.
+	 * @param graphicsManager Lien vers le GraphicsManager
+	 */ 
 	public AttackBuilding(Position position, int id, String description, int hpMax, int faction, Tile tile, int sightRange, GraphicsManager graphicsManager) {
 		super(hpMax, hpMax, description, position, id, faction, sightRange, 0, graphicsManager);
 		this.setTile(tile);
-		this.setIsBuild(false);
 	}
 	
+	/**
+	 * Methode apelle dans EntitiesManager et executee a chaque iteration du jeu.
+	 * <p>
+	 * Elle gere le comportement du batiment et met a jour ses variables.
+	 * @param units Liste des unites presente sur la map.
+	 * @see Unit
+	 */
 	public void update(List<Unit> units) {
 		super.update();
 		if(this.getAttackCooldown() > 0) {
@@ -57,12 +97,19 @@ public abstract class AttackBuilding extends Entity{
 		}
 	}
 	
+	/**
+	 * Methode qui gere l'attque du batiment.
+	 */
 	public  void attak() {
 		this.getTarget().damage(damage);
 	}
 	
-	public void lookForTarget(List<Unit> units)
-	{
+	/**
+	 * Methode qui gere la recherche de cible pour le batiment.
+	 * @param units Liste des unites presente sur la map.
+	 * @see Unit
+	 */
+	public void lookForTarget(List<Unit> units) {
 		AbstractMap<Double,Unit> unitsInRange = new HashMap<Double,Unit>();
 		for(Unit unit : units) {
 			if(unit.getFaction() != this.getFaction()) {
@@ -85,6 +132,12 @@ public abstract class AttackBuilding extends Entity{
 		}
 	}
 	
+	/**
+	 * Methode qui calcule si la cible est dans la rayon d'attaque du batiment.
+	 * @param target Cible du batiment.
+	 * @return {@code true} si elle la target est a distance d'attque sinon {@code false}.
+	 * @see Entity
+	 */
 	public boolean isInRange(Entity target) { // methode qui calcule si la target est dans la range
 		if(target == null) {
 			return false;
@@ -97,6 +150,13 @@ public abstract class AttackBuilding extends Entity{
 		}
 	}
 	
+	/**
+	 * Methode qui calcule la distance entre deux position.
+	 * @param ent1 Entite de reference.
+	 * @param ent2 Entite a comparer.
+	 * @return La distance entre les deux entite.
+	 * @see Position
+	 */
 	public double calculateDistance(Entity ent1, Entity ent2) {
 		return Math.sqrt(Math.pow(ent1.getPosition().getX() - ent2.getPosition().getX(), 2) + Math.pow(ent1.getPosition().getY() - ent2.getPosition().getY(), 2)); //calcule distance entre 2 points
 	}
@@ -147,14 +207,6 @@ public abstract class AttackBuilding extends Entity{
 
 	public void setTile(Tile tile) {
 		this.tile = tile;
-	}
-
-	public boolean getIsBuild() {
-		return isBuild;
-	}
-
-	public void setIsBuild(boolean isBuild) {
-		this.isBuild = isBuild;
 	}
 	
 }

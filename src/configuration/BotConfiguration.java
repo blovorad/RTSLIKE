@@ -1,44 +1,41 @@
 package configuration;
-
 /**
- * 
- * @author gautier
- * class who stock all constant need to bot
+ * Class de configuration pour le BotManager.
+ * @author Maxime Grodet
+ * @see BotManager
  */
 
 public class BotConfiguration {
-	
 	/**
-	 * distance in term of tile if upper then construct a new storage
+	 * Entier definissant la range maximal entre la ressource et le storage.
 	 */
 	public final static int RANGE_RESSOURCE_STORAGE = 10;
 	/**
-	 * max worker of bot, if lower he will build another worker
+	 * Entier definissant la quantite maximum de worker a produire.
 	 */
 	public final static int MAX_WORKER = 10;
-	
 	/**
-	 * max worker of bot, if lower he will build another infantry
+	 * Entier definissant la quantite d'infantry a ajouter dans l'armee.
 	 */
 	public final static int MAX_INFANTRY = 5;
 	/**
-	 * max worker of bot, if lower he will build another archer
+	 * Entier definissant la quantite d'archer a ajouter dans l'armee.
 	 */
 	public final static int MAX_ARCHER = 5;
 	/**
-	 * max worker of bot, if lower he will build another cavalry
+	 * Entier definissant la quantite de cavalier a ajouter dans l'armee.
 	 */
 	public final static int MAX_CAVALRY = 5;
 	/**
-	 * max worker of bot, if lower he will build another special
+	 * Entier definissant la quantite d'unite special a ajouter dans l'armee.
 	 */
 	public final static int MAX_SPECIAL = 5;
 	/**
-	 *	range where building are be building
+	 * Entier definissant la range maximal en l'hq et le storage pour construire une tour.
 	 */
 	public final static int RANGE_HQ = 5;
 	/**
-	 * range if a storage is far away of building a tower will be construct close to storage
+	 * Entier definissant la range max entre un tour et le storage pour construire un tour.
 	 */
 	public final static int RANGE_TOWER = 3;
 }
