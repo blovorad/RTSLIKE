@@ -329,15 +329,15 @@ public class Unit extends Entity
 		//System.out.println("On reverse");
 		if(currentNode != null) {
 			destination = path.reversePath(currentNode);
-			System.out.println("je suis : " + this);
+			/*System.out.println("je suis : " + this);
 			for(Position pos : destination) {
 				System.out.println("Les position : " + pos.getX() / GameConfiguration.TILE_SIZE + "," + pos.getY() / GameConfiguration.TILE_SIZE);
-			}
+			}*/
 		}
 		else {
-			System.out.println("je suis : " + this);
+			/*System.out.println("je suis : " + this);
 			System.out.println("PATH PAS TROUVER");
-			System.out.println("NODE : " + currentNode);
+			System.out.println("NODE : " + currentNode);*/
 			finalPosition = null;
 			finalNode = null;
 			this.setDestination(null);

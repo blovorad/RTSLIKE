@@ -107,23 +107,38 @@ public class PaintStrategyGame
 		int unitSize = EntityConfiguration.UNIT_SIZE;
 		int cavalrySize = EntityConfiguration.CAVALRY_SIZE;
 		
-		Animation animation = entity.getAnimation();
 		
+		int width = GameConfiguration.WINDOW_WIDTH;
+		int height = GameConfiguration.WINDOW_HEIGHT;
+		if(GameConfiguration.launchInFullScreen) {
+			width = Toolkit.getDefaultToolkit().getScreenSize().width;
+			height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		}
+		Position p = entity.getPosition();
+				
+		Animation animation = entity.getAnimation();
+//tilePos.x + tilePos.w >= 0 && tilePos.y + tilePos.h >= 0 && tilePos.x <= GAME_WIDTH && tilePos.y <= GAME_HEIGHT
 		if(entity.getId() == EntityConfiguration.CAVALRY) {
-			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), cavalrySize, cavalrySize, null);
+			if(p.getX() + cavalrySize - camera.getX() >= 0 && p.getY() - camera.getY() + cavalrySize >= 0 && p.getX() - camera.getX() <= width && p.getY() - camera.getY() <= height) {
+				graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), cavalrySize, cavalrySize, null);
+			}
 		}
 		else if(entity.getId() >= EntityConfiguration.INFANTRY &&  entity.getId() <= EntityConfiguration.WORKER) {
-			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), unitSize, unitSize, null);
+			if(p.getX() + unitSize - camera.getX() >= 0 && p.getY() - camera.getY() + unitSize >= 0 && p.getX() - camera.getX() <= width && p.getY() - camera.getY() <= height) {	
+				graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), unitSize, unitSize, null);
+			}
 		}
-		else if(entity.getId() >= EntityConfiguration.FORGE && entity.getId() <= EntityConfiguration.ARCHERY) {
-			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		else {
+			if(p.getX() + tileSize - camera.getX() >= 0 && p.getY() - camera.getY() + tileSize >= 0 && p.getX() - camera.getX() <= width && p.getY() - camera.getY() <= height) {
+				graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), tileSize, tileSize, null);
+			}
 		}
-		else if(entity.getId() == EntityConfiguration.SITE_CONSTRUCTION) {
-			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
+		/*else if(entity.getId() == EntityConfiguration.SITE_CONSTRUCTION) {
+			graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), tileSize, tileSize, null);
 		}
 		else if(entity.getId() == EntityConfiguration.RESSOURCE) {
-			graphics.drawImage(animation.getFrame(), entity.getPosition().getX() - camera.getX(), entity.getPosition().getY() - camera.getY(), tileSize, tileSize, null);
-		}
+			graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), tileSize, tileSize, null);
+		}*/
 		paintLifeBarre(entity, graphics, camera);
 	}
 	
