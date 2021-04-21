@@ -488,8 +488,8 @@ public class BotManager {
 				}
 				Position p5 = new Position(targetX, targetY);
 				getExplorer().setFinalDestination(p5);
-				System.out.println("position nous : " + getExplorer().getPosition().getX() / GameConfiguration.TILE_SIZE + "," + getExplorer().getPosition().getY() / GameConfiguration.TILE_SIZE);
-				System.out.println("position : " + p5.getX() / GameConfiguration.TILE_SIZE + "," + p5.getY() / GameConfiguration.TILE_SIZE);
+				//System.out.println("position nous : " + getExplorer().getPosition().getX() / GameConfiguration.TILE_SIZE + "," + getExplorer().getPosition().getY() / GameConfiguration.TILE_SIZE);
+				//System.out.println("position : " + p5.getX() / GameConfiguration.TILE_SIZE + "," + p5.getY() / GameConfiguration.TILE_SIZE);
 				//getExplorer().setDestination(new Position(targetX, targetY));
 				//getExplorer().calculateSpeed(new Position(targetX, targetY));
 				//System.out.println("cavalier exploring");

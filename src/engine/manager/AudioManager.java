@@ -102,7 +102,7 @@ public class AudioManager {
 	public void startSound(File path) {
 		musique.close();
 		try {
-			System.out.println("tentative nouvelle musique " + currentMusique);
+			//System.out.println("tentative nouvelle musique " + currentMusique);
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(path);
 			musique.open(inputStream);
 			musique.start();

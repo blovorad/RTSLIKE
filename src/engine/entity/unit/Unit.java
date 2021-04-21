@@ -68,7 +68,7 @@ public class Unit extends Entity
 	}
 	
 	public void setFinalDestination(Position position) {
-		this.finalPosition = position;
+		this.finalPosition = new Position(position.getX(), position.getY());
 		finalNode = new Node(new Position(position.getX() / GameConfiguration.TILE_SIZE, position.getY() / GameConfiguration.TILE_SIZE));
 		this.setDestination(null);
 		generatePath = true;
@@ -248,8 +248,8 @@ public class Unit extends Entity
 				else {
 					midY += finalNode.getPosition().getY();
 				}
-				System.out.print("les coordonner : " + midX + "," + midY);
-				System.out.println("TILES : " + tiles[midY][midX].isSolid());
+				//System.out.print("les coordonner : " + midX + "," + midY);
+				//System.out.println("TILES : " + tiles[midY][midX].isSolid());
 				if(tiles[midY][midX].isSolid() == false) {
 					endNode = new Node(new Position(midX, midY));
 					found = true;
@@ -354,6 +354,8 @@ public class Unit extends Entity
 		if(generatePath) {
 			Tile[][] tiles = map.getTiles();
 			if(tiles[finalNode.getPosition().getY()][finalNode.getPosition().getX()].isSolid() == true && this.getTarget() == null && this.getTargetUnit() == null) {
+				finalNode = null;
+				finalPosition = null;
 				generatePath = false;
 			}
 			else {
@@ -365,7 +367,9 @@ public class Unit extends Entity
 			if(this.getTargetUnit() != null) {
 				if(!finalPosition.equals(this.getTargetUnit().getPosition())) {
 					System.out.println("Regenere path car target move");
-					this.setFinalDestination(this.getTargetUnit().getPosition());
+					//if() {
+						this.setFinalDestination(this.getTargetUnit().getPosition());
+					//}
 				}
 			}
 			if(this.getDestination() == null) {

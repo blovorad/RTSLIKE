@@ -1,6 +1,7 @@
 package engine.math;
 
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
@@ -157,7 +158,14 @@ public class Collision {
 			entitySize = EntityConfiguration.CAVALRY_SIZE;
 		}
 		
-		Rectangle r1 = new Rectangle(camera.getX(), camera.getY(), GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
+		int width = GameConfiguration.WINDOW_WIDTH;
+		int height = GameConfiguration.WINDOW_HEIGHT;
+		if(GameConfiguration.launchInFullScreen) {
+			width = Toolkit.getDefaultToolkit().getScreenSize().width;
+			height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		}
+		
+		Rectangle r1 = new Rectangle(camera.getX(), camera.getY(), width, height);
 		Rectangle r2 = new Rectangle(entity.getPosition().getX(), entity.getPosition().getY(), entitySize, entitySize);
 		
 		if(r1.intersects(r2)) {
