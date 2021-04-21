@@ -737,10 +737,10 @@ public class MainGui extends JFrame implements Runnable
 									{
 										//System.out.println("ici");
 										//unit.calculateSpeed(target.getPosition());
-										unit.setFinalDestination(target.getPosition());
-										unit.setCurrentAction(EntityConfiguration.WALK);
-										unit.setTarget(target);
 										if(unit.getFaction() != target.getFaction()) {
+											unit.setFinalDestination(target.getPosition());
+											unit.setCurrentAction(EntityConfiguration.WALK);
+											unit.setTarget(target);
 											isAttack = true;
 										}
 									}
@@ -754,14 +754,23 @@ public class MainGui extends JFrame implements Runnable
 								}
 								else if(listSelectedUnit.isEmpty() == false && targetUnit != null)
 								{
-									audioManager.startFx(5);
+									boolean isAttack = false;
 									for(Unit unit : listSelectedUnit)
 									{
 										//unit.calculateSpeed(targetUnit.getPosition());
-										unit.setFinalDestination(targetUnit.getPosition());
-										unit.setCurrentAction(EntityConfiguration.WALK);
-										unit.setTarget(targetUnit);
-										unit.setTargetUnit(targetUnit);
+										if(unit.getFaction() != targetUnit.getFaction()) {
+											unit.setFinalDestination(targetUnit.getPosition());
+											unit.setCurrentAction(EntityConfiguration.WALK);
+											unit.setTarget(targetUnit);
+											unit.setTargetUnit(targetUnit);
+											isAttack = true;
+										}
+									}
+									if(isAttack == false) {
+										audioManager.startFx(3);
+									}
+									else {
+										audioManager.startFx(5);
 									}
 								}
 								else if(listSelectedUnit.isEmpty() == false && target == null) {
