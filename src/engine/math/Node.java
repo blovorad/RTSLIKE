@@ -2,6 +2,12 @@ package engine.math;
 
 import engine.Position;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class Node {
 	
 	private Node parent;
@@ -29,7 +35,7 @@ public class Node {
 	}
 	
 	public boolean recalculateF(Node parent, Position p2) {
-		System.out.println("Recalculate");
+		//System.out.println("Recalculate");
 		int gBis = this.g;
 		int hBis = this.h;
 		int fBis = this.f;

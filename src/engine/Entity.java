@@ -5,30 +5,86 @@ import engine.manager.GraphicsManager;
 /**
  * 
  * @author gautier
- *
+ *	this class is core this is the first class of all entity of the game
+ *	like fighter, worker, building and ressource
+ *	not abstract because we need it to draw all entity
  */
 public class Entity 
 {
+	/**
+	 * hp of entity
+	 */
 	private int hp;
+	/**
+	 * max hp entity can have
+	 */
 	private int hpMax;
+	/**
+	 * line of sight of entity
+	 */
 	private int sightRange;
+	/**
+	 * description of entity use to print on panel
+	 */
 	private String description;
 	
+	/**
+	 * position of entity
+	 */
 	private Position position;
+	/**
+	 * if have a target
+	 */
 	private Entity target;
+	/**
+	 * destination use to move
+	 */
 	private Position destination;
 	
+	/**
+	 * faction of the entity
+	 */
 	private int faction;
+	/**
+	 * id if this is a building, ressource, unit
+	 */
 	private int id;
 	
+	/**
+	 * if entity getting damage
+	 */
 	private boolean isHit;
+	/**
+	 * how many before can be hit again
+	 */
 	private int timerHit;
 	
+	/**
+	 * if entity is selected
+	 */
 	private boolean selected;
+	/**
+	 * if we need to remove it because hp < 0
+	 */
 	private boolean remove;
 	
+	/**
+	 * stock the animation
+	 */
 	private Animation animation;
 	
+	/**
+	 * constructor of entity
+	 * @param hp hp of entity
+	 * @param hpMax hpMax of entity
+	 * @param description description use on panel
+	 * @param position current position of entity
+	 * @param id id of the entity
+	 * @param faction faction of the entity
+	 * @param sightRange sightRange of the entity
+	 * @param maxFrame max frame use to this entity
+	 * @param graphicsManager need to create animation
+	 */
 	public Entity(int hp, int hpMax, String description, Position position, int id, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{
 		this.hp = hp;
@@ -66,13 +122,21 @@ public class Entity
 		animation.update();
 	}
 	
+	/**
+	 * active if the entity is getting damage
+	 * @param damage number of damage soustract with hp
+	 */
 	public void damage(int damage)
 	{
 		this.setHp(this.getHp() - damage);
 		this.setHit(true);
 		this.setTimerHit(EntityConfiguration.MAX_TIME_HIT_ANIMATION);
 	}
-
+	
+	/**
+	 * active if the entity is getting heal
+	 * @param hp number of hp add with hp
+	 */
 	public void heal(int hp)
 	{
 		this.setHp(this.getHp() + hp);

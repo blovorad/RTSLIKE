@@ -6,6 +6,12 @@ import java.util.List;
 import configuration.GameConfiguration;
 import engine.Position;
 
+/**
+ * 
+ * @author gautier
+ *
+ */
+
 public class Path {
 	private List<Node> closeList;
 	private List<Node> openList;
@@ -26,10 +32,10 @@ public class Path {
 			boolean in = false;
 			for(Node openNode : openList){
 				if(node.getPosition().equals(openNode.getPosition())) {
-					/*if(node.recalculateF(currentNode, finalNode.getPosition())) {
+					if(node.recalculateF(currentNode, finalNode.getPosition())) {
 						closeList.add(node);
 						removeListOpen.add(node);
-					}*/
+					}
 					in = true;
 					break;
 				}

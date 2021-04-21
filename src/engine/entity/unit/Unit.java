@@ -366,10 +366,11 @@ public class Unit extends Entity
 		if(finalNode != null && finalPosition != null) {
 			if(this.getTargetUnit() != null) {
 				if(!finalPosition.equals(this.getTargetUnit().getPosition())) {
-					System.out.println("Regenere path car target move");
-					//if() {
+					/*int distance = Math.abs(p.getX() - targetUnit.getPosition().getX()) + Math.abs(p.getY() - targetUnit.getPosition().getY());
+					if(distance < this.getSightRange()) {
 						this.setFinalDestination(this.getTargetUnit().getPosition());
-					//}
+						System.out.println("Regenere path car target move");
+					}*/
 				}
 			}
 			if(this.getDestination() == null) {
@@ -406,7 +407,7 @@ public class Unit extends Entity
 							}
 							else {
 									//System.out.println("GENERATION PATH : " + generatePath);
-								System.out.println("On regenère un path 1");
+								//System.out.println("On regenère un path 1");
 								generatePath = true;
 							}
 						}
@@ -428,7 +429,7 @@ public class Unit extends Entity
 							finalPosition = null;
 						}
 						else {
-							System.out.println("On regenère un path 2");
+							//System.out.println("On regenère un path 2");
 							//System.out.println("GENERATION PATH : " + generatePath);
 							generatePath = true;
 						}

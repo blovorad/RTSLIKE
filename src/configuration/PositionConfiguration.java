@@ -3,7 +3,7 @@ package configuration;
 /**
  * 
  * @author gautier
- *
+ *	this class contain all constant use for positing all panel and faction at the start of the game
  */
 
 public class PositionConfiguration {

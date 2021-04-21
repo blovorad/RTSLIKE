@@ -8,23 +8,55 @@ import configuration.GameConfiguration;
 /**
  * 
  * @author gautier
- *
+ *	this class is used to permit scrolling and select entity in the map
  */
 
 public class Camera 
 {
+	/**
+	 * x of the camera
+	 */
 	private int x;
+	/**
+	 * y of the camera
+	 */
 	private int y;
 	
+	/**
+	 * using for collider with mousePos
+	 */
 	private int rectX;
+	/**
+	 * using for collider with mousePos
+	 */
 	private int rectY;
+	/**
+	 * using for collider with mousePos
+	 */
 	private int rectW;
+	/**
+	 * using for collider with mousePos
+	 */
 	private int rectH;
 	
+	/**
+	 * speed of the scrolling
+	 */
 	private Speed speed;
+	/**
+	 * dim of the screen width for better acces
+	 */
 	private int screenWidth;
+	/**
+	 * dim of the screen height for better acces
+	 */
 	private int screenHeight;
 	
+	/**
+	 *	constructor of the camera 
+	 * @param width width of the game screen
+	 * @param height height of the game screen
+	 */
 	public Camera(int width, int height)
 	{
 		this.x = 0;
@@ -46,16 +78,27 @@ public class Camera
 		}
 	}
 	
+	/**
+	 * get of x
+	 * @return int to know x position of the camera
+	 */
 	public int getX()
 	{
 		return this.x;
 	}
 	
+	/**
+	 * get of y
+	 * @return int to know y position of the camera
+	 */
 	public int getY()
 	{
 		return this.y;
 	}
 	
+	/**
+	 * core function who move the camera, if we have a speed of course
+	 */
 	public void update()
 	{
 		x  += this.getSpeed().getVx();
@@ -83,6 +126,11 @@ public class Camera
 		}
 	}
 	
+	/**
+	 * using to set the camera speed
+	 * @param vx velocity x of camera
+	 * @param vy velocity y of camera
+	 */
 	public void move(float vx, float vy)
 	{
 		this.getSpeed().setVx(vx);
@@ -99,6 +147,9 @@ public class Camera
 		this.speed = speed;
 	}
 	
+	/**
+	 * reset the camera pos, and the speed
+	 */
 	public void reset()
 	{
 		x = 0;
