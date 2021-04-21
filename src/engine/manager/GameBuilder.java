@@ -13,11 +13,18 @@ import factionConfiguration.ForWorker;
 /**
  * 
  * @author maxime
- *
+ *	this class is require to build a game, when you press startGame in Main menu screen
  */
 
 public class GameBuilder {
-
+	
+	/**
+	 * static method who build a map
+	 * @param selectedMap the current map to build
+	 * @param graphicsManager to get all texture of the map
+	 * @param manager require to give him all ressource that need to be build
+	 * @return the current map build
+	 */
 	public static Map buildMap(int selectedMap, GraphicsManager graphicsManager, EntitiesManager manager) {
 		
 		Map map;
@@ -27,6 +34,13 @@ public class GameBuilder {
 		return map;
 	}
 	
+	/**
+	 * this method build all faction of the game
+	 * @param manager to add all faction
+	 * @param idfaction1 faction player1
+	 * @param idfaction2 faction player2
+	 * @param map to place all unit and building with tile position
+	 */
 	public static void buildFaction(EntitiesManager manager, int idfaction1, int idfaction2, Map map) {
 		
 		Faction faction1 = new Faction(idfaction1);

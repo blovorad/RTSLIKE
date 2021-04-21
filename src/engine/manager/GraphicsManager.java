@@ -13,7 +13,7 @@ import configuration.MapConfiguration;
 /**
  * 
  * @author gautier
- *
+ * this class is require to manage and conserv all bufferedImage of the game
  */
 
 public class GraphicsManager {
@@ -68,6 +68,10 @@ public class GraphicsManager {
 	
 	private BufferedImage panelGaucheBas;
 	
+	/**
+	 * constructor
+	 * load all building and tile texture
+	 */
 	public GraphicsManager() {		
 		try {
 			
@@ -137,6 +141,9 @@ public class GraphicsManager {
 		initWaterGraphics();
 	}
 	
+	/**
+	 * load all water graphics
+	 */
 	private void initWaterGraphics() {
 		water = new BufferedImage[1][9];
 		try {
@@ -155,6 +162,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load all tree
+	 */
 	private void initTreeGraphics() {
 		tree = new BufferedImage[1][3];
 
@@ -169,6 +179,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load player cavalry texture
+	 */
 	private void initCavalryPlayerGraphics() {
 		BufferedImage cavalryImage = null;
 		
@@ -228,6 +241,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load player worker texture
+	 */
 	private void initWorkerPlayerGraphics() {
 		BufferedImage workerImage = null;
 		
@@ -260,6 +276,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load infantry player texture
+	 */
 	private void initInfantryPlayerGraphics() {
 		BufferedImage infantryImage = null;
 		
@@ -293,6 +312,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load player archer texture
+	 */
 	private void initArcherPlayerGraphics() {
 		BufferedImage archerImage = null;
 		
@@ -326,6 +348,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load special unit player texture
+	 */
 	private void initSpecialPlayerGraphics() {
 		BufferedImage specialImage = null;
 		
@@ -359,6 +384,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load bot cavalry texture
+	 */
 	private void initCavalryBotGraphics() {
 		BufferedImage cavalryImage = null;
 		
@@ -418,6 +446,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load bot worker texture
+	 */
 	private void initWorkerBotGraphics() {
 		BufferedImage workerImage = null;
 		
@@ -450,6 +481,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load bot infantry texture
+	 */
 	private void initInfantryBotGraphics() {
 		BufferedImage infantryImage = null;
 		
@@ -483,6 +517,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load bot archer texture
+	 */
 	private void initArcherBotGraphics() {
 		BufferedImage archerImage = null;
 		
@@ -516,6 +553,9 @@ public class GraphicsManager {
 		}
 	}
 	
+	/**
+	 * load bot special unit texture
+	 */
 	private void initSpecialBotGraphics() {
 		BufferedImage specialImage = null;
 		
