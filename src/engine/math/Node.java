@@ -5,17 +5,36 @@ import engine.Position;
 /**
  * 
  * @author gautier
- *
+ * this class represent a node, use for A* algorithm
  */
 
 public class Node {
 	
+	/**
+	 * parent of the node
+	 */
 	private Node parent;
+	/**
+	 * cost of moving
+	 */
 	private int g;
+	/**
+	 * distance to final Node
+	 */
 	private int h;
+	/**
+	 * g + h
+	 */
 	private int f;
+	/**
+	 * pos in term of position in tab of map
+	 */
 	private Position p;
-		
+	
+	/**
+	 * constructor
+	 * @param p position in tab of map
+	 */
 	public Node(Position p) {
 		this.p = p;
 		this.g = 0;
@@ -24,6 +43,11 @@ public class Node {
 		this.parent = null;
 	}
 	
+	/**
+	 * this method calculate a cost of a node
+	 * @param parent, his parent
+	 * @param p2, final destination pos
+	 */
 	public void calculateCost(Node parent, Position p2) {
 		//System.out.println("parent G : " + parent.getG());
 		g = parent.getG() + 10;
@@ -34,6 +58,12 @@ public class Node {
 		this.parent = parent;
 	}
 	
+	/**
+	 * this method recalculate cost to see if a parent of current node is a better way
+	 * @param parent
+	 * @param p2
+	 * @return true if it is a better way
+	 */
 	public boolean recalculateF(Node parent, Position p2) {
 		//System.out.println("Recalculate");
 		int gBis = this.g;

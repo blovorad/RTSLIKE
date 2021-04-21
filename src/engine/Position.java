@@ -1,8 +1,5 @@
 package engine;
 
-import configuration.EntityConfiguration;
-import configuration.GameConfiguration;
-
 /**
  * 
  * @author gautier

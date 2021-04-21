@@ -12,17 +12,37 @@ import engine.manager.GraphicsManager;
 /**
  * 
  * @author gautier
- *
+ *	this class represent the map of the game
  */
 
 public class Map {
+	/**
+	 * tile tab
+	 */
 	private Tile[][] tiles;
 	
+	/**
+	 * size width map
+	 */
 	private int columnCount;
+	/**
+	 * size height map
+	 */
 	private int lineCount;
 	
+	/**
+	 * list of each ressource of map
+	 */
 	private List<Tile> goldTiles;
 	
+	/**
+	 * constructor of map
+	 * @param line size height map
+	 * @param column size width map
+	 * @param id of the map
+	 * @param fileName to search the correct file to read map
+	 * @param graphicsManager needing to give bufferedImage on a tile
+	 */
 	public Map(int line, int column, int id, String fileName, GraphicsManager graphicsManager){
 		this.columnCount = column;
 		this.lineCount = line;

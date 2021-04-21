@@ -6,15 +6,31 @@ import configuration.GameConfiguration;
 
 /**
  * @author gautier
+ * this class represent the minimap who will be print on the right side of screen
  */
 public class Minimap {
 	
-	//variable for generate Minimap	
+	/**
+	 * where the minimap start X
+	 */
 	private int firstGridXOfMap;
+	/**
+	 * where the minimap start Y
+	 */
 	private int firstGridYOfMap;
+	/**
+	 * max size width of map
+	 */
 	private int gridMapWidth;
+	/**
+	 * max size height of map
+	 */
 	private int gridMapHeight;
 	
+	/**
+	 * constructor of minimap
+	 * @param minimapPanel the panel where the minimap will be print
+	 */
 	public Minimap(JPanel minimapPanel) {
 		
 		int panelOffset = 10;

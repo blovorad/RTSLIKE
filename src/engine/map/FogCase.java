@@ -3,12 +3,21 @@ package engine.map;
 /**
  * 
  * @author gautier
- *
+ * this class is need to manage dynamic fog that represent each case(tile) of fog
  */
 public class FogCase {
+	/**
+	 * if we see this case, true if we can't see this case
+	 */
 	private boolean visible;
+	/**
+	 * if the case is locked, already analyze
+	 */
 	private boolean locked;
 	
+	/**
+	 * constructor
+	 */
 	public FogCase() {
 		this.visible = false;
 		this.locked = false;
