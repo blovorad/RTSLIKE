@@ -117,7 +117,7 @@ public class PaintStrategyGame
 		Position p = entity.getPosition();
 				
 		Animation animation = entity.getAnimation();
-//tilePos.x + tilePos.w >= 0 && tilePos.y + tilePos.h >= 0 && tilePos.x <= GAME_WIDTH && tilePos.y <= GAME_HEIGHT
+
 		if(entity.getId() == EntityConfiguration.CAVALRY) {
 			if(p.getX() + cavalrySize - camera.getX() >= 0 && p.getY() - camera.getY() + cavalrySize >= 0 && p.getX() - camera.getX() <= width && p.getY() - camera.getY() <= height) {
 				graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), cavalrySize, cavalrySize, null);
@@ -204,17 +204,28 @@ public class PaintStrategyGame
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
 		Tile[][] tiles = map.getTiles();
+		int width = GameConfiguration.WINDOW_WIDTH;
+		int height = GameConfiguration.WINDOW_HEIGHT;
+		if(GameConfiguration.launchInFullScreen) {
+			width = Toolkit.getDefaultToolkit().getScreenSize().width;
+			height = Toolkit.getDefaultToolkit().getScreenSize().height;
+		}
 		//draw map
 		for (int lineIndex = 0; lineIndex < map.getLineCount(); lineIndex++) 
 		{
 			for (int columnIndex = 0; columnIndex < map.getColumnCount(); columnIndex++) 
 			{
 				Tile tile = tiles[lineIndex][columnIndex];
-				Animation animation = tile.getAnimation();
-				graphics.drawImage(graphicsManager.getGrassTile(), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
-				graphics.drawImage(animation.getFrame(), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
-				/*graphics.setColor(Color.white);
-				graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);*/
+//tilePos.x + tilePos.w >= 0 && tilePos.y + tilePos.h >= 0 && tilePos.x <= GAME_WIDTH && tilePos.y <= GAME_HEIGHT
+				if(tile.getColumn() * tileSize - camera.getX() + tileSize >= 0 
+					&& tile.getLine() * tileSize - camera.getY() + tileSize >= 0 
+					&& tile.getColumn() * tileSize - camera.getX() <= width && tile.getLine() * tileSize - camera.getY() <= height) {
+					Animation animation = tile.getAnimation();
+					graphics.drawImage(graphicsManager.getGrassTile(), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
+					graphics.drawImage(animation.getFrame(), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
+					/*graphics.setColor(Color.white);
+					graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);*/
+				}
 			}
 		}
 	}
