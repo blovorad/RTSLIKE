@@ -106,6 +106,10 @@ public class Entity
 		this.setRemove(false);
 	}
 	
+	/**
+	 * core function of all entity it regards if the entity no need to be remove
+	 * or if timerHit is 0
+	 */
 	public void update()
 	{
 		if(this.isHit) {
