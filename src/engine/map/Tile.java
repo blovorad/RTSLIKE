@@ -9,17 +9,42 @@ import engine.manager.GraphicsManager;
 /**
  * 
  * @author gautier
- *
+ *	this class represent a case of a map
  */
 
 public class Tile {
+	/**
+	 * pos Y
+	 */
 	private int line;
+	/**
+	 * pos Y
+	 */
 	private int column;
+	/**
+	 * id of tile
+	 */
 	private int id;
+	/**
+	 * if tile is solid
+	 */
 	private boolean solid;
+	/**
+	 * color of the tile
+	 */
 	private Color color;
+	/**
+	 * animation of the tile
+	 */
 	private Animation animation;
 	
+	/**
+	 * constructor 
+	 * @param line place Y
+	 * @param column place X
+	 * @param id of tile
+	 * @param graphicsManager to get the correct bufferedImage
+	 */
 	public Tile(int line, int column, int id, GraphicsManager graphicsManager){
 		this.line = line;
 		this.column = column;

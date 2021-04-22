@@ -2,22 +2,52 @@ package engine.math;
 
 import engine.Position;
 
+/**
+ * 
+ * @author gautier
+ * this class represent a node, use for A* algorithm
+ */
+
 public class Node {
 	
+	/**
+	 * parent of the node
+	 */
 	private Node parent;
-	private double g;
-	private double h;
-	private double f;
+	/**
+	 * cost of moving
+	 */
+	private int g;
+	/**
+	 * distance to final Node
+	 */
+	private int h;
+	/**
+	 * g + h
+	 */
+	private int f;
+	/**
+	 * pos in term of position in tab of map
+	 */
 	private Position p;
-		
+	
+	/**
+	 * constructor
+	 * @param p position in tab of map
+	 */
 	public Node(Position p) {
 		this.p = p;
-		this.g = 0f;
-		this.h = 0f;
-		this.f = 0f;
+		this.g = 0;
+		this.h = 0;
+		this.f = 0;
 		this.parent = null;
 	}
 	
+	/**
+	 * this method calculate a cost of a node
+	 * @param parent, his parent
+	 * @param p2, final destination pos
+	 */
 	public void calculateCost(Node parent, Position p2) {
 		//System.out.println("parent G : " + parent.getG());
 		g = parent.getG() + 10;
@@ -28,11 +58,17 @@ public class Node {
 		this.parent = parent;
 	}
 	
+	/**
+	 * this method recalculate cost to see if a parent of current node is a better way
+	 * @param parent
+	 * @param p2
+	 * @return true if it is a better way
+	 */
 	public boolean recalculateF(Node parent, Position p2) {
-		System.out.println("Recalculate");
-		double gBis = this.g;
-		double hBis = this.h;
-		double fBis = this.f;
+		//System.out.println("Recalculate");
+		int gBis = this.g;
+		int hBis = this.h;
+		int fBis = this.f;
 		Node parentBis = this.parent;
 		Position pBis = this.p;
 		
@@ -58,15 +94,15 @@ public class Node {
 		return this.parent;
 	}
 	
-	public double getG() {
+	public int getG() {
 		return this.g;
 	}
 	
-	public double getF() {
+	public int getF() {
 		return this.f;
 	}
 	
-	public double getH() {
+	public int getH() {
 		return this.h;
 	}
 	

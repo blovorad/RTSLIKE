@@ -2,18 +2,32 @@ package engine;
 /**
  * 
  * @author gautier
- *
+ *	class to manage speed, needing to all move
  */
 public class Speed 
 {
+	/**
+	 * velocity x
+	 */
 	private float vx;
+	/**
+	 * velocity y
+	 */
 	private float vy;
 	
+	/**
+	 * constructor
+	 */
 	public Speed()
 	{
 		this(0,0);
 	}
 	
+	/**
+	 * constructor
+	 * @param vx velocity x
+	 * @param vy velocity y
+	 */
 	public Speed(float vx, float vy)
 	{
 		this.vx = vx;
@@ -38,13 +52,20 @@ public class Speed
     {
         this.vx = vx;
     }
-
+    
+    /**
+     * reset the speed, need to stop a entity
+     */
     public void reset()
     {
         vx = 0;
         vy = 0;
     }
     
+    /**
+     * if the current entity has a speed different of 0
+     * @return true if he has a speed
+     */
     public boolean hasSpeed() {
     	if(this.vx != 0.0 || this.vy != 0.0) {
     		return true;

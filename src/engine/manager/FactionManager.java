@@ -10,12 +10,18 @@ import engine.Faction;
 /**
  * 
  * @author gautier
- *
+ * this class contain all faction
  */
 
 public class FactionManager {
+	/**
+	 * hashMap of faction
+	 */
 	private AbstractMap<Integer, Faction> factions;
 	
+	/**
+	 * contructor
+	 */
 	public FactionManager() {
 		factions = new HashMap<Integer, Faction>();
 	}
@@ -28,10 +34,18 @@ public class FactionManager {
 		this.factions = factions;
 	}
 	
+	/**
+	 * adding a faction in the hashMap
+	 * @param id of the faction
+	 * @param faction the current faction to add
+	 */
 	public void addFaction(int id, Faction faction){
 		factions.put(id, faction);
 	}
-
+	
+	/**
+	 * clear the hashMap, used when you quit game
+	 */
 	public void clean() {
 		factions.clear();
 	}

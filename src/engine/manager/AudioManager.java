@@ -12,22 +12,55 @@ import javax.sound.sampled.FloatControl;
 /**
  * 
  * @author gautier
- *
+ * class used to manage sound in the game
  */
 
 public class AudioManager {
 	
+	/**
+	 * current state of the game
+	 */
 	private int state;
+	/**
+	 * previous state of the game
+	 */
 	private int oldState = -1;
+	/**
+	 * current musique is playing
+	 */
 	private Clip musique;
+	/**
+	 * volume of musique
+	 */
 	private int sliderVolume;
+	/**
+	 * index of the current musique
+	 */
 	private int currentMusique;
+	/**
+	 * fx of gather
+	 */
 	private Clip fxMinage;
+	/**
+	 * fx of fight
+	 */
 	private Clip fxAttack;
+	/**
+	 * fx of order
+	 */
 	private Clip fxOrder;
+	/**
+	 * all other fx
+	 */
 	private Clip otherFx;
+	/**
+	 * list that contain all fx
+	 */
 	private List<File>fxs;
 	
+	/**
+	 * constructor
+	 */
 	public AudioManager() {
 		currentMusique = 1;
 		fxs = new ArrayList<File>();
@@ -59,6 +92,10 @@ public class AudioManager {
 		manageVolume(25);
 	}
 	
+	/**
+	 * method ajust volume when is require in gamedisplay
+	 * @param volume volume range
+	 */
 	public void manageVolume(int volume) {
 		this.sliderVolume = volume;
 		float volumeInFloat = (float)volume / 100;
@@ -66,6 +103,10 @@ public class AudioManager {
 	    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
 	}
 	
+	/**
+	 * core function who check if we change state of game to start music that match with the state
+	 * and to make a loop to assure that a music will be always playing
+	 */
 	public void update() {
 		if(oldState != state) {
 			if(state == 1 && oldState != 3) {
@@ -99,10 +140,14 @@ public class AudioManager {
 		}
 	}
 	
+	/**
+	 * method who start a music
+	 * @param path of the music to play
+	 */
 	public void startSound(File path) {
 		musique.close();
 		try {
-			System.out.println("tentative nouvelle musique " + currentMusique);
+			//System.out.println("tentative nouvelle musique " + currentMusique);
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(path);
 			musique.open(inputStream);
 			musique.start();
@@ -111,6 +156,10 @@ public class AudioManager {
 		}
 	}
 	
+	/**
+	 * method who play a fx
+	 * @param id of the fx to play
+	 */
 	public void startFx(int id) {
 		if(id == 8) {
 			if(!fxMinage.isRunning()) {

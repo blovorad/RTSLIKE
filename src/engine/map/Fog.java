@@ -12,17 +12,36 @@ import engine.math.Collision;
 /**
  * 
  * @author gautier
- *
+ *	this class is used for manage fog of war and dynamic fog
  */
 
 public class Fog {
-	
+	/**
+	 * represent the fog who will be remove by a unit that pass on the tile
+	 */
 	private boolean[][]fog;
+	/**
+	 * represent the fog who mask unit if you don't are in range of them
+	 */
 	private FogCase[][] dynamicFog;
+	/**
+	 * fog size height
+	 */
 	private int lineCount;
+	/**
+	 * fog size width
+	 */
 	private int columnCount;
+	/**
+	 * list use to know if a fogCase is already analyze on each iteration
+	 */
 	private List<FogCase> lockedList;
 	
+	/**
+	 * this constructor is the same as Map constructor
+	 * @param lineCount size height of fog
+	 * @param columnCount size width of fog
+	 */
 	public Fog(int lineCount, int columnCount) {
 		this.setLineCount(lineCount);
 		this.setColumnCount(columnCount);
@@ -39,6 +58,9 @@ public class Fog {
 		}
 	}
 	
+	/**
+	 * this method permit to reset dynamic fog in a accordance with lockedList
+	 */
 	public void resetDynamicFog() {
 		if(!GameConfiguration.debug_mod) {
 			for(FogCase fogCase : lockedList) {
@@ -49,6 +71,17 @@ public class Fog {
 		}
 	}
 	
+	/**
+	 * core function who remove fog and dynamicFog, change the drawingList of all entity and map in function of dynamicFog and fog
+	 * @param x to start iteration
+	 * @param y to start iteration
+	 * @param sightRange line of sight of entity
+	 * @param entity current entity who remove fog
+	 * @param drawingList using if you are player, drawingList represent what is print to screen
+	 * @param waitingList using if you are player, represent what will be added in first when update of entitiesManager is call
+	 * @param removeList same as waitingList but in case of remove
+	 * @param botEntities represent botEntities
+	 */
 	public void clearFog(int x, int y, int sightRange, Entity entity, List<Entity>drawingList, List<Entity> waitingList, List<Entity> removeList, List<Entity> botEntities) {
 		int xTab = x / GameConfiguration.TILE_SIZE;
 		int yTab = y / GameConfiguration.TILE_SIZE;
@@ -117,6 +150,12 @@ public class Fog {
 		}
 	}
 	
+	/**
+	 * method using with bot, specific for IA vision that check if a unit is in range
+	 * @param playerUnits 
+	 * @param unitWaitingEnnemieVisible represent the unit who will be added to vision of bot
+	 * @param unitRemoveEnnemieVisible represent the unit who will be remove to vision of bot
+	 */
 	public void checkUnit(List<Unit> playerUnits, List<Unit> unitWaitingEnnemieVisible, List<Unit> unitRemoveEnnemieVisible) {
 		for (int lineIndex = 0; lineIndex < GameConfiguration.LINE_COUNT; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < GameConfiguration.COLUMN_COUNT; columnIndex++) {
@@ -146,6 +185,13 @@ public class Fog {
 		}
 	}
 	
+	/**
+	 * this method is call just after a checkUnit and checkBuilding because unit can be seen by a unit but not in a another unit range
+	 * so to present that a unit is seeing we will remove of unitRemoveEnnemieVisible each unit that are in unitWaitingEnnemieVisible
+	 * @param unitEnnemieVisible
+	 * @param unitWaitingEnnemieVisible
+	 * @param unitRemoveEnnemieVisible
+	 */
 	public void checkingPlayerTargetUnitInFog(List<Unit> unitEnnemieVisible, List<Unit> unitWaitingEnnemieVisible, List<Unit> unitRemoveEnnemieVisible) {
 		for(Unit entity : unitWaitingEnnemieVisible) {
 			if(unitRemoveEnnemieVisible.contains(entity)) {
@@ -160,6 +206,12 @@ public class Fog {
 		}
 	}
 	
+	/**
+	 * same method as checkUnit
+	 * @param playerBuildings
+	 * @param buildingWaitingEnnemieVisible
+	 * @param buildingRemoveEnnemieVisible
+	 */
 	public void checkBuilding(List<Entity> playerBuildings, List<Entity> buildingWaitingEnnemieVisible, List<Entity> buildingRemoveEnnemieVisible){
 		for (int lineIndex = 0; lineIndex < GameConfiguration.LINE_COUNT; lineIndex++) {
 			for (int columnIndex = 0; columnIndex < GameConfiguration.COLUMN_COUNT; columnIndex++) {
@@ -189,6 +241,12 @@ public class Fog {
 		}
 	}
 	
+	/**
+	 * same method as checkUnit
+	 * @param buildingEnnemieVisible
+	 * @param buildingWaitingEnnemieVisible
+	 * @param buildingRemoveEnnemieVisible
+	 */
 	public void checkingPlayerTargetBuildingInFog(List<Entity> buildingEnnemieVisible, List<Entity> buildingWaitingEnnemieVisible, List<Entity> buildingRemoveEnnemieVisible){
 		for(Entity entity : buildingWaitingEnnemieVisible) {
 			if(buildingRemoveEnnemieVisible.contains(entity)) {
@@ -203,6 +261,12 @@ public class Fog {
 		}
 	}
 	
+	/**
+	 * same method as checkingPlayerTargetUnitInFog but for the player
+	 * @param drawingList
+	 * @param waitingList
+	 * @param removeList
+	 */
 	public void checkingBotTargetInFog(List<Entity> drawingList, List<Entity> waitingList, List<Entity> removeList){
 		if(!GameConfiguration.debug_mod) {
 			for(Entity entity : waitingList) {

@@ -4,7 +4,7 @@ import engine.Position;
 /**
  * 
  * @author gautier
- *
+ * this class is used to manage the selection rect with mouse and rally point with building
  */
 public class SelectionRect 
 {
@@ -14,8 +14,14 @@ public class SelectionRect
 	private int h;
 	private int alpha;
 	private Position firstPosition;
+	/**
+	 * if selection rect is active, if a click is pressed
+	 */
 	private boolean active;
 
+	/**
+	 * constructor
+	 */
 	public SelectionRect()
 	{
 		this.x = 0;
@@ -27,6 +33,13 @@ public class SelectionRect
 		this.active = false;
 	}
 	
+	/**
+	 * used by the rallyPoint of building
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @param h
+	 */
 	public SelectionRect(int x, int y, int w, int h)
 	{
 		this.x = x;
@@ -37,6 +50,11 @@ public class SelectionRect
 		this.active = false;
 	}
 	
+	/**
+	 * core method of class that manage the width and height of the selection rect depending of mouse move
+	 * @param x pos of mouse
+	 * @param y pos of mouse
+	 */
 	public void moveSelectionRect(int x, int y) {
 		
 		if(x > this.firstPosition.getX()) {
@@ -56,6 +74,9 @@ public class SelectionRect
 		}
 	}
 	
+	/**
+	 * if we need to change the alpha of the rect represent
+	 */
 	public void updateAlpha() {
 		alpha += 5;
 		if(alpha > 255) {

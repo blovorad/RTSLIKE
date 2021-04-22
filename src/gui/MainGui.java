@@ -46,10 +46,18 @@ public class MainGui extends JFrame implements Runnable
 {
 	private final static long serialVersionUID = 1L;
 	
+	/**
+	 * dim of the game screen
+	 */
 	private final static Dimension preferredSize = new Dimension(GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT);
 	
+	/**
+	 * use to print all game
+	 */
 	private GameDisplay dashboard;
-	
+	/**
+	 * camera of the game
+	 */
 	private Camera camera;
 	
 	private EntitiesManager manager;
@@ -59,7 +67,9 @@ public class MainGui extends JFrame implements Runnable
 	private SelectionRect selectionRectangle;
 	
 	private AudioManager audioManager;
-	
+	/**
+	 * use to see if we clic on the minimap to get the camera at the right place
+	 */
 	private boolean moveMinimap;
 
 	public MainGui()
@@ -107,6 +117,9 @@ public class MainGui extends JFrame implements Runnable
 	}
 
 	@Override
+	/**
+	 * core method of the game it will call update and draw, exit if we quit
+	 */
 	public void run() 
 	{
 		while(true)
@@ -128,6 +141,11 @@ public class MainGui extends JFrame implements Runnable
 		}
 	}
 	
+	/**
+	 * 
+	 * @author gautier
+	 * key control nothing to say
+	 */
 	private class KeyControls implements KeyListener {
 
 		@Override
@@ -202,10 +220,20 @@ public class MainGui extends JFrame implements Runnable
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @author gautier
+	 * core class use to check what is selected or make move entity
+	 */
 	private class MouseControls implements MouseListener 
 	{
-		
+		/**
+		 * checking if we clic on entity
+		 * @param mouseX pos of the clic
+		 * @param mouseY pos of the clic
+		 * @return
+		 */
 		public Entity checkEntity(int mouseX, int mouseY)
 		{
 			int x = mouseX;
@@ -277,6 +305,12 @@ public class MainGui extends JFrame implements Runnable
 		return selectEntity;	
 		}
 		
+		/**
+		 * to see if we clic on unit
+		 * @param mouseX pos of the clic
+		 * @param mouseY pos of the clic
+		 * @return
+		 */
 		public Unit checkUnit(int mouseX, int mouseY)
 		{	
 			List<Fighter> fighters = manager.getFighters();
@@ -319,6 +353,12 @@ public class MainGui extends JFrame implements Runnable
 			return selectUnit;
 		}
 		
+		/**
+		 * to see if we clic on ressource
+		 * @param mouseX
+		 * @param mouseY
+		 * @return
+		 */
 		public Ressource checkRessource(int mouseX, int mouseY)
 		{
 			int x = mouseX;
@@ -346,6 +386,12 @@ public class MainGui extends JFrame implements Runnable
 			return selectRessource;
 		}
 		
+		/**
+		 * if we do a double clic or a simple clic without drag the mouse, checking what we selected
+		 * @param mouseX pos clic
+		 * @param mouseY pos clic
+		 * @param clickCount if we do a double clic
+		 */
 		public void checkWhatIsSelected(int mouseX, int mouseY, int clickCount)
 		{
 			manager.clearSelectedBuildings();
@@ -417,7 +463,9 @@ public class MainGui extends JFrame implements Runnable
 											&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE)){
 						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						manager.setSelectedProdBuilding(building);
-						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
+						if(building.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+							dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
+						}
 						noBuildingSelected = false;
 						break;
 					}
@@ -429,7 +477,9 @@ public class MainGui extends JFrame implements Runnable
 						if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
 												&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE)){
 							manager.setSelectedAttackBuilding(building);
-							dashboard.setDescriptionPanelForBuilding(building);
+							if(building.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+								dashboard.setDescriptionPanelForBuilding(building);
+							}
 							noBuildingSelected = false;
 							break;
 						}
@@ -442,7 +492,9 @@ public class MainGui extends JFrame implements Runnable
 						if((x > building.getPosition().getX() && x < building.getPosition().getX() + GameConfiguration.TILE_SIZE)
 												&& (y > building.getPosition().getY() && y < building.getPosition().getY() + GameConfiguration.TILE_SIZE)){
 							manager.setSelectedStorageBuilding(building);
-							dashboard.setDescriptionPanelForBuilding(building);
+							if(building.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+								dashboard.setDescriptionPanelForBuilding(building);
+							}
 							noBuildingSelected = false;
 							break;
 						}
@@ -468,7 +520,9 @@ public class MainGui extends JFrame implements Runnable
 					for(SiteConstruction sc : listSiteConstructions) {
 						if((x > sc.getPosition().getX() && x < sc.getPosition().getX() + GameConfiguration.TILE_SIZE)
 								&& (y > sc.getPosition().getY() && y < sc.getPosition().getY() + GameConfiguration.TILE_SIZE)) {
-							dashboard.setDescriptionPanelForSiteConstruction(sc);
+							if(sc.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+								dashboard.setDescriptionPanelForSiteConstruction(sc);
+							}
 							sc.setSelected(true);
 							manager.setSelectedSiteConstruction(sc);
 							noBuildingSelected = false;
@@ -482,6 +536,13 @@ public class MainGui extends JFrame implements Runnable
 			}
 		}
 		
+		/**
+		 * if we do a simple clic, and drag the mouse
+		 * @param x pos clic
+		 * @param y pos clic
+		 * @param w width of the rect
+		 * @param h height of the rect
+		 */
 		public void checkWhatIsSelected(int x, int y, int w, int h)
 		{
 			manager.clearSelectedBuildings();
@@ -533,7 +594,9 @@ public class MainGui extends JFrame implements Runnable
 						List<Integer> searchingUpgrades = manager.getFactionManager().getFactions().get(building.getFaction()).getSearchingUpgrades();
 						building.setSelected(true);
 						manager.setSelectedProdBuilding(building);
-						dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
+						if(building.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+							dashboard.setDescriptionPanelForBuilding(building, searchingUpgrades);
+						}
 						noBuildingSelected = false;
 						break;
 					}
@@ -546,7 +609,9 @@ public class MainGui extends JFrame implements Runnable
 						if(Collision.collide(building.getPosition(), rect, camera)){
 							building.setSelected(true);
 							manager.setSelectedAttackBuilding(building);
-							dashboard.setDescriptionPanelForBuilding(building);
+							if(building.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+								dashboard.setDescriptionPanelForBuilding(building);
+							}
 							noBuildingSelected = false;
 							break;
 						}
@@ -560,7 +625,9 @@ public class MainGui extends JFrame implements Runnable
 						if(Collision.collide(building.getPosition(), rect, camera)){
 							building.setSelected(true);
 							manager.setSelectedStorageBuilding(building);
-							dashboard.setDescriptionPanelForBuilding(building);
+							if(building.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+								dashboard.setDescriptionPanelForBuilding(building);
+							}
 							noBuildingSelected = false;
 							break;
 						}
@@ -587,7 +654,9 @@ public class MainGui extends JFrame implements Runnable
 					List<SiteConstruction> listSiteConstructions = manager.getSiteConstructions();
 					for(SiteConstruction sc : listSiteConstructions) {
 						if(Collision.collide(sc.getPosition(), rect, camera)) {
-							dashboard.setDescriptionPanelForSiteConstruction(sc);
+							if(sc.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+								dashboard.setDescriptionPanelForSiteConstruction(sc);
+							}
 							sc.setSelected(true);
 							manager.setSelectedSiteConstruction(sc);
 							noBuildingSelected = false;
@@ -617,10 +686,16 @@ public class MainGui extends JFrame implements Runnable
 				int mouseY = e.getY() + camera.getY();
 				JPanel leftDownPanel = dashboard.getDescriptionPanel();
 				JPanel rightDownPanel = dashboard.getMinimapPanel();
+				/**
+				 * left clic
+				 */
 				if(e.getButton() == 1)
 				{
 					Minimap minimap = dashboard.getMinimap();
-
+					
+					/**
+					 * if we clic on the minimap we doing something like, moving to the point
+					 */
 					if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
 						int x = e.getX() - minimap.getFirstGridXOfMap();
 						int y = e.getY() - minimap.getFirstGridYOfMap();
@@ -652,6 +727,9 @@ public class MainGui extends JFrame implements Runnable
 						camera.setY(p.getY());
 						moveMinimap = true;
 					}
+					/**
+					 * if we don't clic on panel we can do something, like building a building !
+					 */
 					if(!Collision.collidePanel(leftDownPanel, e.getX(), e.getY()) && !Collision.collidePanelMinimap(rightDownPanel, e.getX(), e.getY())) {
 						if(mouse.getId() > -1){
 							Tile tile = dashboard.getMap().getTile((e.getY() + camera.getY()) / GameConfiguration.TILE_SIZE, (e.getX() + camera.getX()) / GameConfiguration.TILE_SIZE);
@@ -685,10 +763,16 @@ public class MainGui extends JFrame implements Runnable
 						}
 					}
 				}
+				/**
+				 * right clic
+				 */
 				else if(e.getButton() == 3){
 					Minimap minimap = dashboard.getMinimap();
 					List<Unit> listSelectedUnit = manager.getSelectedUnits();	
 					
+					/**
+					 * if we don't clic on panel, depending of what we selected it makes unit move or attack, worker go to ressource, undo the current building selected to build
+					 */
 					if(!Collision.collidePanel(leftDownPanel, e.getX(), e.getY()) && !Collision.collidePanelMinimap(rightDownPanel, e.getX(), e.getY())) {
 						if(mouse.getId() > -1) {
 							mouse.setId(-1);
@@ -719,12 +803,12 @@ public class MainGui extends JFrame implements Runnable
 									boolean isAttack = false;
 									for(Unit unit : listSelectedUnit)
 									{
-										System.out.println("ici");
+										//System.out.println("ici");
 										//unit.calculateSpeed(target.getPosition());
-										unit.setFinalDestination(target.getPosition());
-										unit.setCurrentAction(EntityConfiguration.WALK);
-										unit.setTarget(target);
 										if(unit.getFaction() != target.getFaction()) {
+											unit.setFinalDestination(target.getPosition());
+											unit.setCurrentAction(EntityConfiguration.WALK);
+											unit.setTarget(target);
 											isAttack = true;
 										}
 									}
@@ -738,21 +822,30 @@ public class MainGui extends JFrame implements Runnable
 								}
 								else if(listSelectedUnit.isEmpty() == false && targetUnit != null)
 								{
-									audioManager.startFx(5);
+									boolean isAttack = false;
 									for(Unit unit : listSelectedUnit)
 									{
 										//unit.calculateSpeed(targetUnit.getPosition());
-										unit.setFinalDestination(targetUnit.getPosition());
-										unit.setCurrentAction(EntityConfiguration.WALK);
-										unit.setTarget(targetUnit);
-										unit.setTargetUnit(targetUnit);
+										if(unit.getFaction() != targetUnit.getFaction()) {
+											unit.setFinalDestination(targetUnit.getPosition());
+											unit.setCurrentAction(EntityConfiguration.WALK);
+											unit.setTarget(targetUnit);
+											unit.setTargetUnit(targetUnit);
+											isAttack = true;
+										}
+									}
+									if(isAttack == false) {
+										audioManager.startFx(3);
+									}
+									else {
+										audioManager.startFx(5);
 									}
 								}
 								else if(listSelectedUnit.isEmpty() == false && target == null) {
 									audioManager.startFx(3);
 									for(Unit unit : listSelectedUnit){
 										//unit.calculateSpeed(new Position(mouseX, mouseY));
-										System.out.println("LALALLA");
+										//System.out.println("LALALLA");
 										unit.setFinalDestination(new Position(mouseX, mouseY));
 										unit.setTarget(null);
 										unit.setTargetUnit(null);
@@ -788,6 +881,9 @@ public class MainGui extends JFrame implements Runnable
 						}
 					}
 					else {
+						/**
+						 * if we clic on the minimap make selected unit move to the point
+						 */
 						if((e.getX() > minimap.getFirstGridXOfMap() && e.getX() < minimap.getFirstGridXOfMap() + (minimap.getGridMapWidth() * GameConfiguration.COLUMN_COUNT)) && (e.getY() > minimap.getFirstGridYOfMap() && e.getY() < minimap.getFirstGridYOfMap() + (minimap.getGridMapHeight() * GameConfiguration.LINE_COUNT))) {
 							int x = e.getX() - minimap.getFirstGridXOfMap();
 							int y = e.getY() - minimap.getFirstGridYOfMap();

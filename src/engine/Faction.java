@@ -15,20 +15,54 @@ import factionConfiguration.Royaume;
 /**
  * 
  * @author gautier
- *
+ *	this class is use to each faction of the game, stocking a lot of variable
  */
 public class Faction {
+	/**
+	 * current race of the faction
+	 */
 	private Race race;
+	/**
+	 * current age of the faction
+	 */
 	private int age;
+	/**
+	 * how many building is build
+	 */
 	private int buildingCount;
+	/**
+	 * how many unit is alive
+	 */
 	private int populationCount;
+	/**
+	 * max of unit can be alive
+	 */
 	private int maxPopulation;
+	/**
+	 * how many money faction has
+	 */
 	private int moneyCount;
+	/**
+	 * Which upgrade is done
+	 */
 	private AbstractMap<Integer, ForUpgrade> upgradesDone;
+	/**
+	 * Which upgrade is currently in research
+	 */
 	private List<Integer> searchingUpgrades;
+	/**
+	 * if faction upgrading age need to actualize panel
+	 */
 	private boolean upgradeAge;
+	/**
+	 * if faction upgrade stat of unit with forge, need to actualize panel
+	 */
 	private boolean statUpgrade;
-
+	
+	/**
+	 * constructor of faction
+	 * @param id to know which race you are
+	 */
 	public Faction(int id) {
 		age = 1;
 		buildingCount = 0;
@@ -54,6 +88,10 @@ public class Faction {
 		}
 	}
 	
+	/**
+	 * checking if an upgrade who is currently in search need to be abandon, it calls when a building is destroy
+	 * @param upgrades
+	 */
 	public void checkUpgrade(List<Integer> upgrades) {
 		for(Integer id : upgrades) {
 			if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {

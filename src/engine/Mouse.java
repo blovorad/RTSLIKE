@@ -8,14 +8,26 @@ import engine.manager.GraphicsManager;
 /**
  * 
  * @author gautier
- *
+ *	this class is require to interact with map, needing to place building
  */
 public class Mouse {
 	
+	/**
+	 * id of the building need to be construct
+	 */
 	private int id = -1;
+	/**
+	 * position of the mouse
+	 */
 	private Position position;
+	/**
+	 * if id > -1, represent the image of the building
+	 */
 	private BufferedImage[][] leftImages;
 	
+	/**
+	 * constructor
+	 */
 	public Mouse()
 	{
 		setPosition(new Position(0,0));
@@ -30,6 +42,12 @@ public class Mouse {
 		position.setX(x);
 	}
 	
+	/**
+	 * same method in Animation
+	 * @param graphicsManager to get animation bufferedImage
+	 * @param id id to entity who need animation
+	 * @param faction faction of the entity
+	 */
 	public void getEntityNoAnimationTexture(GraphicsManager graphicsManager, int id, int faction)
 	{
 		if(id == EntityConfiguration.BARRACK) {

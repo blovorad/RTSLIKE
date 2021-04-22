@@ -38,20 +38,44 @@ import factionConfiguration.ForWorker;
 /**
  * 
  * @author gautier
- *
+ * core class of the game, it manage all entity of the game, calling all update function of the game
+ * manage if you win or loose, and call the botManager
  */
 
 public class EntitiesManager 
 {
+	/**
+	 * contain all faction
+	 */
 	private FactionManager factionManager;
+	/**
+	 * contain all graphics
+	 */
 	private GraphicsManager graphicsManager;
+	/**
+	 * contain all sound and manage them
+	 */
 	private AudioManager audioManager;
+	/**
+	 * manager of the IA
+	 */
 	private BotManager botManager;
+	/**
+	 * camera need to have his position
+	 */
 	private Camera camera;
+	/**
+	 * fog of war of the player
+	 */
 	private Fog playerFog;
+	/**
+	 * map of the game
+	 */
 	private Map map;
 	
-	private List<Entity> collisionList = new ArrayList<Entity>();
+	/**
+	 * represents all list that is needing in the game
+	 */
 	private List<Entity> drawingList = new ArrayList<Entity>();
 	private List<Entity> playerEntities = new ArrayList<Entity>();
 	
@@ -146,7 +170,7 @@ public class EntitiesManager
 	}
 	
 	public void createBotManager(GraphicsManager graphicsManager, Map map) {
-		this.botManager = new BotManager(factionManager, graphicsManager, map);
+		this.botManager = new BotManager(factionManager, map);
 	}
 	
 	public void setPlayerFog(Fog fog) {
@@ -157,6 +181,11 @@ public class EntitiesManager
 		this.map = map;
 	}
 	
+	/**
+	 * this core method, adding all entity that need to be print on screen,
+	 * then update the botManager
+	 * after that it will update all entity of the game and remove entity when hp <= 0
+	 */
 	public void update() 
 	{
 		if(waitingToAdd.isEmpty() == false) {
@@ -173,13 +202,13 @@ public class EntitiesManager
 		}
 		
 		if(botManager != null) {
-			/*botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions, playerBuildings, playerUnits);
+			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions, playerBuildings, playerUnits);
 			if(botManager.getBuildingInAttempt() == true) {
 				Tile tile = botManager.getTileToBuild();
 				Position p = new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE);
 				createConstructionSite(botManager.getIdToBuild(), EntityConfiguration.BOT_FACTION, p, botManager.getTileToBuild());
 				botManager.buildBuilding();
-			}*/
+			}
 		}
 		
 		for(Fighter fighter : fighters) 
@@ -309,7 +338,6 @@ public class EntitiesManager
 				clearSelectedRessource();
 			}
 			ressources.removeAll(removeRessources);
-			collisionList.removeAll(removeRessources);
 			drawingList.removeAll(removeRessources);
 			removeRessources.clear();
 		}
@@ -323,7 +351,6 @@ public class EntitiesManager
 			botEntities.removeAll(removeStorageBuildings);
 			botStorageBuildings.removeAll(removeStorageBuildings);
 			storageBuildings.removeAll(removeStorageBuildings);
-			collisionList.removeAll(removeStorageBuildings);
 			drawingList.removeAll(removeStorageBuildings);
 			playerStorageBuildings.removeAll(removeStorageBuildings);
 			botStorageBuildings.removeAll(removeStorageBuildings);
@@ -341,7 +368,6 @@ public class EntitiesManager
 			botEntities.removeAll(removeAttackBuildings);
 			botAttackBuildings.removeAll(removeAttackBuildings);
 			attackBuildings.removeAll(removeAttackBuildings);
-			collisionList.removeAll(removeAttackBuildings);
 			drawingList.removeAll(removeAttackBuildings);
 			playerEntities.removeAll(removeAttackBuildings);
 			removeAttackBuildings.clear();
@@ -357,7 +383,6 @@ public class EntitiesManager
 			botEntities.removeAll(removeProdBuildings);
 			botProdBuildings.removeAll(removeProdBuildings);
 			prodBuildings.removeAll(removeProdBuildings);
-			collisionList.removeAll(removeProdBuildings);
 			drawingList.removeAll(removeProdBuildings);
 			playerEntities.removeAll(removeProdBuildings);
 			removeProdBuildings.clear();
@@ -370,7 +395,6 @@ public class EntitiesManager
             botEntities.removeAll(removeWorkers);
             botWorkers.removeAll(removeWorkers);
             workers.removeAll(removeWorkers);
-            collisionList.removeAll(removeWorkers);
             drawingList.removeAll(removeWorkers);
             units.removeAll(removeWorkers);
             selectedUnits.removeAll(removeWorkers);
@@ -387,7 +411,6 @@ public class EntitiesManager
             botEntities.removeAll(removeFighters);
             botFighters.removeAll(removeFighters);
             fighters.removeAll(removeFighters);
-            collisionList.removeAll(removeFighters);
             drawingList.removeAll(removeFighters);
             units.removeAll(removeFighters);
             selectedUnits.removeAll(removeFighters);
@@ -412,6 +435,14 @@ public class EntitiesManager
 		}
 	}
 	
+	/**
+	 * creating a construction site
+	 * @param id of the building who will be construct
+	 * @param faction of the site construction
+	 * @param position of the site construction
+	 * @param tile who are attach of the site construction
+	 * @return the current site construction
+	 */
 	public SiteConstruction createConstructionSite(int id, int faction, Position position, Tile tile) {
 		SiteConstruction sc = null;
 		
@@ -470,6 +501,16 @@ public class EntitiesManager
 	return sc;
 	}
 	
+	/**
+	 * creating a fighter
+	 * @param id of the fighter can be INFANTRY,ARCHER,..
+	 * @param faction of the fighter
+	 * @param patron of the fighter
+	 * @param position of the fighter
+	 * @param destination if a rally point is set
+	 * @see EntityConfiguration
+	 * @see ForFighter
+	 */
 	public void createFighter(int id, int faction, ForFighter patron, Position position, Position destination)
 	{
 		Fighter fighter = null;
@@ -504,7 +545,6 @@ public class EntitiesManager
 				botEntities.add(fighter);
 				botFighters.add(fighter);
 			}
-			this.collisionList.add(fighter);
 			this.drawingList.add(fighter);
 			this.units.add(fighter);
 			this.fighters.add(fighter);
@@ -512,6 +552,16 @@ public class EntitiesManager
 		}
 	}
 	
+	/**
+	 * creating a worker
+	 * @param id of the worker can be WORKER
+	 * @param faction of the worker
+	 * @param patron of the worker
+	 * @param position of the worker
+	 * @param destination if a rally point is set
+	 * @see EntityConfiguration
+	 * @see ForWorker
+	 */
 	public void createWorker(int id, int faction, ForWorker patron, Position position, Position destination)
 	{
 		Worker worker = null;
@@ -538,7 +588,6 @@ public class EntitiesManager
 				botWorkers.add(worker);
 				botEntities.add(worker);
 			}
-			this.collisionList.add(worker);
 			this.drawingList.add(worker);
 			this.units.add(worker);
 			this.workers.add(worker);
@@ -546,6 +595,12 @@ public class EntitiesManager
 		}
 	}
 	
+	/**
+	 * create an upgrade
+	 * @param id of the upgrade
+	 * @param faction id of the faction
+	 * @see ForUpgrade
+	 */
 	public void createUpgrade(int id, int faction) {
 		if(faction == EntityConfiguration.PLAYER_FACTION) {
 			audioManager.startFx(2);
@@ -680,6 +735,15 @@ public class EntitiesManager
 		}
 	}
 	
+	/**
+	 * creating a building
+	 * @param id of the building can be BARRACK,ARCHERY....
+	 * @param faction of the building
+	 * @param position of the building
+	 * @param tile who are attach to the building
+	 * @see EntityConfiguration
+	 * @see Patron
+	 */
 	public void createBuilding(int id, int faction, Position position, Tile tile) {
 		ProductionBuilding bprod = null;
 		AttackBuilding battack = null;
@@ -778,19 +842,35 @@ public class EntitiesManager
 		
 	}
 	
+	/**
+	 * select unit
+	 * @param unit
+	 */
 	public void addSelectedUnit(Unit unit){
 		unit.setSelected(true);
 		this.selectedUnits.add(unit);
 	}
 	
+	/**
+	 * select a fighter
+	 * @param fighter
+	 */
 	public void addSelectedFighter(Fighter fighter) {
 		this.selectedFighters.add(fighter);
 	}
 	
+	/**
+	 * select a worker
+	 * @param worker
+	 */
 	public void addSelectedWorker(Worker worker) {
 		this.selectedWorkers.add(worker);
 	}
 	
+	/**
+	 * creating all ressource
+	 * @param listPositionRessources
+	 */
 	public void addRessource(List<Tile> listPositionRessources){
 		for(Tile t : listPositionRessources){
 			Ressource r = new Ressource(200, "ressource en or", new Position(t.getColumn() * GameConfiguration.TILE_SIZE, t.getLine() * GameConfiguration.TILE_SIZE), t, EntityConfiguration.GAIA_FACTION, graphicsManager);
@@ -799,6 +879,9 @@ public class EntitiesManager
 		}
 	}
 	
+	/**
+	 * clear(pass to null) the current selectedRessource
+	 */
 	public void clearSelectedRessource() {
 		if(this.selectedRessource != null) {
 			this.selectedRessource.setSelected(false);
@@ -806,6 +889,9 @@ public class EntitiesManager
 		this.selectedRessource = null;
 	}
 	
+	/**
+	 * clear all list of selectedBuilding
+	 */
 	public void clearSelectedBuildings(){
 		this.clearSelectedAttackBuilding();
 		this.clearSelectedStorageBuilding();
@@ -813,8 +899,10 @@ public class EntitiesManager
 		this.clearSelectedSiteConstruction();
 	}
 	
+	/**
+	 * cleaning the game when you quit a game
+	 */
 	public void clean(){
-		collisionList.clear();
 		drawingList.clear();
 		playerEntities.clear();
 		
@@ -894,14 +982,6 @@ public class EntitiesManager
 		this.selectedUnits = selectedUnits;
 	}
 
-	public List<Entity> getCollisionList() {
-		return collisionList;
-	}
-
-	public void setCollisionList(List<Entity> collisionList) {
-		this.collisionList = collisionList;
-	}
-
 	public List<Fighter> getFighters() {
 		return fighters;
 	}
@@ -934,6 +1014,9 @@ public class EntitiesManager
 		this.ressources = ressources;
 	}
 	
+	/**
+	 * cleaning all selected unit
+	 */
 	public void clearSelectedUnits()
 	{
 		selectedUnits.clear();
@@ -943,22 +1026,18 @@ public class EntitiesManager
 		return factionManager;
 	}
 
-	public void setFactionManager(FactionManager factionManager) {
-		this.factionManager = factionManager;
-	}
-
 	public List<ProductionBuilding> getProdBuildings() {
 		return prodBuildings;
-	}
-
-	public void setProdBuildings(List<ProductionBuilding> prodBuildings) {
-		this.prodBuildings = prodBuildings;
 	}
 
 	public ProductionBuilding getSelectedProdBuilding() {
 		return selectedProdBuilding;
 	}
 
+	/**
+	 * select a production building
+	 * @param selectedProdBuilding
+	 */
 	public void setSelectedProdBuilding(ProductionBuilding selectedProdBuilding) {
 		this.selectedProdBuilding = selectedProdBuilding;
 		this.selectedProdBuilding.setSelected(true);
@@ -967,7 +1046,11 @@ public class EntitiesManager
 	public AttackBuilding getSelectedAttackBuilding() {
 		return selectedAttackBuilding;
 	}
-
+	
+	/**
+	 * same as other setSelected[building]
+	 * @param selectedAttackBuilding
+	 */
 	public void setSelectedAttackBuilding(AttackBuilding selectedAttackBuilding) {
 		this.selectedAttackBuilding = selectedAttackBuilding;
 		this.selectedAttackBuilding.setSelected(true);
@@ -976,7 +1059,11 @@ public class EntitiesManager
 	public StorageBuilding getSelectedStorageBuilding() {
 		return selectedStorageBuilding;
 	}
-
+	
+	/**
+	 * same as other setSelected[building]
+	 * @param selectedStorageBuilding
+	 */
 	public void setSelectedStorageBuilding(StorageBuilding selectedStorageBuilding) {
 		this.selectedStorageBuilding = selectedStorageBuilding;
 		this.selectedStorageBuilding.setSelected(true);
@@ -1026,6 +1113,9 @@ public class EntitiesManager
 		this.botStorageBuildings = botStorageBuildings;
 	}
 	
+	/**
+	 * clear all selected unit
+	 */
 	public void clearSelectedUnit() {
 		for(Unit unit : selectedUnits) {
 			unit.setSelected(false);

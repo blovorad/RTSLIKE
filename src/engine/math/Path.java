@@ -6,15 +6,37 @@ import java.util.List;
 import configuration.GameConfiguration;
 import engine.Position;
 
+/**
+ * 
+ * @author gautier
+ * this class is used to make a A* algorithm, it represent the iteration
+ */
+
 public class Path {
+	/**
+	 * openList of the A* who contain Node who are not finish to analyze
+	 */
 	private List<Node> closeList;
+	/**
+	 * closeList of the A* who contain node who are finish to analyze
+	 */
 	private List<Node> openList;
 	
+	/**
+	 * constructor
+	 */
 	public Path() {
 		openList = new ArrayList<Node>();
 		closeList = new ArrayList<Node>();
 	}
 	
+	/**
+	 * this method calculate cost of a arrayList of node and return the node who have a cost less than other
+	 * @param nodes to analyze
+	 * @param finalNode, destination 
+	 * @param currentNode, who are currently analyze
+	 * @return node who are cheaper where to move
+	 */
 	public Node generatePath(List<Node> nodes, Node finalNode, Node currentNode) {
 		List<Node> removeListOpen = new ArrayList<Node>();
 		//System.out.println("Generation Path");
@@ -26,10 +48,10 @@ public class Path {
 			boolean in = false;
 			for(Node openNode : openList){
 				if(node.getPosition().equals(openNode.getPosition())) {
-					/*if(node.recalculateF(currentNode, finalNode.getPosition())) {
+					if(node.recalculateF(currentNode, finalNode.getPosition())) {
 						closeList.add(node);
 						removeListOpen.add(node);
-					}*/
+					}
 					in = true;
 					break;
 				}
@@ -73,6 +95,11 @@ public class Path {
 		return nodeBis;
 	}
 	
+	/**
+	 * at the end of A* you have a list start to end, to take the good path we need to reverse it
+	 * @param node finalNode where you start to reverse
+	 * @return list where you have a good path
+	 */
 	public List<Position> reversePath(Node node) {
 		List<Position> posBis = new ArrayList<Position>();
 		List<Position> pos = new ArrayList<Position>();
