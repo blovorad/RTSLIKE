@@ -17,12 +17,20 @@ import engine.math.Collision;
  * 
  * create: 16/02/2021
  * @author girard
- * @version: 9/03/2021
+ * @version: 21/04/2021
  *
  */
 
 public class Worker extends Unit
 {	
+	/**
+	 * storageBuilding, les bâtiments de stockage le plus proche que le worker conserve pour apporter les ressources
+	 * ressource, la ressource que le worker conserve pour pouvoir toujours y retourner quand il récolte 
+	 * quantityRessource, la quantité de ressources que possède le worker sur lui
+	 * ressourcesMax,  le max de ressource que le worker peut porter sur lui
+	 * harvestSpeed, la vitesse de récolte
+	 * repairSpeed, la vitesse de réparation
+	 */
 	private StorageBuilding storageBuilding;
 	
 	private Ressource ressource;
@@ -45,6 +53,11 @@ public class Worker extends Unit
 		this.storageBuilding = null;
 	}
 	
+	/**
+	 * Fonction qui execute la récolte de ressources. Enlève des hp a la ressource,
+	 * et donne des ressources aux workers.
+	 */
+	
 	public void toHarvest()
 	{
 		if(this.ressource != null)
@@ -66,7 +79,10 @@ public class Worker extends Unit
 			this.setTimer(this.getTimer() - 1);
 		}
 	}
-	
+	/**
+	 *Fonction qui permet d'exécuter la réparation des bâtiments, 
+	 *redonne hp aux bâtiments.
+	 */
 	public void toRepair()
 	{
 		if(this.getTarget() != null)
@@ -88,6 +104,14 @@ public class Worker extends Unit
 		}
 	}
 	
+	/**
+	 * Fonction qui met à jour les workers, qui permet d'executer toutes leurs actions
+	 * @param ressources, tableau des ressources se trouvant sur la mappe
+	 * @param storageBuildings, tableau des batiments de récolte se trouvant sur la map
+	 * @param units, tableau des unites se trouvant sur la map
+	 * @param playerFog
+	 * @param map
+	 */
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings, List<Unit> units, Fog playerFog, Map map)
 	{
 		super.update(units, playerFog, map);
@@ -186,6 +210,10 @@ public class Worker extends Unit
 		
 	}
 	
+	/**
+	 * Fonction qui permet de trouver la ressource la plus proche du worker sur la map 
+	 * @param ressources, tableau de toutes les ressources se trouvant sur la map
+	 */
 	public void nearbyResource(List<Ressource> ressources)
 	{
 		if(!ressources.isEmpty())
@@ -209,6 +237,10 @@ public class Worker extends Unit
 		}
 	}
 	
+	/**
+	 * Fonction qui permet de trouver le batiment de ressources le plus proche du worker
+	 * @param storageBuildings, tableau de toutes les storageBuildings de la map
+	 */
 	public void nearbyStorage(List<StorageBuilding> storageBuildings)
 	{
 		if(!storageBuildings.isEmpty())
@@ -230,6 +262,10 @@ public class Worker extends Unit
 		}
 	}
 	
+	/**
+	 *  Fonction qui attribue au worker selectionne par le joueur la ressource selectionnee par le joueur
+	 * @param ressource
+	 */
 	public void initRessource(Ressource ressource)
 	{
 		this.ressource = ressource;
@@ -238,10 +274,10 @@ public class Worker extends Unit
 		this.setTarget(ressource);
 	}
 	
-	public int calculateTimer()
-	{
-		return this.harvestSpeed;
-	}
+	/**
+	 * Tous les geteur et seteur pour les attributs de la classe
+	 * @return
+	 */
 	
 	public int getHarvestSpeed()
 	{

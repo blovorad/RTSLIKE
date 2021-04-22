@@ -1,24 +1,30 @@
 package tree;
 
+import engine.Position;
 public class Node 
 {
-	private float countHere;
 	private float countHereToDestination;
+	private float countHere;
 	private float countPath;
+	
+	private Position position;
+	
 	private Node parent;
 	
-	public Node(Node parent)
+	
+	public Node(Node parent, Position position)
 	{
 		this.parent = parent;
 		this.countHere = calculateCountHere();
+		this.position = position;
 	}
 	
 	public float calculateCountHere()
 	{
-		float count = this.parent.getCountHere();
+		float countParent = this.parent.getCountHere();
+		float count =(float) Math.sqrt(Math.pow(position.getX() - this.getPosition().getX(), 2) + Math.pow(position.getY() - this.getPosition().getY(), 2));
 		
-		//Math.sqrt(Math.pow(position.getX() - this.getPosition().getX(), 2) + Math.pow(position.getY() - this.getPosition().getY(), 2));
-		return 1;
+		return (float) count + countParent;
 	}
 	
 	public float getCountHere()
@@ -59,6 +65,16 @@ public class Node
 	public void setParent(Node parent)
 	{
 		this.parent = parent;
+	}
+	
+	public Position getPosition()
+	{
+		return this.position;
+	}
+	
+	public void setPosition(Position position)
+	{
+		this.position = position;
 	}
 
 }

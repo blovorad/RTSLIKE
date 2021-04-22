@@ -23,6 +23,17 @@ import engine.math.Collision;
 
 public class Unit extends Entity
 {
+	/**
+	 * targetUnit, l'unite ciblee par l'unité
+	 * currentAction, l'action en cours
+	 * attackRange, la range d'attaque  de l'unite
+	 * attackSpeed, la vitesse d'attaque de l'unite
+	 * maxSpeed, la vitesse de deplacement de l'unite
+	 * damage, les dégâts qu'inflige l'unite
+	 * armor, l'armure de l'unite
+	 * timer, le timer avant lequ'elle l'unite fait sont action
+	 * state, l'état de la troupe
+	 */
 	private Unit targetUnit;
 	private Position finalPosition;
 	
@@ -91,6 +102,11 @@ public class Unit extends Entity
 		}
 	}
 	
+	/**
+	 * Fonction qui implemente l'attaque d'une unite, qui inflige les damages à l'unité selectionnée dans target Unit
+	 * @param damage, le nombre de degat a inflige a l'unite
+	 */
+	
 	public void attack(int damage)
 	{
 		if(this.getTarget() != null)
@@ -117,7 +133,10 @@ public class Unit extends Entity
 		}
 	}
 	
-	
+
+	/**
+	 * Fonction qui permet de vérifier si la cible na plus de vie et si c'est le cas l'enlève de target
+	 */
 	public void checkTarget()
 	{
 		if(this.getTarget() != null && this.getTarget().getHp() <= 0)
@@ -184,6 +203,12 @@ public class Unit extends Entity
 		this.move((float)(this.maxSpeed * Math.cos(angle)), (float)(this.maxSpeed * Math.sin(angle)));
 	}
 
+	/**
+	 * Mets a jour toutes les unites, permet leurs deplacements, leur attaque, et toutes leurs actions
+	 * @param units, tableaux des unites presents sur la map
+	 * @param playerFog
+	 * @param map
+	 */
 	public void update(List<Unit> units, Fog playerFog, Map map){
 		super.update();
 		Position p = this.getPosition();
@@ -364,6 +389,9 @@ public class Unit extends Entity
 		return (int) Math.sqrt(Math.pow(position.getX() - this.getPosition().getX(), 2) + Math.pow(position.getY() - this.getPosition().getY(), 2));
 	}
 	
+	/**
+	 * Permets de modifier l'etat des troupes selon certains criteres
+	 */
 	public void manageState() {
 
 		if(speed.getVx() == 0f && speed.getVy() == 0f && currentAction != EntityConfiguration.ATTACK && currentAction != EntityConfiguration.HARVEST && currentAction != EntityConfiguration.REPAIR) {
