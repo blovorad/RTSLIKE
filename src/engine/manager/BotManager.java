@@ -285,7 +285,7 @@ public class BotManager {
 	}
 	
 	/**
-	 * Methode qui met a jour la quantit� d'argent du bot.
+	 * Methode qui met a jour la quantite d'argent du bot.
 	 */
 	public void updateMoney() {
 		setMoney(factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getMoneyCount());
@@ -417,7 +417,7 @@ public class BotManager {
 	}
 	
 	/**
-	 * Methode qui retourne un nombre al�atoire entre deux bornes.
+	 * Methode qui retourne un nombre aléatoire entre deux bornes.
 	 * @param min Borne minimum.
 	 * @param max Borne maximum.
 	 * @return un entier aleatoire.

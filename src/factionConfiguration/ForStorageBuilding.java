@@ -8,9 +8,9 @@ public class ForStorageBuilding extends Patron{
 	
 	private int ressources;
 	
-	public ForStorageBuilding(int hp, int age, String description, int hpMax, int sightRange, int cost)
+	public ForStorageBuilding(int hp, int age, String description, int sightRange, int cost)
 	{
-		super(hp, age, description, hpMax, sightRange, cost);
+		super(hp, age, description, hp, sightRange, cost);
 	}
 
 	public int getRessources() {

@@ -220,10 +220,10 @@ public class Unit extends Entity
 		//System.out.println("calcul d'une vitesse");
 	}
 	
+
 	/**
-	 * core function 
-	 * @param map
-	 * @param fog
+	 * core function of A* algorithm that make unit know where to go
+	 * @param map of the game
 	 */
 	public void generatePath(Map map) {
 		Position p = this.getPosition();
@@ -393,15 +393,6 @@ public class Unit extends Entity
 		}
 		
 		if(finalNode != null && finalPosition != null) {
-			/*if(this.getTargetUnit() != null) {
-				if(!finalPosition.equals(this.getTargetUnit().getPosition())) {
-					int distance = Math.abs(p.getX() - targetUnit.getPosition().getX()) + Math.abs(p.getY() - targetUnit.getPosition().getY());
-					if(distance < this.getSightRange()) {
-						this.setFinalDestination(this.getTargetUnit().getPosition());
-						System.out.println("Regenere path car target move");
-					}
-				}
-			}*/
 			if(this.getDestination() == null) {
 				this.calculateSpeed(destination.get(0));
 			}
