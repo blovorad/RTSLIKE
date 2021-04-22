@@ -29,10 +29,6 @@ public class FactionManager {
 	public AbstractMap<Integer, Faction> getFactions() {
 		return factions;
 	}
-
-	public void setFactions(AbstractMap<Integer, Faction> factions) {
-		this.factions = factions;
-	}
 	
 	/**
 	 * adding a faction in the hashMap

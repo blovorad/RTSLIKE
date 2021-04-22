@@ -1,7 +1,5 @@
 package configuration;
 
-import java.awt.Toolkit;
-
 /**
  * 
  * @author gautier
@@ -27,7 +25,7 @@ public class GameConfiguration
 	/**
 	 * if true then window width and window height is useless
 	 */
-	public final static boolean launchInFullScreen = false;
+	public final static boolean launchInFullScreen = true;
 	/**
 	 * if you want debug, if true you can see the IA and no dynamic fog
 	 */

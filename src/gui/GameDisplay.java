@@ -58,28 +58,49 @@ import engine.Ressource;
 /**
  * 
  * @author gautier
- *
+ * main class for print all information on screen
  */
 
 public class GameDisplay extends JPanel 
 {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * represent all painstrategy need to print all state of the game
+	 */
 	private PaintStrategyGame paintStrategyGame = null;
 	private PaintStrategyMainMenu paintStrategyMainMenu = null;
 	private PaintStrategyOption paintStrategyOption = null;
 	private PaintStrategyPauseMenu paintStrategyPauseMenu = null;
 	private PaintStrategyVictoryScreen paintStrategyVictoryScreen = null;
 	
+	/**
+	 * minimap on the right bot side of the screen
+	 */
 	private Minimap minimap;
 	
+	/**
+	 * current map of the game
+	 */
 	private Map map;
+	/**
+	 * player fog
+	 */
 	private Fog fog;
 	
+	/**
+	 * camera of the game
+	 */
 	private Camera camera;
 	
+	/**
+	 * mouse of the game
+	 */
 	private Mouse mouse;
 	
+	/**
+	 * selection rect of mouse
+	 */
 	private SelectionRect selectionRectangle;
 
 	
@@ -147,10 +168,25 @@ public class GameDisplay extends JPanel
 	private GraphicsManager graphicsManager;
 	private StatEntityContainer statEntityContainer= new StatEntityContainer();
 	
+	/**
+	 * selected map use when you clic on start game button in main menu
+	 */
 	private int selectedMap = 1;
 	
+	/**
+	 * counting time of the game
+	 */
 	private float time;
-
+	
+	/**
+	 * 
+	 * @param camera adresse of the camera
+	 * @param manager create in main GUi
+	 * @param mouse create in main gui
+	 * @param selectionRectangle create in main gui
+	 * @param audioManager create in main gui
+	 * @param graphicsManager create in main gui
+	 */
 	public GameDisplay(Camera camera, EntitiesManager manager, Mouse mouse, SelectionRect selectionRectangle, AudioManager audioManager, GraphicsManager graphicsManager)
 	{
 		this.graphicsManager = graphicsManager;
@@ -195,6 +231,10 @@ public class GameDisplay extends JPanel
 		return this;
 	}
 	
+	/**
+	 * creating the loose panel when you lost the game againt the Ia
+	 * @return the loose panel
+	 */
 	private JPanel createLoosePanel() {
 		JPanel panel = new JPanel(new GridLayout(1, 3));
 
@@ -230,6 +270,10 @@ public class GameDisplay extends JPanel
 		return panel;
 	}
 	
+	/**
+	 * creating winning panel when you destroy the Ia
+	 * @return the winning panel
+	 */
 	private JPanel createWinPanel() {
 		JPanel panel = new JPanel(new GridLayout(1, 3));
 
@@ -265,6 +309,10 @@ public class GameDisplay extends JPanel
 		return panel;
 	}
 	
+	/**
+	 * creating the main menu panel use all method with mainMenuPanel
+	 * @return main panel
+	 */
 	private JPanel createMainMenuPanel()
 	{
 		JPanel panel = new JPanel(new GridLayout(0,3));
@@ -417,6 +465,11 @@ public class GameDisplay extends JPanel
 	    return panel;
 	}
 	
+	/**
+	 * creating the in game panel, place minimap, ressource info and description panel
+	 * and the pause button
+	 * @return current game panel
+	 */
 	private JPanel createGamePanel()
 	{
 		GridLayout gridLayout = new GridLayout(4,3);
@@ -478,6 +531,10 @@ public class GameDisplay extends JPanel
 		return descriptionPanel;
 	}
 	
+	/**
+	 * change the left bottom side of the gameScreen when you select a worker
+	 * @param worker who are selected
+	 */
 	public void setDescriptionPanelForWorker(Worker worker)
 	{
 		descriptionPanel.removeAll();
@@ -502,6 +559,9 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * when you have a selected worker and you clic on construction button
+	 */
 	private void setDescriptionPanelForConstruction()
 	{		
 		descriptionPanel.removeAll();
@@ -589,6 +649,11 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * same as worker setDescription but need list of all fighter selected
+	 * @param unit current unit (first of the arrayList)
+	 * @param fighters list of all fighter selected require to manage state : AGRESSIF, DEFENSIF AND PASSIF
+	 */
 	public void setDescriptionPanelForUnit(Unit unit, List<Fighter>fighters)
 	{
 		descriptionPanel.removeAll();
@@ -635,6 +700,10 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * same as worker set decription panel
+	 * @param building
+	 */
 	public void setDescriptionPanelForBuilding(AttackBuilding building)
 	{
 		descriptionPanel.removeAll();
@@ -648,6 +717,10 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * same as worker set description panel
+	 * @param building
+	 */
 	public void setDescriptionPanelForBuilding(StorageBuilding building)
 	{
 		descriptionPanel.removeAll();
@@ -661,6 +734,11 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * same as worker set description panel, but if a upgrade is done then we don't need to print the button
+	 * @param building
+	 * @param searchingUpgrades upgrade that are not done to research but the building research it
+	 */
 	public void setDescriptionPanelForBuilding(ProductionBuilding building, List<Integer> searchingUpgrades)
 	{
 		descriptionPanel.removeAll();
@@ -800,6 +878,10 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * same as worker set description panel
+	 * @param ressource
+	 */
 	public void setDescriptionPanelForRessource(Ressource ressource)
 	{
 		descriptionPanel.removeAll();
@@ -813,6 +895,10 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * same as worker set description panel
+	 * @param siteConstruction
+	 */
 	public void setDescriptionPanelForSiteConstruction(SiteConstruction siteConstruction) {
 		descriptionPanel.removeAll();
 		
@@ -826,6 +912,9 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * if we don't have anything selected
+	 */
 	public void setDescriptionPanelStandard()
 	{
 		descriptionPanel.removeAll();
@@ -839,6 +928,10 @@ public class GameDisplay extends JPanel
 		descriptionPanel.validate();
 	}
 	
+	/**
+	 * this method create the left upper side of the gameScreen with all information that will be important for the player
+	 * @return the current panel
+	 */
 	private JPanel createRessourceInfo()
 	{	
 		JPanel panel = new JPanel(new GridLayout(5, 1));
@@ -867,6 +960,10 @@ public class GameDisplay extends JPanel
 		return panel;
 	}
 	
+	/**
+	 * creating the option panel
+	 * @return current option panel
+	 */
 	private JPanel createOptionPanel()
 	{
 		JPanel panel = new JPanel();
@@ -924,6 +1021,10 @@ public class GameDisplay extends JPanel
 		return panel;
 	}
 	
+	/**
+	 * creating the pause menu panel when you clic on menu button on game screen
+	 * @return current pause panel
+	 */
 	private JPanel createPauseMenuPanel()
 	{
 		JPanel panel = new JPanel();
@@ -962,6 +1063,10 @@ public class GameDisplay extends JPanel
 		return panel;
 	}
 	
+	/**
+	 * creating minimap panel
+	 * @return minimap panel
+	 */
 	public JPanel createMinimapPanel() {
 		minimapPanel = new JPanel();
 		minimapPanel.setOpaque(false);
@@ -1032,7 +1137,7 @@ public class GameDisplay extends JPanel
 	public void actualiseStatistiquesWorker(Worker worker) {
 		if(statEntityContainer.checkChangeForWorker(worker)) {
 			unitStatistiquesLabel.setText("\nPoints de vie : " + worker.getHp() +
-					"\nD�g�ts : " + worker.getDamage() + 
+					"\nDegats : " + worker.getDamage() + 
 					"\nArmure : " + worker.getArmor());
 			workerRessourceLabel.setText("      " + worker.getDescription() +
 					"\n      Ressources : " + worker.getQuantityRessource());
@@ -1043,7 +1148,7 @@ public class GameDisplay extends JPanel
 	public void actualiseStatistiquesFighter(Fighter fighter) {
 		if(statEntityContainer.checkChangeForFighter(fighter)) {
 			unitStatistiquesLabel.setText("\nPoints de vie : " + fighter.getHp() +
-					"\nD�g�ts : " + fighter.getDamage() + 
+					"\nDegats : " + fighter.getDamage() + 
 					"\nArmure : " + fighter.getArmor());
 		}
 	}
@@ -1054,7 +1159,10 @@ public class GameDisplay extends JPanel
 											"\nPoints de vie : " + siteConstruction.getHp());
 		}
 	}
-
+	
+	/**
+	 * core method that will update all information that is print on the game screen, like unit information, gold, fog of war...
+	 */
 	public void update() {
 		if(state == GameConfiguration.INGAME){
 			int populationCount = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getPopulationCount();
@@ -1156,6 +1264,10 @@ public class GameDisplay extends JPanel
 	}
 	
 	@Override
+	/**
+	 * core method to print all information
+	 * use all paintstrategy in function of state of the game
+	 */
 	public void paintComponent(Graphics g) 
 	{
 		super.paintComponent(g);
@@ -1817,6 +1929,9 @@ public class GameDisplay extends JPanel
 		}
 	}
 	
+	/**
+	 * manage all state of the game and assure that the current print panel is the good
+	 */
 	private void manageState()
 	{
 		switch(state)
@@ -1936,56 +2051,8 @@ public class GameDisplay extends JPanel
 		return state;
 	}
 
-	public void setState(int state) {
-		this.state = state;
-	}
-
-	public JLabel getPopulationLabel() {
-		return populationLabel;
-	}
-
-	public void setPopulationLabel(JLabel populationLabel) {
-		this.populationLabel = populationLabel;
-	}
-
-	public JLabel getMoneyLabel() {
-		return moneyLabel;
-	}
-
-	public void setMoneyLabel(JLabel moneyLabel) {
-		this.moneyLabel = moneyLabel;
-	}
-
-	public JLabel getTimeLabel() {
-		return timeLabel;
-	}
-
-	public JLabel getAgeLabel() {
-		return ageLabel;
-	}
-
-	public void setAgeLabel(JLabel ageLabel) {
-		this.ageLabel = ageLabel;
-	}
-
-	public void setTimeLabel(JLabel timeLabel) {
-		this.timeLabel = timeLabel;
-	}
-
-	public int getSelectedMap() {
-		return selectedMap;
-	}
-
 	public void setSelectedMap(int selectedMap) {
 		this.selectedMap = selectedMap;
-	}
-
-	public Fog getFog() {
-		return fog;
-	}
-
-	public void setFog(Fog fog) {
-		this.fog = fog;
 	}
 	
 	public JPanel getMinimapPanel() {

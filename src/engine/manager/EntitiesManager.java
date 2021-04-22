@@ -1104,14 +1104,6 @@ public class EntitiesManager
 	public void setPlayerStoragesBuildings(List<StorageBuilding> playerStorageBuildings) {
 		this.playerStorageBuildings = playerStorageBuildings;
 	}
-
-	public List<StorageBuilding> getBotStorageBuildings() {
-		return botStorageBuildings;
-	}
-
-	public void setBotStorageBuildings(List<StorageBuilding> botStorageBuildings) {
-		this.botStorageBuildings = botStorageBuildings;
-	}
 	
 	/**
 	 * clear all selected unit
@@ -1163,10 +1155,6 @@ public class EntitiesManager
 		return playerEntities;
 	}
 
-	public void setPlayerEntities(List<Entity> playerEntities) {
-		this.playerEntities = playerEntities;
-	}
-
 	public Ressource getSelectedRessource() {
 		return selectedRessource;
 	}
@@ -1199,10 +1187,6 @@ public class EntitiesManager
 		return selectedSiteConstruction;
 	}
 
-	public BotManager getBotManager() {
-		return botManager;
-	}
-
 	public List<ProductionBuilding> getPlayerProdBuildings() {
 		return playerProdBuildings;
 	}
@@ -1221,10 +1205,6 @@ public class EntitiesManager
 	
 	public List<Entity> getRemoveList(){
 		return removeList;
-	}
-
-	public void setGraphicsManager(GraphicsManager graphicsManager) {
-		this.graphicsManager = graphicsManager;
 	}
 	
 	public List<Entity> getBotEntities(){

@@ -1029,22 +1029,4 @@ public class MainGui extends JFrame implements Runnable
 		Thread gameThread = new Thread(n);
 		gameThread.start();
 	}
-
-	public EntitiesManager getManager() 
-	{
-		return manager;
-	}
-
-	public void setManager(EntitiesManager manager) 
-	{
-		this.manager = manager;
-	}
-
-	public AudioManager getAudioManager() {
-		return audioManager;
-	}
-
-	public void setAudioManager(AudioManager audioManager) {
-		this.audioManager = audioManager;
-	}
 }

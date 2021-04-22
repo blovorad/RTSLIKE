@@ -234,10 +234,6 @@ public class AudioManager {
 			}
 		}
 	}
-	
-	public int getState() {
-		return state;
-	}
 
 	public void setState(int state) {
 		this.state = state;
@@ -246,35 +242,7 @@ public class AudioManager {
 		}
 	}
 
-	public int getOldState() {
-		return oldState;
-	}
-
-	public void setOldState(int oldState) {
-		this.oldState = oldState;
-	}
-
-	public Clip getMusique() {
-		return musique;
-	}
-
-	public void setMusique(Clip musique) {
-		this.musique = musique;
-	}
-
-	public int getCurrentMusique() {
-		return currentMusique;
-	}
-
-	public void setCurrentMusique(int currentMusique) {
-		this.currentMusique = currentMusique;
-	}
-
 	public int getSliderVolume() {
 		return sliderVolume;
-	}
-
-	public void setSliderVolume(int sliderVolume) {
-		this.sliderVolume = sliderVolume;
 	}
 }

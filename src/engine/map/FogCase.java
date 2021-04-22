@@ -23,10 +23,6 @@ public class FogCase {
 		this.locked = false;
 	}
 	
-	public void lockedCaseFog() {
-		this.locked = true;
-	}
-	
 	public boolean getLocked() {
 		return this.locked;
 	}

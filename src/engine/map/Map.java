@@ -46,7 +46,7 @@ public class Map {
 	public Map(int line, int column, int id, String fileName, GraphicsManager graphicsManager){
 		this.columnCount = column;
 		this.lineCount = line;
-		this.setGoldTiles(new ArrayList<Tile>());
+		this.goldTiles = new ArrayList<Tile>();
 		
 		tiles = new Tile[line][column];
 		
@@ -95,9 +95,5 @@ public class Map {
 
 	public List<Tile> getGoldTiles() {
 		return goldTiles;
-	}
-
-	public void setGoldTiles(List<Tile> goldTiles) {
-		this.goldTiles = goldTiles;
 	}
 }

@@ -50,8 +50,7 @@ public class Tile {
 		this.column = column;
 		this.id = id;
 		this.solid = MapConfiguration.getTileSolid(this.id);
-		this.setColor(MapConfiguration.getTileColor(this.id));
-		
+		this.color = MapConfiguration.getTileColor(this.id);		
 		if(this.id == MapConfiguration.GRASS) {
 			animation = new Animation(0, false, graphicsManager.getGrass());
 		}
@@ -99,15 +98,7 @@ public class Tile {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
 	public Animation getAnimation() {
 		return animation;
-	}
-
-	public void setAnimation(Animation animation) {
-		this.animation = animation;
 	}
 }

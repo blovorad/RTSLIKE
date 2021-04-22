@@ -43,8 +43,8 @@ public class Fog {
 	 * @param columnCount size width of fog
 	 */
 	public Fog(int lineCount, int columnCount) {
-		this.setLineCount(lineCount);
-		this.setColumnCount(columnCount);
+		this.lineCount = lineCount;
+		this.columnCount = columnCount;
 		this.lockedList = new ArrayList<FogCase>();
 		
 		fog = new boolean[lineCount][columnCount];
@@ -290,25 +290,13 @@ public class Fog {
 	public FogCase[][] getDynamicFog(){
 		return dynamicFog;
 	}
-
-	public void setFog(boolean[][] fog) {
-		this.fog = fog;
-	}
-
+	
 	public int getLineCount() {
 		return lineCount;
 	}
 
-	public void setLineCount(int lineCount) {
-		this.lineCount = lineCount;
-	}
-
 	public int getColumnCount() {
 		return columnCount;
-	}
-
-	public void setColumnCount(int columnCount) {
-		this.columnCount = columnCount;
 	}
 
 }

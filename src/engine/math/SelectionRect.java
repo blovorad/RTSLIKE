@@ -126,19 +126,7 @@ public class SelectionRect
 		this.active = active;
 	}
 
-	public Position getFirstPosition() {
-		return firstPosition;
-	}
-
-	public void setFirstPosition(Position firstPosition) {
-		this.firstPosition = firstPosition;
-	}
-
 	public int getAlpha() {
 		return alpha;
-	}
-
-	public void setAlpha(int alpha) {
-		this.alpha = alpha;
 	}
 }
