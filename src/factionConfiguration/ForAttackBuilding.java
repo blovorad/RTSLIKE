@@ -3,12 +3,21 @@ package factionConfiguration;
 /**
  * 
  * @author gautier
- *
+ * extends patron and specificaly stat of tower need
  */
 public class ForAttackBuilding extends Patron{
 	
+	/**
+	 * attack damage
+	 */
 	private int attackDamage;
+	/**
+	 * attack range
+	 */
 	private int attackRange;
+	/**
+	 * attack speed
+	 */
 	private int attackSpeed;
 	
 	public ForAttackBuilding(int hp, int sightRange, int attackDamage, int attackRange, int attackSpeed, int age, String description, int cost)

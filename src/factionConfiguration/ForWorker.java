@@ -2,7 +2,7 @@ package factionConfiguration;
 /**
  * 
  * @author gautier
- *
+ *	extends patron to fit specificaly with worker needs
  */
 public class ForWorker extends Patron
 {
@@ -10,15 +10,30 @@ public class ForWorker extends Patron
 	private int armor;
 	private int maxSpeed;
 	private int timeToBuild;
+	/**
+	 * max ressource can be stock in inventory
+	 */
 	private int ressourceMax;
+	/**
+	 * how many ressource stock in inventory at each frame
+	 */
 	private int harvest;
-
+	
+	/**
+	 * speed of harvest
+	 */
 	private int harvestSpeed;
 
 	private int attackSpeed;
 	private int attackRange;
+	/**
+	 * how many hp will repair at each frame
+	 */
 	private int repair;
-
+	
+	/**
+	 * speed of repairing
+	 */
 	private int repairSpeed;
 
 	

@@ -4,7 +4,7 @@ import configuration.EntityConfiguration;
 /**
  * 
  * @author gautier
- *
+ * gaia faction taht represent nature, ressource, not realy usefull for the moment
  */
 public class Gaia extends Race
 {

@@ -7,8 +7,10 @@ import configuration.EntityConfiguration;
 /**
  * 
  * @author gautier
- *
+ * class contain all stat of empire faction, that init Race, to see what function done check barbare.java
+ * @see barbare
  */
+
 public class Empire extends Race
 {
 	public Empire()
@@ -145,8 +147,7 @@ public class Empire extends Race
 	
 	public void initHQUpgrades()
 	{
-		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE, new ForUpgrade(1, "upgrade age tier 2", 1, EntityConfiguration.AGE_UPGRADE, 7, 300));
-		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE_2, new ForUpgrade(1, "upgrade age tier 3", 1, EntityConfiguration.AGE_UPGRADE_2, 7, 500));
+		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE, new ForUpgrade(1, "upgrade age tier 2", 1, EntityConfiguration.AGE_UPGRADE, 75, 300));
+		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE_2, new ForUpgrade(1, "upgrade age tier 3", 1, EntityConfiguration.AGE_UPGRADE_2, 100, 500));
 	}
-	
 }

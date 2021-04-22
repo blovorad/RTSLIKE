@@ -2,15 +2,33 @@ package factionConfiguration;
 /**
  * 
  * @author gautier
- *
+ * specificaly create to upgrade, that don't need the same as other For class
  */
 public class ForUpgrade {
-
-	private int age; // age ou l'upgrade est dispo
+	
+	/**
+	 * age where you can build this upgrade
+	 */
+	private int age;
+	/**
+	 * description of the upgrade
+	 */
 	private String description;
+	/**
+	 * id to upgrade
+	 */
 	private int id;
+	/**
+	 * effect of the upgrade, it adds with the corresponding competence
+	 */
 	private int effect;
+	/**
+	 * how many time before be product
+	 */
 	private int timeToProduce;
+	/**
+	 * cost
+	 */
 	private int cost;
 	
 	public ForUpgrade(int age, String description, int effect, int id, int timeToProduce, int cost) {

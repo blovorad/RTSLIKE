@@ -4,10 +4,13 @@ import java.util.AbstractMap;
 /**
  * 
  * @author gautier
- *
+ * extends patron to fit with production building neeed
  */
 public class ForProductionBuilding extends Patron{
 	
+	/**
+	 * upgrade
+	 */
 	private AbstractMap<Integer, ForUpgrade> upgrades;
 	
 	public ForProductionBuilding(int hp, int age, AbstractMap<Integer, ForUpgrade> upgrades, String description, int sightRange, int cost)

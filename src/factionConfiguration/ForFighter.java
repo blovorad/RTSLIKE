@@ -3,16 +3,34 @@ package factionConfiguration;
 /**
  * 
  * @author gautier
- *
+ * extends patron, create to fit with fighter needs
  */
 
 public class ForFighter extends Patron
 {
+	/**
+	 * damage
+	 */
 	private int damage;
+	/**
+	 * armor
+	 */
 	private int armor;
+	/**
+	 * max speed of infantry
+	 */
 	private int maxSpeed;
+	/**
+	 * how many time before building
+	 */
 	private int timeToBuild;
+	/**
+	 * speed of attack
+	 */
 	private int attackSpeed;
+	/**
+	 * attack range
+	 */
 	private int attackRange;
 	
 	public ForFighter(int attackRange, int attackSpeed, int sightRange, int damage, int armor, int maxSpeed, int hp, int age, int timeToBuild, String description, int hpMax, int cost)

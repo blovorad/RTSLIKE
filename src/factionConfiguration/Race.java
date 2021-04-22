@@ -5,17 +5,43 @@ import java.util.HashMap;
 /**
  * 
  * @author gautier
- *
+ * class contain all stat of a race, all patron are stock in this class and use by faction
+ * @see faction
+ * @see patron
  */
 public abstract class Race 
 {
+	/**
+	 * name of the faction
+	 */
 	private String name;
+	/**
+	 * all patron of fighter, hashMap require because it will be more easier to get what we need
+	 */
 	private AbstractMap<Integer, ForFighter>patronFighters;
+	/**
+	 * all patron of worker, hashMap require because it will be more easier to get what we need
+	 */
 	private AbstractMap<Integer, ForWorker>patronWorkers;
+	/**
+	 * all patron of production building, hashMap require because it will be more easier to get what we need
+	 */
 	private AbstractMap<Integer, ForProductionBuilding>productionBuildings;
+	/**
+	 * all patron of attack building, hashMap require because it will be more easier to get what we need
+	 */
 	private AbstractMap<Integer, ForAttackBuilding>attackBuildings;
+	/**
+	 * all patron of storage building, hashMap require because it will be more easier to get what we need
+	 */
 	private AbstractMap<Integer, ForStorageBuilding>storageBuildings;
+	/**
+	 * all patron of Hq upgrade, hashMap require because it will be more easier to get what we need
+	 */
 	private AbstractMap<Integer, ForUpgrade> HQUpgrades;
+	/**
+	 * all patron of forge upgrade, hashMap require because it will be more easier to get what we need
+	 */
 	private AbstractMap<Integer, ForUpgrade> ForgeUpgrades;
 	
 	public Race()
