@@ -81,8 +81,16 @@ public class Unit extends Entity
 	public void setFinalDestination(Position position) {
 		this.finalPosition = new Position(position.getX(), position.getY());
 		finalNode = new Node(new Position(position.getX() / GameConfiguration.TILE_SIZE, position.getY() / GameConfiguration.TILE_SIZE));
-		this.setDestination(null);
-		generatePath = true;
+		Node currentNode = new Node(new Position(this.getPosition().getX() / GameConfiguration.TILE_SIZE, this.getPosition().getY() / GameConfiguration.TILE_SIZE));
+		if(currentNode.getPosition().equals(finalNode.getPosition())) {
+			//System.out.println("ICII");
+			this.calculateSpeed(position);
+			this.finalNode = null;
+		}
+		else {
+			this.setDestination(null);
+			generatePath = true;
+		}
 		//System.out.println("GENERATION PATH : " + generatePath);
 	}
 	
@@ -285,9 +293,12 @@ public class Unit extends Entity
 				}
 			}
 		}
+		
+		boolean searchingPath = false;
 		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
 		//System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
-		while(currentNode != endNode && currentNode != null) {
+		while(!currentNode.getPosition().equals(endNode.getPosition()) && currentNode != null) {
+			searchingPath = true;
 			Position bis = currentNode.getPosition();
 			if(bis.getY() - 1 >= 0 && bis.getX() >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
 				if(this.getCurrentAction() == EntityConfiguration.HARVEST || this.getTarget() != null) {
@@ -354,12 +365,19 @@ public class Unit extends Entity
 		
 		//System.out.println("On reverse");
 		if(currentNode != null) {
-			destination.clear();
-			destination = path.reversePath(currentNode);
+			if(searchingPath) {
+				destination.clear();
+				destination = path.reversePath(currentNode);
+			}
+			else {
+				System.out.println("trouver sans rechercher");
+				this.calculateSpeed(this.finalPosition);
+			}
 		}
 		else {
 			System.out.println("PATH PAS TROUVER");
 			System.out.println("Pos node end : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
+			System.out.println("pos : " + ((p.getX() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE) + "," + ((p.getY() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE));
 			System.out.println("TILE POS SOLID : " + tiles[finalNode.getPosition().getY()][finalNode.getPosition().getX()].isSolid());
 			this.speed.reset();
 			finalPosition = null;
@@ -389,6 +407,14 @@ public class Unit extends Entity
 			}
 			else {
 				generatePath(map);
+			}
+		}
+		
+		if(targetUnit != null) {
+			if(finalPosition != null) {
+				if(!finalPosition.equals(targetUnit.getPosition())) {
+					this.setFinalDestination(targetUnit.getPosition());
+				}
 			}
 		}
 		
@@ -429,8 +455,9 @@ public class Unit extends Entity
 							}
 							else {
 									//System.out.println("GENERATION PATH : " + generatePath);
-								//System.out.println("On regenère un path 1");
-								generatePath = true;
+							//	System.out.println("On regenère un path 1");
+								this.setFinalDestination(finalPosition);
+								//generatePath = true;
 							}
 						}
 					}
@@ -455,7 +482,8 @@ public class Unit extends Entity
 						else {
 							//System.out.println("On regenère un path 2");
 							//System.out.println("GENERATION PATH : " + generatePath);
-							generatePath = true;
+							this.setFinalDestination(finalPosition);
+							//generatePath = true;
 						}
 					}
 				}
@@ -483,6 +511,9 @@ public class Unit extends Entity
 				this.speed.reset();
 				this.setDestination(null);
 			}
+		}
+		else if(targetUnit != null && this.getDestination() == null && finalPosition == null && this.getCurrentAction() != EntityConfiguration.ATTACK) {
+			this.setFinalDestination(targetUnit.getPosition());
 		}
 		
 		this.getPosition().setX(this.getPosition().getX() + (int)this.getSpeed().getVx());
@@ -542,7 +573,7 @@ public class Unit extends Entity
 			}
 		}
 		
-		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.getTarget() == null && this.targetUnit == null && (this.getFaction() == EntityConfiguration.BOT_FACTION || this.getDestination() == null ))
+		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.destination.isEmpty() == true && this.getTarget() == null && this.targetUnit == null && (this.getFaction() == EntityConfiguration.BOT_FACTION || this.getDestination() == null ))
 		{
 			
 			if(!units.isEmpty())
@@ -555,6 +586,9 @@ public class Unit extends Entity
 					
 					if(Collision.collideVision(value, this) && value.getFaction() != this.getFaction())
 					{
+						if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+							System.out.println("ICI");
+						}
 						this.setFinalDestination(value.getPosition());
 						this.setCurrentAction(EntityConfiguration.WALK);
 						this.setTarget(value);

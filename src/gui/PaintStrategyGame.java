@@ -223,8 +223,8 @@ public class PaintStrategyGame
 					Animation animation = tile.getAnimation();
 					graphics.drawImage(graphicsManager.getGrassTile(), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
 					graphics.drawImage(animation.getFrame(), tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize, null);
-					/*graphics.setColor(Color.white);
-					graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);*/
+					graphics.setColor(Color.white);
+					graphics.drawRect(tile.getColumn() * tileSize - camera.getX(), tile.getLine() * tileSize - camera.getY(), tileSize, tileSize);
 				}
 			}
 		}
