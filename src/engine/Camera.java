@@ -7,8 +7,8 @@ import configuration.GameConfiguration;
 
 /**
  * 
- * @author gautier
  *	this class is used to permit scrolling and select entity in the map
+ *	@author gautier
  */
 
 public class Camera 
@@ -66,7 +66,7 @@ public class Camera
 		rectY = 10;
 		if(GameConfiguration.launchInFullScreen) {
 			rectW = Toolkit.getDefaultToolkit().getScreenSize().width - rectX - 20;
-			rectH = Toolkit.getDefaultToolkit().getScreenSize().height - rectY - 40;
+			rectH = Toolkit.getDefaultToolkit().getScreenSize().height - rectY - 80;
 			this.screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
 			this.screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 		}

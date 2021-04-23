@@ -1,8 +1,8 @@
 package engine;
 /**
  * 
- * @author gautier
  *	class to manage speed, needing to all move
+ *	@author gautier
  */
 public class Speed 
 {

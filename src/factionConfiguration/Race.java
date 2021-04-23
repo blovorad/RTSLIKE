@@ -4,8 +4,8 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 /**
  * 
- * @author gautier
  * class contain all stat of a race, all patron are stock in this class and use by faction
+ * @author gautier
  * @see faction
  * @see patron
  */

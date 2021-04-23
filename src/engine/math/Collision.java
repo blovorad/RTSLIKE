@@ -17,8 +17,8 @@ import engine.entity.unit.Worker;
 
 /**
  * 
- * @author gautier
  * this class is never instanciate and contain all collision function we need in the game
+ * @author gautier
  */
 
 public class Collision {

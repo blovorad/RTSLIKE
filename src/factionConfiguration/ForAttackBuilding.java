@@ -2,8 +2,8 @@ package factionConfiguration;
 
 /**
  * 
- * @author gautier
  * extends patron and specificaly stat of tower need
+ * @author gautier
  */
 public class ForAttackBuilding extends Patron{
 	

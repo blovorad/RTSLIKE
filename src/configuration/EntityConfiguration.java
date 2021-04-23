@@ -1,9 +1,9 @@
 package configuration;
 
 /**
- * 
- * @author gautier
  * this class contain all constant need to entity
+ * @author gautier
+ * 
  */
 
 public class EntityConfiguration {

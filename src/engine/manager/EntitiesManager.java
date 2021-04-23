@@ -37,9 +37,9 @@ import factionConfiguration.ForWorker;
 
 /**
  * 
- * @author gautier
  * core class of the game, it manage all entity of the game, calling all update function of the game
  * manage if you win or loose, and call the botManager
+ * @author gautier
  */
 
 public class EntitiesManager 
@@ -201,7 +201,7 @@ public class EntitiesManager
 			removeList.clear();
 		}
 		
-		if(botManager != null) {
+		if(!GameConfiguration.IA_NOT_ALIVE && botManager != null) {
 			botManager.update(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, botSiteConstructions, playerBuildings, playerUnits);
 			if(botManager.getBuildingInAttempt() == true) {
 				Tile tile = botManager.getTileToBuild();

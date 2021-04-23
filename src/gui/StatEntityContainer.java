@@ -11,8 +11,8 @@ import engine.entity.unit.Unit;
 import engine.entity.unit.Worker;
 /**
  * 
- * @author gautier
  * this class is use to assure that a description panel won't be actualise to many time, that cause bug
+ * @author gautier
  */
 public class StatEntityContainer {
 	/**

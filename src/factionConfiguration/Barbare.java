@@ -7,8 +7,8 @@ import configuration.EntityConfiguration;
 
 /**
  * 
- * @author gautier
  * class contain all stat of barbare faction, that init Race
+ * @author gautier
  */
 
 public class Barbare extends Race
@@ -124,65 +124,41 @@ public class Barbare extends Race
 		this.getProductionBuildings().put(EntityConfiguration.FORGE, new ForProductionBuilding(100, 2, this.getForgeUpgrades(), "Forge Barbare", 400, 150));
 	}
 	
-	/**
-	 * init hq stat and  give him all upgrade and production
-	 */
 	public void initHq()
 	{
 		this.getProductionBuildings().put(EntityConfiguration.HQ, new ForProductionBuilding(300, 2, this.getHQUpgrades(), "Quartier general Barbare", 400, 250));
 	}
 	
-	/**
-	 * init castle stat and  give him all production
-	 */
 	public void initCastle()
 	{
 		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(400, 3, null, "Chateau Barbare", 400, 250));
 	}
 	
-	/**
-	 * init tower stat
-	 */
 	public void initTower()
 	{
 		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(150, 400, 1, 80 ,10 ,1, "Tour Barbare", 175));
 	}
 	
-	/**
-	 * init storage stat
-	 */
 	public void initRessourceStockage()
 	{
 		this.getStorageBuildings().put(EntityConfiguration.STORAGE, new ForStorageBuilding(50 , 1, "Stockage Barbare", 300, 50));
 	}
 	
-	/**
-	 * init barrack stat and  give him all production
-	 */
 	public void initBarrack()
 	{
 		this.getProductionBuildings().put(EntityConfiguration.BARRACK, new ForProductionBuilding(125, 1, null, "Caserne Barbare", 400, 100));
 	}
 	
-	/**
-	 * init archery stat and  give him all production
-	 */
 	public void initArchery()
 	{
 		this.getProductionBuildings().put(EntityConfiguration.ARCHERY, new ForProductionBuilding(125, 2, null, "Archerie Barbare", 400, 100));
 	}
 	
-	/**
-	 * init stable stat and  give him all production
-	 */
 	public void initStable()
 	{
 		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(140, 2, null, "Ecurie Barbare", 400, 125));
 	}
 	
-	/**
-	 * init forge upgrade and give him all stat of each upgrade
-	 */
 	public void initForgeUpgrades()
 	{
 		this.getForgeUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(2, "armure en fer", 1, EntityConfiguration.ARMOR_UPGRADE, 4, 75));
@@ -192,9 +168,6 @@ public class Barbare extends Race
 		this.getForgeUpgrades().put(EntityConfiguration.SIGHT_RANGE_UPGRADE, new ForUpgrade(3, "lunette de vue", 75, EntityConfiguration.SIGHT_RANGE_UPGRADE, 4, 75));
 	}
 	
-	/**
-	 * init hq upgrade and give him all stat of each upgrade
-	 */
 	public void initHQUpgrades()
 	{
 		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE, new ForUpgrade(1, "upgrade age tier 2", 1, EntityConfiguration.AGE_UPGRADE, 75, 300));

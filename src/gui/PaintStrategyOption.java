@@ -8,8 +8,8 @@ import engine.manager.GraphicsManager;
 
 /**
  * 
- * @author gautier
  *	this class is in charge to paint the option menu
+ *	@author gautier
  */
 public class PaintStrategyOption {
 	

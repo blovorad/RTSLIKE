@@ -4,8 +4,8 @@ import engine.Position;
 
 /**
  * 
- * @author gautier
  * this class represent a node, use for A* algorithm
+ * @author gautier
  */
 
 public class Node {

@@ -3,8 +3,8 @@ package factionConfiguration;
 import java.util.AbstractMap;
 /**
  * 
- * @author gautier
  * extends patron to fit with production building neeed
+ * @author gautier
  */
 public class ForProductionBuilding extends Patron{
 	

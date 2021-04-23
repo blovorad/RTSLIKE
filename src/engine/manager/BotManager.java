@@ -747,8 +747,10 @@ public class BotManager {
 							}
 						}
 						if(foundPlace) {
+							System.out.println("place trouver pour storage");
+							System.out.println("pos : " + storagePosX + "," + storagePosY);
 							buildingInAttempt = true;
-							tileToBuild = map.getTile(storagePosX, storagePosY);
+							tileToBuild = map.getTile(storagePosY, storagePosX);
 							idToBuild = EntityConfiguration.STORAGE;
 						}
 					}

@@ -8,8 +8,8 @@ import engine.manager.GraphicsManager;
 
 /**
  * 
- * @author gautier
  *	this class represent a case of a map
+ *	@author gautier
  */
 
 public class Tile {

@@ -3,8 +3,8 @@ package engine.math;
 import engine.Position;
 /**
  * 
- * @author gautier
  * this class is used to manage the selection rect with mouse and rally point with building
+ * @author gautier
  */
 public class SelectionRect 
 {

@@ -12,8 +12,8 @@ import factionConfiguration.ForWorker;
 
 /**
  * 
- * @author maxime
  *	this class is require to build a game, when you press startGame in Main menu screen
+ *	@author maxime
  */
 
 public class GameBuilder {

@@ -14,8 +14,8 @@ import factionConfiguration.Race;
 import factionConfiguration.Royaume;
 /**
  * 
- * @author gautier
  *	this class is use to each faction of the game, stocking a lot of variable
+ *	@author gautier
  */
 public class Faction {
 	/**

@@ -1,5 +1,6 @@
 package engine.entity.unit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import configuration.EntityConfiguration;
@@ -10,6 +11,7 @@ import engine.entity.building.StorageBuilding;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
 import engine.map.Map;
+import engine.map.Tile;
 import engine.math.Collision;
 
 
@@ -115,6 +117,7 @@ public class Worker extends Unit
 	public void update(List<Ressource> ressources, List<StorageBuilding> storageBuildings, List<Unit> units, Fog playerFog, Map map)
 	{
 		super.update(units, playerFog, map);
+		
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST && this.getTarget() != null) {
 			if(this.getTarget().getId() == EntityConfiguration.SITE_CONSTRUCTION) {
 				this.setCurrentAction(EntityConfiguration.WALK);
@@ -123,6 +126,9 @@ public class Worker extends Unit
 		
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST)
 		{
+			if(this.getTarget() == ressource && this.getFoundPath() == false) {
+				nearbyResource(ressources, map);
+			}
 			// Va au batiments quand il a les ressources max
 			if(this.quantityRessource == this.ressourcesMax)	
 			{
@@ -157,7 +163,7 @@ public class Worker extends Unit
 			else if(this.ressource == null && !ressources.isEmpty())
 			{
 				this.ressource = null;
-				nearbyResource(ressources);
+				nearbyResource(ressources, map);
 				if(this.ressource == null) {
 					if(this.quantityRessource > 0) {
 						nearbyStorage(storageBuildings);
@@ -238,20 +244,31 @@ public class Worker extends Unit
 	 * Fonction qui permet de trouver la ressource la plus proche du worker sur la map 
 	 * @param ressources, tableau de toutes les ressources se trouvant sur la map
 	 */
-	public void nearbyResource(List<Ressource> ressources)
+	public void nearbyResource(List<Ressource> ressources, Map map)
 	{
 		if(!ressources.isEmpty())
 		{
-			this.ressource = ressources.get(0);
-			int distanceRessource;
+			List<Ressource> accessible = new ArrayList<Ressource>();
+			for(Ressource ressource : ressources) {
+				accessible.add(ressource);
+			}
 			
-			for(Ressource value: ressources)
-			{
-				distanceRessource = calculate(this.ressource.getPosition());
-				if(distanceRessource > calculate(value.getPosition()) && value.getHp() > 0 )
+			this.ressource = accessible.get(0);
+			int distanceRessource;
+			boolean notFound = false;
+			
+			while(notFound == false) {
+				for(Ressource value: accessible)
 				{
-					this.ressource = value;
+					distanceRessource = calculate(this.ressource.getPosition());
+					if(distanceRessource > calculate(value.getPosition()) && value.getHp() > 0 )
+					{
+						this.ressource = value;
+					}
 				}
+				this.setFinalDestination(ressource.getPosition());
+				notFound = this.generatePath(map);
+				accessible.remove(this.ressource);
 			}
 			
 			if(!Collision.collideRessource(this, this.ressource))

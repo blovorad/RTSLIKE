@@ -11,8 +11,8 @@ import javax.sound.sampled.FloatControl;
 
 /**
  * 
- * @author gautier
  * class used to manage sound in the game
+ * @author gautier
  */
 
 public class AudioManager {

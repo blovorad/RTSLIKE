@@ -8,8 +8,8 @@ import engine.manager.GraphicsManager;
 
 /**
  * 
- * @author gautier
  * class who charge to paint main Menu
+ * @author gautier
  */
 
 public class PaintStrategyMainMenu {

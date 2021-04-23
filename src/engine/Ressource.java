@@ -5,8 +5,8 @@ import engine.manager.GraphicsManager;
 import engine.map.Tile;
 /**
  * 
- * @author gautier
  * class who manage ressource on map
+ * @author gautier
  */
 public class Ressource extends Entity
 {

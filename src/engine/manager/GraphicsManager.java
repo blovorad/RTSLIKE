@@ -12,8 +12,8 @@ import configuration.MapConfiguration;
 
 /**
  * 
- * @author gautier
  * this class is require to manage and conserv all bufferedImage of the game
+ * @author gautier
  */
 
 public class GraphicsManager {

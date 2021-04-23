@@ -7,8 +7,8 @@ import configuration.GameConfiguration;
 import engine.manager.GraphicsManager;
 /**
  * 
- * @author gautier
  * this class is in charge to paint victory or loosing screen
+ * @author gautier
  */
 public class PaintStrategyVictoryScreen {
 	/**

@@ -8,8 +8,8 @@ import engine.manager.GraphicsManager;
 
 /**
  * 
- * @author gautier
  *	this class is used to manage animation
+ *	@author gautier
  */
 public class Animation {
 	/**

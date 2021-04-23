@@ -11,8 +11,8 @@ import engine.manager.GraphicsManager;
 
 /**
  * 
- * @author gautier
  *	this class represent the map of the game
+ *	@author gautier
  */
 
 public class Map {

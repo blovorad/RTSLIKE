@@ -8,8 +8,8 @@ import engine.Position;
 
 /**
  * 
- * @author gautier
  * this class is used to make a A* algorithm, it represent the iteration
+ * @author gautier
  */
 
 public class Path {

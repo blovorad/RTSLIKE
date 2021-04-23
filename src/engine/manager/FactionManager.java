@@ -9,8 +9,8 @@ import engine.Faction;
 
 /**
  * 
- * @author gautier
  * this class contain all faction
+ * @author gautier
  */
 
 public class FactionManager {

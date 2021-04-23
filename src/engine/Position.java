@@ -2,8 +2,8 @@ package engine;
 
 /**
  * 
- * @author gautier
  *	this class is require to stock position of entity on map
+ *	@author gautier
  */
 public class Position 
 {

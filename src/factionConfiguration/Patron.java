@@ -1,8 +1,8 @@
 package factionConfiguration;
 /**
  * 
- * @author gautier
  * not instanciate use to all entity
+ * @author gautier
  */
 public abstract class Patron 
 {

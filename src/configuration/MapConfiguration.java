@@ -3,9 +3,9 @@ package configuration;
 import java.awt.Color;
 
 /**
- * 
- * @author gautier
  * this class contain all constant need to generate and maintain a map
+ * @author gautier
+ *
  */
 
 public class MapConfiguration {

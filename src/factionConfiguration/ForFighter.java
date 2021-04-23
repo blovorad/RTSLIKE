@@ -2,8 +2,8 @@ package factionConfiguration;
 
 /**
  * 
- * @author gautier
  * extends patron, create to fit with fighter needs
+ * @author gautier
  */
 
 public class ForFighter extends Patron

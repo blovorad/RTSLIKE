@@ -3,8 +3,8 @@ package factionConfiguration;
 import configuration.EntityConfiguration;
 /**
  * 
- * @author gautier
  * gaia faction taht represent nature, ressource, not realy usefull for the moment
+ * @author gautier
  */
 public class Gaia extends Race
 {

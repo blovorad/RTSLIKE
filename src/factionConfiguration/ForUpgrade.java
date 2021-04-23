@@ -1,8 +1,8 @@
 package factionConfiguration;
 /**
  * 
- * @author gautier
  * specificaly create to upgrade, that don't need the same as other For class
+ * @author gautier
  */
 public class ForUpgrade {
 	

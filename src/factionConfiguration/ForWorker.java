@@ -1,8 +1,8 @@
 package factionConfiguration;
 /**
  * 
- * @author gautier
  *	extends patron to fit specificaly with worker needs
+ *	@author gautier
  */
 public class ForWorker extends Patron
 {

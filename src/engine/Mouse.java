@@ -7,8 +7,8 @@ import engine.manager.GraphicsManager;
 
 /**
  * 
- * @author gautier
  *	this class is require to interact with map, needing to place building
+ *	@author gautier
  */
 public class Mouse {
 	

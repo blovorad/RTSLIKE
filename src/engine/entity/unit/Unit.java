@@ -54,6 +54,7 @@ public class Unit extends Entity
 	
 	private Speed speed;
 	private boolean generatePath;
+	private boolean foundPath;
 	
 	public Unit(int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int armor, Position position, int id, String description, Position destination, int hpMax, int faction, int sightRange, int maxFrame, GraphicsManager graphicsManager, int state)
 	{
@@ -164,6 +165,9 @@ public class Unit extends Entity
 			this.setTarget(null);
 			this.targetUnit = null;
 			this.setDestination(null);
+			this.destination.clear();
+			this.finalPosition = null;
+			this.finalNode = null;
 		}
 	}
 	
@@ -233,7 +237,7 @@ public class Unit extends Entity
 	 * core function of A* algorithm that make unit know where to go
 	 * @param map of the game
 	 */
-	public void generatePath(Map map) {
+	public boolean generatePath(Map map) {
 		Position p = this.getPosition();
 		Path path = new Path();
 		Node currentNode = new Node(new Position((p.getX() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE, (p.getY() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE));
@@ -264,32 +268,35 @@ public class Unit extends Entity
 		}
 		int difference = 10;
 		Node endNode = finalNode;
-		boolean found = false;
-		int distance = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) + Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE);
-		if(distance > 25) {
-			while(found == false) {
-				int midX = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) / difference;
-				int midY = Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE) / difference;
-				if(p.getX() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getX()) {
-					midX += p.getX() / GameConfiguration.TILE_SIZE;
-				}
-				else {
-					midX += finalNode.getPosition().getX();
-				}
-				if(p.getY() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getY()) {
-					midY += p.getY() / GameConfiguration.TILE_SIZE;
-				}
-				else {
-					midY += finalNode.getPosition().getY();
-				}
-					//System.out.print("les coordonner : " + midX + "," + midY);
-					//System.out.println("TILES : " + tiles[midY][midX].isSolid());
-				if(tiles[midY][midX].isSolid() == false) {
-					endNode = new Node(new Position(midX, midY));
-					found = true;
-				}
-				else {
-					difference--;
+		int distance;
+		if(finalNode != null) {
+			boolean found = false;
+			distance = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) + Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE);
+			if(distance > 25) {
+				while(found == false) {
+					int midX = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) / difference;
+					int midY = Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE) / difference;
+					if(p.getX() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getX()) {
+						midX += p.getX() / GameConfiguration.TILE_SIZE;
+					}
+					else {
+						midX += finalNode.getPosition().getX();
+					}
+					if(p.getY() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getY()) {
+						midY += p.getY() / GameConfiguration.TILE_SIZE;
+					}
+					else {
+						midY += finalNode.getPosition().getY();
+					}
+						//System.out.print("les coordonner : " + midX + "," + midY);
+						//System.out.println("TILES : " + tiles[midY][midX].isSolid());
+					if(tiles[midY][midX].isSolid() == false) {
+						endNode = new Node(new Position(midX, midY));
+						found = true;
+					}
+					else {
+						difference--;
+					}
 				}
 			}
 		}
@@ -297,7 +304,7 @@ public class Unit extends Entity
 		boolean searchingPath = false;
 		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
 		//System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
-		while(!currentNode.getPosition().equals(endNode.getPosition()) && currentNode != null) {
+		while(currentNode != null && endNode != null && !currentNode.getPosition().equals(endNode.getPosition())) {
 			searchingPath = true;
 			Position bis = currentNode.getPosition();
 			if(bis.getY() - 1 >= 0 && bis.getX() >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
@@ -363,6 +370,7 @@ public class Unit extends Entity
 			nodes.clear();
 		}
 		
+		generatePath = false;
 		//System.out.println("On reverse");
 		if(currentNode != null) {
 			if(searchingPath) {
@@ -373,6 +381,7 @@ public class Unit extends Entity
 				System.out.println("trouver sans rechercher");
 				this.calculateSpeed(this.finalPosition);
 			}
+			return true;
 		}
 		else {
 			System.out.println("PATH PAS TROUVER");
@@ -384,8 +393,8 @@ public class Unit extends Entity
 			finalNode = null;
 			this.setDestination(null);
 			destination.clear();
+			return false;
 		}
-		generatePath = false;
 	}
 
 	/**
@@ -400,13 +409,18 @@ public class Unit extends Entity
 		
 		if(generatePath) {
 			Tile[][] tiles = map.getTiles();
-			if(tiles[finalNode.getPosition().getY()][finalNode.getPosition().getX()].isSolid() == true && this.getTarget() == null && this.getTargetUnit() == null) {
+			if(finalNode != null && tiles[finalNode.getPosition().getY()][finalNode.getPosition().getX()].isSolid() == true && this.getTarget() == null && this.getTargetUnit() == null) {
 				finalNode = null;
 				finalPosition = null;
 				generatePath = false;
 			}
-			else {
-				generatePath(map);
+			else if(finalNode != null){
+				foundPath = generatePath(map);
+			}
+			if(destination.isEmpty() == true) {
+				if(this.getCurrentAction() == EntityConfiguration.HARVEST) {
+					currentAction = EntityConfiguration.IDDLE;
+				}
 			}
 		}
 		
@@ -623,16 +637,6 @@ public class Unit extends Entity
 			}
 		}
 		
-		/*if(this.getId() == EntityConfiguration.CAVALRY && this.getFaction() == EntityConfiguration.PLAYER_FACTION)
-		{
-			//System.out.println("Ma target est: " + this.getTarget());
-			System.out.println("Ma targetUnir est: " + this.targetUnit);
-			if(this.getTargetUnit() != null)
-			System.out.println("La vie de ma target: " + this.targetUnit.getHp());
-			
-			System.out.println("Ma destination est : " + this.getDestination());
-		}*/
-		
 		if(!GameConfiguration.debug_mod) {
 			if(playerFog != null) {
 				if(targetUnit != null) {
@@ -694,6 +698,10 @@ public class Unit extends Entity
 	
 	public void setState(int state) {
 		this.state = state;
+	}
+	
+	public boolean getFoundPath() {
+		return this.foundPath;
 	}
 	
 	public void setTargetUnit(Unit targetUnit)

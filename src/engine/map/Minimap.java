@@ -5,8 +5,8 @@ import javax.swing.JPanel;
 import configuration.GameConfiguration;
 
 /**
- * @author gautier
  * this class represent the minimap who will be print on the right side of screen
+ * @author gautier
  */
 public class Minimap {
 	

@@ -57,8 +57,8 @@ import engine.Ressource;
 
 /**
  * 
- * @author gautier
  * main class for print all information on screen
+ * @author gautier
  */
 
 public class GameDisplay extends JPanel 

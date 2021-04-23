@@ -7,8 +7,8 @@ import configuration.GameConfiguration;
 import engine.manager.GraphicsManager;
 /**
  * 
- * @author gautier
  * this class is in charge to paint pause menu
+ * @author gautier
  */
 public class PaintStrategyPauseMenu {
 	

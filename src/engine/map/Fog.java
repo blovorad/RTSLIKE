@@ -11,8 +11,8 @@ import engine.math.Collision;
 
 /**
  * 
- * @author gautier
  *	this class is used for manage fog of war and dynamic fog
+ *	@author gautier
  */
 
 public class Fog {

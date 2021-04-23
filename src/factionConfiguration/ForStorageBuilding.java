@@ -1,8 +1,8 @@
 package factionConfiguration;
 /**
  * 
- * @author gautier
  * extends patron to fit with storage needs
+ * @author gautier
  */
 public class ForStorageBuilding extends Patron{
 	

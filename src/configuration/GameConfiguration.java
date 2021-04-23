@@ -1,9 +1,9 @@
 package configuration;
 
 /**
- * 
+ *  this class contain all constant for setup configuration
  * @author gautier
- * this class contain all constant for setup configuration
+ *
  */
 
 public class GameConfiguration 
@@ -16,11 +16,11 @@ public class GameConfiguration
 	/**
 	 * screen width
 	 */
-	public final static int WINDOW_WIDTH = 1366;//Toolkit.getDefaultToolkit().getScreenSize().width;
+	public final static int WINDOW_WIDTH = 800;//Toolkit.getDefaultToolkit().getScreenSize().width;
 	/**
 	 * screen height
 	 */
-	public final static int WINDOW_HEIGHT = 768;//Toolkit.getDefaultToolkit().getScreenSize().height;
+	public final static int WINDOW_HEIGHT = 600;//Toolkit.getDefaultToolkit().getScreenSize().height;
 	
 	/**
 	 * if true then window width and window height is useless
@@ -29,7 +29,12 @@ public class GameConfiguration
 	/**
 	 * if you want debug, if true you can see the IA and no dynamic fog
 	 */
-	public final static boolean debug_mod = true;
+	public final static boolean debug_mod = false;
+	
+	/**
+	 * to desactivate IA
+	 */
+	public final static boolean IA_NOT_ALIVE = false;
 	
 	/**
 	 * MAP WIDTH

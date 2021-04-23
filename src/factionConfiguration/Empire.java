@@ -6,8 +6,8 @@ import java.util.Scanner;
 import configuration.EntityConfiguration;
 /**
  * 
- * @author gautier
  * class contain all stat of empire faction, that init Race, to see what function done check barbare.java
+ * @author gautier
  * @see barbare
  */
 

@@ -2,8 +2,8 @@ package engine.map;
 
 /**
  * 
- * @author gautier
  * this class is need to manage dynamic fog that represent each case(tile) of fog
+ * @author gautier
  */
 public class FogCase {
 	/**

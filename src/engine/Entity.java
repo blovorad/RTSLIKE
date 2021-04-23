@@ -4,10 +4,10 @@ import configuration.EntityConfiguration;
 import engine.manager.GraphicsManager;
 /**
  * 
- * @author gautier
  *	this class is core this is the first class of all entity of the game
  *	like fighter, worker, building and ressource
  *	not abstract because we need it to draw all entity
+ *	@author gautier
  */
 public class Entity 
 {

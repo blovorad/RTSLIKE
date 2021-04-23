@@ -805,10 +805,11 @@ public class MainGui extends JFrame implements Runnable
 									{
 										//System.out.println("ici");
 										//unit.calculateSpeed(target.getPosition());
-										if(unit.getFaction() != target.getFaction()) {
-											unit.setFinalDestination(target.getPosition());
-											unit.setCurrentAction(EntityConfiguration.WALK);
-											unit.setTarget(target);
+										unit.setFinalDestination(target.getPosition());
+										unit.setCurrentAction(EntityConfiguration.WALK);
+										unit.setTarget(target);
+										if(unit.getFaction() != target.getFaction())
+										{
 											isAttack = true;
 										}
 									}
@@ -826,11 +827,11 @@ public class MainGui extends JFrame implements Runnable
 									for(Unit unit : listSelectedUnit)
 									{
 										//unit.calculateSpeed(targetUnit.getPosition());
+										unit.setFinalDestination(targetUnit.getPosition());
+										unit.setCurrentAction(EntityConfiguration.WALK);
+										unit.setTarget(targetUnit);
+										unit.setTargetUnit(targetUnit);
 										if(unit.getFaction() != targetUnit.getFaction()) {
-											unit.setFinalDestination(targetUnit.getPosition());
-											unit.setCurrentAction(EntityConfiguration.WALK);
-											unit.setTarget(targetUnit);
-											unit.setTargetUnit(targetUnit);
 											isAttack = true;
 										}
 									}
