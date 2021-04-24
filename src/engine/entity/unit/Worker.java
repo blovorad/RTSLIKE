@@ -237,7 +237,7 @@ public class Worker extends Unit
 			int distanceRessource;
 			boolean notFound = false;
 			
-			while(notFound == false) {
+			while(notFound == false && accessible.isEmpty() == false) {
 				for(Ressource value: accessible)
 				{
 					distanceRessource = calculate(this.ressource.getPosition());
@@ -251,7 +251,7 @@ public class Worker extends Unit
 				accessible.remove(this.ressource);
 			}
 			
-			if(!Collision.collideRessource(this, this.ressource))
+			if(ressource != null && !Collision.collideRessource(this, this.ressource))
 			{
 				this.ressource = null;
 			}
@@ -290,12 +290,7 @@ public class Worker extends Unit
 	public void initRessource(Ressource ressource)
 	{
 		this.ressource = ressource;
-		/*if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
-			this.calculateSpeed(this.ressource.getPosition());
-		}
-		else {*/
-			this.setFinalDestination(ressource.getPosition());
-		//}
+		this.setFinalDestination(ressource.getPosition());
 		this.setCurrentAction(EntityConfiguration.HARVEST);
 		this.setTarget(ressource);
 		this.setTargetUnit(null);

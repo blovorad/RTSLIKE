@@ -138,11 +138,11 @@ public class Empire extends Race
 	
 	public void initForgeUpgrades()
 	{
-		this.getForgeUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(2, "armure en fer", 1, EntityConfiguration.ARMOR_UPGRADE, 4, 75));
-		this.getForgeUpgrades().put(EntityConfiguration.DAMAGE_UPGRADE, new ForUpgrade(2, "épée en acier", 1, EntityConfiguration.DAMAGE_UPGRADE, 4, 75));
-		this.getForgeUpgrades().put(EntityConfiguration.ATTACK_SPEED_UPGRADE, new ForUpgrade(3, "apprentissage de l'équilibre", 5, EntityConfiguration.ATTACK_SPEED_UPGRADE, 4, 75));
-		this.getForgeUpgrades().put(EntityConfiguration.ATTACK_RANGE_UPGRADE, new ForUpgrade(3, "lame plus longue", 1, EntityConfiguration.ATTACK_RANGE_UPGRADE, 4, 75));
-		this.getForgeUpgrades().put(EntityConfiguration.SIGHT_RANGE_UPGRADE, new ForUpgrade(3, "lunette de vue", 75, EntityConfiguration.SIGHT_RANGE_UPGRADE, 4, 75));
+		this.getForgeUpgrades().put(EntityConfiguration.ARMOR_UPGRADE, new ForUpgrade(2, "armure en fer", 1, EntityConfiguration.ARMOR_UPGRADE, 35, 150));
+		this.getForgeUpgrades().put(EntityConfiguration.DAMAGE_UPGRADE, new ForUpgrade(2, "épée en acier", 1, EntityConfiguration.DAMAGE_UPGRADE, 35, 100));
+		this.getForgeUpgrades().put(EntityConfiguration.ATTACK_SPEED_UPGRADE, new ForUpgrade(3, "apprentissage de l'équilibre", 5, EntityConfiguration.ATTACK_SPEED_UPGRADE, 35, 150));
+		this.getForgeUpgrades().put(EntityConfiguration.ATTACK_RANGE_UPGRADE, new ForUpgrade(3, "lame plus longue", 1, EntityConfiguration.ATTACK_RANGE_UPGRADE, 35, 160));
+		this.getForgeUpgrades().put(EntityConfiguration.SIGHT_RANGE_UPGRADE, new ForUpgrade(3, "lunette de vue", 75, EntityConfiguration.SIGHT_RANGE_UPGRADE, 35, 75));
 	}
 	
 	public void initHQUpgrades()

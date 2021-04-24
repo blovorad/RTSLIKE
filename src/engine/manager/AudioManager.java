@@ -97,6 +97,7 @@ public class AudioManager {
 	 * @param volume volume range
 	 */
 	public void manageVolume(int volume) {
+		volume = 0;
 		this.sliderVolume = volume;
 		float volumeInFloat = (float)volume / 100;
 		FloatControl gainControl = (FloatControl) musique.getControl(FloatControl.Type.MASTER_GAIN);        

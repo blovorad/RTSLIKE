@@ -686,80 +686,99 @@ public class BotManager {
 	public void recolte() {
 		updateVisibleRessources();
 		updateIdleWorker();
+		List<Ressource> accessible = new ArrayList<Ressource>();
 		//System.out.println("nb idle : " + IdleWorker.size());
 		for(Worker worker : getIdleWorker()) {
 			if(getVisibleRessources().isEmpty() == false) {
-				Ressource ressource = visibleRessources.get(0);
-				for(Ressource visibleRessource : getVisibleRessources()) { //choisi la ressource la plus proche du worker
-					int distanceRessource;
-					distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
-					if(distanceRessource > calculate(visibleRessource.getPosition(), worker.getPosition()) && visibleRessource.getHp() > 0 )
-					{
-						ressource = visibleRessource;
-					}
+				accessible.clear();
+				boolean foundRessource = false;
+				for(Ressource ressource : getVisibleRessources()) {
+					accessible.add(ressource);
 				}
-				boolean storageInRange = false;
-				for(StorageBuilding storage : getBotStorageBuildings()) { // check si storage in range
-					//System.out.println("range ressource : " + calculate(storage.getPosition(), ressource.getPosition()) /  GameConfiguration.TILE_SIZE);
-					if(calculate(storage.getPosition(), ressource.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
-						storageInRange = true;
-						//System.out.println("bat storage in range ! storagerang = " + storageInRange);
-					}
-				}
-				for(SiteConstruction sitec : getSiteConstructions()) { // check si a site de constru de storage in range
-					if(sitec.getBuildingId() == EntityConfiguration.STORAGE) {
-						ressource = getClosestRessource(visibleRessources, sitec);
-						
-						if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
-							worker.setTarget(sitec);
-							//worker.calculateSpeed(sitec.getPosition());
-							worker.setFinalDestination(sitec.getPosition());
-							worker.setCurrentAction(EntityConfiguration.WALK);
-							//System.out.println("va constru fdp !");
-							storageInRange = true;
+				Ressource ressource = accessible.get(0);
+				while(foundRessource == false && accessible.isEmpty() == false) {
+					ressource = accessible.get(0);
+					for(Ressource r : accessible) { //choisi la ressource la plus proche du worker
+						int distanceRessource;
+						distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
+						if(distanceRessource > calculate(r.getPosition(), worker.getPosition()) && r.getHp() > 0 )
+						{
+							ressource = r;
 						}
 					}
+					worker.setFinalDestination(ressource.getPosition());
+					worker.setCurrentAction(EntityConfiguration.HARVEST);
+					foundRessource = worker.generatePath(map);
+					worker.setCurrentAction(EntityConfiguration.IDDLE);
+					accessible.remove(ressource);
 				}
-				//System.out.println(storageInRange);
-				if(storageInRange == false) { // si pas storage ni site constru in range, construit site constru
-					if(priceOfEntity.get(EntityConfiguration.STORAGE)< money) {
-						factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - priceOfEntity.get(EntityConfiguration.STORAGE));
-						int tileRessourceX = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
-						int tileRessourceY = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
-						//System.out.println("pos ressource : " + tileRessourceX + " " + tileRessourceY);
-
-						int storagePosX = 0;
-						int storagePosY = 0;
-						boolean foundPlace = false;
-						int x = tileRessourceX - 1;
-						int y = tileRessourceY - 1;
-						int width = tileRessourceX + 1;
-						int height = tileRessourceY + 1;
-						
-						for(int i = y; i<= height; i++) {
-							for(int j = x; j <= width; j++) {
-								if(map.getTile(j, i).isSolid() == false && foundPlace == false) {
-									storagePosX = j;
-									storagePosY = i;
-									foundPlace = true;
-									//System.out.println("pos libre : " + j + " " + i);
-								}
+				if(foundRessource == true) {
+					boolean storageInRange = false;
+					for(StorageBuilding storage : getBotStorageBuildings()) { // check si storage in range
+						//System.out.println("range ressource : " + calculate(storage.getPosition(), ressource.getPosition()) /  GameConfiguration.TILE_SIZE);
+						if(calculate(storage.getPosition(), ressource.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
+							storageInRange = true;
+							//System.out.println("bat storage in range ! storagerang = " + storageInRange);
+						}
+					}
+					for(SiteConstruction sitec : getSiteConstructions()) { // check si a site de constru de storage in range
+						if(sitec.getBuildingId() == EntityConfiguration.STORAGE) {
+							ressource = getClosestRessource(visibleRessources, sitec);
+							
+							if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
+								worker.setTarget(sitec);
+								//worker.calculateSpeed(sitec.getPosition());
+								worker.setFinalDestination(sitec.getPosition());
+								worker.setCurrentAction(EntityConfiguration.WALK);
+								//System.out.println("va constru fdp !");
+								storageInRange = true;
 							}
 						}
-						if(foundPlace) {
-							System.out.println("place trouver pour storage");
-							System.out.println("pos : " + storagePosX + "," + storagePosY);
-							buildingInAttempt = true;
-							tileToBuild = map.getTile(storagePosY, storagePosX);
-							idToBuild = EntityConfiguration.STORAGE;
+					}
+					//System.out.println(storageInRange);
+					if(storageInRange == false) { // si pas storage ni site constru in range, construit site constru
+						if(priceOfEntity.get(EntityConfiguration.STORAGE)< money) {
+							factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - priceOfEntity.get(EntityConfiguration.STORAGE));
+							int tileRessourceX = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
+							int tileRessourceY = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
+							//System.out.println("pos ressource : " + tileRessourceX + " " + tileRessourceY);
+	
+							int storagePosX = 0;
+							int storagePosY = 0;
+							boolean foundPlace = false;
+							int x = tileRessourceX - 1;
+							int y = tileRessourceY - 1;
+							int width = tileRessourceX + 1;
+							int height = tileRessourceY + 1;
+							
+							for(int i = y; i<= height; i++) {
+								for(int j = x; j <= width; j++) {
+									if(map.getTile(j, i).isSolid() == false && foundPlace == false) {
+										storagePosX = j;
+										storagePosY = i;
+										foundPlace = true;
+										//System.out.println("pos libre : " + j + " " + i);
+									}
+								}
+							}
+							if(foundPlace && buildingInAttempt == false) {
+								System.out.println("place trouver pour storage");
+								System.out.println("pos : " + storagePosX + "," + storagePosY);
+								buildingInAttempt = true;
+								tileToBuild = map.getTile(storagePosY, storagePosX);
+								idToBuild = EntityConfiguration.STORAGE;
+							}
+						}
+					}
+					else {
+						if(worker.getCurrentAction() != EntityConfiguration.REPAIR && worker.getCurrentAction() != EntityConfiguration.WALK) {
+							worker.initRessource(ressource);
+							//System.out.println("au travail fdp !");
 						}
 					}
 				}
 				else {
-					if(worker.getCurrentAction() != EntityConfiguration.REPAIR && worker.getCurrentAction() != EntityConfiguration.WALK) {
-						worker.initRessource(ressource);
-						//System.out.println("au travail fdp !");
-					}
+					worker.setFinalDestination(null);
 				}
 			}
 		}

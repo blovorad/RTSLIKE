@@ -80,17 +80,26 @@ public class Unit extends Entity
 	}
 	
 	public void setFinalDestination(Position position) {
-		this.getSpeed().reset();
-		this.finalPosition = new Position(position.getX(), position.getY());
-		finalNode = new Node(new Position(position.getX() / GameConfiguration.TILE_SIZE, position.getY() / GameConfiguration.TILE_SIZE));
-		Node currentNode = new Node(new Position(this.getPosition().getX() / GameConfiguration.TILE_SIZE, this.getPosition().getY() / GameConfiguration.TILE_SIZE));
-		if(currentNode.getPosition().equals(finalNode.getPosition())) {
-			this.calculateSpeed(position);
+		if(position == null) {
+			this.setDestination(null);
 			this.finalNode = null;
+			this.finalPosition = null;
+			this.destination.clear();
+			this.getSpeed().reset();
 		}
 		else {
-			this.setDestination(null);
-			generatePath = true;
+			this.getSpeed().reset();
+			this.finalPosition = new Position(position.getX(), position.getY());
+			finalNode = new Node(new Position(position.getX() / GameConfiguration.TILE_SIZE, position.getY() / GameConfiguration.TILE_SIZE));
+			Node currentNode = new Node(new Position(this.getPosition().getX() / GameConfiguration.TILE_SIZE, this.getPosition().getY() / GameConfiguration.TILE_SIZE));
+			if(currentNode.getPosition().equals(finalNode.getPosition())) {
+				this.calculateSpeed(position);
+				this.finalNode = null;
+			}
+			else {
+				this.setDestination(null);
+				generatePath = true;
+			}
 		}
 	}
 	
@@ -387,6 +396,7 @@ public class Unit extends Entity
 			System.out.println("Pos node end : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 			System.out.println("pos : " + ((p.getX() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE) + "," + ((p.getY() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE));
 			System.out.println("TILE POS SOLID : " + tiles[finalNode.getPosition().getY()][finalNode.getPosition().getX()].isSolid());
+			System.out.println("Qui ne trouve pas : " + this);
 			this.speed.reset();
 			finalPosition = null;
 			finalNode = null;
