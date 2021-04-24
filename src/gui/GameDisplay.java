@@ -1280,12 +1280,12 @@ public class GameDisplay extends JPanel
 			}
 			this.paintStrategyGame.paint(this.map, g, this.camera, graphicsManager);
 			List<Entity> entitie = manager.getDrawingList();
-			
-			List<Entity> entities = new ArrayList<Entity>();
-			for(Entity entity : entitie) {
-				entities.add(entity);
-			}
-			
+
+            List<Entity> entities = new ArrayList<Entity>();
+            for(Entity entity : entitie) {
+                entities.add(entity);
+            }
+            
 			List<Unit> units = manager.getSelectedUnits();
 			
 			Entity building = null;
