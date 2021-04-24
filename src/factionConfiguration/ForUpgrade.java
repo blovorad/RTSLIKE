@@ -37,6 +37,7 @@ public class ForUpgrade {
 		this.effect = effect;
 		this.cost = cost;
 		this.timeToProduce = timeToProduce;
+		this.description = description;
 	}
 
 	public int getAge() {
