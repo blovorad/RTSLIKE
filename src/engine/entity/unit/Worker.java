@@ -135,12 +135,8 @@ public class Worker extends Unit
 				{
 					this.nearbyStorage(storageBuildings);
 					this.setTarget(storageBuilding);
-					if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
-						this.setFinalDestination(storageBuilding.getPosition());
-					}
-					else {
-						this.setFinalDestination(storageBuilding.getPosition());
-					}
+					this.setFinalDestination(storageBuilding.getPosition());
+
 				}
 				
 				if(this.storageBuilding != null && Collision.collideUnit(this.getTarget().getPosition(), this))
@@ -167,23 +163,13 @@ public class Worker extends Unit
 					if(this.quantityRessource > 0) {
 						nearbyStorage(storageBuildings);
 						this.setTarget(this.storageBuilding);
-						if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
-							this.setFinalDestination(this.storageBuilding.getPosition());
-						}
-						else {
-							this.setFinalDestination(this.storageBuilding.getPosition());
-						}
+						this.setFinalDestination(this.storageBuilding.getPosition());
 					}
 					this.setCurrentAction(EntityConfiguration.IDDLE);
 				}
 				else {
 					this.setTarget(this.ressource);
-					if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
-						this.setFinalDestination(ressource.getPosition());
-					}
-					else {
-						this.setFinalDestination(ressource.getPosition());
-					}
+					this.setFinalDestination(ressource.getPosition());
 				}
 			}
 			// récupère ressources
@@ -197,12 +183,7 @@ public class Worker extends Unit
 			// revien a la ressource quand posse ces ressources
 			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax && this.getTarget() != this.ressource){
 				this.setTarget(ressource);
-				/*if(this.getFaction() == EntityConfiguration.BOT_FACTION) {
-					
-				}
-				else {*/
-					this.setFinalDestination(ressource.getPosition());
-				//}
+				this.setFinalDestination(ressource.getPosition());
 			}		
 		}
 		
