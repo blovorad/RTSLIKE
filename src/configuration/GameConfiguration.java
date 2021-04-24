@@ -29,7 +29,7 @@ public class GameConfiguration
 	/**
 	 * if you want debug, if true you can see the IA and no dynamic fog
 	 */
-	public final static boolean debug_mod = false;
+	public final static boolean debug_mod = true;
 	
 	/**
 	 * to desactivate IA
@@ -84,4 +84,14 @@ public class GameConfiguration
 	 * direction constant
 	 */
 	public final static int RIGHT = 1;
+	
+	/**
+	 * starting money
+	 */
+	public final static int STARTING_MONEY = 250;
+	
+	/**
+	 * Max population
+	 */
+	public final static int MAX_POPULATION = 50;
 }

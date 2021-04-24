@@ -24,21 +24,48 @@ import engine.map.Tile;
 import engine.math.SelectionRect;
 
 /**
- * 
+ * class who charge to paint the game window
  * @author gautier
  *
  */
 
 public class PaintStrategyGame 
 {	
+	//that makes a rect
+	/**
+	 * Collider for scrolling left upper side
+	 */
 	private int camX;
+	/**
+	 * Collider for scrolling left upper side
+	 */
 	private int camY;
+	/**
+	 * Collider for scrolling right down side
+	 */
 	private int camW;
+	/**
+	 * Collider for scrolling right down side
+	 */
 	private int camH;
 	
+	/**
+	 * to check if we need to print life barre down or up on the current selected unit
+	 */
 	private int lifeBarreY;
+	/**
+	 * rect of rally point of building
+	 */
 	private SelectionRect flagDestinationRect;
-
+	
+	
+	/**
+	 * 
+	 * @param width of the window
+	 * @param height of the window
+	 * @param minimapPanel panel take to get coordinate of panel
+	 * @param minimap to take where minimap is realy place
+	 */
 	public PaintStrategyGame(int width, int height, JPanel minimapPanel, Minimap minimap){
 		int panelOffset = 10;
 		int flagWidthAndHeight = 10;
@@ -60,13 +87,24 @@ public class PaintStrategyGame
 		flagDestinationRect = new SelectionRect(0, 0, flagWidthAndHeight, flagWidthAndHeight);
 	}
 	
-	public void paint(SelectionRect rectangle, Graphics graphics, Camera camera){
+	/**
+	 * painting the selection rect when you drag mouse on screen
+	 * @param rectangle current rect to draw
+	 * @param graphics where to draw it
+	 */
+	public void paint(SelectionRect rectangle, Graphics graphics){
 		if(rectangle.isActive()){
 			graphics.setColor(Color.green);
 			graphics.drawRect(rectangle.getX(), rectangle.getY(), rectangle.getW(), rectangle.getH());
 		}
 	}
 	
+	/**
+	 * to paint the current rect around unit that is selected
+	 * @param unit current unit
+	 * @param graphics where to paint it, in term of panel
+	 * @param camera to paint it at the good position in function of camera position
+	 */
 	public void paintRectSelectionUnit(Unit unit, Graphics graphics, Camera camera){
 		int tileSize = EntityConfiguration.UNIT_SIZE;
 		int cavalrySize = EntityConfiguration.CAVALRY_SIZE;
@@ -80,7 +118,13 @@ public class PaintStrategyGame
 		}
 	}
 	
-	
+	/**
+	 * Same as paintRectSelectionUnit
+	 * @param building
+	 * @param graphics
+	 * @param camera
+	 * @see paintRectSelectionUnit
+	 */
 	public void paintSelectionRectBuilding(Entity building, Graphics graphics, Camera camera) {
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
@@ -94,6 +138,13 @@ public class PaintStrategyGame
 		}
 	}
 	
+	/**
+	 * Same as paintRectSelectionUnit
+	 * @param ressource
+	 * @param graphics
+	 * @param camera
+	 * @see paintRectSelectionUnit
+	 */
 	public void paintSelectionRectRessource(Entity ressource, Graphics graphics, Camera camera) {
 		int tileSize = GameConfiguration.TILE_SIZE;
 		
@@ -101,7 +152,13 @@ public class PaintStrategyGame
 		graphics.drawRect(ressource.getPosition().getX() - camera.getX(), ressource.getPosition().getY() - camera.getY(), tileSize, tileSize);
 	}
 	
-	public void paint(Entity entity, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
+	/**
+	 * Here you can paint all entity of the game
+	 * @param entity to paint
+	 * @param graphics where to paint it, in term of panel
+	 * @param camera to place entity at the good place on screen
+	 */
+	public void paint(Entity entity, Graphics graphics, Camera camera)
 	{
 		int tileSize = GameConfiguration.TILE_SIZE;
 		int unitSize = EntityConfiguration.UNIT_SIZE;
@@ -133,16 +190,17 @@ public class PaintStrategyGame
 				graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), tileSize, tileSize, null);
 			}
 		}
-		/*else if(entity.getId() == EntityConfiguration.SITE_CONSTRUCTION) {
-			graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), tileSize, tileSize, null);
-		}
-		else if(entity.getId() == EntityConfiguration.RESSOURCE) {
-			graphics.drawImage(animation.getFrame(), p.getX() - camera.getX(), p.getY() - camera.getY(), tileSize, tileSize, null);
-		}*/
 		paintLifeBarre(entity, graphics, camera);
 	}
 	
-	public void paintMouseBuilding(Mouse mouse, Graphics graphics, Map map, Camera camera, GraphicsManager graphicsManager) {
+	/**
+	 * method calls when mouse id is >-1, that print what building you need to build
+	 * @param mouse current mouse, taking mouse position
+	 * @param graphics where to paint it, in term of panel
+	 * @param map to check if you need to print red or green if we want to build on solid tile
+	 * @param camera to paint it a the good position
+	 */
+	public void paintMouseBuilding(Mouse mouse, Graphics graphics, Map map, Camera camera) {
 		int x = (mouse.getPosition().getX() + camera.getX()) / GameConfiguration.TILE_SIZE;
 		int y = (mouse.getPosition().getY() + camera.getY()) / GameConfiguration.TILE_SIZE;
 
@@ -156,6 +214,12 @@ public class PaintStrategyGame
 		graphics.drawImage(mouse.getFrame(), mouse.getPosition().getX() - GameConfiguration.TILE_SIZE / 2, mouse.getPosition().getY() - GameConfiguration.TILE_SIZE / 2, GameConfiguration.TILE_SIZE, GameConfiguration.TILE_SIZE, null);
 	}
 	
+	/**
+	 * to paint life barre when you select a entity
+	 * @param entity to paint life bare
+	 * @param graphics where to paint it, in term of panel
+	 * @param camera to paint it at the good position
+	 */
 	public void paintLifeBarre(Entity entity, Graphics graphics, Camera camera) {
 		if(entity.isSelected()) {
 			Position p = entity.getPosition();
@@ -175,6 +239,12 @@ public class PaintStrategyGame
 		}
 	}
 	
+	/**
+	 * to paint fog of war
+	 * @param fog fog of war
+	 * @param graphics
+	 * @param camera
+	 */
 	public void paint(Fog fog, Graphics graphics, Camera camera) {
 		boolean[][] removeFog = fog.getFog();
 		FogCase[][] dynamicFog = fog.getDynamicFog();
@@ -198,6 +268,13 @@ public class PaintStrategyGame
 		}
 	}
 	
+	/**
+	 * To paint all map
+	 * @param map to paint
+	 * @param graphics
+	 * @param camera
+	 * @param graphicsManager to get grass tile that use under all tile
+	 */
 	public void paint(Map map, Graphics graphics, Camera camera, GraphicsManager graphicsManager)
 	{
 		graphics.drawImage(graphicsManager.getPanelGaucheBas(), 0, 0, GameConfiguration.WINDOW_WIDTH, GameConfiguration.WINDOW_HEIGHT, null);
@@ -230,6 +307,19 @@ public class PaintStrategyGame
 		}
 	}
 	
+	/**
+	 * paint all gui, like minimap and all panel, entity on minimap
+	 * @param map map to paint
+	 * @param fog fog to paint on minimap
+	 * @param entities all entity to paint
+	 * @param graphics
+	 * @param camera
+	 * @param infoTargetPanel left bottom panel
+	 * @param infoUpPanel left upper panel
+	 * @param minimapPanel right bottom panel
+	 * @param minimap to get minimap size
+	 * @param graphicsManager to get panel texture
+	 */
 	public void paintGui(Map map, Fog fog, List<Entity> entities, Graphics graphics, Camera camera, JPanel infoTargetPanel, JPanel infoUpPanel, JPanel minimapPanel, Minimap minimap, GraphicsManager graphicsManager)
 	{	
 		Tile[][] tiles = map.getTiles();
@@ -274,6 +364,13 @@ public class PaintStrategyGame
 		graphics.drawImage(graphicsManager.getPanelGaucheBas(), infoUpPanel.getX(), infoUpPanel.getY(), infoUpPanel.getWidth(), infoUpPanel.getHeight(), null);
 	}
 	
+	/**
+	 * call by paintGui to paint specificaly all entity
+	 * @param entity to paint
+	 * @param graphics
+	 * @param camera
+	 * @param minimap to know where to paint entity precisly on minimap
+	 */
 	public void paintEntityGui(Entity entity, Graphics graphics, Camera camera, Minimap minimap)
 	{	
 		if(entity.getFaction() == EntityConfiguration.PLAYER_FACTION)

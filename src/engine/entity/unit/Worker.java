@@ -11,7 +11,6 @@ import engine.entity.building.StorageBuilding;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
 import engine.map.Map;
-import engine.map.Tile;
 import engine.math.Collision;
 
 

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
+import configuration.GameConfiguration;
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
 import factionConfiguration.ForUpgrade;
@@ -66,8 +67,8 @@ public class Faction {
 	public Faction(int id) {
 		age = 1;
 		buildingCount = 0;
-		maxPopulation = 50;
-		moneyCount = 50000;
+		maxPopulation = GameConfiguration.MAX_POPULATION;
+		moneyCount = GameConfiguration.STARTING_MONEY;
 		populationCount = 0;
 		upgradesDone = new HashMap<Integer, ForUpgrade>();
 		searchingUpgrades = new ArrayList<Integer>();

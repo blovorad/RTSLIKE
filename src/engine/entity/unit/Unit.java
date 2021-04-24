@@ -80,11 +80,11 @@ public class Unit extends Entity
 	}
 	
 	public void setFinalDestination(Position position) {
+		this.getSpeed().reset();
 		this.finalPosition = new Position(position.getX(), position.getY());
 		finalNode = new Node(new Position(position.getX() / GameConfiguration.TILE_SIZE, position.getY() / GameConfiguration.TILE_SIZE));
 		Node currentNode = new Node(new Position(this.getPosition().getX() / GameConfiguration.TILE_SIZE, this.getPosition().getY() / GameConfiguration.TILE_SIZE));
 		if(currentNode.getPosition().equals(finalNode.getPosition())) {
-			//System.out.println("ICII");
 			this.calculateSpeed(position);
 			this.finalNode = null;
 		}
@@ -92,7 +92,6 @@ public class Unit extends Entity
 			this.setDestination(null);
 			generatePath = true;
 		}
-		//System.out.println("GENERATION PATH : " + generatePath);
 	}
 	
 	public void move(float vx, float vy)

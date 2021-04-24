@@ -1308,7 +1308,7 @@ public class GameDisplay extends JPanel
 			}
 			
 			for(Entity entity : entities) {
-				this.paintStrategyGame.paint(entity, g, camera, graphicsManager);
+				this.paintStrategyGame.paint(entity, g, camera);
 			}
 			
 			for(Unit unit : units) {
@@ -1325,12 +1325,12 @@ public class GameDisplay extends JPanel
 			this.paintStrategyGame.paint(fog, g, camera);
 			
 			if(mouse.getId() > -1) {
-				this.paintStrategyGame.paintMouseBuilding(mouse, g, map, camera, graphicsManager);
+				this.paintStrategyGame.paintMouseBuilding(mouse, g, map, camera);
 			}
 			
 			if(selectionRectangle.isActive())
 			{
-				this.paintStrategyGame.paint(selectionRectangle, g, camera);
+				this.paintStrategyGame.paint(selectionRectangle, g);
 			}
 			
 			this.paintStrategyGame.paintGui(map, fog, entities, g, camera, descriptionPanel, ressourceInfoPanel, minimapPanel, minimap, graphicsManager);
