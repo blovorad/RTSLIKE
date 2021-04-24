@@ -32,23 +32,13 @@ public class ForAttackBuilding extends Patron{
 		return attackDamage;
 	}
 
-	public void setAttackDamage(int attackDamage) {
-		this.attackDamage = attackDamage;
-	}
-
 	public int getAttackRange() {
 		return attackRange;
 	}
 
-	public void setAttackRange(int attackRange) {
-		this.attackRange = attackRange;
-	}
 
 	public int getAttackSpeed() {
 		return attackSpeed;
 	}
 
-	public void setAttackSpeed(int attackSpeed) {
-		this.attackSpeed = attackSpeed;
-	}
 }

@@ -46,12 +46,12 @@ public class ForWorker extends Patron
 		this.damage = damage;
 		this.armor = armor;
 		this.maxSpeed = maxSpeed;
-		this.setTimeToBuild(timeToBuild);
-		this.setRessourceMax(ressourceMax);
-		this.setHarvest(harvest);
+		this.timeToBuild = timeToBuild;		
+		this.ressourceMax = ressourceMax;
+		this.harvest = harvest;
 		this.repair = repair;
-		this.setHarvestSpeed(harvestSpeed);
-		this.setRepairSpeed(repairSpeed);
+		this.harvestSpeed = harvestSpeed;
+		this.repairSpeed = repairSpeed;
 	}
 
 	public int getDamage() 
@@ -59,19 +59,10 @@ public class ForWorker extends Patron
 		return damage;
 	}
 
-	public void setDamage(int damage) 
-	{
-		this.damage = damage;
-	}
 
 	public int getArmor() 
 	{
 		return armor;
-	}
-
-	public void setArmor(int armor) 
-	{
-		this.armor = armor;
 	}
 
 	public int getMaxSpeed() 
@@ -79,74 +70,36 @@ public class ForWorker extends Patron
 		return maxSpeed;
 	}
 
-	public void setMaxSpeed(int maxSpeed) 
-	{
-		this.maxSpeed = maxSpeed;
-	}
-	
 	public int getTimeToBuild() 
 	{
 		return timeToBuild;
 	}
 	
-	public void setTimeToBuild(int timeToBuild) 
-	{
-		this.timeToBuild = timeToBuild;
-	}
-
 	public int getRessourceMax() {
 		return ressourceMax;
 	}
-
-	public void setRessourceMax(int ressourceMax) {
-		this.ressourceMax = ressourceMax;
-	}
-
 	public int getHarvest() {
 		return harvest;
-	}
-
-	public void setHarvest(int harvest) {
-		this.harvest = harvest;
 	}
 
 	public int getAttackSpeed() {
 		return attackSpeed;
 	}
 
-	public void setAttackSpeed(int attackSpeed) {
-		this.attackSpeed = attackSpeed;
-	}
-
 	public int getAttackRange() {
 		return attackRange;
-	}
-
-	public void setAttackRange(int attackRange) {
-		this.attackRange = attackRange;
 	}
 
 	public int getRepair() {
 		return repair;
 	}
 
-	public void setRepair(int repair) {
-		this.repair = repair;
-	}
-
 	public int getHarvestSpeed() {
 		return harvestSpeed;
 	}
 
-	public void setHarvestSpeed(int harvestSpeed) {
-		this.harvestSpeed = harvestSpeed;
-	}
 
 	public int getRepairSpeed() {
 		return repairSpeed;
-	}
-
-	public void setRepairSpeed(int repairSpeed) {
-		this.repairSpeed = repairSpeed;
 	}
 }

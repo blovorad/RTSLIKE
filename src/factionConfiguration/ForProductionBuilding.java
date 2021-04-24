@@ -23,10 +23,4 @@ public class ForProductionBuilding extends Patron{
 	{
 		return upgrades;
 	}
-
-	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) 
-	{
-		this.upgrades = upgrades;
-	}
-
 }
