@@ -431,15 +431,17 @@ public class MainGui extends JFrame implements Runnable
 			}
 			
 			if(workerSelected == false) {
+				int unitIdSelected = -1;
 				for(Fighter fighter : listFighters) {
 					Position pos = fighter.getPosition();
 					if(x > pos.getX() && x < pos.getX() + EntityConfiguration.UNIT_SIZE && y > pos.getY() && y < pos.getY() + EntityConfiguration.UNIT_SIZE) {
 						noUnitSelected = false;
 						manager.addSelectedFighter(fighter);
 						manager.addSelectedUnit(fighter);
+						unitIdSelected = fighter.getId();
 						if(clickCount > 1) {
 							for(Fighter fighter2 : listFighters) {
-								if(fighter != fighter2) {
+								if(fighter != fighter2 && unitIdSelected == fighter2.getId()) {
 									manager.addSelectedFighter(fighter2);
 									manager.addSelectedUnit(fighter2);
 								}
@@ -873,7 +875,7 @@ public class MainGui extends JFrame implements Runnable
 									else {
 										//ici on met le point de ralliment pour les batiment de production
 										ProductionBuilding building = manager.getSelectedProdBuilding();
-										if(building != null) {
+										if(building != null && building.getFaction() == EntityConfiguration.PLAYER_FACTION && building.getId() != EntityConfiguration.FORGE) {
 											building.setDestination(new Position(mouseX, mouseY));
 										}
 									}

@@ -106,7 +106,7 @@ public class PaintStrategyGame
 	 * @param camera to paint it at the good position in function of camera position
 	 */
 	public void paintRectSelectionUnit(Unit unit, Graphics graphics, Camera camera){
-		int tileSize = EntityConfiguration.UNIT_SIZE;
+		int unitSize = EntityConfiguration.UNIT_SIZE;
 		int cavalrySize = EntityConfiguration.CAVALRY_SIZE;
 		
 		graphics.setColor(new Color(255,255,255,100));
@@ -114,7 +114,7 @@ public class PaintStrategyGame
 			graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), cavalrySize, cavalrySize);
 		}
 		else {
-			graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), tileSize, tileSize);
+			graphics.drawRect(unit.getPosition().getX() - camera.getX(), unit.getPosition().getY() - camera.getY(), unitSize, unitSize);
 		}
 	}
 	
@@ -172,7 +172,6 @@ public class PaintStrategyGame
 			height = Toolkit.getDefaultToolkit().getScreenSize().height;
 		}
 		Position p = entity.getPosition();
-				
 		Animation animation = entity.getAnimation();
 
 		if(entity.getId() == EntityConfiguration.CAVALRY) {

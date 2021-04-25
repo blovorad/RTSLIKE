@@ -84,6 +84,8 @@ public class AudioManager {
 			fxs.add(new File("src/sounds/combat.wav"));
 			fxs.add(new File("src/sounds/unitProduit.wav"));
 			fxs.add(new File("src/sounds/minage.wav"));
+			fxs.add(new File("src/sounds/possible.wav"));
+			fxs.add(new File("src/sounds/noPossible.wav"));
 			
 		}
 		catch(Exception e) {
@@ -169,13 +171,9 @@ public class AudioManager {
 				try {
 					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
 					fxMinage.open(inputStream);
-					float volumeInFloat = (float)sliderVolume / 100;
-					if(volumeInFloat > 15f) {
-						volumeInFloat = 15f;
-					}
+					float volumeInFloat = 0.3f;
 					FloatControl gainControl = (FloatControl) fxMinage.getControl(FloatControl.Type.MASTER_GAIN);
-					float volumeToChange = (float)Math.log10(volumeInFloat);
-				    gainControl.setValue(volumeToChange);
+					gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
 				    fxMinage.start();
 				} catch(Exception e) {
 					e.printStackTrace();

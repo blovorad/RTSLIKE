@@ -431,7 +431,7 @@ public class Unit extends Entity
 			}
 		}
 		
-		if(finalNode != null && finalPosition != null) {
+		if(finalNode != null && finalPosition != null && destination.isEmpty() == false) {
 			if(this.getDestination() == null) {
 				this.calculateSpeed(destination.get(0));
 			}
@@ -599,9 +599,6 @@ public class Unit extends Entity
 					
 					if(Collision.collideVision(value, this) && value.getFaction() != this.getFaction())
 					{
-						if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-							System.out.println("ICI");
-						}
 						this.setFinalDestination(value.getPosition());
 						this.setCurrentAction(EntityConfiguration.WALK);
 						this.setTarget(value);
