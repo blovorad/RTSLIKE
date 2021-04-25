@@ -827,6 +827,12 @@ public class GameDisplay extends JPanel
 			AbstractMap<Integer, ForUpgrade> upgradesAvailable = building.getUpgrades();
 			AbstractMap<Integer, ForUpgrade> upgradesUse = new HashMap<Integer, ForUpgrade>();
 			
+			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
+			button.setFocusable(false);
+			button.setToolTipText("Cout : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(building.getProductionId()).getCost());
+			infoEnd++;
+			panel.add(button);
+			
 			for(int key : upgradesAvailable.keySet()) {
 				upgradesUse.put(key, upgradesAvailable.get(key));
 			}
@@ -842,7 +848,7 @@ public class GameDisplay extends JPanel
 					panel.add(new JLabel());
 				}
 				else {
-					JButton button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
+					button = new JButton(new BuildingProduction("" + upgrade.getDescription(), upgrade.getId(), building ));
 					button.setFocusable(false);
 					button.setToolTipText("Cout : " + upgrade.getCost());
 					if(upgrade.getId() == EntityConfiguration.AGE_UPGRADE_2 && this.manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getAge() < 2) {
@@ -852,12 +858,6 @@ public class GameDisplay extends JPanel
 				}
 				infoEnd++;
 			}
-			JButton button = new JButton(new BuildingProduction("" + name, building.getProductionId(), building ));
-			button.setFocusable(false);
-			button.setToolTipText("Cout : " + manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getPatronWorkers().get(building.getProductionId()).getCost());
-			infoEnd++;
-			
-			panel.add(button);
 		}
 		else {
 			String name = manager.getFactionManager().getFactions().get(building.getFaction()).getRace().getPatronFighters().get(building.getProductionId()).getDescription();

@@ -249,6 +249,11 @@ public class EntitiesManager
 					audioManager.startFx(8);
 				}
 			}
+			else if(worker.getCurrentAction() == EntityConfiguration.REPAIR && worker.getSpeed().hasSpeed() == false) {
+				if(Collision.collideForFx(worker, camera)) {
+					audioManager.startFx(11);
+				}
+			}
 			if(worker.isRemove()) {
 				removeWorkers.add(worker);
 				factionManager.getFactions().get(worker.getFaction()).setPopulationCount(factionManager.getFactions().get(worker.getFaction()).getPopulationCount() - 1);

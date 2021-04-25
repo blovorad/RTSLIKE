@@ -420,7 +420,7 @@ public class MainGui extends JFrame implements Runnable
 					manager.addSelectedUnit(worker);
 					if(clickCount > 1) {
 						for(Worker worker2 : listWorkers) {
-							if(worker != worker2) {
+							if(worker != worker2 && Collision.collideForFx(worker2, camera)) {
 								manager.addSelectedWorker(worker2);
 								manager.addSelectedUnit(worker2);
 							}
@@ -441,7 +441,7 @@ public class MainGui extends JFrame implements Runnable
 						unitIdSelected = fighter.getId();
 						if(clickCount > 1) {
 							for(Fighter fighter2 : listFighters) {
-								if(fighter != fighter2 && unitIdSelected == fighter2.getId()) {
+								if(fighter != fighter2 && unitIdSelected == fighter2.getId() && Collision.collideForFx(fighter2, camera)) {
 									manager.addSelectedFighter(fighter2);
 									manager.addSelectedUnit(fighter2);
 								}
