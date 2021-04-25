@@ -172,7 +172,7 @@ public class AudioManager {
 				try {
 					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
 					fxMinage.open(inputStream);
-					float volumeInFloat = 0.3f;
+					float volumeInFloat = 0.2f;
 					FloatControl gainControl = (FloatControl) fxMinage.getControl(FloatControl.Type.MASTER_GAIN);
 					gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
 				    fxMinage.start();
