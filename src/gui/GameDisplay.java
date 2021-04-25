@@ -1383,11 +1383,15 @@ public class GameDisplay extends JPanel
 			int money = manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getMoneyCount();
 			int priceOfProduction = prodBuilding.startProd(id, money);
 			if(priceOfProduction > 0) {
+				audioManager.startFx(9);
 				manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).setMoneyCount(money - priceOfProduction);
 				if(id >= EntityConfiguration.ARMOR_UPGRADE && id <= EntityConfiguration.AGE_UPGRADE_2) {
 					manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades().add(id);
 					setDescriptionPanelForBuilding(prodBuilding, manager.getFactionManager().getFactions().get(prodBuilding.getFaction()).getSearchingUpgrades());
 				}
+			}
+			else {
+				audioManager.startFx(10);
 			}
 		}
 	}
