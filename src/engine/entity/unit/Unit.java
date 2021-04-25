@@ -323,9 +323,6 @@ public class Unit extends Entity
 		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
 		//System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 		while(currentNode != null && endNode != null && !currentNode.getPosition().equals(endNode.getPosition())) {
-			if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-				System.out.println("ici");
-			}
 			searchingPath = true;
 			Position bis = currentNode.getPosition();
 			if(bis.getY() - 1 >= 0 && bis.getX() >= 0 && bis.getY() - 1 < GameConfiguration.LINE_COUNT && bis.getX() < GameConfiguration.COLUMN_COUNT) {
