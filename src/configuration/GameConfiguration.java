@@ -29,7 +29,7 @@ public class GameConfiguration
 	/**
 	 * if you want debug, if true you can see the IA and no dynamic fog
 	 */
-	public final static boolean debug_mod = true;
+	public final static boolean debug_mod = false;
 	
 	/**
 	 * to desactivate IA
