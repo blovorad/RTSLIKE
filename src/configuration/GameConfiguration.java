@@ -88,7 +88,7 @@ public class GameConfiguration
 	/**
 	 * starting money
 	 */
-	public final static int STARTING_MONEY = 250;
+	public final static int STARTING_MONEY = 0;
 	
 	/**
 	 * Max population

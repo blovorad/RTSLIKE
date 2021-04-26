@@ -762,17 +762,21 @@ public class BotManager {
 								}
 							}
 							if(foundPlace && buildingInAttempt == false) {
-								System.out.println("place trouver pour storage");
-								System.out.println("pos : " + storagePosX + "," + storagePosY);
+								//System.out.println("place trouver pour storage");
+								//System.out.println("pos : " + storagePosX + "," + storagePosY);
 								buildingInAttempt = true;
 								tileToBuild = map.getTile(storagePosY, storagePosX);
 								idToBuild = EntityConfiguration.STORAGE;
 							}
 						}
+						else {
+							worker.initRessource(ressource);
+						}
 					}
 					else {
 						if(worker.getCurrentAction() != EntityConfiguration.REPAIR && worker.getCurrentAction() != EntityConfiguration.WALK) {
 							worker.initRessource(ressource);
+							//System.out.println("on envoie a la ressource");
 							//System.out.println("au travail fdp !");
 						}
 					}

@@ -102,7 +102,7 @@ public class Unit extends Entity
 			}
 		}
 	}
-	
+
 	public void move(float vx, float vy)
 	{
 		if(vx > 0.0 && vx < 1.0) {
@@ -278,9 +278,9 @@ public class Unit extends Entity
 		Node endNode = finalNode;
 		int distance;
 		if(finalNode != null) {
-			boolean found = false;
 			distance = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) + Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE);
 			if(distance > 25 && this.getCurrentAction() != EntityConfiguration.HARVEST) {
+<<<<<<< HEAD
                 while(found == false) {
                     int midX = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) / difference;
                     int midY = Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE) / difference;
@@ -305,6 +305,33 @@ public class Unit extends Entity
                     else {
                         difference--;
                     }
+=======
+				boolean found = false;
+				while(found == false) {
+					int midX = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) / difference;
+					int midY = Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE) / difference;
+					if(p.getX() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getX()) {
+						midX += p.getX() / GameConfiguration.TILE_SIZE;
+					}
+					else {
+						midX += finalNode.getPosition().getX();
+					}
+					if(p.getY() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getY()) {
+						midY += p.getY() / GameConfiguration.TILE_SIZE;
+					}
+					else {
+						midY += finalNode.getPosition().getY();
+					}
+						//System.out.print("les coordonner : " + midX + "," + midY);
+						//System.out.println("TILES : " + tiles[midY][midX].isSolid());
+					if(tiles[midY][midX].isSolid() == false) {
+						endNode = new Node(new Position(midX, midY));
+						found = true;
+					}
+					else {
+						difference--;
+					}
+>>>>>>> branch 'blovorad' of https://github.com/blovorad/RTSLIKE.git
 				}
 			}
 		}
@@ -312,6 +339,7 @@ public class Unit extends Entity
 		boolean searchingPath = false;
 		
 		if(this.getCurrentAction() == EntityConfiguration.HARVEST && endNode != null) {
+<<<<<<< HEAD
             Position bis = endNode.getPosition();
             if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
                 if(tiles[bis.getY() - 1][bis.getX()].isSolid() == true && tiles[bis.getY()][bis.getX() - 1].isSolid() == true && tiles[bis.getY()][bis.getX() + 1].isSolid() == true && tiles[bis.getY() + 1][bis.getX()].isSolid() == true) {
@@ -320,6 +348,16 @@ public class Unit extends Entity
                 }
             }
         }
+=======
+			Position bis = endNode.getPosition();
+			if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+				if(tiles[bis.getY() - 1][bis.getX()].isSolid() == true && tiles[bis.getY()][bis.getX() - 1].isSolid() == true && tiles[bis.getY()][bis.getX() + 1].isSolid() == true && tiles[bis.getY() + 1][bis.getX()].isSolid() == true) {
+					currentNode = null;
+					endNode = null;
+				}
+			}
+		}
+>>>>>>> branch 'blovorad' of https://github.com/blovorad/RTSLIKE.git
 		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
 		//System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 		while(currentNode != null && endNode != null && !currentNode.getPosition().equals(endNode.getPosition())) {
@@ -606,7 +644,7 @@ public class Unit extends Entity
 			}
 		}
 		
-		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.destination.isEmpty() == true && this.getTarget() == null && this.targetUnit == null && (this.getFaction() == EntityConfiguration.BOT_FACTION || this.getDestination() == null ))
+		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.destination.isEmpty() == true && this.getTarget() == null && this.targetUnit == null && this.getDestination() == null )
 		{
 			
 			if(!units.isEmpty())

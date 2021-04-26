@@ -568,7 +568,7 @@ public class GameDisplay extends JPanel
 		descriptionPanel.setLayout(new GridLayout(5, 2));
 		Faction faction = manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION);
 		
-		JButton buttonForge = new JButton(new ConstructBuilding("Forge", EntityConfiguration.FORGE));
+		JButton buttonForge = new JButton(new ConstructBuilding("Forge", EntityConfiguration.FORGE, manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getCost()));
 		buttonForge.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonForge.setEnabled(false);
@@ -578,11 +578,11 @@ public class GameDisplay extends JPanel
 			buttonForge.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.FORGE).getCost());
 		}
 		
-		JButton buttonBarrack = new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACK));
+		JButton buttonBarrack = new JButton(new ConstructBuilding("Caserne", EntityConfiguration.BARRACK,  manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getProductionBuildings().get(EntityConfiguration.BARRACK).getCost()));
 		buttonBarrack.setFocusable(false);
 		buttonBarrack.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.BARRACK).getCost());
 		
-		JButton buttonStable = new JButton(new ConstructBuilding("Ecurie", EntityConfiguration.STABLE));
+		JButton buttonStable = new JButton(new ConstructBuilding("Ecurie", EntityConfiguration.STABLE,  manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getCost()));
 		buttonStable.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonStable.setEnabled(false);
@@ -592,7 +592,7 @@ public class GameDisplay extends JPanel
 			buttonStable.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.STABLE).getCost());
 		}
 		
-		JButton buttonHq = new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ));
+		JButton buttonHq = new JButton(new ConstructBuilding("Qg", EntityConfiguration.HQ,  manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getProductionBuildings().get(EntityConfiguration.HQ).getCost()));
 		buttonHq.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonHq.setEnabled(false);
@@ -602,11 +602,11 @@ public class GameDisplay extends JPanel
 			buttonHq.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.HQ).getCost());
 		}
 		
-		JButton buttonStockage = new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE));
+		JButton buttonStockage = new JButton(new ConstructBuilding("Stockage", EntityConfiguration.STORAGE,  manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getStorageBuildings().get(EntityConfiguration.STORAGE).getCost()));
 		buttonStockage.setFocusable(false);
 		buttonStockage.setToolTipText("Cout : " + faction.getRace().getStorageBuildings().get(EntityConfiguration.STORAGE).getCost());
 		
-		JButton buttonCastle = new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE));
+		JButton buttonCastle = new JButton(new ConstructBuilding("Chateau", EntityConfiguration.CASTLE,  manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getCost()));
 		buttonCastle.setFocusable(false);
 		if(faction.getAge() <= 2) {
 			buttonCastle.setEnabled(false);
@@ -616,7 +616,7 @@ public class GameDisplay extends JPanel
 			buttonCastle.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.CASTLE).getCost());
 		}
 		
-		JButton buttonArchery = new JButton(new ConstructBuilding("Acherie", EntityConfiguration.ARCHERY));
+		JButton buttonArchery = new JButton(new ConstructBuilding("Acherie", EntityConfiguration.ARCHERY,  manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getCost()));
 		buttonArchery.setFocusable(false);
 		if(faction.getAge() <= 1) {
 			buttonArchery.setEnabled(false);
@@ -626,7 +626,7 @@ public class GameDisplay extends JPanel
 			buttonArchery.setToolTipText("Cout : " + faction.getRace().getProductionBuildings().get(EntityConfiguration.ARCHERY).getCost());
 		}
 		
-		JButton buttonTower = new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER));
+		JButton buttonTower = new JButton(new ConstructBuilding("Tour", EntityConfiguration.TOWER,  manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getRace().getAttackBuildings().get(EntityConfiguration.TOWER).getCost()));
 		buttonTower.setFocusable(false);
 		buttonTower.setToolTipText("Cout : " + faction.getRace().getAttackBuildings().get(EntityConfiguration.TOWER).getCost());
 		
@@ -1227,33 +1227,33 @@ public class GameDisplay extends JPanel
 
 
 			if(!GameConfiguration.debug_mod) {
-                List<Entity> entitie = manager.getPlayerEntities();
+		List<Entity> entitie = manager.getPlayerEntities();
 
-                List<Entity> entities = new ArrayList<Entity>();
-                for(Entity entity : entitie) {
-                    entities.add(entity);
-                }
-                List<Entity> botEntities = manager.getBotEntities();
-                fog.resetDynamicFog();
-                for(Entity entity : entities) {
-                    Position p = entity.getPosition();
-                    fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, manager.getDrawingList(), manager.getWaitingList(), manager.getRemoveList(), botEntities);
-    
-                }
-                fog.checkingBotTargetInFog(manager.getDrawingList(), manager.getWaitingList(), manager.getRemoveList());
-            }
-            else {
-                List<Entity> entitie = manager.getDrawingList();
+	            List<Entity> entities = new ArrayList<Entity>();
+	            for(Entity entity : entitie) {
+	                entities.add(entity);
+	            }
+				List<Entity> botEntities = manager.getBotEntities();
+				fog.resetDynamicFog();
+				for(Entity entity : entities) {
+					Position p = entity.getPosition();
+					fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, manager.getDrawingList(), manager.getWaitingList(), manager.getRemoveList(), botEntities);
+	
+				}
+				fog.checkingBotTargetInFog(manager.getDrawingList(), manager.getWaitingList(), manager.getRemoveList());
+			}
+			else {
+				List<Entity> entitie = manager.getDrawingList();
 
-                List<Entity> entities = new ArrayList<Entity>();
-                for(Entity entity : entitie) {
-                    entities.add(entity);
-                }
-                for(Entity entity : entities) {
-                    Position p = entity.getPosition();
-                    fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
-                }
-            }
+	            List<Entity> entities = new ArrayList<Entity>();
+	            for(Entity entity : entitie) {
+	                entities.add(entity);
+	            }
+				for(Entity entity : entities) {
+					Position p = entity.getPosition();
+					fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
+				}
+			}
 			
 			if(manager.getPlayerWin()) {
 				oldState = state;
@@ -1462,16 +1462,24 @@ public class GameDisplay extends JPanel
 		private static final long serialVersionUID = 1L;
 		
 		private int id;
+		private int cost;
 		
-		public ConstructBuilding(String name, int id)
+		public ConstructBuilding(String name, int id, int cost)
 		{
 			super(name);
 			this.id = id;
+			this.cost = cost;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mouse.setId(this.getId());
-			mouse.getEntityNoAnimationTexture(graphicsManager, id, EntityConfiguration.PLAYER_FACTION);
+			if(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoneyCount() >= cost) {
+				mouse.setId(this.getId());
+				mouse.setCost(this.cost);
+				mouse.getEntityNoAnimationTexture(graphicsManager, id, EntityConfiguration.PLAYER_FACTION);
+			}
+			else {
+				audioManager.startFx(10);
+			}
 		}
 		
 		public int getId() {

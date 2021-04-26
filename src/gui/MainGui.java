@@ -751,6 +751,7 @@ public class MainGui extends JFrame implements Runnable
 									worker.setCurrentAction(EntityConfiguration.WALK);
 									worker.setTarget(constructionSite);
 								}
+								manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).setMoneyCount(manager.getFactionManager().getFactions().get(EntityConfiguration.PLAYER_FACTION).getMoneyCount() - mouse.getCost());
 								mouse.setId(-1);
 							}
 							audioManager.startFx(3);
