@@ -752,7 +752,7 @@ public class BotManager {
 							
 							for(int i = y; i<= height; i++) {
 								for(int j = x; j <= width; j++) {
-									if(map.getTile(j, i).isSolid() == false && foundPlace == false) {
+									if(map.getTile(i, j).isSolid() == false && foundPlace == false) {
 										storagePosX = j;
 										storagePosY = i;
 										foundPlace = true;
