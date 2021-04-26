@@ -606,7 +606,7 @@ public class Unit extends Entity
 			}
 		}
 		
-		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.destination.isEmpty() == true && this.getTarget() == null && this.targetUnit == null && (this.getFaction() == EntityConfiguration.BOT_FACTION || this.getDestination() == null ))
+		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.destination.isEmpty() == true && this.getTarget() == null && this.targetUnit == null && this.getDestination() == null )
 		{
 			
 			if(!units.isEmpty())
