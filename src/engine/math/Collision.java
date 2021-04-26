@@ -151,6 +151,9 @@ public class Collision {
 	 * @return
 	 */
 	public static boolean collideRessource(Worker worker, Ressource  ressource) {
+		if(worker.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+			
+		}
 		Rectangle r1 = new Rectangle(worker.getPosition().getX(), worker.getPosition().getY(), EntityConfiguration.UNIT_SIZE, EntityConfiguration.UNIT_SIZE);
 		Rectangle r2 = new Rectangle(ressource.getPosition().getX() - 7*GameConfiguration.TILE_SIZE, ressource.getPosition().getY() - 7*GameConfiguration.TILE_SIZE, 14*GameConfiguration.TILE_SIZE, 14*GameConfiguration.TILE_SIZE);
 		

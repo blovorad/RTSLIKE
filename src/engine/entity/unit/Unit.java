@@ -102,7 +102,7 @@ public class Unit extends Entity
 			}
 		}
 	}
-	
+
 	public void move(float vx, float vy)
 	{
 		if(vx > 0.0 && vx < 1.0) {
