@@ -17,6 +17,10 @@ public class Mouse {
 	 */
 	private int id = -1;
 	/**
+	 * cost of the building
+	 */
+	private int cost = 0;
+	/**
 	 * position of the mouse
 	 */
 	private Position position;
@@ -40,6 +44,14 @@ public class Mouse {
 	
 	public void setX(int x) {
 		position.setX(x);
+	}
+	
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+	
+	public int getCost() {
+		return this.cost;
 	}
 	
 	/**
