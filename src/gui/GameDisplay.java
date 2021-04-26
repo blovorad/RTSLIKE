@@ -1227,7 +1227,12 @@ public class GameDisplay extends JPanel
 
 
 			if(!GameConfiguration.debug_mod) {
-				List<Entity> entities = manager.getPlayerEntities();
+				List<Entity> entitie = manager.getDrawingList();
+
+	            List<Entity> entities = new ArrayList<Entity>();
+	            for(Entity entity : entitie) {
+	                entities.add(entity);
+	            }
 				List<Entity> botEntities = manager.getBotEntities();
 				fog.resetDynamicFog();
 				for(Entity entity : entities) {
