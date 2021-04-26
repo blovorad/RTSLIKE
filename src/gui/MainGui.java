@@ -112,7 +112,7 @@ public class MainGui extends JFrame implements Runnable
 		setVisible(true);
 		setResizable(false);
 		setPreferredSize(preferredSize);
-		System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
+		//System.out.println("resolution: " + GameConfiguration.WINDOW_WIDTH + "x" + GameConfiguration.WINDOW_HEIGHT);
 		moveMinimap = false;
 	}
 

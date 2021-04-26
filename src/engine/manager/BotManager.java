@@ -509,9 +509,9 @@ public class BotManager {
 		if(getExplorer() == null) {
 			for(Fighter fighter : getBotFighters()) {
 				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && getExplorer() == null && !fighter.equals(getExplorerRandom())) {
-					System.out.println("On set un explorer normal");
+					//System.out.println("On set un explorer normal");
 					setExplorer(fighter);
-					System.out.println("explo normal : " + getExplorer());
+					//System.out.println("explo normal : " + getExplorer());
 					fighter.setState(EntityConfiguration.PASSIF_STATE);
 				}
 			}
@@ -524,11 +524,11 @@ public class BotManager {
 		if(getExplorerRandom() == null) {
 			for(Fighter fighter : getBotFighters()) {
 				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && fighter.equals(getExplorer()) == false && getExplorerRandom() == null) {
-					System.out.println("On set un explorer rdn");
+					//System.out.println("On set un explorer rdn");
 					setExplorerRandom(fighter);
-					System.out.println("explo rnd : " + getExplorerRandom());
+					//System.out.println("explo rnd : " + getExplorerRandom());
 					fighter.setState(EntityConfiguration.PASSIF_STATE);
-					System.out.println("explo rdm set");
+					//System.out.println("explo rdm set");
 				}
 			}
 		}

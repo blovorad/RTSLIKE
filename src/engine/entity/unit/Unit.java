@@ -396,17 +396,17 @@ public class Unit extends Entity
 				destination = path.reversePath(currentNode);
 			}
 			else {
-				System.out.println("trouver sans rechercher");
+				//System.out.println("trouver sans rechercher");
 				this.calculateSpeed(this.finalPosition);
 			}
 			return true;
 		}
 		else {
-			System.out.println("PATH PAS TROUVER");
+			/*System.out.println("PATH PAS TROUVER");
 			System.out.println("Pos node end : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 			System.out.println("pos : " + ((p.getX() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE) + "," + ((p.getY() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE));
 			System.out.println("TILE POS SOLID : " + tiles[finalNode.getPosition().getY()][finalNode.getPosition().getX()].isSolid());
-			System.out.println("Qui ne trouve pas : " + this);
+			System.out.println("Qui ne trouve pas : " + this);*/
 			this.speed.reset();
 			finalPosition = null;
 			finalNode = null;
