@@ -278,9 +278,9 @@ public class Unit extends Entity
 		Node endNode = finalNode;
 		int distance;
 		if(finalNode != null) {
-			boolean found = false;
 			distance = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) + Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE);
-			if(distance > 25) {
+			if(distance > 25 && this.getCurrentAction() != EntityConfiguration.HARVEST) {
+				boolean found = false;
 				while(found == false) {
 					int midX = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) / difference;
 					int midY = Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE) / difference;
