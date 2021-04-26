@@ -738,7 +738,6 @@ public class BotManager {
 					//System.out.println(storageInRange);
 					if(storageInRange == false) { // si pas storage ni site constru in range, construit site constru
 						if(priceOfEntity.get(EntityConfiguration.STORAGE)< money) {
-							factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - priceOfEntity.get(EntityConfiguration.STORAGE));
 							int tileRessourceX = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
 							int tileRessourceY = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
 							//System.out.println("pos ressource : " + tileRessourceX + " " + tileRessourceY);
@@ -764,6 +763,7 @@ public class BotManager {
 							if(foundPlace && buildingInAttempt == false) {
 								//System.out.println("place trouver pour storage");
 								//System.out.println("pos : " + storagePosX + "," + storagePosY);
+								factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - priceOfEntity.get(EntityConfiguration.STORAGE));
 								buildingInAttempt = true;
 								tileToBuild = map.getTile(storagePosY, storagePosX);
 								idToBuild = EntityConfiguration.STORAGE;
