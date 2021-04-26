@@ -136,7 +136,7 @@ public class Barbare extends Race
 	
 	public void initTower()
 	{
-		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(150, 400, 1, 80 ,10 ,1, "Tour Barbare", 175));
+		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(150, 400, 5, 80 ,10 ,1, "Tour Barbare", 175));
 	}
 	
 	public void initRessourceStockage()

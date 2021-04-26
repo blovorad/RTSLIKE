@@ -113,7 +113,7 @@ public class Royaume extends Race
 	
 	public void initTower()
 	{
-		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(150, 400, 1, 80 ,10 ,1, "Tour Royaume", 175));
+		this.getAttackBuildings().put(EntityConfiguration.TOWER, new ForAttackBuilding(150, 400, 5, 80 ,10 ,1, "Tour Royaume", 175));
 	}
 	
 	public void initRessourceStockage()
@@ -147,7 +147,7 @@ public class Royaume extends Race
 	
 	public void initHQUpgrades()
 	{
-		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE, new ForUpgrade(1, "upgrade age tier 2", 1, EntityConfiguration.AGE_UPGRADE, 2, 300));
+		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE, new ForUpgrade(1, "upgrade age tier 2", 1, EntityConfiguration.AGE_UPGRADE, 75, 300));
 		this.getHQUpgrades().put(EntityConfiguration.AGE_UPGRADE_2, new ForUpgrade(1, "upgrade age tier 3", 1, EntityConfiguration.AGE_UPGRADE_2, 100, 500));
 	}
 	

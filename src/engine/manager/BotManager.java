@@ -550,7 +550,7 @@ public class BotManager {
 				while(targetX == 0 && targetY == 0) {
 					for(int i = x-maxX; i < x+maxX; i++) {
 						//System.out.println("tabfog[" + (y-maxY) + "][" + i + "] = " + tabFog[y-maxY][i]);
-						if(y-maxY < GameConfiguration.LINE_COUNT && i < GameConfiguration.COLUMN_COUNT) {
+						if(y-maxY < GameConfiguration.LINE_COUNT && y-maxY > -1 && i < GameConfiguration.COLUMN_COUNT) {
 							if(tabFog[y-maxY][i] == true) {
 								if(targetX == 0 && targetY == 0) {
 									targetX = i * GameConfiguration.TILE_SIZE;
@@ -571,7 +571,7 @@ public class BotManager {
 					}
 					for(int j = y-maxY; j < y+maxY; j++) {
 						//System.out.println("tabfog[" + j + "][" + (x+maxX) + "] = " + tabFog[j][x+maxX]);
-						if(j < GameConfiguration.LINE_COUNT && x+maxX < GameConfiguration.COLUMN_COUNT) {
+						if(j < GameConfiguration.LINE_COUNT && x+maxX < GameConfiguration.COLUMN_COUNT && x + maxX > -1) {
 							if(tabFog[j][x+maxX] == true) {
 								if(targetX == 0 && targetY == 0) {
 									targetX = (x+maxX) * GameConfiguration.TILE_SIZE;
@@ -592,7 +592,7 @@ public class BotManager {
 					}
 					for(int j = y-maxY; j < y+maxY; j++) {
 						//System.out.println("tabfog[" + j + "][" + (x-maxX) + "] = " + tabFog[j][x-maxX]);
-						if(j < GameConfiguration.LINE_COUNT && x-maxX < GameConfiguration.COLUMN_COUNT) {
+						if(j < GameConfiguration.LINE_COUNT && x-maxX < GameConfiguration.COLUMN_COUNT && x-maxX > -1) {
 							if(tabFog[j][x-maxX] == true) {
 								if(targetX == 0 && targetY == 0) {
 									targetX = (x-maxX) * GameConfiguration.TILE_SIZE;
@@ -613,7 +613,7 @@ public class BotManager {
 					}
 					for(int i = x-maxX; i < x+maxX; i++) {
 						//System.out.println("tabfog[" + (y+maxY) + "][" + i + "] = " + tabFog[y+maxY][i]);
-						if(y+maxY < GameConfiguration.LINE_COUNT && i < GameConfiguration.COLUMN_COUNT) {
+						if(y+maxY < GameConfiguration.LINE_COUNT && y + maxY > -1 && i < GameConfiguration.COLUMN_COUNT) {
 							if(tabFog[y+maxY][i] == true) {
 								if(targetX == 0 && targetY == 0) {
 									targetX = i * GameConfiguration.TILE_SIZE;

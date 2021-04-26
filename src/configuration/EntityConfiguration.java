@@ -196,7 +196,7 @@ public class EntityConfiguration {
 	/**
 	 * ressource hp when starting a game
 	 */
-	public final static int RESSOURCE_HP = 10;
+	public final static int RESSOURCE_HP = 100;
 	
 
 	/**
