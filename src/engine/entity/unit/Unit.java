@@ -311,13 +311,13 @@ public class Unit extends Entity
 		
 		boolean searchingPath = false;
 		
-		if(this.getCurrentAction() == EntityConfiguration.HARVEST) {
+		if(this.getCurrentAction() == EntityConfiguration.HARVEST && endNode != null) {
 			Position bis = endNode.getPosition();
 			if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-			}
-			if(tiles[bis.getY() - 1][bis.getX()].isSolid() == true && tiles[bis.getY()][bis.getX() - 1].isSolid() == true && tiles[bis.getY()][bis.getX() + 1].isSolid() == true && tiles[bis.getY() + 1][bis.getX()].isSolid() == true) {
-				currentNode = null;
-				endNode = null;
+				if(tiles[bis.getY() - 1][bis.getX()].isSolid() == true && tiles[bis.getY()][bis.getX() - 1].isSolid() == true && tiles[bis.getY()][bis.getX() + 1].isSolid() == true && tiles[bis.getY() + 1][bis.getX()].isSolid() == true) {
+					currentNode = null;
+					endNode = null;
+				}
 			}
 		}
 		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
