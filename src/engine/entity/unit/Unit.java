@@ -280,46 +280,46 @@ public class Unit extends Entity
 		if(finalNode != null) {
 			boolean found = false;
 			distance = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) + Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE);
-			if(distance > 25) {
-				while(found == false) {
-					int midX = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) / difference;
-					int midY = Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE) / difference;
-					if(p.getX() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getX()) {
-						midX += p.getX() / GameConfiguration.TILE_SIZE;
-					}
-					else {
-						midX += finalNode.getPosition().getX();
-					}
-					if(p.getY() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getY()) {
-						midY += p.getY() / GameConfiguration.TILE_SIZE;
-					}
-					else {
-						midY += finalNode.getPosition().getY();
-					}
-						//System.out.print("les coordonner : " + midX + "," + midY);
-						//System.out.println("TILES : " + tiles[midY][midX].isSolid());
-					if(tiles[midY][midX].isSolid() == false) {
-						endNode = new Node(new Position(midX, midY));
-						found = true;
-					}
-					else {
-						difference--;
-					}
+			if(distance > 25 && this.getCurrentAction() != EntityConfiguration.HARVEST) {
+                while(found == false) {
+                    int midX = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) / difference;
+                    int midY = Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE) / difference;
+                    if(p.getX() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getX()) {
+                        midX += p.getX() / GameConfiguration.TILE_SIZE;
+                    }
+                    else {
+                        midX += finalNode.getPosition().getX();
+                    }
+                    if(p.getY() / GameConfiguration.TILE_SIZE < finalNode.getPosition().getY()) {
+                        midY += p.getY() / GameConfiguration.TILE_SIZE;
+                    }
+                    else {
+                        midY += finalNode.getPosition().getY();
+                    }
+                        //System.out.print("les coordonner : " + midX + "," + midY);
+                        //System.out.println("TILES : " + tiles[midY][midX].isSolid());
+                    if(tiles[midY][midX].isSolid() == false) {
+                        endNode = new Node(new Position(midX, midY));
+                        found = true;
+                    }
+                    else {
+                        difference--;
+                    }
 				}
 			}
 		}
 		
 		boolean searchingPath = false;
 		
-		if(this.getCurrentAction() == EntityConfiguration.HARVEST) {
-			Position bis = endNode.getPosition();
-			if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
-			}
-			if(tiles[bis.getY() - 1][bis.getX()].isSolid() == true && tiles[bis.getY()][bis.getX() - 1].isSolid() == true && tiles[bis.getY()][bis.getX() + 1].isSolid() == true && tiles[bis.getY() + 1][bis.getX()].isSolid() == true) {
-				currentNode = null;
-				endNode = null;
-			}
-		}
+		if(this.getCurrentAction() == EntityConfiguration.HARVEST && endNode != null) {
+            Position bis = endNode.getPosition();
+            if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+                if(tiles[bis.getY() - 1][bis.getX()].isSolid() == true && tiles[bis.getY()][bis.getX() - 1].isSolid() == true && tiles[bis.getY()][bis.getX() + 1].isSolid() == true && tiles[bis.getY() + 1][bis.getX()].isSolid() == true) {
+                    currentNode = null;
+                    endNode = null;
+                }
+            }
+        }
 		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
 		//System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 		while(currentNode != null && endNode != null && !currentNode.getPosition().equals(endNode.getPosition())) {
@@ -488,7 +488,7 @@ public class Unit extends Entity
 							}
 							else {
 									//System.out.println("GENERATION PATH : " + generatePath);
-							//	System.out.println("On regenère un path 1");
+							//	System.out.println("On regenï¿½re un path 1");
 								this.setFinalDestination(finalPosition);
 								//generatePath = true;
 							}
@@ -513,7 +513,7 @@ public class Unit extends Entity
 							finalPosition = null;
 						}
 						else {
-							//System.out.println("On regenère un path 2");
+							//System.out.println("On regenï¿½re un path 2");
 							//System.out.println("GENERATION PATH : " + generatePath);
 							this.setFinalDestination(finalPosition);
 							//generatePath = true;

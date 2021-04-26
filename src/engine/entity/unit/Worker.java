@@ -254,6 +254,7 @@ public class Worker extends Unit
 			if(ressource != null && !Collision.collideRessource(this, this.ressource))
 			{
 				this.ressource = null;
+				this.setFinalDestination(null);
 			}
 		}
 	}

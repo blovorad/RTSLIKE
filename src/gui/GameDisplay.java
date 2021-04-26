@@ -1227,22 +1227,21 @@ public class GameDisplay extends JPanel
 
 
 			if(!GameConfiguration.debug_mod) {
-				List<Entity> entities = manager.getPlayerEntities();
-				List<Entity> botEntities = manager.getBotEntities();
-				fog.resetDynamicFog();
-				for(Entity entity : entities) {
-					Position p = entity.getPosition();
-					fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, manager.getDrawingList(), manager.getWaitingList(), manager.getRemoveList(), botEntities);
-	
-				}
+				List<Entity> entitie = manager.getPlayerEntities();
+
+	            List<Entity> entities = new ArrayList<Entity>();
+	            for(Entity entity : entitie) {
+	                entities.add(entity);
+	            }
 				fog.checkingBotTargetInFog(manager.getDrawingList(), manager.getWaitingList(), manager.getRemoveList());
 			}
 			else {
-				List<Entity> entities = manager.getDrawingList();
-				for(Entity entity : entities) {
-					Position p = entity.getPosition();
-					fog.clearFog(p.getX() - entity.getSightRange() / 3, p.getY() - entity.getSightRange() / 3, entity.getSightRange(), entity, null, null, null, null);
-				}
+				List<Entity> entitie = manager.getDrawingList();
+
+	            List<Entity> entities = new ArrayList<Entity>();
+	            for(Entity entity : entitie) {
+	                entities.add(entity);
+	            }
 			}
 			
 			if(manager.getPlayerWin()) {

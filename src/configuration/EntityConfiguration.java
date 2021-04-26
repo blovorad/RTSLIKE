@@ -203,4 +203,9 @@ public class EntityConfiguration {
 	 * timer of max time a hit animation is occur
 	 */
 	public final static int MAX_TIME_HIT_ANIMATION = 10;
+	
+	/**
+	 * id of champion
+	 */
+	public final static int CHAMPION = 30;
 }
