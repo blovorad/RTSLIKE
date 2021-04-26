@@ -445,8 +445,10 @@ public class Unit extends Entity
 		
 		if(targetUnit != null) {
 			if(finalPosition != null) {
-				if(!finalPosition.equals(targetUnit.getPosition())) {
-					this.setFinalDestination(targetUnit.getPosition());
+				if(Collision.collideVision(targetUnit, this)) {
+					if(!finalPosition.equals(targetUnit.getPosition())) {
+						this.setFinalDestination(targetUnit.getPosition());
+					}
 				}
 			}
 		}
@@ -658,7 +660,7 @@ public class Unit extends Entity
 				if(targetUnit != null) {
 					Position targetPos = this.targetUnit.getPosition();
 					FogCase[][] fog = playerFog.getDynamicFog();
-					if(fog[targetPos.getY() / GameConfiguration.TILE_SIZE][targetPos.getX() / GameConfiguration.TILE_SIZE].getVisible() == false) {
+					if((fog[targetPos.getY() / GameConfiguration.TILE_SIZE][targetPos.getX() / GameConfiguration.TILE_SIZE].getVisible() == false) || Collision.collideVision(targetUnit, this)) {
 						this.setTarget(null);
 						targetUnit = null;
 					}
