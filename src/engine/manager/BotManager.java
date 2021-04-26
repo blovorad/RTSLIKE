@@ -509,9 +509,9 @@ public class BotManager {
 		if(getExplorer() == null) {
 			for(Fighter fighter : getBotFighters()) {
 				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && getExplorer() == null && !fighter.equals(getExplorerRandom())) {
-					System.out.println("On set un explorer normal");
+					//System.out.println("On set un explorer normal");
 					setExplorer(fighter);
-					System.out.println("explo normal : " + getExplorer());
+					//System.out.println("explo normal : " + getExplorer());
 					fighter.setState(EntityConfiguration.PASSIF_STATE);
 				}
 			}
@@ -524,11 +524,11 @@ public class BotManager {
 		if(getExplorerRandom() == null) {
 			for(Fighter fighter : getBotFighters()) {
 				if(fighter.getId() == EntityConfiguration.CAVALRY && getArmy().contains(fighter) == false && fighter.equals(getExplorer()) == false && getExplorerRandom() == null) {
-					System.out.println("On set un explorer rdn");
+					//System.out.println("On set un explorer rdn");
 					setExplorerRandom(fighter);
-					System.out.println("explo rnd : " + getExplorerRandom());
+					//System.out.println("explo rnd : " + getExplorerRandom());
 					fighter.setState(EntityConfiguration.PASSIF_STATE);
-					System.out.println("explo rdm set");
+					//System.out.println("explo rdm set");
 				}
 			}
 		}
@@ -550,7 +550,7 @@ public class BotManager {
 				while(targetX == 0 && targetY == 0) {
 					for(int i = x-maxX; i < x+maxX; i++) {
 						//System.out.println("tabfog[" + (y-maxY) + "][" + i + "] = " + tabFog[y-maxY][i]);
-						if(y-maxY < GameConfiguration.LINE_COUNT && i < GameConfiguration.COLUMN_COUNT) {
+						if(y-maxY < GameConfiguration.LINE_COUNT && y-maxY > -1 && i < GameConfiguration.COLUMN_COUNT && i > -1) {
 							if(tabFog[y-maxY][i] == true) {
 								if(targetX == 0 && targetY == 0) {
 									targetX = i * GameConfiguration.TILE_SIZE;
@@ -571,7 +571,7 @@ public class BotManager {
 					}
 					for(int j = y-maxY; j < y+maxY; j++) {
 						//System.out.println("tabfog[" + j + "][" + (x+maxX) + "] = " + tabFog[j][x+maxX]);
-						if(j < GameConfiguration.LINE_COUNT && x+maxX < GameConfiguration.COLUMN_COUNT) {
+						if(j < GameConfiguration.LINE_COUNT && j > -1 && x+maxX < GameConfiguration.COLUMN_COUNT && x + maxX > -1) {
 							if(tabFog[j][x+maxX] == true) {
 								if(targetX == 0 && targetY == 0) {
 									targetX = (x+maxX) * GameConfiguration.TILE_SIZE;
@@ -592,7 +592,7 @@ public class BotManager {
 					}
 					for(int j = y-maxY; j < y+maxY; j++) {
 						//System.out.println("tabfog[" + j + "][" + (x-maxX) + "] = " + tabFog[j][x-maxX]);
-						if(j < GameConfiguration.LINE_COUNT && x-maxX < GameConfiguration.COLUMN_COUNT) {
+						if(j < GameConfiguration.LINE_COUNT && j > -1 && x-maxX < GameConfiguration.COLUMN_COUNT && x-maxX > -1) {
 							if(tabFog[j][x-maxX] == true) {
 								if(targetX == 0 && targetY == 0) {
 									targetX = (x-maxX) * GameConfiguration.TILE_SIZE;
@@ -613,7 +613,7 @@ public class BotManager {
 					}
 					for(int i = x-maxX; i < x+maxX; i++) {
 						//System.out.println("tabfog[" + (y+maxY) + "][" + i + "] = " + tabFog[y+maxY][i]);
-						if(y+maxY < GameConfiguration.LINE_COUNT && i < GameConfiguration.COLUMN_COUNT) {
+						if(y+maxY < GameConfiguration.LINE_COUNT && y + maxY > -1 && i < GameConfiguration.COLUMN_COUNT && i > -1) {
 							if(tabFog[y+maxY][i] == true) {
 								if(targetX == 0 && targetY == 0) {
 									targetX = i * GameConfiguration.TILE_SIZE;
@@ -686,80 +686,103 @@ public class BotManager {
 	public void recolte() {
 		updateVisibleRessources();
 		updateIdleWorker();
+		List<Ressource> accessible = new ArrayList<Ressource>();
 		//System.out.println("nb idle : " + IdleWorker.size());
 		for(Worker worker : getIdleWorker()) {
 			if(getVisibleRessources().isEmpty() == false) {
-				Ressource ressource = visibleRessources.get(0);
-				for(Ressource visibleRessource : getVisibleRessources()) { //choisi la ressource la plus proche du worker
-					int distanceRessource;
-					distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
-					if(distanceRessource > calculate(visibleRessource.getPosition(), worker.getPosition()) && visibleRessource.getHp() > 0 )
-					{
-						ressource = visibleRessource;
-					}
+				accessible.clear();
+				boolean foundRessource = false;
+				for(Ressource ressource : getVisibleRessources()) {
+					accessible.add(ressource);
 				}
-				boolean storageInRange = false;
-				for(StorageBuilding storage : getBotStorageBuildings()) { // check si storage in range
-					//System.out.println("range ressource : " + calculate(storage.getPosition(), ressource.getPosition()) /  GameConfiguration.TILE_SIZE);
-					if(calculate(storage.getPosition(), ressource.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
-						storageInRange = true;
-						//System.out.println("bat storage in range ! storagerang = " + storageInRange);
-					}
-				}
-				for(SiteConstruction sitec : getSiteConstructions()) { // check si a site de constru de storage in range
-					if(sitec.getBuildingId() == EntityConfiguration.STORAGE) {
-						ressource = getClosestRessource(visibleRessources, sitec);
-						
-						if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
-							worker.setTarget(sitec);
-							//worker.calculateSpeed(sitec.getPosition());
-							worker.setFinalDestination(sitec.getPosition());
-							worker.setCurrentAction(EntityConfiguration.WALK);
-							//System.out.println("va constru fdp !");
-							storageInRange = true;
+				Ressource ressource = accessible.get(0);
+				while(foundRessource == false && accessible.isEmpty() == false) {
+					ressource = accessible.get(0);
+					for(Ressource r : accessible) { //choisi la ressource la plus proche du worker
+						int distanceRessource;
+						distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
+						if(distanceRessource > calculate(r.getPosition(), worker.getPosition()) && r.getHp() > 0 )
+						{
+							ressource = r;
 						}
 					}
+					worker.setFinalDestination(ressource.getPosition());
+					worker.setCurrentAction(EntityConfiguration.HARVEST);
+					foundRessource = worker.generatePath(map);
+					worker.setCurrentAction(EntityConfiguration.IDDLE);
+					accessible.remove(ressource);
 				}
-				//System.out.println(storageInRange);
-				if(storageInRange == false) { // si pas storage ni site constru in range, construit site constru
-					if(priceOfEntity.get(EntityConfiguration.STORAGE)< money) {
-						factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - priceOfEntity.get(EntityConfiguration.STORAGE));
-						int tileRessourceX = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
-						int tileRessourceY = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
-						//System.out.println("pos ressource : " + tileRessourceX + " " + tileRessourceY);
-
-						int storagePosX = 0;
-						int storagePosY = 0;
-						boolean foundPlace = false;
-						int x = tileRessourceX - 1;
-						int y = tileRessourceY - 1;
-						int width = tileRessourceX + 1;
-						int height = tileRessourceY + 1;
-						
-						for(int i = y; i<= height; i++) {
-							for(int j = x; j <= width; j++) {
-								if(map.getTile(j, i).isSolid() == false && foundPlace == false) {
-									storagePosX = j;
-									storagePosY = i;
-									foundPlace = true;
-									//System.out.println("pos libre : " + j + " " + i);
-								}
+				if(foundRessource == true) {
+					boolean storageInRange = false;
+					for(StorageBuilding storage : getBotStorageBuildings()) { // check si storage in range
+						//System.out.println("range ressource : " + calculate(storage.getPosition(), ressource.getPosition()) /  GameConfiguration.TILE_SIZE);
+						if(calculate(storage.getPosition(), ressource.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
+							storageInRange = true;
+							//System.out.println("bat storage in range ! storagerang = " + storageInRange);
+						}
+					}
+					for(SiteConstruction sitec : getSiteConstructions()) { // check si a site de constru de storage in range
+						if(sitec.getBuildingId() == EntityConfiguration.STORAGE) {
+							ressource = getClosestRessource(visibleRessources, sitec);
+							
+							if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
+								worker.setTarget(sitec);
+								//worker.calculateSpeed(sitec.getPosition());
+								worker.setFinalDestination(sitec.getPosition());
+								worker.setCurrentAction(EntityConfiguration.WALK);
+								//System.out.println("va constru fdp !");
+								storageInRange = true;
 							}
 						}
-						if(foundPlace) {
-							System.out.println("place trouver pour storage");
-							System.out.println("pos : " + storagePosX + "," + storagePosY);
-							buildingInAttempt = true;
-							tileToBuild = map.getTile(storagePosY, storagePosX);
-							idToBuild = EntityConfiguration.STORAGE;
+					}
+					//System.out.println(storageInRange);
+					if(storageInRange == false) { // si pas storage ni site constru in range, construit site constru
+						if(priceOfEntity.get(EntityConfiguration.STORAGE)< money) {
+							int tileRessourceX = ressource.getPosition().getX() / GameConfiguration.TILE_SIZE;
+							int tileRessourceY = ressource.getPosition().getY() / GameConfiguration.TILE_SIZE;
+							//System.out.println("pos ressource : " + tileRessourceX + " " + tileRessourceY);
+	
+							int storagePosX = 0;
+							int storagePosY = 0;
+							boolean foundPlace = false;
+							int x = tileRessourceX - 1;
+							int y = tileRessourceY - 1;
+							int width = tileRessourceX + 1;
+							int height = tileRessourceY + 1;
+							
+							for(int i = y; i<= height; i++) {
+								for(int j = x; j <= width; j++) {
+									if(map.getTile(i, j).isSolid() == false && foundPlace == false) {
+										storagePosX = j;
+										storagePosY = i;
+										foundPlace = true;
+										//System.out.println("pos libre : " + j + " " + i);
+									}
+								}
+							}
+							if(foundPlace && buildingInAttempt == false) {
+								//System.out.println("place trouver pour storage");
+								//System.out.println("pos : " + storagePosX + "," + storagePosY);
+								factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).setMoneyCount(money - priceOfEntity.get(EntityConfiguration.STORAGE));
+								buildingInAttempt = true;
+								tileToBuild = map.getTile(storagePosY, storagePosX);
+								idToBuild = EntityConfiguration.STORAGE;
+							}
+						}
+						else {
+							worker.initRessource(ressource);
+						}
+					}
+					else {
+						if(worker.getCurrentAction() != EntityConfiguration.REPAIR && worker.getCurrentAction() != EntityConfiguration.WALK) {
+							worker.initRessource(ressource);
+							//System.out.println("on envoie a la ressource");
+							//System.out.println("au travail fdp !");
 						}
 					}
 				}
 				else {
-					if(worker.getCurrentAction() != EntityConfiguration.REPAIR && worker.getCurrentAction() != EntityConfiguration.WALK) {
-						worker.initRessource(ressource);
-						//System.out.println("au travail fdp !");
-					}
+					worker.setFinalDestination(null);
 				}
 			}
 		}

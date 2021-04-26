@@ -80,20 +80,29 @@ public class Unit extends Entity
 	}
 	
 	public void setFinalDestination(Position position) {
-		this.getSpeed().reset();
-		this.finalPosition = new Position(position.getX(), position.getY());
-		finalNode = new Node(new Position(position.getX() / GameConfiguration.TILE_SIZE, position.getY() / GameConfiguration.TILE_SIZE));
-		Node currentNode = new Node(new Position(this.getPosition().getX() / GameConfiguration.TILE_SIZE, this.getPosition().getY() / GameConfiguration.TILE_SIZE));
-		if(currentNode.getPosition().equals(finalNode.getPosition())) {
-			this.calculateSpeed(position);
+		if(position == null) {
+			this.setDestination(null);
 			this.finalNode = null;
+			this.finalPosition = null;
+			this.destination.clear();
+			this.getSpeed().reset();
 		}
 		else {
-			this.setDestination(null);
-			generatePath = true;
+			this.getSpeed().reset();
+			this.finalPosition = new Position(position.getX(), position.getY());
+			finalNode = new Node(new Position(position.getX() / GameConfiguration.TILE_SIZE, position.getY() / GameConfiguration.TILE_SIZE));
+			Node currentNode = new Node(new Position(this.getPosition().getX() / GameConfiguration.TILE_SIZE, this.getPosition().getY() / GameConfiguration.TILE_SIZE));
+			if(currentNode.getPosition().equals(finalNode.getPosition())) {
+				this.calculateSpeed(position);
+				this.finalNode = null;
+			}
+			else {
+				this.setDestination(null);
+				generatePath = true;
+			}
 		}
 	}
-	
+
 	public void move(float vx, float vy)
 	{
 		if(vx > 0.0 && vx < 1.0) {
@@ -269,9 +278,9 @@ public class Unit extends Entity
 		Node endNode = finalNode;
 		int distance;
 		if(finalNode != null) {
-			boolean found = false;
 			distance = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) + Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE);
-			if(distance > 25) {
+			if(distance > 25 && this.getCurrentAction() != EntityConfiguration.HARVEST) {
+				boolean found = false;
 				while(found == false) {
 					int midX = Math.abs(finalNode.getPosition().getX() - p.getX() / GameConfiguration.TILE_SIZE) / difference;
 					int midY = Math.abs(finalNode.getPosition().getY() - p.getY() / GameConfiguration.TILE_SIZE) / difference;
@@ -301,6 +310,16 @@ public class Unit extends Entity
 		}
 		
 		boolean searchingPath = false;
+		
+		if(this.getCurrentAction() == EntityConfiguration.HARVEST && endNode != null) {
+			Position bis = endNode.getPosition();
+			if(this.getFaction() == EntityConfiguration.PLAYER_FACTION) {
+				if(tiles[bis.getY() - 1][bis.getX()].isSolid() == true && tiles[bis.getY()][bis.getX() - 1].isSolid() == true && tiles[bis.getY()][bis.getX() + 1].isSolid() == true && tiles[bis.getY() + 1][bis.getX()].isSolid() == true) {
+					currentNode = null;
+					endNode = null;
+				}
+			}
+		}
 		//System.out.println("Pos moi : " + currentNode.getPosition().getX() + "," + currentNode.getPosition().getY());
 		//System.out.println("POS dest : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 		while(currentNode != null && endNode != null && !currentNode.getPosition().equals(endNode.getPosition())) {
@@ -377,16 +396,17 @@ public class Unit extends Entity
 				destination = path.reversePath(currentNode);
 			}
 			else {
-				System.out.println("trouver sans rechercher");
+				//System.out.println("trouver sans rechercher");
 				this.calculateSpeed(this.finalPosition);
 			}
 			return true;
 		}
 		else {
-			System.out.println("PATH PAS TROUVER");
+			/*System.out.println("PATH PAS TROUVER");
 			System.out.println("Pos node end : " + finalNode.getPosition().getX() + "," + finalNode.getPosition().getY());
 			System.out.println("pos : " + ((p.getX() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE) + "," + ((p.getY() + EntityConfiguration.UNIT_SIZE / 2) / GameConfiguration.TILE_SIZE));
 			System.out.println("TILE POS SOLID : " + tiles[finalNode.getPosition().getY()][finalNode.getPosition().getX()].isSolid());
+			System.out.println("Qui ne trouve pas : " + this);*/
 			this.speed.reset();
 			finalPosition = null;
 			finalNode = null;
@@ -425,8 +445,10 @@ public class Unit extends Entity
 		
 		if(targetUnit != null) {
 			if(finalPosition != null) {
-				if(!finalPosition.equals(targetUnit.getPosition())) {
-					this.setFinalDestination(targetUnit.getPosition());
+				if(Collision.collideVision(targetUnit, this)) {
+					if(!finalPosition.equals(targetUnit.getPosition())) {
+						this.setFinalDestination(targetUnit.getPosition());
+					}
 				}
 			}
 		}
@@ -586,7 +608,7 @@ public class Unit extends Entity
 			}
 		}
 		
-		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.destination.isEmpty() == true && this.getTarget() == null && this.targetUnit == null && (this.getFaction() == EntityConfiguration.BOT_FACTION || this.getDestination() == null ))
+		if(this.state == EntityConfiguration.AGRESSIF_STATE && this.destination.isEmpty() == true && this.getTarget() == null && this.targetUnit == null && this.getDestination() == null )
 		{
 			
 			if(!units.isEmpty())
@@ -638,7 +660,7 @@ public class Unit extends Entity
 				if(targetUnit != null) {
 					Position targetPos = this.targetUnit.getPosition();
 					FogCase[][] fog = playerFog.getDynamicFog();
-					if(fog[targetPos.getY() / GameConfiguration.TILE_SIZE][targetPos.getX() / GameConfiguration.TILE_SIZE].getVisible() == false) {
+					if((fog[targetPos.getY() / GameConfiguration.TILE_SIZE][targetPos.getX() / GameConfiguration.TILE_SIZE].getVisible() == false) || Collision.collideVision(targetUnit, this)) {
 						this.setTarget(null);
 						targetUnit = null;
 					}

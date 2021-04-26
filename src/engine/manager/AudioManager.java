@@ -50,6 +50,10 @@ public class AudioManager {
 	 */
 	private Clip fxOrder;
 	/**
+	 * fx construction
+	 */
+	private Clip fxConstruction;
+	/**
 	 * all other fx
 	 */
 	private Clip otherFx;
@@ -71,6 +75,7 @@ public class AudioManager {
 			fxOrder = AudioSystem.getClip();
 			fxAttack = AudioSystem.getClip();
 			fxMinage = AudioSystem.getClip();
+			fxConstruction = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 			musique.open(inputStream);
 			musique.start();
@@ -86,7 +91,7 @@ public class AudioManager {
 			fxs.add(new File("src/sounds/minage.wav"));
 			fxs.add(new File("src/sounds/possible.wav"));
 			fxs.add(new File("src/sounds/noPossible.wav"));
-			
+			fxs.add(new File("src/sounds/construction.wav"));	
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -171,7 +176,7 @@ public class AudioManager {
 				try {
 					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
 					fxMinage.open(inputStream);
-					float volumeInFloat = 0.3f;
+					float volumeInFloat = 0.2f;
 					FloatControl gainControl = (FloatControl) fxMinage.getControl(FloatControl.Type.MASTER_GAIN);
 					gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
 				    fxMinage.start();
@@ -209,6 +214,23 @@ public class AudioManager {
 					FloatControl gainControl = (FloatControl) fxAttack.getControl(FloatControl.Type.MASTER_GAIN);        
 				    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
 				    fxAttack.start();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		else if(id == 11) {
+			if(!fxConstruction.isRunning()) {
+				if(fxConstruction != null) {
+					fxConstruction.close();
+				}
+				try {
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
+					fxConstruction.open(inputStream);
+					float volumeInFloat = (float)sliderVolume / 100;
+					FloatControl gainControl = (FloatControl) fxConstruction.getControl(FloatControl.Type.MASTER_GAIN);        
+				    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
+				    fxConstruction.start();
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
