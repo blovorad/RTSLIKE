@@ -52,6 +52,7 @@ public class Royaume extends Race
 		initBarrack();
 		initArchery();
 		initStable();
+		initHouse();
 		initHQUpgrades();
 		initForgeUpgrades();
 		
@@ -109,6 +110,10 @@ public class Royaume extends Race
 	public void initCastle()
 	{
 		this.getProductionBuildings().put(EntityConfiguration.CASTLE, new ForProductionBuilding(400, 3, null, "Chateau Royaume", 400, 250));
+	}
+	
+	public void initHouse() {
+		this.getPopulationBuildings().put(EntityConfiguration.HOUSE, new ForPopulationBuilding(125, 1, "Maison Royaume", 400, 100, 5));
 	}
 	
 	public void initTower()

@@ -3,6 +3,7 @@ package gui;
 import engine.Entity;
 import engine.Ressource;
 import engine.entity.building.AttackBuilding;
+import engine.entity.building.PopulationBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.SiteConstruction;
 import engine.entity.building.StorageBuilding;
@@ -83,6 +84,11 @@ public class StatEntityContainer {
 		entity = building;
 	}
 	
+	public void setForPopulationBuilding(PopulationBuilding building) {
+		hp = building.getHp();
+		entity = building;
+	}
+	
 	public void setForProductionBuilding(ProductionBuilding building) {
 		hp = building.getHp();
 		entity = building;
@@ -100,6 +106,14 @@ public class StatEntityContainer {
 			return true;
 		}
 		
+		return false;
+	}
+	
+	public boolean checkChangeForPopulationBuilding(PopulationBuilding building) {
+		if(hp != building.getHp()) {
+			hp = building.getHp();
+			return true;
+		}
 		return false;
 	}
 	

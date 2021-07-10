@@ -18,7 +18,7 @@ import factionConfiguration.ForUpgrade;
  * @see Entity
  *
  */
-public abstract class ProductionBuilding extends Entity{
+public abstract class ProductionBuilding extends Building{
 
 	/**
 	 * Liste d'entier qui represente la file de production.
@@ -44,6 +44,8 @@ public abstract class ProductionBuilding extends Entity{
 	 * Case ou se situe le batiment.
 	 */
 	private Tile tile;
+	
+	private Position rallyPoint;
 	
 	/**
 	 * HashMap des upgrade a produire dans un batiment.
@@ -187,6 +189,14 @@ public abstract class ProductionBuilding extends Entity{
 
 	public void setUpgrades(AbstractMap<Integer, ForUpgrade> upgrades) {
 		this.upgrades = upgrades;
+	}
+	
+	public void setRallyPoint(Position p) {
+		this.rallyPoint = p;
+	}
+	
+	public Position getRallyPoint() {
+		return this.rallyPoint;
 	}
 	
 }

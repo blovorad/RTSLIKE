@@ -41,11 +41,11 @@ public class GameBuilder {
 	 * @param idfaction2 faction player2
 	 * @param map to place all unit and building with tile position
 	 */
-	public static void buildFaction(EntitiesManager manager, int idfaction1, int idfaction2, Map map) {
+	public static void buildFaction(EntitiesManager manager, int idfaction1, int idfaction2, Map map, int population, int money) {
 		
-		Faction faction1 = new Faction(idfaction1);
-		Faction faction2 = new Faction(idfaction2);
-		Faction gaia = new Faction(4);
+		Faction faction1 = new Faction(idfaction1, population, money);
+		Faction faction2 = new Faction(idfaction2, population, money);
+		Faction gaia = new Faction(4, population, money);
 		
 		manager.getFactionManager().addFaction(EntityConfiguration.PLAYER_FACTION, faction1);
 		manager.getFactionManager().addFaction(EntityConfiguration.BOT_FACTION, faction2);
@@ -64,8 +64,8 @@ public class GameBuilder {
 		Position p4 = new Position(PositionConfiguration.UNIT_4_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_4_Y * GameConfiguration.TILE_SIZE);
 		Position p5 = new Position(PositionConfiguration.UNIT_5_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_5_Y * GameConfiguration.TILE_SIZE);
 		
-		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.PLAYER_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile);
-		manager.createBuilding(EntityConfiguration.STORAGE, EntityConfiguration.PLAYER_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2);
+		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.PLAYER_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile, null);
+		manager.createBuilding(EntityConfiguration.STORAGE, EntityConfiguration.PLAYER_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p1, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p2, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.PLAYER_FACTION, patron, p3, null);
@@ -84,8 +84,8 @@ public class GameBuilder {
 		p4 = new Position(PositionConfiguration.UNIT_9_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_9_Y * GameConfiguration.TILE_SIZE);
 		p5 = new Position(PositionConfiguration.UNIT_10_X * GameConfiguration.TILE_SIZE, PositionConfiguration.UNIT_10_Y * GameConfiguration.TILE_SIZE);
 
-		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile);
-		manager.createBuilding(EntityConfiguration.STORAGE, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2);
+		manager.createBuilding(EntityConfiguration.HQ, EntityConfiguration.BOT_FACTION, new Position(tile.getColumn() * GameConfiguration.TILE_SIZE, tile.getLine() * GameConfiguration.TILE_SIZE), tile, null);
+		manager.createBuilding(EntityConfiguration.STORAGE, EntityConfiguration.BOT_FACTION, new Position(tile2.getColumn() * GameConfiguration.TILE_SIZE, tile2.getLine() * GameConfiguration.TILE_SIZE), tile2, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p1, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p2, null);
 		manager.createWorker(EntityConfiguration.WORKER, EntityConfiguration.BOT_FACTION, patron, p3, null);

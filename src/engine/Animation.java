@@ -176,6 +176,9 @@ public class Animation {
 		else if(id == EntityConfiguration.SITE_CONSTRUCTION) {
 			leftImages = graphicsManager.getSiteConstruction();
 		}
+		else if(id == EntityConfiguration.HOUSE) {
+			leftImages = graphicsManager.getHouse(faction);
+		}
 	}
 	
 	/**

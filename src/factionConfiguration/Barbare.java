@@ -54,6 +54,7 @@ public class Barbare extends Race
 		initBarrack();
 		initArchery();
 		initStable();
+		initHouse();
 		initForgeUpgrades();
 		initHQUpgrades();
 		
@@ -157,6 +158,10 @@ public class Barbare extends Race
 	public void initStable()
 	{
 		this.getProductionBuildings().put(EntityConfiguration.STABLE, new ForProductionBuilding(140, 2, null, "Ecurie Barbare", 400, 125));
+	}
+	
+	public void initHouse() {
+		this.getPopulationBuildings().put(EntityConfiguration.HOUSE, new ForPopulationBuilding(125, 1, "Maison Barbare", 400, 100, 5));
 	}
 	
 	public void initForgeUpgrades()

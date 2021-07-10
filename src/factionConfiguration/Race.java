@@ -35,6 +35,8 @@ public abstract class Race
 	 * all patron of storage building, hashMap require because it will be more easier to get what we need
 	 */
 	private AbstractMap<Integer, ForStorageBuilding>storageBuildings;
+	
+	private AbstractMap<Integer, ForPopulationBuilding>populationBuildings;
 	/**
 	 * all patron of Hq upgrade, hashMap require because it will be more easier to get what we need
 	 */
@@ -51,6 +53,7 @@ public abstract class Race
 		this.storageBuildings = new HashMap<Integer, ForStorageBuilding>();
 		this.attackBuildings = new HashMap<Integer, ForAttackBuilding>();
 		this.productionBuildings = new HashMap<Integer, ForProductionBuilding>();
+		this.populationBuildings = new HashMap<Integer, ForPopulationBuilding>();
 		this.HQUpgrades = new HashMap<Integer, ForUpgrade>();
 		this.ForgeUpgrades = new HashMap<Integer, ForUpgrade>();
 		
@@ -99,5 +102,9 @@ public abstract class Race
 
 	public AbstractMap<Integer, ForUpgrade> getForgeUpgrades() {
 		return ForgeUpgrades;
+	}
+
+	public AbstractMap<Integer, ForPopulationBuilding> getPopulationBuildings() {
+		return populationBuildings;
 	}
 }

@@ -83,62 +83,66 @@ public class EntityConfiguration {
 	 */
 	public final static int ARCHERY = 12;
 	
+	/**
+	 * id of house
+	 */
+	public final static int HOUSE = 13;
 
 	/**
 	 * id of ressource
 	 */
-	public final static int RESSOURCE = 13;
+	public final static int RESSOURCE = 14;
 	
 
 	/**
 	 * id of player faction
 	 */
-	public final static int PLAYER_FACTION = 14;
+	public final static int PLAYER_FACTION = 15;
 	/**
 	 * id of bot faction
 	 */
-	public final static int BOT_FACTION = 15;
+	public final static int BOT_FACTION = 16;
 
 	/**
 	 * id of gaia faction
 	 */
-	public final static int GAIA_FACTION = 16;
+	public final static int GAIA_FACTION = 17;
 	
 
 	/**
 	 * id of armor upgrade
 	 */
-	public final static int ARMOR_UPGRADE = 17;
+	public final static int ARMOR_UPGRADE = 18;
 
 	/**
 	 * id of damage upgrade
 	 */
-	public final static int DAMAGE_UPGRADE = 18;
+	public final static int DAMAGE_UPGRADE = 19;
 
 	/**
 	 * id of attack speed upgrade
 	 */
-	public final static int ATTACK_SPEED_UPGRADE = 19;
+	public final static int ATTACK_SPEED_UPGRADE = 20;
 
 	/**
 	 * id of attack range upgrade
 	 */
-	public final static int ATTACK_RANGE_UPGRADE = 20;
+	public final static int ATTACK_RANGE_UPGRADE = 21;
 
 	/**
 	 * id of sightRange upgrade
 	 */
-	public final static int SIGHT_RANGE_UPGRADE = 21;
+	public final static int SIGHT_RANGE_UPGRADE = 22;
 
 	/**
 	 * id of age upgrade tier 1
 	 */
-	public final static int AGE_UPGRADE = 22;
+	public final static int AGE_UPGRADE = 23;
 
 	/**
 	 * id of age upgrade tier 2
 	 */
-	public final static int AGE_UPGRADE_2 = 23;
+	public final static int AGE_UPGRADE_2 = 24;
 	
 
 	/**
@@ -192,11 +196,15 @@ public class EntityConfiguration {
 	 */
 	public final static int REPAIR = 5;
 	
+	/**
+	 * id of state construct
+	 */
+	public final static int CONSTRUCT = 6;
 
 	/**
 	 * ressource hp when starting a game
 	 */
-	public final static int RESSOURCE_HP = 100;
+	public final static int RESSOURCE_HP = 9;
 	
 
 	/**

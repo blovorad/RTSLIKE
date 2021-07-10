@@ -227,7 +227,7 @@ public class AudioManager {
 				try {
 					AudioInputStream inputStream = AudioSystem.getAudioInputStream(fxs.get(id));
 					fxConstruction.open(inputStream);
-					float volumeInFloat = (float)sliderVolume / 100;
+					float volumeInFloat = 0.2f;
 					FloatControl gainControl = (FloatControl) fxConstruction.getControl(FloatControl.Type.MASTER_GAIN);        
 				    gainControl.setValue(20f * (float) Math.log10(volumeInFloat));
 				    fxConstruction.start();

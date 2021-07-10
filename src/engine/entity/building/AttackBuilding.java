@@ -14,7 +14,7 @@ import engine.map.Tile;
  * @author Maxime Grodet
  * @see Entity
  */
-public abstract class AttackBuilding extends Entity{
+public abstract class AttackBuilding extends Building{
 
 	/**
 	 * Entier definissant la taille du champ de vision du batiment.
@@ -45,6 +45,8 @@ public abstract class AttackBuilding extends Entity{
 	 * Case ou se situe le batiment.
 	 */
 	private Tile tile;
+	
+	private Entity target;
 	
 	/**
 	 * Constructeur de l'archery ou tous ses parametres y sont definis.
@@ -207,6 +209,14 @@ public abstract class AttackBuilding extends Entity{
 
 	public void setTile(Tile tile) {
 		this.tile = tile;
+	}
+	
+	public void setTarget(Entity target) {
+		this.target = target;
+	}
+	
+	public Entity getTarget() {
+		return this.target;
 	}
 	
 }

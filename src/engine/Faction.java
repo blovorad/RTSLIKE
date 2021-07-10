@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import configuration.EntityConfiguration;
-import configuration.GameConfiguration;
 import factionConfiguration.Barbare;
 import factionConfiguration.Empire;
 import factionConfiguration.ForUpgrade;
@@ -39,6 +38,8 @@ public class Faction {
 	 * max of unit can be alive
 	 */
 	private int maxPopulation;
+	
+	private int realMaxPopulation;
 	/**
 	 * how many money faction has
 	 */
@@ -64,11 +65,12 @@ public class Faction {
 	 * constructor of faction
 	 * @param id to know which race you are
 	 */
-	public Faction(int id) {
+	public Faction(int id, int population, int money) {
 		age = 1;
 		buildingCount = 0;
-		maxPopulation = GameConfiguration.MAX_POPULATION;
-		moneyCount = GameConfiguration.STARTING_MONEY;
+		maxPopulation = 10;
+		realMaxPopulation = population;
+		moneyCount = 100000;
 		populationCount = 0;
 		upgradesDone = new HashMap<Integer, ForUpgrade>();
 		searchingUpgrades = new ArrayList<Integer>();
@@ -101,6 +103,20 @@ public class Faction {
 		}
 	}
 	
+	public void reduceMaxPopulation(int reduce) {
+		maxPopulation -= reduce;
+		if(maxPopulation < 10) {
+			maxPopulation = 10;
+		}
+	}
+	
+	public void addMaxPopulation(int adding) {
+		maxPopulation += adding; 
+		if(adding > realMaxPopulation) {
+			maxPopulation = realMaxPopulation;
+		}
+	}
+	
 	public int getAge() {
 		return age;
 	}
@@ -128,6 +144,10 @@ public class Faction {
 
 	public int getMaxPopulation() {
 		return maxPopulation;
+	}
+	
+	public int getRealMaxPop() {
+		return this.realMaxPopulation;
 	}
 
 	public void setMaxPopulation(int maxPopulation) {

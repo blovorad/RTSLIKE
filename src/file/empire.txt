@@ -7,4 +7,4 @@ attackRange : 10;attackSpeed : 10;sightRange : 512;damage : 5; armor : 1;maxSpee
 special
 attackRange : 10;attackSpeed : 10;sightRange : 512;damage : 5; armor : 1;maxSpeed : 7;hp : 80;age : 1;timeToBuild : 10;description : special empire;hpMax : 80;cost : 60;
 worker
-attackRange : 10;attackSpeed : 10;sightRange : 512;damage : 3;armor : 0;maxSpeed : 5;hp : 30;age : 1;timeToBuild : 12;description : travailleur empire;hpMax : 30;ressourceMax : 10;harvest : 1;repair : 10;harvestSpeed : 20;repairSpeed : 15;cost : 25;
+attackRange : 10;attackSpeed : 10;sightRange : 512;damage : 3;armor : 0;maxSpeed : 5;hp : 30;age : 1;timeToBuild : 12;description : travailleur empire;hpMax : 30;ressourceMax : 10;harvest : 1;repair : 1;harvestSpeed : 20;repairSpeed : 15;cost : 25;

@@ -86,6 +86,9 @@ public class Mouse {
 		else if(id == EntityConfiguration.STORAGE) {
 			leftImages = graphicsManager.getStorage(faction);
 		}
+		else if(id == EntityConfiguration.HOUSE) {
+			leftImages = graphicsManager.getHouse(faction);
+		}
 	}
 	
 	public BufferedImage getFrame() {

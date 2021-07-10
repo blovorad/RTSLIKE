@@ -16,20 +16,20 @@ public class GameConfiguration
 	/**
 	 * screen width
 	 */
-	public final static int WINDOW_WIDTH = 800;//Toolkit.getDefaultToolkit().getScreenSize().width;
+	public final static int WINDOW_WIDTH = 1366;//Toolkit.getDefaultToolkit().getScreenSize().width;
 	/**
 	 * screen height
 	 */
-	public final static int WINDOW_HEIGHT = 600;//Toolkit.getDefaultToolkit().getScreenSize().height;
+	public final static int WINDOW_HEIGHT = 768;//Toolkit.getDefaultToolkit().getScreenSize().height;
 	
 	/**
 	 * if true then window width and window height is useless
 	 */
-	public final static boolean launchInFullScreen = true;
+	public final static boolean launchInFullScreen = false;
 	/**
 	 * if you want debug, if true you can see the IA and no dynamic fog
 	 */
-	public final static boolean debug_mod = false;
+	public final static boolean debug_mod = true;
 	
 	/**
 	 * to desactivate IA
@@ -85,13 +85,15 @@ public class GameConfiguration
 	 */
 	public final static int RIGHT = 1;
 	
-	/**
-	 * starting money
-	 */
-	public final static int STARTING_MONEY = 250;
+	public final static int LOW_MONEY = 250;
 	
-	/**
-	 * Max population
-	 */
-	public final static int MAX_POPULATION = 50;
+	public final static int MEDIUM_MONEY = 500;
+	
+	public final static int HIGH_MONEY = 1000;
+	
+	public final static int LOW_POP = 50;
+	
+	public final static int MEDIUM_POP = 75;
+	
+	public final static int HIGH_POP = 100;
 }

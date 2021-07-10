@@ -7,6 +7,8 @@ import configuration.EntityConfiguration;
 
 import engine.Position;
 import engine.Ressource;
+import engine.entity.building.Building;
+import engine.entity.building.SiteConstruction;
 import engine.entity.building.StorageBuilding;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
@@ -33,25 +35,34 @@ public class Worker extends Unit
 	 * repairSpeed, la vitesse de réparation
 	 */
 	private StorageBuilding storageBuilding;
+	private SiteConstruction siteConstruction;
 	
 	private Ressource ressource;
 	
+	private Building building;
 	private int quantityRessource;
 	private int ressourcesMax;
 	private int harvestSpeed;
 	private int repairSpeed;
+	private int harvestDamage;
+	private int repairDamage;
 	
 	
-	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange, int maxFrame, GraphicsManager graphicsManager)
+	public Worker (int hp, int currentAction, int attackRange, int attackSpeed, int maxSpeed, int damage, int harvestDamage, int repairDamage, int armor, int repairSpeed, Position position, int id, String description, int hpMax, int faction, Position destination, int harvestSpeed, int ressourceMax, int sightRange, int maxFrame, GraphicsManager graphicsManager)
 	{	
-		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, armor, position, id, description, destination, hpMax, faction, sightRange, maxFrame, graphicsManager, EntityConfiguration.PASSIF_STATE);
+		super( hp, currentAction, attackRange, attackSpeed, maxSpeed, damage, armor, position, id, description, destination, hpMax, faction, sightRange, maxFrame, graphicsManager);
 		this.repairSpeed = repairSpeed;
 		this.harvestSpeed = harvestSpeed;
+		this.harvestDamage = harvestDamage;
+		this.repairDamage = repairDamage;
 		
 		this.ressourcesMax = ressourceMax;
 		this.quantityRessource = 0;
 		
 		this.storageBuilding = null;
+		this.siteConstruction = null;
+		this.building = null;
+		this.ressource = null;
 	}
 	
 	/**
@@ -59,50 +70,52 @@ public class Worker extends Unit
 	 * et donne des ressources aux workers.
 	 */
 	
-	public void toHarvest()
+	public void harvest()
 	{
-		if(this.ressource != null)
-		{
-			if( this.getTimer() <= 0)
-			{
-				this.setTimer(harvestSpeed);
-				if(this.ressource.getHp() > 0)
-				{
-					this.ressource.setHp(this.ressource.getHp() -1);
-					this.quantityRessource ++;
-				}	
-
-				if(this.ressource.getHp() <= 0)
-				{
-					this.ressource = null;
-				}
+		if(this.getTimer() <= 0){
+			this.setTimer(harvestSpeed);
+			if(this.ressource.getHp() >= this.harvestDamage){
+				this.quantityRessource += this.harvestDamage;
+				this.ressource.setHp(this.ressource.getHp() - this.harvestDamage);
 			}
-			this.setTimer(this.getTimer() - 1);
+			else {
+				this.quantityRessource += this.ressource.getHp();
+				this.ressource.setHp(0);
+			}
 		}
+		this.setTimer(this.getTimer() - 1);
 	}
 	/**
 	 *Fonction qui permet d'exécuter la réparation des bâtiments, 
 	 *redonne hp aux bâtiments.
 	 */
-	public void toRepair()
+	public void repair()
 	{
-		if(this.getTarget() != null)
+		if(this.getTimer() <= 0)
 		{
-			if(this.getTimer() <= 0)
-			{
-				if(this.getTarget().getHp() < this.getTarget().getHpMax()) {
-					this.getTarget().setHp(((this.getTarget().getHp()) + 1));
-				}
-				
-				if(this.getTarget().getHp() >= this.getTarget().getHpMax() || this.getTarget().getHp() <= 0)
-				{
-					this.setTarget(null);
-					this.setCurrentAction(EntityConfiguration.IDDLE);
-				}
-				this.setTimer(this.repairSpeed);
+			if(this.building.getHpMax() - this.building.getHp() >= this.repairDamage) {
+				this.building.setHp(this.building.getHp() + this.repairDamage);
 			}
-			this.setTimer(this.getTimer() - 1);
+			else {
+				this.building.setHp(this.building.getHpMax());
+			}
+			this.setTimer(this.repairSpeed);
 		}
+		this.setTimer(this.getTimer() - 1);
+	}
+	
+	public void construct() {
+		if(this.getTimer() <= 0)
+		{
+			if(this.siteConstruction.getHpMax() - this.siteConstruction.getHp() >= this.repairDamage) {
+				this.siteConstruction.setHp(this.siteConstruction.getHp() + this.repairDamage);
+			}
+			else {
+				this.siteConstruction.setHp(this.siteConstruction.getHpMax());
+			}
+			this.setTimer(this.repairSpeed);
+		}
+		this.setTimer(this.getTimer() - 1);
 	}
 	
 	/**
@@ -117,146 +130,164 @@ public class Worker extends Unit
 	{
 		super.update(units, playerFog, map);
 		
-		if(this.getCurrentAction() == EntityConfiguration.HARVEST && this.getTarget() != null) {
-			if(this.getTarget().getId() == EntityConfiguration.SITE_CONSTRUCTION) {
-				this.setCurrentAction(EntityConfiguration.WALK);
-			}
-		}
-		
-		if(this.getCurrentAction() == EntityConfiguration.HARVEST)
-		{
-			if(this.getTarget() == ressource && this.getFoundPath() == false) {
-				nearbyResource(ressources, map);
-			}
-			// Va au batiments quand il a les ressources max
-			if(this.quantityRessource == this.ressourcesMax)	
-			{
-				if(this.storageBuilding == null)
-				{
+		if(this.getCurrentAction() == EntityConfiguration.HARVEST){
+			if(this.quantityRessource >= this.ressourcesMax || this.storageBuilding != null)	{
+				if(this.storageBuilding == null){
 					this.nearbyStorage(storageBuildings);
 					this.setTarget(storageBuilding);
 					this.setFinalDestination(storageBuilding.getPosition());
-
 				}
 				
-				if(this.storageBuilding != null && Collision.collideUnit(this.getTarget().getPosition(), this))
-				{
+				if(this.storageBuilding != null && Collision.collideUnit(this.storageBuilding.getPosition(), this)){
 					this.storageBuilding.addRessource(this.quantityRessource);
 					this.storageBuilding = null;
 					this.quantityRessource = 0;
+					if(ressource != null) {
+						this.setTarget(ressource);
+						this.setFinalDestination(ressource.getPosition());
+					}
 				}
 			}
-			
-			// met la ressource a null quand fini
-			else if(this.getRessource() != null && this.getRessource().getHp() <= 0)
-			{
-				this.ressource = null;
-			}
-			
-			
-			//cherche une nouvelle ressources si il a finis la sienne 
-			else if(this.ressource == null && !ressources.isEmpty())
-			{
-				this.ressource = null;
-				nearbyResource(ressources, map);
-				if(this.ressource == null) {
-					if(this.quantityRessource > 0) {
-						nearbyStorage(storageBuildings);
-						this.setTarget(this.storageBuilding);
-						this.setFinalDestination(this.storageBuilding.getPosition());
+			else {
+				if(ressource == null) {
+					boolean foundRessource = nearbyRessource(ressources, map);
+					if(foundRessource == false) {
+						this.ressource = null;
+						setCurrentAction(EntityConfiguration.IDDLE);
 					}
-					this.setCurrentAction(EntityConfiguration.IDDLE);
+					else {
+						this.setTarget(ressource);
+						this.setFinalDestination(ressource.getPosition());
+					}
 				}
 				else {
-					this.setTarget(this.ressource);
-					this.setFinalDestination(ressource.getPosition());
+					if(ressource.getHp() <= 0) {
+						ressource = null;
+					}
+					else if(Collision.collideUnit(ressource.getPosition(), this)) {
+						if(getSpeed().hasSpeed()) {
+							getSpeed().reset();
+						}
+						harvest();
+					}
 				}
 			}
-			// récupère ressources
-			 else if(this.ressource != null && Collision.collideUnit(this.ressource.getPosition(), this) && this.ressource.getHp() > 0)
-			{
-				this.getSpeed().reset();
-				this.toHarvest();
-			} 
-			
-			
-			// revien a la ressource quand posse ces ressources
-			else if(this.ressource != null && this.quantityRessource != this.ressourcesMax && this.getTarget() != this.ressource){
-				this.setTarget(ressource);
-				this.setFinalDestination(ressource.getPosition());
-			}		
 		}
-		
-		// Pose ces ressources si il en a et si on click sur un batiment de stockage
-		else if(this.getTarget() != null && this.getTarget().getId() == EntityConfiguration.STORAGE && this.quantityRessource != 0 && Collision.collideUnit(this.getTarget().getPosition(), this))
-		{
-			nearbyStorage(storageBuildings);
-			this.storageBuilding.addRessource(this.quantityRessource);
-			storageBuildings = null;
-			this.quantityRessource = 0;
-			this.storageBuilding = null;
-			this.setTarget(null);
-			this.setCurrentAction(EntityConfiguration.IDDLE);
-		}	
-		
-		//réparee les batiments
-		else if(this.getTarget() != null && this.getTarget().getFaction() == this.getFaction())
-		{
-			if(Collision.collideUnit(this.getTarget().getPosition(), this))
-			{
-				this.setCurrentAction(EntityConfiguration.REPAIR);
-				this.toRepair();
-				this.getSpeed().reset();
+		else if(this.getCurrentAction() == EntityConfiguration.REPAIR) {
+			if(Collision.collideUnit(this.building.getPosition(), this)) {
+				if(getSpeed().hasSpeed()) {
+					getSpeed().reset();
+				}
+				repair();
+				if(building.getHp() >= building.getHpMax()) {
+					this.setTarget(null);
+					this.building = null;
+					this.setCurrentAction(EntityConfiguration.IDDLE);
+				}
+				else if(building.getHp() <= 0) {
+					this.setFinalDestination(null);
+					this.setTarget(null);
+					this.building = null;
+					this.setCurrentAction(EntityConfiguration.IDDLE);
+				}
 			}
-			
-			this.checkTarget();
-			
-			if(this.getTarget() == null)
-			{
-				this.setCurrentAction(EntityConfiguration.IDDLE);
+			else {
+				if(building.getHp() <= 0) {
+					this.setFinalDestination(null);
+					this.setTarget(null);
+					this.building = null;
+					this.setCurrentAction(EntityConfiguration.WALK);
+				}
+				else if(building.getHp() >= building.getHpMax()) {
+					this.building = null;
+					this.setTarget(null);
+					this.setCurrentAction(EntityConfiguration.WALK);
+				}
 			}
 		}
-		
-		
+		else if(this.getCurrentAction() == EntityConfiguration.CONSTRUCT) {
+			if(Collision.collideUnit(this.siteConstruction.getPosition(), this)) {
+				if(getSpeed().hasSpeed()) {
+					getSpeed().reset();
+				}
+				construct();
+				if(siteConstruction.getHp() >= siteConstruction.getHpMax()) {
+					if(siteConstruction.getBuildingId() == EntityConfiguration.STORAGE) {
+						this.setCurrentAction(EntityConfiguration.HARVEST);
+						boolean foundRessource = nearbyRessource(ressources, map);
+						if(foundRessource == false) {
+							this.ressource = null;
+							setCurrentAction(EntityConfiguration.IDDLE);
+						}
+						else {
+							this.setTarget(ressource);
+							this.setFinalDestination(ressource.getPosition());
+						}
+					}
+					else {
+						this.setCurrentAction(EntityConfiguration.IDDLE);
+					}
+					this.setTarget(null);
+					this.siteConstruction = null;
+				}
+				else if(siteConstruction.getHp() <= 0) {
+					this.setTarget(null);
+					this.siteConstruction = null;
+					this.setCurrentAction(EntityConfiguration.IDDLE);
+				}
+			}
+			else {
+				if(siteConstruction.getHp() <= 0) {
+					this.setTarget(null);
+					this.siteConstruction = null;
+					this.setCurrentAction(EntityConfiguration.WALK);
+				}
+				else if(siteConstruction.getHp() >= siteConstruction.getHpMax()) {
+					this.setTarget(null);
+					this.siteConstruction = null;
+					this.setCurrentAction(EntityConfiguration.WALK);
+				}
+			}
+		}
 	}
 	
 	/**
 	 * Fonction qui permet de trouver la ressource la plus proche du worker sur la map 
 	 * @param ressources, tableau de toutes les ressources se trouvant sur la map
 	 */
-	public void nearbyResource(List<Ressource> ressources, Map map)
-	{
-		if(!ressources.isEmpty())
-		{
+	public boolean nearbyRessource(List<Ressource> ressources, Map map){
+		if(ressources.isEmpty() == false){
 			List<Ressource> accessible = new ArrayList<Ressource>();
 			for(Ressource ressource : ressources) {
 				accessible.add(ressource);
 			}
-			
-			this.ressource = accessible.get(0);
+
 			int distanceRessource;
 			boolean notFound = false;
-			
 			while(notFound == false && accessible.isEmpty() == false) {
-				for(Ressource value: accessible)
-				{
+				this.ressource = accessible.get(0);
+				for(Ressource value: accessible){
 					distanceRessource = calculate(this.ressource.getPosition());
-					if(distanceRessource > calculate(value.getPosition()) && value.getHp() > 0 )
-					{
+					if(distanceRessource > calculate(value.getPosition()) && value.getHp() > 0 ){
 						this.ressource = value;
 					}
 				}
 				this.setFinalDestination(ressource.getPosition());
-				notFound = this.generatePath(map);
+				if(this.getFinalNode() == null) {
+					notFound = true;
+				}
+				else {
+					notFound = this.generatePath(map);
+				}
+				this.setFinalDestination(null);
 				accessible.remove(this.ressource);
 			}
-			
-			if(ressource != null && !Collision.collideRessource(this, this.ressource))
-			{
-				this.setFinalDestination(null);
-				this.ressource = null;
+			if(ressource != null && Collision.collideRessource(this, this.ressource) == false){
+				return false;
 			}
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -349,4 +380,21 @@ public class Worker extends Unit
 	public int getQuantityRessource() {
 		return this.quantityRessource;
 	}
+	
+	public void setSiteConstruction(SiteConstruction siteConstruction) {
+		this.siteConstruction = siteConstruction;
+	}
+	
+	public SiteConstruction getSiteConstruction() {
+		return this.siteConstruction;
+	}
+	
+	public void setBuilding(Building building) {
+		this.building = building;
+	}
+	
+	public Building getBuilding() {
+		return this.building;
+	}
+
 }

@@ -10,7 +10,7 @@ import engine.map.Tile;
  * @author gautier
  * @see Entity
  */
-public class SiteConstruction extends Entity{
+public class SiteConstruction extends Building{
 	
 	/**
 	 * Case ou se situe le site de construction.

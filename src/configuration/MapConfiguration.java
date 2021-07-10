@@ -99,24 +99,19 @@ public class MapConfiguration {
 	 */
 	public static final Color getTileColor(int id)
 	{
-		if(id == WATER)
-		{
+		if(id == WATER){
 			return Color.blue;
 		}
-		if(id == ROCK)
-		{
+		if(id == ROCK){
 			return Color.gray;
 		}
-		if(id == GRASS)
-		{
+		if(id == GRASS){
 			return new Color(0, 100, 0);
 		}
-		if(id == GOLD)
-		{
-			return new Color(0, 100, 0);
+		if(id == GOLD){
+			return Color.yellow;
 		}
-		if(id == WOOD)
-		{
+		if(id == WOOD){
 			return new Color(88, 41, 0);
 		}
 		

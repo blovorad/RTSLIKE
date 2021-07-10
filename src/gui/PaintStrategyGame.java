@@ -14,6 +14,7 @@ import engine.Camera;
 import engine.Entity;
 import engine.Mouse;
 import engine.Position;
+import engine.entity.building.ProductionBuilding;
 import engine.entity.unit.Unit;
 import engine.manager.GraphicsManager;
 import engine.map.Fog;
@@ -130,8 +131,11 @@ public class PaintStrategyGame
 		
 		graphics.setColor(Color.white);
 		graphics.drawRect(building.getPosition().getX() - camera.getX(), building.getPosition().getY() - camera.getY(), tileSize, tileSize);
-		if(building.getDestination() != null) {
-			Position p = building.getDestination();
+	}
+	
+	public void paintRallyPoint(ProductionBuilding building, Graphics graphics, Camera camera) {
+		if(building.getRallyPoint() != null) {
+			Position p = building.getRallyPoint();
 			flagDestinationRect.updateAlpha();
 			graphics.setColor(new Color(255, 255, 255, flagDestinationRect.getAlpha()));
 			graphics.fillRect(p.getX() - camera.getX() - flagDestinationRect.getW() / 2, p.getY() - camera.getY() - flagDestinationRect.getH() / 2, flagDestinationRect.getW(), flagDestinationRect.getH());
@@ -380,7 +384,7 @@ public class PaintStrategyGame
 		{
 			graphics.setColor(Color.red);
 		}
-		else if(entity.getId() == 13)
+		else if(entity.getId() == EntityConfiguration.RESSOURCE)
 		{
 			graphics.setColor(Color.yellow);
 		}

@@ -10,7 +10,7 @@ import engine.map.Tile;
  * @author maxime
  * @see Entity
  */
-public class StorageBuilding extends Entity{
+public class StorageBuilding extends Building{
 	
 	/**
 	 * Case ou se situe le batiment.

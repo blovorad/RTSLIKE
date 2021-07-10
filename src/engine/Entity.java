@@ -33,15 +33,6 @@ public class Entity
 	 */
 	private Position position;
 	/**
-	 * if have a target
-	 */
-	private Entity target;
-	/**
-	 * destination use to move
-	 */
-	private Position destination;
-	
-	/**
 	 * faction of the entity
 	 */
 	private int faction;
@@ -92,8 +83,6 @@ public class Entity
 		this.description = description;
 		this.position = position;
 		this.id = id;
-		this.target = null;
-		this.destination = null;
 		this.setFaction(faction);
 		this.setSightRange(sightRange);
 		this.setSelected(false);
@@ -173,22 +162,6 @@ public class Entity
 
 	public void setPosition(Position position) {
 		this.position = position;
-	}
-
-	public Entity getTarget() {
-		return target;
-	}
-
-	public void setTarget(Entity target) {
-		this.target = target;
-	}
-
-	public Position getDestination() {
-		return destination;
-	}
-
-	public void setDestination(Position destination) {
-		this.destination = destination;
 	}
 
 	public int getId() {

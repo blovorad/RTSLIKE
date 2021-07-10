@@ -106,7 +106,9 @@ public class Path {
 		Node tmp = node;
 		
 		while(tmp.getParent() != null) {
-			Position p = new Position(tmp.getPosition().getX() * GameConfiguration.TILE_SIZE, tmp.getPosition().getY() * GameConfiguration.TILE_SIZE);
+			Position p = new Position(tmp.getPosition().getX() * GameConfiguration.TILE_SIZE + GameConfiguration.TILE_SIZE / 2, tmp.getPosition().getY() * GameConfiguration.TILE_SIZE + GameConfiguration.TILE_SIZE / 2);
+			Position p2 = new Position(tmp.getParent().getPosition().getX() * GameConfiguration.TILE_SIZE, tmp.getParent().getPosition().getY() * GameConfiguration.TILE_SIZE);
+			
 			posBis.add(p);
 			tmp = tmp.getParent();
 		}

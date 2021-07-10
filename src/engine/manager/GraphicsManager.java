@@ -55,6 +55,7 @@ public class GraphicsManager {
 	private BufferedImage[][] storage;
 	private BufferedImage[][] tower;
 	private BufferedImage[][] hq;
+	private BufferedImage[][] house;
 	
 	private BufferedImage[][] grass;
 
@@ -103,6 +104,10 @@ public class GraphicsManager {
 			storage = new BufferedImage[1][2];
 			storage[0][0] = ImageIO.read(new File("src/graphics/storagePlayer.png"));
 			storage[0][1] = ImageIO.read(new File("src/graphics/storageBot.png"));
+			
+			house = new BufferedImage[1][2];
+			house[0][0] = ImageIO.read(new File("src/graphics/house.png"));
+			house[0][1] = ImageIO.read(new File("src/graphics/house.png"));
 			
 			tower = new BufferedImage[1][2];
 			tower[0][0] = ImageIO.read(new File("src/graphics/towerPlayer.png"));
@@ -803,6 +808,18 @@ public class GraphicsManager {
 		else {
 			tmp[0][0] = storage[0][1];
 		}
+		return tmp;
+	}
+	
+	public BufferedImage[][] getHouse(int faction){
+		BufferedImage[][] tmp = new BufferedImage[1][1];
+		if(faction == EntityConfiguration.PLAYER_FACTION) {
+			tmp[0][0] = house[0][0];
+		}
+		else {
+			tmp[0][0] = house[0][1];
+		}
+		
 		return tmp;
 	}
 

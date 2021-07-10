@@ -74,7 +74,7 @@ public class Node {
 		
 		calculateCost(parent, p2);
 		//System.out.println("ANCIEN G : " + gBis + " et nouveau g : " + g);
-		if(gBis < this.g) {
+		if(fBis < this.f) {
 			this.g = gBis;
 			this.h = hBis;
 			this.f = fBis;
@@ -108,5 +108,9 @@ public class Node {
 	
 	public Position getPosition() {
 		return this.p;
+	}
+
+	public void setPosition(Position p){
+		this.p = p;
 	}
 }

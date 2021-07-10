@@ -15,6 +15,7 @@ import engine.Ressource;
 import engine.entity.building.AttackBuilding;
 import engine.entity.building.Forge;
 import engine.entity.building.Hq;
+import engine.entity.building.PopulationBuilding;
 import engine.entity.building.ProductionBuilding;
 import engine.entity.building.SiteConstruction;
 import engine.entity.building.StorageBuilding;
@@ -52,6 +53,7 @@ public class BotManager {
 	private List<StorageBuilding>botStorageBuildings;
 	private List<AttackBuilding> botAttackBuildings;
 	private List<ProductionBuilding> botProdBuildings;
+	private List<PopulationBuilding> botPopBuildings;
 	private List<Worker> botWorkers;
 	private List<Fighter> botFighters;
 	private List<Ressource> ressources;
@@ -72,6 +74,10 @@ public class BotManager {
 	private Fighter explorerRandom;
 	private ProductionBuilding hq;
 	
+	private int currentMaxPop;
+	private int currentPop;
+	private int maxPop;
+	
 	private boolean buildingInAttempt;
 	private Tile tileToBuild;
 	private int idToBuild;
@@ -85,7 +91,7 @@ public class BotManager {
 	 * @param factionManager lien vers le FactionManager pour gerer l'argent de la faction
 	 * @param map lien vers la carte pour acceder au case
 	 */
-	public BotManager(FactionManager factionManager, Map map) {
+	public BotManager(FactionManager factionManager, Map map, int maxPop) {
 		setBarrackBuilt(false);
 		setArcheryBuilt(false);
 		setStableBuilt(false);
@@ -98,11 +104,12 @@ public class BotManager {
 		fog = new Fog(GameConfiguration.LINE_COUNT, GameConfiguration.COLUMN_COUNT);
 		Race race = factionManager.getFactions().get(EntityConfiguration.BOT_FACTION).getRace();
 		
+		this.maxPop = maxPop;
 		priceOfEntity = new HashMap<Integer, Integer>();
 		setMap(map);
 		setMax(1);
 		
-		for(int i = EntityConfiguration.INFANTRY; i < EntityConfiguration.ARCHERY + 1; i++) {
+		for(int i = EntityConfiguration.INFANTRY; i < EntityConfiguration.HOUSE + 1; i++) {
 			if(i >= EntityConfiguration.INFANTRY && i <= EntityConfiguration.SPECIAL_UNIT) {
 				priceOfEntity.put(i, race.getPatronFighters().get(i).getCost());
 			}
@@ -114,6 +121,9 @@ public class BotManager {
 			}
 			else if(i == EntityConfiguration.TOWER) {
 				priceOfEntity.put(i, race.getAttackBuildings().get(i).getCost());
+			}
+			else if(i == EntityConfiguration.HOUSE) {
+				priceOfEntity.put(i, race.getPopulationBuildings().get(i).getCost());
 			}
 			else {
 				priceOfEntity.put(i, race.getProductionBuildings().get(i).getCost());
@@ -158,8 +168,8 @@ public class BotManager {
 	 * @param playerUnits Liste des Unites du joueur.
 	 * @see EntitiesManager
 	 */
-	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions, List<Entity> playerBuildings, List<Unit> playerUnits) {
-		updateList(botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions);
+	public void update(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions, List<Entity> playerBuildings, List<Unit> playerUnits, List<PopulationBuilding> botPopBuildings, int currentPop, int currentMaxPop) {
+		updateList(currentPop, currentMaxPop, botEntities, botStorageBuildings, botAttackBuildings, botProdBuildings, botWorkers, botFighters, ressources, siteConstructions, botPopBuildings);
 		updateMoney();
 		updateFog(playerBuildings, playerUnits);
 		explore(); 
@@ -168,6 +178,7 @@ public class BotManager {
 		//System.out.println("nb ressource : " + visibleRessources.size());
 		recolte();
 		prodWorker();
+		placeHouse();
 		placeBuildings();
 		constructBuilding();
 		prodArmy();
@@ -273,7 +284,7 @@ public class BotManager {
 	 * @param ressources Liste des Ressources.
 	 * @param siteConstructions Liste des SiteConstruction du bot.
 	 */
-	public void updateList(List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions) {
+	public void updateList(int currentPop, int currentMaxPop, List<Entity> botEntities, List<StorageBuilding>botStorageBuildings, List<AttackBuilding> botAttackBuildings, List<ProductionBuilding> botProdBuildings, List<Worker> botWorkers, List<Fighter> botFighters, List<Ressource> ressources, List<SiteConstruction> siteConstructions, List<PopulationBuilding> popBuildings) {
 		setBotEntities(botEntities);
 		setBotStorageBuildings(botStorageBuildings);
 		setBotAttackBuildings(botAttackBuildings);
@@ -282,6 +293,10 @@ public class BotManager {
 		setBotFighters(botFighters);
 		setRessources(ressources);
 		setSiteConstructions(siteConstructions);
+		setBotPopBuildings(popBuildings);
+		
+		this.currentMaxPop = currentMaxPop;
+		this.currentPop = currentPop;
 	}
 	
 	/**
@@ -701,8 +716,7 @@ public class BotManager {
 					for(Ressource r : accessible) { //choisi la ressource la plus proche du worker
 						int distanceRessource;
 						distanceRessource = calculate(ressource.getPosition(), worker.getPosition());
-						if(distanceRessource > calculate(r.getPosition(), worker.getPosition()) && r.getHp() > 0 )
-						{
+						if(distanceRessource > calculate(r.getPosition(), worker.getPosition()) && r.getHp() > 0 ){
 							ressource = r;
 						}
 					}
@@ -727,9 +741,10 @@ public class BotManager {
 							
 							if(calculate(ressource.getPosition(), sitec.getPosition()) / GameConfiguration.TILE_SIZE < BotConfiguration.RANGE_RESSOURCE_STORAGE) {
 								worker.setTarget(sitec);
+								worker.setSiteConstruction(sitec);
 								//worker.calculateSpeed(sitec.getPosition());
 								worker.setFinalDestination(sitec.getPosition());
-								worker.setCurrentAction(EntityConfiguration.WALK);
+								worker.setCurrentAction(EntityConfiguration.CONSTRUCT);
 								//System.out.println("va constru fdp !");
 								storageInRange = true;
 							}
@@ -774,7 +789,7 @@ public class BotManager {
 						}
 					}
 					else {
-						if(worker.getCurrentAction() != EntityConfiguration.REPAIR && worker.getCurrentAction() != EntityConfiguration.WALK) {
+						if(worker.getCurrentAction() != EntityConfiguration.CONSTRUCT) {
 							worker.initRessource(ressource);
 							//System.out.println("on envoie a la ressource");
 							//System.out.println("au travail fdp !");
@@ -852,6 +867,50 @@ public class BotManager {
 							//System.out.println("upgrading to age 3");
 						}
 					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * method who manage house building
+	 */
+	public void placeHouse() {
+		
+		if(this.currentPop + 3 >= this.currentMaxPop && this.currentMaxPop < this.maxPop) {
+			if(buildingInAttempt == false) {
+				boolean alreadyInBuilding = false;
+				for(SiteConstruction sc : siteConstructions) {
+					if(sc.getBuildingId() == EntityConfiguration.HOUSE) {
+						alreadyInBuilding = true;
+					}
+				}
+				
+				if(alreadyInBuilding == false && getMoney() >= priceOfEntity.get(EntityConfiguration.HOUSE)) {
+					int targetX = getBotWorkers().get(0).getPosition().getX() / 64;
+					//System.out.println("targetX : " + targetX);
+					int targetY = getBotWorkers().get(0).getPosition().getY() / 64;
+					//System.out.println("targetY : " + targetY);
+					Tile targetTile = map.getTile(targetY, targetX);
+					Tile place = null;
+					int max = 1;
+					while(place == null) {
+						for(int i = targetTile.getColumn() - max; i <= targetTile.getColumn() + max; i++) {
+							for(int j = targetTile.getLine() - max; j <= targetTile.getLine() + max; j++) {
+								if(i < GameConfiguration.COLUMN_COUNT && j < GameConfiguration.LINE_COUNT) {
+									//System.out.println("case check : " + j + ";" + i);
+									if(map.getTile(j, i).isSolid() == false) {
+										place = map.getTile(j, i);
+									}
+								}
+							}
+						}
+						max++;
+					}
+					removeMoney(priceOfEntity.get(EntityConfiguration.HOUSE));
+					buildingInAttempt = true;
+					tileToBuild = place;
+					idToBuild = EntityConfiguration.HOUSE;
 				}
 			}
 		}
@@ -1134,9 +1193,10 @@ public class BotManager {
 						for(Worker worker : getBuilders()) {
 							//System.out.println("builders : " + getBuilders().size());
 							worker.setTarget(sitec);
+							worker.setSiteConstruction(sitec);
 							//worker.calculateSpeed(sitec.getPosition());
 							worker.setFinalDestination(sitec.getPosition());
-							worker.setCurrentAction(EntityConfiguration.WALK);
+							worker.setCurrentAction(EntityConfiguration.CONSTRUCT);
 							//System.out.println("va constru fdp !");
 						}
 					}
@@ -1427,6 +1487,10 @@ public class BotManager {
 	public void setRessources(List<Ressource> ressources) {
 		this.ressources = ressources;
 	}
+	
+	public void setBotPopBuildings(List<PopulationBuilding> popBuildings) {
+		this.botPopBuildings = popBuildings;
+	}
 
 	public List<SiteConstruction> getSiteConstructions() {
 		return siteConstructions;
@@ -1508,7 +1572,7 @@ public class BotManager {
 	public void setHqBuilt(boolean hqBuilt) {
 		this.hqBuilt = hqBuilt;
 	}
-
+	
 	public Fighter getExplorer() {
 		return explorer;
 	}

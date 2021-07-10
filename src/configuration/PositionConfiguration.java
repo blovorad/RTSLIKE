@@ -48,7 +48,9 @@ public class PositionConfiguration {
 	public static final int MAP1_BUTTON_PANEL = 1;
 	public static final int MAP2_BUTTON_PANEL = 3;
 	public static final int MAP3_BUTTON_PANEL = 5;
-	public static final int START_BUTTON_PANEL = 7;
+	public static final int MONEY_COMBO_PANEL = 6;
+	public static final int POPULATION_COMBO_PANEL = 7;
+	public static final int START_BUTTON_PANEL = 9;
 	
 	/*GAME PANEL*/
 	public static final int RESSOURCE_INFO_PANEL = 0;
@@ -82,8 +84,8 @@ public class PositionConfiguration {
 	public static final int UNIT_4_X = 10;
 	public static final int UNIT_4_Y = 6;
 	
-	public static final int UNIT_5_X = 12;
-	public static final int UNIT_5_Y = 8;
+	public static final int UNIT_5_X = 80;
+	public static final int UNIT_5_Y = 80;
 	
 	public static final int UNIT_6_X = 83;
 	public static final int UNIT_6_Y = 83;
